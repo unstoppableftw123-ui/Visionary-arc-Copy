@@ -64,11 +64,14 @@ import {
   MessageSquare,
   UserCheck,
   MoreHorizontal,
+  Bell,
 } from "lucide-react";
 import { Notebook, Books, Users, Storefront, PencilLine } from "phosphor-react";
 import PhosphorIcon from "./icons/PhosphorIcon";
 import axios from "axios";
 import { supabase } from "../services/supabaseClient";
+import { getUnreadCount, getNotifications, markAllRead } from "../services/notificationService";
+import { AnimatePresence, motion } from "framer-motion";
 
 const DM_API = `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000'}/api/messages/inbox`;
 
@@ -346,13 +349,23 @@ export default function Sidebar() {
       return false;
     }
   });
-  const [learnOpen, setLearnOpen] = useState(false);
-  const [classesOpen, setClassesOpen] = useState(false);
-  const [communityOpen, setCommunityOpen] = useState(false);
+  const [learnOpen, setLearnOpen] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("va_nav_learn") ?? "true"); } catch { return true; }
+  });
+  const [competeOpen, setCompeteOpen] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("va_nav_compete") ?? "true"); } catch { return true; }
+  });
+  const [youOpen, setYouOpen] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("va_nav_you") ?? "false"); } catch { return false; }
+  });
   const [aiToolsOpen, setAiToolsOpen] = useState(false);
   const [storageOpen, setStorageOpen] = useState(false);
   const [dmUnread, setDmUnread] = useState(0);
   const [pendingFriends, setPendingFriends] = useState(0);
+  const [notifUnread, setNotifUnread] = useState(0);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const notifRef = useRef(null);
 
   useEffect(() => {
     const fetchDmUnread = () => {
@@ -383,14 +396,48 @@ export default function Sidebar() {
   }, [user?.id]);
 
   useEffect(() => {
+    if (!user?.id) return;
+    const fetchNotifCount = () => {
+      getUnreadCount(user.id).then(setNotifUnread).catch(() => {});
+    };
+    fetchNotifCount();
+    const poll = setInterval(fetchNotifCount, 60000);
+    return () => clearInterval(poll);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!notifOpen || !user?.id) return;
+    getNotifications(user.id, 10).then(setNotifications).catch(() => {});
+    markAllRead(user.id).then(() => setNotifUnread(0)).catch(() => {});
+  }, [notifOpen, user?.id]);
+
+  useEffect(() => {
+    if (!notifOpen) return;
+    const onClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [notifOpen]);
+
+  useEffect(() => {
     localStorage.setItem(SIDEBAR_COLLAPSED_KEY, JSON.stringify(collapsed));
   }, [collapsed]);
 
   useEffect(() => {
-    if (isLearnRoute(location.pathname)) setLearnOpen(true);
-    if (isClassesRoute(location.pathname)) setClassesOpen(true);
-    if (isCommunityRoute(location.pathname)) setCommunityOpen(true);
+    const learnRoutes = ["/study", "/practice", "/notes-studio"];
+    const competeRoutes = ["/challenges", "/rewards", "/friends"];
+    const youRoutes = ["/shop", "/referrals", "/analytics"];
+    if (learnRoutes.some(r => location.pathname === r || location.pathname.startsWith(r + "/"))) setLearnOpen(true);
+    if (competeRoutes.some(r => location.pathname === r || location.pathname.startsWith(r + "/"))) setCompeteOpen(true);
+    if (youRoutes.some(r => location.pathname === r || location.pathname.startsWith(r + "/"))) setYouOpen(true);
   }, [location.pathname]);
+
+  useEffect(() => { localStorage.setItem("va_nav_learn", JSON.stringify(learnOpen)); }, [learnOpen]);
+  useEffect(() => { localStorage.setItem("va_nav_compete", JSON.stringify(competeOpen)); }, [competeOpen]);
+  useEffect(() => { localStorage.setItem("va_nav_you", JSON.stringify(youOpen)); }, [youOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -410,31 +457,39 @@ export default function Sidebar() {
   const xpInLevel = xp - xpForCurrentLevel;
   const levelProgress = Math.min(100, (xpInLevel / xpForNextLevel) * 100);
 
-  const navItems = [
+  const coreItems = [
     { icon: <Home className="w-5 h-5 shrink-0" />, label: "Dashboard", href: "/dashboard" },
     { icon: <Map className="w-5 h-5 shrink-0" />, label: "Tracks", href: "/tracks" },
+    { icon: <Briefcase className="w-5 h-5 shrink-0" />, label: "Portfolio", href: "/portfolio" },
+  ];
+  const learnItems = [
     { icon: <Brain className="w-5 h-5 shrink-0" />, label: "Study Hub", href: "/study" },
     { icon: <Target className="w-5 h-5 shrink-0" />, label: "Practice", href: "/practice" },
     { icon: <FileText className="w-5 h-5 shrink-0" />, label: "Notes", href: "/notes-studio" },
+  ];
+  const competeItems = [
     { icon: <Trophy className="w-5 h-5 shrink-0" />, label: "Challenges", href: "/challenges" },
     { icon: <BarChart2 className="w-5 h-5 shrink-0" />, label: "Leaderboard", href: "/rewards" },
     { icon: <UserCheck className="w-5 h-5 shrink-0" />, label: "Friends", href: "/friends", badge: pendingFriends > 0 ? pendingFriends : null },
-    { icon: <Briefcase className="w-5 h-5 shrink-0" />, label: "Portfolio", href: "/portfolio" },
-    { icon: <TrendingUp className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/analytics" },
+  ];
+  const youItems = [
     { icon: <ShoppingBag className="w-5 h-5 shrink-0" />, label: "Shop", href: "/shop" },
     { icon: <PhosphorIcon icon={Users} className="w-5 h-5 shrink-0" />, label: "Referrals", href: "/referrals" },
+    { icon: <TrendingUp className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/analytics" },
+  ];
+  const bottomItems = [
     { icon: <User className="w-5 h-5 shrink-0" />, label: "Profile", href: "/profile" },
     { icon: <Settings className="w-5 h-5 shrink-0" />, label: "Settings", href: "/settings" },
   ];
+  const allNavItems = [...coreItems, ...learnItems, ...competeItems, ...youItems, ...bottomItems];
 
-  const primaryItems = navItems;
   const mobileBottomItems = [
     { icon: <Home className="h-5 w-5" />, label: "Home", href: "/dashboard" },
     { icon: <Map className="h-5 w-5" />, label: "Tracks", href: "/tracks" },
     { icon: <Brain className="h-5 w-5" />, label: "Study", href: "/study" },
     { icon: <User className="h-5 w-5" />, label: "Profile", href: "/profile" },
   ];
-  const mobileMoreItems = navItems.filter(
+  const mobileMoreItems = allNavItems.filter(
     (item) => !mobileBottomItems.some((bottomItem) => bottomItem.href === item.href)
   );
   const moreActive = mobileMoreItems.some((item) =>
@@ -455,73 +510,87 @@ export default function Sidebar() {
         : "border-border hover:bg-secondary/80 text-muted-foreground hover:text-foreground"
     }`;
 
-  const LearnFlyout = () => (
-    <div className="min-w-[180px] py-1">
-      {primaryItems.find((i) => i.key === "learn").sub.map((sub) => {
-        const isActive = location.pathname === sub.href;
-        return (
-          <Link
-            key={sub.href}
-            to={sub.href}
-            onClick={() => setMobileOpen(false)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-              isActive ? "bg-primary/10 text-primary" : "hover:bg-secondary text-foreground"
-            }`}
-          >
-            {sub.icon}
-            {sub.label}
-          </Link>
-        );
-      })}
-    </div>
-  );
+  const groupMotion = {
+    initial: { height: 0, opacity: 0 },
+    animate: { height: "auto", opacity: 1 },
+    exit: { height: 0, opacity: 0 },
+    transition: { duration: 0.2, ease: "easeInOut" },
+  };
 
-  const ClassesFlyout = () => (
-    <div className="min-w-[180px] py-1">
-      {primaryItems.find((i) => i.key === "classes").sub.map((sub) => {
-        const isActive = location.pathname === sub.href;
-        return (
-          <Link
-            key={sub.href}
-            to={sub.href}
-            onClick={() => setMobileOpen(false)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-              isActive ? "bg-primary/10 text-primary" : "hover:bg-secondary text-foreground"
-            }`}
-          >
-            {sub.icon}
-            {sub.label}
-          </Link>
-        );
-      })}
-    </div>
-  );
+  const renderNavItem = (item) => {
+    const isActive = isNavItemActive(item, location.pathname, location.search);
+    const link = (
+      <Link
+        to={item.href}
+        onClick={() => setMobileOpen(false)}
+        className={navLinkClass(isActive)}
+        data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+      >
+        {item.icon}
+        {!collapsed && <span className="label font-medium flex-1">{item.label}</span>}
+        {item.badge != null && !collapsed && (
+          <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+            {item.badge}
+          </span>
+        )}
+      </Link>
+    );
+    if (collapsed) {
+      return (
+        <Tooltip key={item.href} delayDuration={300}>
+          <TooltipTrigger asChild>
+            <div className="relative">
+              {link}
+              {item.badge != null && (
+                <span className="pointer-events-none absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-0.5 text-[9px] font-semibold text-primary-foreground">
+                  {item.badge}
+                </span>
+              )}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="right">{item.label}</TooltipContent>
+        </Tooltip>
+      );
+    }
+    return <div key={item.href}>{link}</div>;
+  };
 
-  const CommunityFlyout = () => (
-    <div className="min-w-[180px] py-1">
-      {primaryItems.find((i) => i.key === "community")?.sub.map((sub) => {
-        const isActive = isSubActive(sub.href, location.pathname, location.search);
-        return (
-          <Link
-            key={sub.href}
-            to={sub.href}
-            onClick={() => setMobileOpen(false)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-              isActive ? "bg-primary/10 text-primary" : "hover:bg-secondary text-foreground"
-            }`}
-          >
-            {sub.icon}
-            <span className="flex-1">{sub.label}</span>
-            {sub.badge != null && (
-              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[9px] font-semibold text-primary-foreground">
-                {sub.badge}
-              </span>
-            )}
-          </Link>
-        );
-      })}
-    </div>
-  );
+  const renderBottomNavItem = (item) => {
+    const isActive = isNavItemActive(item, location.pathname, location.search);
+    const link = (
+      <Link
+        to={item.href}
+        onClick={() => setMobileOpen(false)}
+        className={`flex items-center justify-center h-9 w-9 rounded-lg transition-colors ${isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
+        data-testid={`nav-${item.label.toLowerCase()}`}
+        aria-label={item.label}
+      >
+        {item.icon}
+      </Link>
+    );
+    return (
+      <Tooltip key={item.href} delayDuration={300}>
+        <TooltipTrigger asChild>{link}</TooltipTrigger>
+        <TooltipContent side={collapsed ? "right" : "top"}>{item.label}</TooltipContent>
+      </Tooltip>
+    );
+  };
+
+  const renderGroupLabel = (label, isOpen, onToggle) => {
+    if (collapsed) return null;
+    return (
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between px-3 py-1 group"
+      >
+        <span className="text-[10px] uppercase tracking-widest font-semibold opacity-40 select-none">{label}</span>
+        <ChevronDown
+          className={`h-3 w-3 opacity-40 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+    );
+  };
 
   const SidebarContent = () => (
     <>
@@ -537,272 +606,163 @@ export default function Sidebar() {
           </div>
           <span className="label font-heading text-lg font-semibold truncate">TaskFlow</span>
         </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 shrink-0"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <ChevronLeft className="h-4 w-4" />
-          )}
-        </Button>
+        <div className="flex items-center gap-1 shrink-0">
+          {/* Notification Bell */}
+          <div className="relative" ref={notifRef}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 relative"
+              onClick={() => setNotifOpen((o) => !o)}
+              aria-label="Notifications"
+            >
+              <Bell className="h-4 w-4" />
+              {notifUnread > 0 && (
+                <span className="pointer-events-none absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-semibold text-destructive-foreground">
+                  {notifUnread > 9 ? '9+' : notifUnread}
+                </span>
+              )}
+            </Button>
+            {notifOpen && (
+              <div
+                className="absolute z-50 top-full right-0 mt-1 w-72 rounded-xl border border-border bg-card shadow-xl overflow-hidden"
+                style={{ animation: "profilePopoverIn 0.15s ease-out forwards" }}
+              >
+                <div className="px-4 py-3 border-b border-border">
+                  <p className="font-semibold text-sm">Notifications</p>
+                </div>
+                <div className="max-h-80 overflow-y-auto divide-y divide-border">
+                  {notifications.length === 0 ? (
+                    <p className="px-4 py-6 text-center text-xs text-muted-foreground">No notifications yet</p>
+                  ) : (
+                    notifications.map((n) => (
+                      <div
+                        key={n.id}
+                        className={`px-4 py-3 text-sm ${n.read ? 'text-muted-foreground' : 'text-foreground'}`}
+                      >
+                        <p className="leading-snug">{n.message}</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          {new Date(n.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 label"
+            onClick={() => setCollapsed((c) => !c)}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
-        {primaryItems.map((item) => {
-          if (item.key === "learn") {
-            const isLearnActive = item.sub.some((s) => location.pathname === s.href);
-            const isPartiallyActive = isLearnActive && !learnOpen;
+      <nav className="flex-1 overflow-y-auto p-3 flex flex-col gap-0.5">
 
-            if (collapsed) {
-              return (
-                <HoverCard key="learn" openDelay={200} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <Link
-                      to="/study"
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
-                        isLearnActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"
-                      }`}
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {item.icon}
-                    </Link>
-                  </HoverCardTrigger>
-                  <HoverCardContent side="right" align="start" className="w-auto p-0">
-                    <LearnFlyout />
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            }
+        {/* CORE — always visible, no collapse */}
+        <div className="space-y-0.5">
+          {!collapsed && (
+            <p className="px-3 py-1 text-[10px] uppercase tracking-widest font-semibold opacity-40 select-none">Core</p>
+          )}
+          {coreItems.map(renderNavItem)}
+        </div>
 
-            return (
-              <Collapsible
-                key="learn"
-                open={learnOpen}
-                onOpenChange={setLearnOpen}
-                className="space-y-0.5"
-              >
-                <CollapsibleTrigger
-                  className={`label w-full ${navLinkClass(isPartiallyActive || learnOpen)}`}
-                >
-                  {item.icon}
-                  <span className="flex-1 text-left font-medium">{item.label}</span>
-                  <ChevronDown
-                    className={`h-4 w-4 shrink-0 transition-transform duration-200 ${learnOpen ? "rotate-180" : ""}`}
-                  />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="overflow-hidden transition-[max-height] duration-250 ease-out data-[state=closed]:max-h-0 data-[state=open]:max-h-[320px]">
-                  <div className="space-y-0.5 pt-0.5">
-                    {item.sub.map((sub) => (
-                      <Link
-                        key={sub.href}
-                        to={sub.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={subLinkClass(location.pathname === sub.href)}
-                        data-testid={`nav-${sub.label.toLowerCase().replace(/\s+/g, "-")}`}
-                      >
-                        {sub.icon}
-                        <span>{sub.label}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            );
-          }
+        <div className="border-t border-border/20 my-2" />
 
-          if (item.key === "classes") {
-            const isClassesActive = item.sub.some((s) => location.pathname === s.href);
-            const isPartiallyActive = isClassesActive && !classesOpen;
-
-            if (collapsed) {
-              return (
-                <HoverCard key="classes" openDelay={200} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <Link
-                      to="/teacher/classes"
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
-                        isClassesActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"
-                      }`}
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {item.icon}
-                    </Link>
-                  </HoverCardTrigger>
-                  <HoverCardContent side="right" align="start" className="w-auto p-0">
-                    <ClassesFlyout />
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            }
-
-            return (
-              <Collapsible
-                key="classes"
-                open={classesOpen}
-                onOpenChange={setClassesOpen}
-                className="space-y-0.5"
-              >
-                <CollapsibleTrigger
-                  className={`label w-full ${navLinkClass(isPartiallyActive || classesOpen)}`}
-                >
-                  {item.icon}
-                  <span className="flex-1 text-left font-medium">{item.label}</span>
-                  <ChevronDown
-                    className={`h-4 w-4 shrink-0 transition-transform duration-200 ${classesOpen ? "rotate-180" : ""}`}
-                  />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="overflow-hidden transition-[max-height] duration-250 ease-out data-[state=closed]:max-h-0 data-[state=open]:max-h-[320px]">
-                  <div className="space-y-0.5 pt-0.5">
-                    {item.sub.map((sub) => (
-                      <Link
-                        key={sub.href}
-                        to={sub.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={subLinkClass(location.pathname === sub.href)}
-                        data-testid={`nav-${sub.label.toLowerCase().replace(/\s+/g, "-")}`}
-                      >
-                        {sub.icon}
-                        <span>{sub.label}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            );
-          }
-
-          if (item.key === "community") {
-            const isCommunityActive = item.sub.some((s) =>
-              isSubActive(s.href, location.pathname, location.search)
-            );
-            const isPartiallyActive = isCommunityActive && !communityOpen;
-
-            if (collapsed) {
-              return (
-                <HoverCard key="community" openDelay={200} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <Link
-                      to="/community"
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
-                        isCommunityActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"
-                      }`}
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {item.icon}
-                    </Link>
-                  </HoverCardTrigger>
-                  <HoverCardContent side="right" align="start" className="w-auto p-0">
-                    <CommunityFlyout />
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            }
-
-            return (
-              <Collapsible
-                key="community"
-                open={communityOpen}
-                onOpenChange={setCommunityOpen}
-                className="space-y-0.5"
-              >
-                <CollapsibleTrigger
-                  className={`label w-full ${navLinkClass(isPartiallyActive || communityOpen)}`}
-                >
-                  {item.icon}
-                  <span className="flex-1 text-left font-medium">{item.label}</span>
-                  <ChevronDown
-                    className={`h-4 w-4 shrink-0 transition-transform duration-200 ${communityOpen ? "rotate-180" : ""}`}
-                  />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="overflow-hidden transition-[max-height] duration-250 ease-out data-[state=closed]:max-h-0 data-[state=open]:max-h-[200px]">
-                  <div className="space-y-0.5 pt-0.5">
-                    {item.sub.map((sub) => {
-                      const isActive = isSubActive(sub.href, location.pathname, location.search);
-                      return (
-                        <Link
-                          key={sub.href}
-                          to={sub.href}
-                          onClick={() => setMobileOpen(false)}
-                          className={subLinkClass(isActive)}
-                          data-testid={`nav-${sub.label.toLowerCase().replace(/\s+/g, "-")}`}
-                        >
-                          {sub.icon}
-                          <span className="flex-1">{sub.label}</span>
-                          {sub.badge != null && (
-                            <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[9px] font-semibold text-primary-foreground">
-                              {sub.badge}
-                            </span>
-                          )}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            );
-          }
-
-          const isActive = !item.comingSoon && (() => {
-            return isNavItemActive(item, location.pathname, location.search);
-          })();
-          const link = item.comingSoon ? (
-            <button
-              type="button"
-              onClick={() => {
-                toast("Coming soon! Check back after the next update.");
-                setMobileOpen(false);
-              }}
-              className={`${navLinkClass(false)} w-full`}
-              data-testid={`nav-${item.label.toLowerCase()}`}
-            >
-              {item.icon}
-              <span className="label font-medium flex-1 text-left">{item.label}</span>
-              {!collapsed && (
-                <span className="text-[9px] font-bold uppercase tracking-wide bg-secondary text-muted-foreground rounded-full px-1.5 py-0.5 shrink-0">Soon</span>
-              )}
-            </button>
+        {/* LEARN — collapsible */}
+        <div className="space-y-0.5">
+          {renderGroupLabel("Learn", learnOpen, () => setLearnOpen((o) => !o))}
+          {collapsed ? (
+            learnItems.map(renderNavItem)
           ) : (
-            <Link
-              to={item.href}
-              onClick={() => setMobileOpen(false)}
-              className={navLinkClass(isActive)}
-              data-testid={`nav-${item.label.toLowerCase()}`}
-            >
-              {item.icon}
-              <span className="label font-medium flex-1">{item.label}</span>
-              {item.badge != null && !collapsed && (
-                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
-                  {item.badge}
-                </span>
+            <AnimatePresence initial={false}>
+              {learnOpen && (
+                <motion.div
+                  key="learn-group"
+                  initial={groupMotion.initial}
+                  animate={groupMotion.animate}
+                  exit={groupMotion.exit}
+                  transition={groupMotion.transition}
+                  style={{ overflow: "hidden" }}
+                  className="space-y-0.5"
+                >
+                  {learnItems.map(renderNavItem)}
+                </motion.div>
               )}
-            </Link>
-          );
+            </AnimatePresence>
+          )}
+        </div>
 
-          if (collapsed) {
-            return (
-              <Tooltip key={item.href} delayDuration={300}>
-                <TooltipTrigger asChild>
-                  <div className="relative">
-                    {link}
-                    {item.badge != null && (
-                      <span className="pointer-events-none absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-0.5 text-[9px] font-semibold text-primary-foreground">
-                        {item.badge}
-                      </span>
-                    )}
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="right">{item.label}</TooltipContent>
-              </Tooltip>
-            );
-          }
-          return <div key={item.href}>{link}</div>;
-        })}
+        <div className="border-t border-border/20 my-2" />
+
+        {/* COMPETE — collapsible */}
+        <div className="space-y-0.5">
+          {renderGroupLabel("Compete", competeOpen, () => setCompeteOpen((o) => !o))}
+          {collapsed ? (
+            competeItems.map(renderNavItem)
+          ) : (
+            <AnimatePresence initial={false}>
+              {competeOpen && (
+                <motion.div
+                  key="compete-group"
+                  initial={groupMotion.initial}
+                  animate={groupMotion.animate}
+                  exit={groupMotion.exit}
+                  transition={groupMotion.transition}
+                  style={{ overflow: "hidden" }}
+                  className="space-y-0.5"
+                >
+                  {competeItems.map(renderNavItem)}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
+
+        <div className="border-t border-border/20 my-2" />
+
+        {/* YOU — collapsible, default collapsed */}
+        <div className="space-y-0.5">
+          {renderGroupLabel("You", youOpen, () => setYouOpen((o) => !o))}
+          {collapsed ? (
+            youItems.map(renderNavItem)
+          ) : (
+            <AnimatePresence initial={false}>
+              {youOpen && (
+                <motion.div
+                  key="you-group"
+                  initial={groupMotion.initial}
+                  animate={groupMotion.animate}
+                  exit={groupMotion.exit}
+                  transition={groupMotion.transition}
+                  style={{ overflow: "hidden" }}
+                  className="space-y-0.5"
+                >
+                  {youItems.map(renderNavItem)}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
+
+        {/* Spacer pushes bottom items down */}
+        <div className="flex-1" />
+
+        {/* BOTTOM — icon-only, always visible */}
+        <div className="border-t border-border/20 mt-2 pt-2 flex gap-1 justify-center">
+          {bottomItems.map(renderBottomNavItem)}
+        </div>
       </nav>
 
       {/* Storage bar — students and teachers only */}
@@ -897,9 +857,40 @@ export default function Sidebar() {
           </div>
           <span className="truncate font-heading font-semibold">TaskFlow</span>
         </Link>
-        <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
+        <div className="flex items-center gap-1">
+          <div className="relative">
+            <Button variant="ghost" size="icon" className="relative" onClick={() => setNotifOpen((o) => !o)}>
+              <Bell className="h-5 w-5" />
+              {notifUnread > 0 && (
+                <span className="pointer-events-none absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-semibold text-destructive-foreground">
+                  {notifUnread > 9 ? '9+' : notifUnread}
+                </span>
+              )}
+            </Button>
+            {notifOpen && (
+              <div className="absolute z-50 top-full right-0 mt-1 w-72 rounded-xl border border-border bg-card shadow-xl overflow-hidden">
+                <div className="px-4 py-3 border-b border-border">
+                  <p className="font-semibold text-sm">Notifications</p>
+                </div>
+                <div className="max-h-72 overflow-y-auto divide-y divide-border">
+                  {notifications.length === 0 ? (
+                    <p className="px-4 py-6 text-center text-xs text-muted-foreground">No notifications yet</p>
+                  ) : (
+                    notifications.map((n) => (
+                      <div key={n.id} className={`px-4 py-3 text-sm ${n.read ? 'text-muted-foreground' : 'text-foreground'}`}>
+                        <p className="leading-snug">{n.message}</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">{new Date(n.created_at).toLocaleString()}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
       </div>
 
       {/* Mobile More Drawer */}
