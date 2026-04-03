@@ -10,6 +10,7 @@ import { Label } from "../components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { AuthContext, ThemeContext, API } from "../App";
+import { getProfile } from "../services/db";
 import { toast } from "sonner";
 import { Sparkles, ArrowLeft, Moon, Sun, LockKeyhole, ShieldCheck, GraduationCap, BookOpen, Briefcase, Info, X } from "lucide-react";
 import { loginSchema, registerSchema, formatZodErrors } from "../lib/validation";
@@ -71,6 +72,21 @@ export default function AuthPage() {
     return '/dashboard';
   };
 
+  const resolvePostAuthRoute = async (nextUser) => {
+    if (!isUsingRealAPI() || !nextUser?.id) {
+      return getRoleRoute(nextUser?.role);
+    }
+
+    try {
+      const { data: profile } = await getProfile(nextUser.id);
+      if (!profile?.onboarded) return "/onboarding";
+    } catch (_) {
+      return "/onboarding";
+    }
+
+    return getRoleRoute(nextUser?.role);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginErrors({});
@@ -83,7 +99,7 @@ export default function AuthPage() {
     try {
       const response = await login(loginEmail, loginPassword);
       toast.success("Welcome back!");
-      navigate(getRoleRoute(response.user?.role));
+      navigate(await resolvePostAuthRoute(response.user));
     } catch (error) {
       // apiService throws errors with .response = { status, data }
       const status = error.status ?? error.response?.status;
@@ -119,12 +135,15 @@ export default function AuthPage() {
     try {
       const response = await register(registerEmail, registerPassword, registerName, selectedRole);
       const newUser = response.user;
-      const refCode = new URLSearchParams(location.search).get("ref");
+      const refCode = (new URLSearchParams(location.search).get("ref") ?? "")
+        .trim()
+        .slice(0, 8)
+        .toUpperCase();
       if (refCode && newUser?.id) {
-        trackReferral(refCode, newUser.id).catch(() => {});
+        await trackReferral(refCode, newUser.id).catch(() => {});
       }
       toast.success("Account created successfully!");
-      navigate(getRoleRoute(newUser?.role ?? selectedRole));
+      navigate(await resolvePostAuthRoute(newUser ?? { role: selectedRole }));
     } catch (error) {
       const detail = error.response?.data?.detail;
       const msg = typeof detail === "object" ? detail?.message || JSON.stringify(detail) : (detail || error.message);

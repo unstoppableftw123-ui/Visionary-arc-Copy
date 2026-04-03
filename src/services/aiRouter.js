@@ -1,4 +1,7 @@
 import { supabase } from './supabaseClient';
+import { canMakeCall } from './usageService';
+import { spendCoins } from './coinService';
+import { toast } from 'sonner';
 
 const TIER_MAP = {
   fast: { tier: 1, cost: 1, model: 'meta-llama/llama-3.3-70b-instruct:free', provider: 'groq' },
@@ -13,10 +16,27 @@ const TIER_MAP = {
   notes: { tier: 2, cost: 3, model: 'anthropic/claude-sonnet-4-5', provider: 'openrouter' },
   summarize: { tier: 2, cost: 3, model: 'anthropic/claude-sonnet-4-5', provider: 'openrouter' },
 
+  brief_generation: { tier: 2, cost: 3, model: 'anthropic/claude-haiku-4-5', provider: 'openrouter' },
+
   slides: { tier: 3, cost: 8, model: 'moonshotai/kimi-k2.5', provider: 'openrouter' },
   visual: { tier: 3, cost: 8, model: 'moonshotai/kimi-k2.5', provider: 'openrouter' },
   screenshot_to_code: { tier: 3, cost: 8, model: 'moonshotai/kimi-k2.5', provider: 'openrouter' },
   deep_research: { tier: 3, cost: 8, model: 'moonshotai/kimi-k2.5', provider: 'openrouter' },
+};
+
+// Human-readable labels for toast messages
+const FEATURE_LABELS = {
+  flashcards:      'flashcard',
+  quiz:            'quiz',
+  summarize:       'summary',
+  notes:           'notes',
+  short_summary:   'summary',
+  brief_generation:'brief',
+  slides:          'slides',
+  lesson_plan:     'lesson plan',
+  essay_feedback:  'essay feedback',
+  document:        'document',
+  fast:            'AI',
 };
 
 export async function callAI({ feature, prompt, systemPrompt, userId, imageBase64, onCoinsUpdated }) {
@@ -26,8 +46,54 @@ export async function callAI({ feature, prompt, systemPrompt, userId, imageBase6
   }
 
   const { cost, model, provider } = config;
+  const featureLabel = FEATURE_LABELS[feature] ?? feature;
 
-  // Check coin balance
+  // ── Daily limit check ────────────────────────────────────────────────────────
+  if (userId) {
+    const limitCheck = await canMakeCall(userId, feature);
+
+    if (!limitCheck.allowed) {
+      // Hard limit — no coins to continue
+      toast.error(`Daily limit reached for ${featureLabel}. Upgrade for more calls.`, {
+        action: {
+          label: 'View Plans →',
+          onClick: () => { window.location.href = '/pricing'; },
+        },
+      });
+      throw new Error('DAILY_LIMIT');
+    }
+
+    if (limitCheck.reason === 'costs_coins') {
+      // Over free limit — ask user to confirm coin spend
+      const confirmed = await new Promise((resolve) => {
+        const id = toast(
+          `You've used your free ${featureLabel} calls today. This will cost ${limitCheck.coinCost} coins. Continue?`,
+          {
+            duration: Infinity,
+            action: {
+              label: 'Use Coins',
+              onClick: () => { toast.dismiss(id); resolve(true); },
+            },
+            cancel: {
+              label: 'Cancel',
+              onClick: () => { toast.dismiss(id); resolve(false); },
+            },
+            onDismiss: () => resolve(false),
+          }
+        );
+      });
+
+      if (!confirmed) throw new Error('USER_CANCELLED');
+
+      // Deduct 50 coins for the extra call
+      const newBalance = await spendCoins(userId, limitCheck.coinCost, `Extra ${featureLabel} call`);
+      if (newBalance === null) throw new Error('INSUFFICIENT_COINS');
+      onCoinsUpdated?.();
+    }
+  }
+  // ── End daily limit check ────────────────────────────────────────────────────
+
+  // Check coin balance for the base AI call cost
   const { data: userData, error: userError } = await supabase
     .from('users')
     .select('coins')

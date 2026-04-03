@@ -11,6 +11,16 @@ import { Badge } from "../components/ui/badge";
 import { AuthContext } from "../App";
 import apiService, { streaksAPI } from "../services/apiService";
 import { getMissions, claimMission, seedDailyMissions } from "../services/missionService";
+import {
+  getProfile,
+  getStreak,
+  getDailyMissions,
+  seedDailyMissions as dbSeedMissions,
+  claimMission as dbClaimMission,
+  awardXP,
+  awardCoins,
+} from "../services/db";
+import { supabase } from "../services/supabaseClient";
 import { joinClass } from "../services/classService";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
@@ -37,7 +47,8 @@ import {
   GraduationCap,
   Zap,
   BadgeCheck,
-  ChevronRight
+  ChevronRight,
+  Share2
 } from "lucide-react";
 import {
   BarChart,
@@ -63,9 +74,99 @@ import {
   getHeatmapData
 } from "../utils/dashboardAnalytics";
 
+const XP_TIERS = [
+  { min: 15000, label: "Elite",    color: "text-yellow-500",  rank: "S" },
+  { min: 6000,  label: "Pro",      color: "text-purple-500",  rank: "A" },
+  { min: 2000,  label: "Creator",  color: "text-blue-500",    rank: "B" },
+  { min: 500,   label: "Builder",  color: "text-green-500",   rank: "C" },
+  { min: 0,     label: "Beginner", color: "text-muted-foreground", rank: "E" },
+];
+
+const DAILY_TRACKS = [
+  "Business",
+  "Technology",
+  "Creative Arts",
+  "Science",
+  "Social Impact",
+  "Health & Wellness",
+  "Education",
+];
+
+function DashboardSkeleton() {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* Header skeleton */}
+      <div className="mb-8 space-y-2">
+        <Skeleton className="h-9 w-56" delay={0} />
+        <Skeleton className="h-4 w-44" delay={40} />
+      </div>
+
+      {/* Bento grid — 4 card skeletons */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        {/* Today's Progress — spans 2 cols */}
+        <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-4">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5 rounded-md" delay={80} />
+            <Skeleton className="h-4 w-36" delay={100} />
+          </div>
+          <Skeleton className="h-3 w-full rounded-full" delay={120} />
+          <div className="grid grid-cols-3 gap-3">
+            {[0, 1, 2].map(i => (
+              <div key={i} className="rounded-xl bg-secondary/50 p-3 space-y-2">
+                <Skeleton className="h-7 w-12 mx-auto" delay={140 + i * 30} />
+                <Skeleton className="h-2.5 w-16 mx-auto" delay={160 + i * 30} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Streak card */}
+        <DashboardCardSkeleton index={1} />
+
+        {/* XP & Level card */}
+        <DashboardCardSkeleton index={2} />
+
+        {/* Missions / Weekly Goals card — spans 2 cols */}
+        <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5 rounded-md" delay={200} />
+            <Skeleton className="h-4 w-32" delay={220} />
+          </div>
+          {[0, 1, 2].map(i => (
+            <div key={i} className="flex items-center gap-3 py-2">
+              <Skeleton circle className="h-8 w-8 shrink-0" delay={240 + i * 40} />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-3 w-3/4" delay={260 + i * 40} />
+                <Skeleton className="h-2 w-full rounded-full" delay={280 + i * 40} />
+              </div>
+              <Skeleton className="h-7 w-16 rounded-md shrink-0" delay={300 + i * 40} />
+            </div>
+          ))}
+        </div>
+
+        {/* Tasks card */}
+        <DashboardCardSkeleton index={3} />
+
+        {/* Brief Opportunity placeholder */}
+        <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
+          <Skeleton className="h-4 w-48" delay={340} />
+          <Skeleton className="h-3 w-full" delay={360} />
+          <Skeleton className="h-8 w-40 rounded-lg" delay={380} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
+  const [supabaseData, setSupabaseData] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [missions, setMissions] = useState([]);
   const [gamificationStats, setGamificationStats] = useState(null);
@@ -110,6 +211,71 @@ export default function Dashboard() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  // Supabase real-data fetch (runs when USE_MOCK is not set)
+  useEffect(() => {
+    if (!user?.id) return;
+    if (process.env.REACT_APP_USE_MOCK === 'true') return;
+    const loadSupabase = async () => {
+      try {
+        // Build date range for last 7 days
+        const last7 = Array.from({ length: 7 }, (_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - (6 - i));
+          return d.toISOString().split('T')[0];
+        });
+        const rangeStart = last7[0];
+
+        const [{ data: profile }, { data: streak }, { data: missionsData }, { data: sessions }] = await Promise.all([
+          getProfile(user.id),
+          getStreak(user.id),
+          getDailyMissions(user.id),
+          supabase
+            .from('study_sessions')
+            .select('created_at')
+            .eq('user_id', user.id)
+            .gte('created_at', rangeStart),
+        ]);
+
+        // Derive which of last 7 days had activity
+        const activeDaySet = new Set(
+          (sessions ?? []).map(s => s.created_at?.split('T')[0]).filter(Boolean)
+        );
+        const activeDays = last7.map(d => ({ date: d, active: activeDaySet.has(d) }));
+
+        let finalMissions = missionsData;
+        if (!missionsData || missionsData.length === 0) {
+          await dbSeedMissions(user.id);
+          const { data: seeded } = await getDailyMissions(user.id);
+          finalMissions = seeded || [];
+        }
+        setSupabaseData({ profile, streak, missions: finalMissions, activeDays });
+      } catch (err) {
+        console.error("Supabase fetch error:", err);
+      }
+    };
+    loadSupabase();
+  }, [user?.id]);
+
+  const handleClaimSupabaseMission = async (mission) => {
+    if (!mission.completed || mission.claimed) return;
+    try {
+      const { data, error } = await dbClaimMission(mission.id, user.id);
+      if (error) throw error;
+      const xp = data?.xp_reward ?? mission.xp_reward ?? 0;
+      const coins = data?.coins_reward ?? mission.coins_reward ?? 0;
+      await Promise.all([
+        awardXP(user.id, xp),
+        awardCoins(user.id, coins, `Mission: ${mission.title}`),
+      ]);
+      toast.success(`Claimed ${xp} XP and ${coins} coins!`);
+      // Refresh Supabase missions
+      const { data: updated } = await getDailyMissions(user.id);
+      setSupabaseData(prev => ({ ...prev, missions: updated || [] }));
+    } catch (err) {
+      toast.error(err?.message || "Failed to claim mission");
+    }
+  };
 
   const handleClaimMission = async (missionId) => {
     try {
@@ -187,6 +353,18 @@ export default function Dashboard() {
   const founder   = isFounder(user);
   const founderMeta = getFounderMeta(user);
 
+  // XP tier label (from CLAUDE.md section 6)
+  const currentXp = supabaseData?.profile?.xp ?? gamificationStats?.xp ?? 0;
+  const xpTier = XP_TIERS.find(t => currentXp >= t.min) || XP_TIERS[XP_TIERS.length - 1];
+
+  // Today's track rotates by day of week
+  const todayTrack = DAILY_TRACKS[new Date().getDay()];
+  const fallbackDailyMissions = missions.filter((mission) => mission.mission_type === "daily");
+  const displayedMissions = supabaseData?.missions?.length > 0
+    ? supabaseData.missions.slice(0, 4)
+    : fallbackDailyMissions.slice(0, 4);
+  const missionsLoadingState = !supabaseData && fallbackDailyMissions.length === 0;
+
   if (error) {
     return (
       <motion.div
@@ -211,69 +389,7 @@ export default function Dashboard() {
   }
 
   if (loading) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        {/* Header skeleton */}
-        <div className="mb-8 space-y-2">
-          <Skeleton className="h-9 w-56" delay={0} />
-          <Skeleton className="h-4 w-44" delay={40} />
-        </div>
-
-        {/* Bento grid — 4 card skeletons mirroring the real layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-
-          {/* Today's Progress — spans 2 cols */}
-          <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-4">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded-md" delay={80} />
-              <Skeleton className="h-4 w-36" delay={100} />
-            </div>
-            <Skeleton className="h-3 w-full rounded-full" delay={120} />
-            <div className="grid grid-cols-3 gap-3">
-              {[0, 1, 2].map(i => (
-                <div key={i} className="rounded-xl bg-secondary/50 p-3 space-y-2">
-                  <Skeleton className="h-7 w-12 mx-auto" delay={140 + i * 30} />
-                  <Skeleton className="h-2.5 w-16 mx-auto" delay={160 + i * 30} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Streak card */}
-          <DashboardCardSkeleton index={1} />
-
-          {/* XP & Level card */}
-          <DashboardCardSkeleton index={2} />
-
-          {/* Missions / Weekly Goals card — spans 2 cols */}
-          <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded-md" delay={200} />
-              <Skeleton className="h-4 w-32" delay={220} />
-            </div>
-            {[0, 1, 2].map(i => (
-              <div key={i} className="flex items-center gap-3 py-2">
-                <Skeleton circle className="h-8 w-8 shrink-0" delay={240 + i * 40} />
-                <div className="flex-1 space-y-1.5">
-                  <Skeleton className="h-3 w-3/4" delay={260 + i * 40} />
-                  <Skeleton className="h-2 w-full rounded-full" delay={280 + i * 40} />
-                </div>
-                <Skeleton className="h-7 w-16 rounded-md shrink-0" delay={300 + i * 40} />
-              </div>
-            ))}
-          </div>
-
-          {/* Tasks card */}
-          <DashboardCardSkeleton index={3} />
-
-        </div>
-      </motion.div>
-    );
+    return <DashboardSkeleton />;
   }
 
   return (
@@ -282,6 +398,7 @@ export default function Dashboard() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
       data-testid="dashboard"
+      className="pb-4"
     >
         {/* Founder Welcome Banner */}
         {founder && founderMeta && (
@@ -305,7 +422,24 @@ export default function Dashboard() {
         <PageHeader
           title={`Welcome back, ${user?.name?.split(' ')[0]}!`}
           subtitle="Here's your productivity overview"
-        />
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+            onClick={() => {
+              const slug = user?.username ?? user?.name?.toLowerCase().replace(/\s+/g, '-') ?? user?.id;
+              navigator.clipboard.writeText(`${window.location.origin}/u/${slug}`).then(() => {
+                toast.success('Profile link copied!', { description: `${window.location.origin}/u/${slug}` });
+              }).catch(() => {
+                toast.error('Could not copy link');
+              });
+            }}
+          >
+            <Share2 size={14} />
+            Share Profile
+          </Button>
+        </PageHeader>
 
         <AssignmentRadar tasks={tasks} />
 
@@ -340,7 +474,7 @@ export default function Dashboard() {
                     data-testid="completion-slider"
                   />
                 </div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
                   <div className="text-center p-3 bg-secondary rounded-xl">
                     <p className="text-2xl font-semibold">{stats?.total_tasks || 0}</p>
                     <p className="text-xs text-muted-foreground">Total Tasks</p>
@@ -364,23 +498,89 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="h-full border-border hover:shadow-medium transition-shadow bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30">
-              <CardContent className="pt-6 flex flex-col items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-2xl bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center mb-4">
-                  <Flame className="w-8 h-8 text-orange-500" />
-                </div>
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="text-4xl font-bold">{stats?.max_streak || 0}</p>
-                  {canRepair && (
-                    <Button size="sm" variant="outline" onClick={() => setRepairModalOpen(true)} className="text-xs border-orange-300 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/30 h-7 px-2">
-                      Repair streak
-                    </Button>
-                  )}
-                </div>
-                <p className="text-sm text-muted-foreground">Day Streak</p>
-                <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">Keep it going!</p>
-              </CardContent>
-            </Card>
+            {(() => {
+              const currentStreak = supabaseData?.streak?.current_streak ?? stats?.max_streak ?? 0;
+              const lastActive    = supabaseData?.streak?.last_activity_date ?? null;
+              const todayDate     = new Date().toISOString().split('T')[0];
+              const yesterday     = (() => { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; })();
+              const atRisk        = lastActive === yesterday && lastActive !== todayDate;
+              const activeDays    = supabaseData?.activeDays ?? [];
+
+              // Next milestone
+              let milestoneAt = null, milestoneLabel = '';
+              if (currentStreak < 7)  { milestoneAt = 7;  milestoneLabel = '+200 XP, +50 coins'; }
+              else if (currentStreak < 30) { milestoneAt = 30; milestoneLabel = '+1,000 XP, +200 coins'; }
+              const daysToMilestone = milestoneAt ? milestoneAt - currentStreak : 0;
+
+              return (
+                <Card className="h-full border-border hover:shadow-medium transition-shadow bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30">
+                  <CardContent className="pt-5 pb-4 flex flex-col gap-3 h-full">
+                    {/* Flame + count */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-xl bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center shrink-0">
+                        <Flame className="w-6 h-6 text-orange-500" />
+                      </div>
+                      <div>
+                        <p className="text-3xl font-bold leading-none">
+                          {currentStreak >= 7 ? `🏆 ${currentStreak}` : currentStreak}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {currentStreak === 1 ? '1-day streak' : `${currentStreak}-day streak`}
+                        </p>
+                      </div>
+                      {canRepair && (
+                        <Button size="sm" variant="outline" onClick={() => setRepairModalOpen(true)} className="ml-auto text-xs border-orange-300 text-orange-600 h-7 px-2">
+                          Repair
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* 7-day calendar row */}
+                    {activeDays.length > 0 && (
+                      <div className="flex items-center justify-between gap-1">
+                        {activeDays.map(({ date, active }) => {
+                          const dayLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'narrow' });
+                          const isToday  = date === todayDate;
+                          return (
+                            <div key={date} className="flex flex-col items-center gap-1">
+                              <span className="text-[9px] text-muted-foreground">{dayLabel}</span>
+                              <div className={`w-5 h-5 rounded-full border-2 transition-colors ${
+                                active
+                                  ? 'bg-orange-400 border-orange-400'
+                                  : isToday
+                                  ? 'border-orange-300 border-dashed'
+                                  : 'border-border'
+                              }`} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* At-risk warning */}
+                    {atRisk && (
+                      <div className="flex items-center gap-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5">
+                        <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <p className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                          At risk — study today!
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Next milestone */}
+                    {milestoneAt && (
+                      <p className="text-[11px] text-muted-foreground">
+                        {daysToMilestone} day{daysToMilestone !== 1 ? 's' : ''} to {milestoneAt}-day bonus ({milestoneLabel})
+                      </p>
+                    )}
+
+                    {!milestoneAt && (
+                      <p className="text-xs text-orange-600 dark:text-orange-400">Elite streak! 🔥 Keep it going!</p>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </motion.div>
 
           {/* XP & Level Card */}
@@ -394,23 +594,34 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 text-purple-500" />
-                    <span className="font-medium">Level {gamificationStats?.level || 1}</span>
+                    <span className="font-medium">Level {supabaseData?.profile?.level ?? gamificationStats?.level ?? 1}</span>
                   </div>
                   <div className="flex items-center gap-1 text-amber-500">
                     <Coins className="w-4 h-4" />
-                    <span className="font-bold">{gamificationStats?.coins || 0}</span>
+                    <span className="font-bold">{supabaseData?.profile?.coins ?? gamificationStats?.coins ?? 0}</span>
                   </div>
                 </div>
                 <div className="mb-2">
-                  <Progress value={gamificationStats?.level_progress || 0} className="h-2" />
+                  <div className="xp-bar-track" style={{ height: 8 }}>
+                    <div
+                      className="xp-bar-fill"
+                      data-rank={xpTier.rank}
+                      style={{ width: `${gamificationStats?.level_progress || 0}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="flex justify-between text-xs" style={{ color: "var(--text-muted)" }}>
                   <span>{gamificationStats?.xp_in_level || 0} XP</span>
                   <span>{gamificationStats?.xp_for_next_level || 100} XP</span>
                 </div>
-                <p className="text-center text-xs text-purple-600 dark:text-purple-400 mt-3">
-                  {gamificationStats?.xp || 0} Total XP
-                </p>
+                <div className="flex items-center justify-between mt-3">
+                  <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+                    {currentXp.toLocaleString()} Total XP
+                  </p>
+                  <span className={`badge-rank text-xs`} data-rank={xpTier.rank} style={{ width: "auto", height: "auto", padding: "2px 8px", borderRadius: "var(--radius-full)" }}>
+                    {xpTier.label}
+                  </span>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -573,41 +784,108 @@ export default function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {missions.filter(m => m.mission_type === "daily").slice(0, 4).map((mission) => (
-                  <div 
-                    key={mission.mission_id}
-                    className={`p-3 rounded-lg border ${mission.completed ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : 'bg-secondary/50 border-transparent'}`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-medium ${mission.completed ? 'text-green-700 dark:text-green-400' : ''}`}>
-                          {mission.title}
-                        </p>
-                        <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Star className="w-3 h-3 text-purple-500" /> {mission.xp_reward} XP
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Coins className="w-3 h-3 text-amber-500" /> {mission.coin_reward}
-                          </span>
+                {missionsLoadingState ? (
+                  <div className="rounded-xl border border-dashed border-border bg-secondary/40 px-4 py-6 text-center">
+                    <p className="font-medium text-foreground">Your daily missions are loading...</p>
+                  </div>
+                ) : displayedMissions.length === 0 ? (
+                  <div className="rounded-xl border border-dashed border-border bg-secondary/40 px-4 py-6 text-center">
+                    <p className="font-medium text-foreground">No missions today — check back tomorrow!</p>
+                  </div>
+                ) : supabaseData?.missions?.length > 0 ? (
+                  displayedMissions.map((mission) => {
+                    const progress = mission.progress ?? 0;
+                    const target = mission.target ?? 1;
+                    const pct = Math.min(100, Math.round((progress / target) * 100));
+                    return (
+                      <div
+                        key={mission.id}
+                        className="p-3 rounded-lg"
+                        style={{
+                          border: mission.completed ? "1px solid var(--rank-d)" : "1px solid var(--border)",
+                          background: mission.completed ? "rgba(34,197,94,0.08)" : "var(--surface-2)",
+                        }}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium" style={{ color: mission.completed ? "var(--rank-d)" : "var(--text-primary)" }}>
+                              {mission.title}
+                            </p>
+                            {mission.description && (
+                              <p className="text-xs mt-0.5 truncate" style={{ color: "var(--text-secondary)" }}>{mission.description}</p>
+                            )}
+                            <div className="mt-1.5 space-y-1">
+                              <div className="flex items-center justify-between text-xs" style={{ color: "var(--text-muted)" }}>
+                                <span>{progress} / {target}</span>
+                                <span className="flex items-center gap-2">
+                                  <span className="flex items-center gap-1">
+                                    <Star className="w-3 h-3" style={{ color: "var(--rank-b)" }} /> {mission.xp_reward} XP
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <Coins className="w-3 h-3" style={{ color: "var(--accent)" }} /> {mission.coins_reward}
+                                  </span>
+                                </span>
+                              </div>
+                              <div className="xp-bar-track" style={{ height: 6 }}>
+                                <div className="xp-bar-fill" data-rank={mission.completed ? "D" : "C"} style={{ width: `${pct}%` }} />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="ml-2 shrink-0">
+                            {mission.completed && !mission.claimed && (
+                              <Button
+                                size="sm"
+                                onClick={() => handleClaimSupabaseMission(mission)}
+                                className="bg-green-500 hover:bg-green-600 h-7 text-xs"
+                              >
+                                Claim
+                              </Button>
+                            )}
+                            {mission.claimed && (
+                              <Badge variant="secondary" className="tag-green">Claimed</Badge>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      {mission.completed && !mission.claimed && (
-                        <Button 
-                          size="sm" 
-                          onClick={() => handleClaimMission(mission.mission_id)}
-                          className="bg-green-500 hover:bg-green-600"
-                        >
-                          Claim
-                        </Button>
-                      )}
-                      {mission.claimed && (
-                        <Badge variant="secondary" className="tag-green">Claimed</Badge>
-                      )}
+                    );
+                  })
+                ) : (
+                  displayedMissions.map((mission) => (
+                    <div
+                      key={mission.mission_id}
+                      className={`p-3 rounded-lg border ${mission.completed ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : 'bg-secondary/50 border-transparent'}`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm font-medium ${mission.completed ? 'text-green-700 dark:text-green-400' : ''}`}>
+                            {mission.title}
+                          </p>
+                          <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Star className="w-3 h-3 text-purple-500" /> {mission.xp_reward} XP
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Coins className="w-3 h-3 text-amber-500" /> {mission.coin_reward}
+                            </span>
+                          </div>
+                        </div>
+                        {mission.completed && !mission.claimed && (
+                          <Button
+                            size="sm"
+                            onClick={() => handleClaimMission(mission.mission_id)}
+                            className="bg-green-500 hover:bg-green-600"
+                          >
+                            Claim
+                          </Button>
+                        )}
+                        {mission.claimed && (
+                          <Badge variant="secondary" className="tag-green">Claimed</Badge>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-                {missions.length === 0 && (
+                  ))
+                )}
+                {missions.length === 0 && !supabaseData?.missions?.length && (
                   <p className="text-sm text-muted-foreground text-center py-4">
                     Loading missions...
                   </p>
@@ -660,6 +938,48 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </motion.div>
+          {/* Today's Brief Opportunity */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.52 }}
+            className="md:col-span-2"
+          >
+            <Card className="h-full border-border bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-indigo-950/30 dark:to-sky-950/30">
+              <CardContent className="pt-5 pb-4">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-indigo-500" />
+                  </div>
+                  <Badge variant="secondary" className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-700 shrink-0">
+                    Daily
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium mb-0.5">
+                  Today's Track
+                </p>
+                <p className="text-base font-semibold text-indigo-700 dark:text-indigo-300 mb-1">
+                  {todayTrack}
+                </p>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Get an AI-generated project brief tailored to this week's theme.
+                </p>
+                <Button
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white gap-1.5"
+                  onClick={() => {
+                    toast.info("Tracks coming soon!", {
+                      description: "Project briefs are on the roadmap. Stay tuned!",
+                    });
+                  }}
+                >
+                  Generate My Brief
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+
           {/* Rewards Track Preview */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

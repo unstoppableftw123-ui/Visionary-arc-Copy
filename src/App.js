@@ -1,58 +1,74 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useState, useEffect, createContext, useContext, lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import axios from "axios";
-import apiService, { isUsingRealAPI, streaksAPI } from "./services/apiService";
+import apiService, { isUsingRealAPI } from "./services/apiService";
 import { supabase } from "./services/supabaseClient";
 import { getMockUserSync } from "./services/dataService";
 import { getDefaultThemeId, getTheme, applyTheme as doApplyTheme, themes as themeList } from "./lib/themes";
 import { getDefaultFontId, getFont, applyFont as doApplyFont } from "./lib/fonts";
+import { awardActivityXP, checkAndUpdateStreak, updateFriendStreaks } from "./services/xpService";
+import { autoJoinAdventurersGuild } from "./services/guildService";
+import { getProfile } from "./services/db";
+import XPToast, { showXPToast } from "./components/XPToast";
 
 if (!isUsingRealAPI()) {
   require("./services/mockAdapter");
 }
 
-// Pages
-import LandingPage from "./pages/LandingPage";
-import TeacherDashboard from "./pages/TeacherDashboard";
-import TeacherClasses from "./pages/teacher/Classes";
-import TeacherAssignments from "./pages/teacher/Assignments";
-import AssignmentCreator from "./pages/AssignmentCreator";
-import TeacherStudents from "./pages/teacher/Students";
-import StudentIntelligence from "./pages/teacher/StudentIntelligence";
-import TeacherGradebook from "./pages/teacher/Gradebook";
-import TeacherResources from "./pages/teacher/Resources";
-import TeacherAIToolsPage from "./pages/teacher/AIToolsPage";
-import StudentAIToolsPage from "./pages/student/AIToolsPage";
-import MyGrades from "./pages/MyGrades";
-import DMInbox from "./pages/DMInbox";
-import InvestorDashboard from "./pages/InvestorDashboard";
-import AuthPage from "./pages/AuthPage";
-import AuthCallback from "./pages/AuthCallback";
-import Dashboard from "./pages/Dashboard";
-import TasksPage from "./pages/TasksPage";
-import StudyHub from "./pages/StudyHub";
-import Library from "./pages/Library";
-import Community from "./pages/Community";
-import StudyRoomPage from "./components/StudyRoom/StudyRoomPage";
-import Shop from "./pages/Shop";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import Competitions from "./pages/Competitions";
-import SATACTPractice from "./pages/SATACTPractice";
-import PracticePage from "./pages/PracticePage";
-import ReferralPage from "./pages/ReferralPage";
-import Strengths from "./pages/Strengths";
-import NotesStudio from "./pages/NotesStudio";
-import NotesGraph from "./pages/NotesGraph";
-import Pricing from "./pages/Pricing";
-import Success from "./pages/Success";
-import RewardsTrack from "./components/RewardsTrack";
-import LevelUpOverlay from "./components/LevelUpOverlay";
-// Components
-import VisionaryChatbox from "./components/VisionaryChatbox";
-import Layout from "./components/Layout";
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
+const TeacherClasses = lazy(() => import("./pages/teacher/Classes"));
+const TeacherAssignments = lazy(() => import("./pages/teacher/Assignments"));
+const AssignmentCreator = lazy(() => import("./pages/AssignmentCreator"));
+const TeacherStudents = lazy(() => import("./pages/teacher/Students"));
+const StudentIntelligence = lazy(() => import("./pages/teacher/StudentIntelligence"));
+const TeacherGradebook = lazy(() => import("./pages/teacher/Gradebook"));
+const TeacherResources = lazy(() => import("./pages/teacher/Resources"));
+const TeacherAIToolsPage = lazy(() => import("./pages/teacher/AIToolsPage"));
+const StudentAIToolsPage = lazy(() => import("./pages/student/AIToolsPage"));
+const MyGrades = lazy(() => import("./pages/MyGrades"));
+const DMInbox = lazy(() => import("./pages/DMInbox"));
+const InvestorDashboard = lazy(() => import("./pages/InvestorDashboard"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const TasksPage = lazy(() => import("./pages/TasksPage"));
+const StudyHub = lazy(() => import("./pages/StudyHub"));
+const Library = lazy(() => import("./pages/Library"));
+const Community = lazy(() => import("./pages/Community"));
+const StudyRoomPage = lazy(() => import("./components/StudyRoom/StudyRoomPage"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Competitions = lazy(() => import("./pages/Competitions"));
+const SATACTPractice = lazy(() => import("./pages/SATACTPractice"));
+const PracticePage = lazy(() => import("./pages/PracticePage"));
+const ReferralPage = lazy(() => import("./pages/ReferralPage"));
+const ChallengesPage = lazy(() => import("./pages/ChallengesPage"));
+const Strengths = lazy(() => import("./pages/Strengths"));
+const NotesStudio = lazy(() => import("./pages/NotesStudio"));
+const NotesGraph = lazy(() => import("./pages/NotesGraph"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Success = lazy(() => import("./pages/Success"));
+const RewardsTrack = lazy(() => import("./components/RewardsTrack"));
+const LevelUpOverlay = lazy(() => import("./components/LevelUpOverlay"));
+const TrackHubPage = lazy(() => import("./pages/tracks/TrackHubPage"));
+const TrackDetailPage = lazy(() => import("./pages/tracks/TrackDetailPage"));
+const BriefGeneratorPage = lazy(() => import("./pages/tracks/BriefGeneratorPage"));
+const ProjectPage = lazy(() => import("./pages/projects/ProjectPage"));
+const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
+const FriendsPage = lazy(() => import("./pages/FriendsPage"));
+const MissionBoard = lazy(() => import("./pages/MissionBoard"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
+const VisionaryChatbox = lazy(() => import("./components/VisionaryChatbox"));
+const Layout = lazy(() => import("./components/Layout"));
+const GuildHall = lazy(() => import("./pages/GuildHall"));
+const CompanyDashboard = lazy(() => import("./pages/CompanyDashboard"));
+const PublicProfile = lazy(() => import("./pages/PublicProfile"));
+const Portfolio = lazy(() => import("./pages/Portfolio"));
 
 // ── Global axios interceptor: catch 429 rate-limit responses and show a toast ──
 axios.interceptors.response.use(
@@ -143,39 +159,30 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(() => isUsingRealAPI());
   const [token, setToken] = useState(() => localStorage.getItem("token"));
 
-  const handleDailyStreakLogin = async (loadedUser) => {
-    if (!loadedUser) return;
-    const today = new Date().toISOString().split('T')[0];
-    const lastStreakLogin = localStorage.getItem('last_streak_login');
-    if (lastStreakLogin === today) return;
-    // Mark done for today before async work to prevent double-fire on rapid re-renders
-    localStorage.setItem('last_streak_login', today);
+  const handleDailyLogin = async (loadedUser) => {
+    if (!loadedUser || !isUsingRealAPI()) return;
     try {
-      const streakData = await streaksAPI.getStreak();
-      // Toast if streak > 3 and not yet kept today
-      if (streakData.current_streak > 3 && streakData.last_activity_date !== today) {
-        toast.warning("Your streak resets tonight — complete any activity to keep it.", {
-          duration: 8000,
+      const xpResult = await awardActivityXP(loadedUser.id, 'login', null);
+      const streakResult = await checkAndUpdateStreak(loadedUser.id);
+      updateFriendStreaks(loadedUser.id).catch(() => {});
+      if (streakResult.milestone) {
+        const milestoneXP = streakResult.milestone === '30_day' ? 1000 : 200;
+        const milestoneCoins = streakResult.milestone === '30_day' ? 200 : 50;
+        showXPToast({ xp: milestoneXP, coins: milestoneCoins, levelUp: false, tier: '' });
+        toast.success(
+          streakResult.milestone === '30_day'
+            ? '🔥 30-day streak! +1000 XP +200 coins'
+            : '🔥 7-day streak! +200 XP +50 coins',
+          { duration: 5000 }
+        );
+      } else if (xpResult.awarded) {
+        showXPToast({
+          xp: xpResult.xpGained,
+          coins: xpResult.coinsGained,
+          levelUp: xpResult.levelUp,
+          tier: xpResult.newTier,
         });
       }
-      await streaksAPI.increment();
-    } catch (_) {}
-  };
-
-  const awardDailyLoginCoins = async (loadedUser, updater) => {
-    if (!loadedUser) return;
-    const today = new Date().toISOString().split('T')[0];
-    const lastLogin = localStorage.getItem('last_coin_login');
-    if (lastLogin === today) return;
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    const isStreak = lastLogin === yesterday;
-    localStorage.setItem('last_coin_login', today);
-    try {
-      let result = await apiService.coins.award(10, 'daily_login');
-      if (isStreak) {
-        result = await apiService.coins.award(5, 'streak_bonus');
-      }
-      updater(prev => ({ ...prev, coins: result.balance }));
     } catch (_) {}
   };
 
@@ -196,8 +203,7 @@ function AuthProvider({ children }) {
             setUser(userData);
             localStorage.setItem('auth_user', JSON.stringify(userData));
             localStorage.setItem('auth_token', session.access_token);
-            awardDailyLoginCoins(userData, setUser);
-            handleDailyStreakLogin(userData);
+            handleDailyLogin(userData);
           } else {
             setUser(null);
             setToken(null);
@@ -218,8 +224,6 @@ function AuthProvider({ children }) {
       // Mock mode: sync with localStorage in case it was updated
       apiService.auth.getCurrentUser().then(u => {
         setUser(u);
-        awardDailyLoginCoins(u, setUser);
-        handleDailyStreakLogin(u);
       }).catch(() => {});
     }
   }, [token]);
@@ -257,6 +261,7 @@ function AuthProvider({ children }) {
       founder_tier: 'seed',
     };
     await supabase.from('users').insert(newUser);
+    await autoJoinAdventurersGuild(data.user.id);
     return login(email, password);
   };
 
@@ -295,9 +300,11 @@ function AuthProvider({ children }) {
   const isStudent = user?.role === 'student';
   const isTeacher = user?.role === 'teacher';
   const isInvestor = user?.role === 'investor';
+  const isCompany = user?.role === 'company';
+  const isAdmin = user?.role === 'admin';
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, token, login, register, logout, processOAuthCode, isStudent, isTeacher, isInvestor, refreshCoins }}>
+    <AuthContext.Provider value={{ user, setUser, loading, token, login, register, logout, processOAuthCode, isStudent, isTeacher, isInvestor, isCompany, isAdmin, refreshCoins }}>
       {children}
     </AuthContext.Provider>
   );
@@ -317,8 +324,48 @@ function MockModeBanner() {
 function ProtectedRoute({ children }) {
   const { user, loading } = useContext(AuthContext);
   const location = useLocation();
+  const [checkingProfile, setCheckingProfile] = useState(true);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
-  if (loading) {
+  useEffect(() => {
+    let active = true;
+
+    const checkProfile = async () => {
+      if (!user) {
+        if (active) {
+          setCheckingProfile(false);
+          setNeedsOnboarding(false);
+        }
+        return;
+      }
+
+      if (!isUsingRealAPI()) {
+        if (active) {
+          setCheckingProfile(false);
+          setNeedsOnboarding(false);
+        }
+        return;
+      }
+
+      setCheckingProfile(true);
+      try {
+        const { data: profile } = await getProfile(user.id);
+        if (!active) return;
+        setNeedsOnboarding(!profile?.onboarded);
+      } catch (_) {
+        if (active) setNeedsOnboarding(true);
+      } finally {
+        if (active) setCheckingProfile(false);
+      }
+    };
+
+    checkProfile();
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
+  if (loading || (user && checkingProfile)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="animate-pulse text-muted-foreground">Loading...</div>
@@ -330,7 +377,56 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
+  if (needsOnboarding) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
   return children;
+}
+
+// Streak at-risk notification — fires after 8 PM if user hasn't studied today
+function StreakAtRiskEffect() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user?.id || !isUsingRealAPI()) return;
+
+    let shownToday = false;
+
+    const check = async () => {
+      if (shownToday) return;
+      const hour = new Date().getHours();
+      if (hour < 20) return; // before 8 PM
+
+      const today = new Date().toISOString().split('T')[0];
+      const { data } = await supabase
+        .from('streaks')
+        .select('current_streak, last_activity_date')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!data || (data.last_activity_date ?? '') >= today) return;
+      const streak = data.current_streak ?? 0;
+      if (streak === 0) return;
+
+      shownToday = true;
+      toast.warning(`🔥 Your ${streak}-day streak ends at midnight!`, {
+        description: 'Study something quick to keep it going.',
+        duration: Infinity,
+        action: {
+          label: 'Quick Study →',
+          onClick: () => navigate('/study'),
+        },
+      });
+    };
+
+    check();
+    const interval = setInterval(check, 60 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [user?.id, navigate]);
+
+  return null;
 }
 
 // App Router
@@ -343,17 +439,34 @@ function AppRouter() {
     return <AuthCallback />;
   }
 
-  const defaultRoute = user?.role === 'teacher' ? '/teacher' : user?.role === 'investor' ? '/investor' : '/dashboard';
+  const defaultRoute = '/dashboard';
 
   return (
-    <Routes>
+    <>
+      <StreakAtRiskEffect />
+      <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/auth" element={<AuthPage />} />
+      <Route path="/onboarding" element={<OnboardingPage />} />
       <Route path="/dashboard" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Dashboard />} />
       </Route>
       <Route path="/tasks" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<TasksPage />} />
+      </Route>
+      <Route path="/tracks" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<TrackHubPage />} />
+        <Route path=":trackId" element={<TrackDetailPage />} />
+        <Route path=":trackId/brief" element={<BriefGeneratorPage />} />
+      </Route>
+      <Route path="/projects/:projectId" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<ProjectPage />} />
+      </Route>
+      <Route path="/portfolio" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<PortfolioPage />} />
+      </Route>
+      <Route path="/portfolio/:userId" element={<Layout />}>
+        <Route index element={<PortfolioPage />} />
       </Route>
       <Route path="/study" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<StudyHub />} />
@@ -361,15 +474,19 @@ function AppRouter() {
       <Route path="/library" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Library />} />
       </Route>
-      <Route path="/community" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+      {/* PHASE 2 — re-enable when ready */}
+      {/* <Route path="/community" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Community />} />
       </Route>
-      <Route path="/community/room/:roomId" element={<ProtectedRoute><StudyRoomPage /></ProtectedRoute>} />
+      <Route path="/community/room/:roomId" element={<ProtectedRoute><StudyRoomPage /></ProtectedRoute>} /> */}
       <Route path="/shop" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Shop />} />
       </Route>
       <Route path="/competitions" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Competitions />} />
+      </Route>
+      <Route path="/challenges" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<ChallengesPage />} />
       </Route>
       <Route path="/referrals" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<ReferralPage />} />
@@ -380,9 +497,10 @@ function AppRouter() {
       <Route path="/practice-hub" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<PracticePage />} />
       </Route>
-      <Route path="/strengths" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+      {/* PHASE 2 — re-enable when ready */}
+      {/* <Route path="/strengths" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Strengths />} />
-      </Route>
+      </Route> */}
       <Route path="/notes-studio" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<NotesStudio />} />
       </Route>
@@ -396,7 +514,8 @@ function AppRouter() {
       <Route path="/settings" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Settings />} />
       </Route>
-      <Route path="/teacher" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+      {/* PHASE 2 — re-enable when ready */}
+      {/* <Route path="/teacher" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<TeacherDashboard />} />
         <Route path="classes" element={<TeacherClasses />} />
         <Route path="assignments" element={<TeacherAssignments />} />
@@ -407,13 +526,14 @@ function AppRouter() {
         <Route path="ai-generator" element={<TeacherAssignments autoOpenAI />} />
         <Route path="resources" element={<TeacherResources />} />
         <Route path="ai-tools" element={<TeacherAIToolsPage />} />
-      </Route>
+      </Route> */}
       <Route path="/student" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="ai-tools" element={<StudentAIToolsPage />} />
       </Route>
-      <Route path="/investor" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+      {/* PHASE 2 — re-enable when ready */}
+      {/* <Route path="/investor" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<InvestorDashboard />} />
-      </Route>
+      </Route> */}
       <Route path="/rewards" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<RewardsTrack />} />
       </Route>
@@ -424,10 +544,24 @@ function AppRouter() {
         <Route index element={<DMInbox />} />
         <Route path=":userId" element={<DMInbox />} />
       </Route>
+      <Route path="/friends" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<FriendsPage />} />
+      </Route>
+      <Route path="/missions" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<MissionBoard />} />
+      </Route>
+      <Route path="/analytics" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<Analytics />} />
+      </Route>
+      <Route path="/guild/:slug" element={<GuildHall />} />
+      <Route path="/company" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
+      <Route path="/u/:username" element={<PublicProfile />} />
+      <Route path="/u/:username/portfolio" element={<Portfolio />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/success" element={<Success />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 }
 
@@ -435,13 +569,16 @@ function App() {
   return (
     <ThemeProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>
-          <MockModeBanner />
-          <AppRouter />
-          <LevelUpOverlay />
-          <VisionaryChatbox />
-          <Toaster position="top-right" />
-        </AuthProvider>
+        <Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+          <AuthProvider>
+            <MockModeBanner />
+            <AppRouter />
+            <LevelUpOverlay />
+            <XPToast />
+            <VisionaryChatbox />
+            <Toaster position="top-right" />
+          </AuthProvider>
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

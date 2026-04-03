@@ -1,7 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { inject } from "@vercel/analytics";
 import "./index.css";
 import App from "./App";
+
+inject();
 
 // Error boundary so a crash shows the error instead of a blank white screen
 class RootErrorBoundary extends React.Component {

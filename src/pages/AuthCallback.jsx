@@ -2,6 +2,7 @@ import { useEffect, useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../App";
 import { supabase } from "../services/supabaseClient";
+import { getProfile } from "../services/db";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
@@ -18,6 +19,19 @@ const getRoleRoute = (role) => {
   if (role === 'teacher') return '/teacher';
   if (role === 'investor') return '/investor';
   return '/dashboard';
+};
+
+const resolvePostAuthRoute = async (user) => {
+  if (!user?.id) return getRoleRoute(user?.role);
+
+  try {
+    const { data: profile } = await getProfile(user.id);
+    if (!profile?.onboarded) return "/onboarding";
+  } catch (_) {
+    return "/onboarding";
+  }
+
+  return getRoleRoute(user?.role);
 };
 
 export default function AuthCallback() {
@@ -60,7 +74,7 @@ export default function AuthCallback() {
         localStorage.setItem('auth_user', JSON.stringify(existingUser));
         setUser(existingUser);
         toast.success('Welcome back!');
-        navigate(getRoleRoute(existingUser.role), { replace: true });
+        navigate(await resolvePostAuthRoute(existingUser), { replace: true });
       } else {
         // New user — need role selection before creating the row
         setPendingSession(session);
@@ -111,7 +125,7 @@ export default function AuthCallback() {
     localStorage.setItem('auth_user', JSON.stringify(userRow));
     setUser(userRow);
     toast.success('Account created! Welcome to Visionary Academy.');
-    navigate(getRoleRoute(selectedRole), { replace: true });
+    navigate(await resolvePostAuthRoute(userRow), { replace: true });
   };
 
   if (showRoleModal) {

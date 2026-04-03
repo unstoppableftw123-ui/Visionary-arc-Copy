@@ -1,410 +1,363 @@
-# CLAUDE.md — Visionary Academy (Visionary-Arc)
-
-## RULES FOR CLAUDE CODE
-- Read this file before touching ANY code. Do not scan files to discover things already documented here.
-- When editing a file, read ONLY the specific file needed. Do not glob-read the entire src/ tree.
-- Make surgical edits. Do not rewrite working components.
-- After each task, state exactly which files were changed and what was done.
-- Never install packages not listed here unless the task explicitly requires it.
-- If a task says "DONE — skip", skip it entirely.
+# CLAUDE.md — Visionary Arc
+# Student Career + Study App | Solo founder | React 18 CRA | Supabase | Low budget
+# Updated: March 2026
 
 ---
 
-## 1. PROJECT SNAPSHOT
+## 1. WHAT THIS APP IS (LOCKED)
 
-| Item | Value |
-|---|---|
-| App name | Visionary Academy |
-| Repo | tuplianchris-ux/Visionary-Arc |
-| Live URL | https://visionary-arc.vercel.app |
-| Framework | React 18 CRA (react-scripts 5) — NOT Next.js |
-| Language | JavaScript (no TypeScript) |
-| Router | react-router-dom v6 |
-| Styling | Tailwind CSS 3 + Shadcn/Radix UI pattern |
-| State | React Context only (no Redux/Zustand) |
-| Backend | NONE — all mocked via axios interceptor |
-| Database | NONE — localStorage only |
-| Auth | Mock only — no real server |
-| Payments | Stripe.js loaded, test key set, no webhook |
-| AI | Groq (direct browser fetch) for Study Hub only |
-| Real-time | Liveblocks (study rooms + whiteboard) |
+Visionary Arc is a **gamified student productivity and career platform for ages 13–19**.
+
+**One sentence:** "A gamified study + career app where students earn XP by studying
+AND building real-world projects — turning schoolwork into a portfolio that gets them discovered."
+
+**NOT:** a teacher tool, investor dashboard, Discord clone, or custom design/code editor.
+
+**Core daily loop:**
+Study tools (flashcards/quiz/notes) → Earn XP + Coins → Level up → Unlock project briefs
+→ Build in external tools → Submit link → Portfolio auto-generated → Status tier rises
+→ Companies discover top students
 
 ---
 
-## 2. EXACT FOLDER MAP
+## 2. TECH STACK
 
-```
-src/
-├── App.js                          Root router + AuthContext + ThemeContext + daily coin/streak
-├── index.js                        Entry point
-├── index.css                       Global styles
-├── liveblocks.config.js            Liveblocks client + room types
-│
-├── components/
-│   ├── Layout.jsx                  Sidebar + <Outlet> wrapper
-│   ├── Sidebar.jsx                 Left nav, user chip, theme toggle
-│   ├── PageHeader.jsx              Page title + breadcrumb
-│   ├── VisionaryChatbox.jsx        Floating bottom-right AI assistant
-│   ├── UpgradeBanner.jsx           Founder tier upsell banner
-│   ├── FounderBadge.jsx            Tier badge (seed/bronze/silver/gold)
-│   ├── Leaderboard.jsx             Global leaderboard (mock 50 users)
-│   ├── RewardsTrack.jsx            Level progress + milestone viz
-│   ├── TransactionLog.jsx          Coin transaction history
-│   ├── AssignmentRadar.jsx         Recharts RadarChart
-│   ├── ui/                         60+ Shadcn/Radix primitives
-│   ├── StudyRoom/                  Liveblocks study rooms
-│   │   ├── StudyRoomPage.jsx
-│   │   ├── StudyRoomList.jsx
-│   │   ├── RoomTopBar.jsx
-│   │   ├── ChatPanel.jsx
-│   │   ├── WhiteboardCanvas.jsx    Excalidraw + Liveblocks sync
-│   │   ├── LibraryDrawer.jsx
-│   │   ├── LibraryCard.jsx
-│   │   ├── useStudyRoom.js
-│   │   ├── useLiveCanvas.js
-│   │   └── mockLibraryData.js
-│   ├── study-hub/                  Main AI chat interface
-│   │   ├── ChatArea.jsx
-│   │   ├── ChatInputBar.jsx
-│   │   ├── UserMessage.jsx
-│   │   ├── AssistantMessage.jsx    Renders QuizView/FlashcardView/SummaryView/SlidesView
-│   │   ├── ModePopover.jsx         Mode: summarize/quiz/flashcards/notes/slides
-│   │   ├── StylePopover.jsx
-│   │   ├── QuizView.jsx
-│   │   ├── FlashcardView.jsx
-│   │   ├── SummaryView.jsx
-│   │   ├── SlidesView.jsx
-│   │   ├── AttachMenu.jsx
-│   │   ├── anthropicClient.js      REAL Groq API fetch (browser-side)
-│   │   ├── studyHubMock.js         Mock fallback responses
-│   │   └── mockChatHistory.js
-│   ├── ai-tools/
-│   │   ├── AIToolsPanel.jsx
-│   │   ├── ToolCard.jsx
-│   │   ├── ToolModal.jsx
-│   │   ├── ToolResult.jsx
-│   │   ├── FormComponents.jsx
-│   │   ├── hooks/
-│   │   │   ├── useAITool.js        Tries /api/ai/generate (fails) → mock fallback
-│   │   │   └── useXPReward.js
-│   │   ├── student/                8 student tool components
-│   │   └── teacher/                8 teacher tool components
-│   ├── competitions/
-│   │   ├── CompetitionsLobby.jsx
-│   │   ├── WaitingRoom.jsx
-│   │   ├── AccuracyDuelGame.jsx
-│   │   ├── KnowledgeBlitzGame.jsx
-│   │   ├── VocabJamGame.jsx
-│   │   ├── StatsBar.jsx
-│   │   ├── shared.jsx
-│   │   ├── gameAI.js
-│   │   └── useGameXP.js
-│   └── icons/
-│       └── PhosphorIcon.jsx
-│
-├── pages/
-│   ├── Dashboard.jsx               Student home (tasks, missions, stats, streaks, coins)
-│   ├── TasksPage.jsx
-│   ├── StudyHub.jsx                AI study interface
-│   ├── Library.jsx
-│   ├── Community.jsx               Discord-style (mock messages)
-│   ├── Shop.jsx                    Cosmetic shop (coin-gated, mock)
-│   ├── Competitions.jsx
-│   ├── Profile.jsx
-│   ├── Settings.jsx
-│   ├── AuthPage.jsx                Login/register + role select
-│   ├── AuthCallback.jsx            OAuth redirect handler
-│   ├── LandingPage.jsx
-│   ├── Pricing.jsx
-│   ├── NotesStudio.jsx             Tiptap + Excalidraw
-│   ├── NotesGraph.jsx              d3-force knowledge graph
-│   ├── SATACTPractice.jsx
-│   ├── PracticePage.jsx
-│   ├── ReferralPage.jsx
-│   ├── Strengths.jsx
-│   ├── Schools.jsx
-│   ├── Wishlists.jsx
-│   ├── Store.jsx                   Stripe checkout (UI only, no webhook)
-│   ├── CheckoutSuccess.jsx
-│   ├── Success.jsx
-│   ├── InvestorDashboard.jsx
-│   ├── student/
-│   │   └── AIToolsPage.jsx
-│   └── teacher/
-│       ├── Classes.jsx
-│       ├── Assignments.jsx
-│       ├── Students.jsx
-│       ├── StudentIntelligence.jsx
-│       ├── Gradebook.jsx
-│       ├── Resources.jsx
-│       └── AIToolsPage.jsx
-│
-├── services/
-│   ├── apiService.js               USE_REAL_API toggle (currently false)
-│   ├── dataService.js              localStorage-backed mock store
-│   └── mockAdapter.js              axios interceptor — catches all /api/* calls
-│
-├── data/
-│   ├── mockLeaderboardData.js      50 hardcoded users
-│   ├── mockPracticeData.js         ~1000 SAT/ACT questions
-│   ├── rewardsProgram.js           Level 1-50 milestone definitions
-│   ├── mockTeacherData.js
-│   ├── mockAssignments.js
-│   ├── mockNotes.js
-│   ├── mockGraphNotes.js
-│   └── mockStudentIntelligence.js
-│
-├── lib/
-│   ├── themes.js                   6 theme definitions
-│   ├── fonts.js                    Font family options
-│   ├── founder.js                  Tier logic + feature flags + coin multipliers
-│   ├── animations.js               Framer Motion variants
-│   ├── validation.js               Zod schemas (loginSchema, registerSchema)
-│   └── utils.js                    cn() helper
-│
-├── hooks/
-│   ├── useApi.js
-│   └── use-toast.js
-│
-├── utils/
-│   ├── dashboardAnalytics.js
-│   ├── notesGraphData.js
-│   └── generateClassCode.js
-│
-└── templates/
-    └── noteTemplates.js
-```
+- **Frontend:** React 18 CRA, Tailwind, shadcn/radix, Framer Motion
+- **Backend:** Supabase (auth + DB + storage + edge functions)
+- **AI:** OpenRouter (primary — cheaper) + Groq (interactive/fast features only)
+- **Payments:** Stripe (Founder Pass one-time)
+- **Rewards:** Tremendous API (gift cards, zero platform fees)
+- **Hosting:** Vercel Pro ($20/month)
+- **Canvas:** Excalidraw (npm — already installed, embed only)
+- **Notes:** Tiptap (already installed, embed only)
+- **Offline:** Dexie.js (already installed — IndexedDB for flashcards)
+
+**AI model routing:**
+| Task | Model | Provider | Approx cost/1K calls |
+|---|---|---|---|
+| Flashcards, quiz, summary | Llama 3.1 8B | OpenRouter | $0.07 |
+| Notes, slides, AI tools | Llama 3.3 70B | OpenRouter | $0.42 |
+| Project briefs | Claude Haiku 4.5 | OpenRouter | $1.25 |
+| AI tutor (interactive) | Llama 3.3 70B | Groq | $0.79 (fast) |
 
 ---
 
-## 3. AUTH CONTEXT (App.js)
+## 3. WHAT'S BUILT VS WHAT'S NEEDED
 
-AuthContext provides: `user, setUser, loading, token, login(), register(), logout(), isStudent, isTeacher, isInvestor`
+### BUILT AND WORKING (just need API keys + Supabase tables):
+- Supabase auth wired in App.js (signIn, signUp, getSession)
+- supabaseClient.js singleton
+- aiRouter.js (triple-tier routing, coin deduction, usage logging)
+- useAITool.js wired to aiRouter
+- anthropicClient.js (Study Hub) wired to aiRouter
+- Study Hub (flashcards/quiz/summary/notes/slides)
+- Notes Studio (Tiptap)
+- Notes Knowledge Graph (d3)
+- Whiteboard (Excalidraw)
+- SAT/ACT Practice (mock data — keep as-is)
+- Shop UI (connect to real coin balance)
+- Competitions (3 game modes — rename to Challenges)
+- Dashboard (connect XP/coins/streaks to real DB)
+- Leaderboard (connect to real Supabase profiles)
+- Referral page (connect referralService.js)
+- Pricing page (connect Stripe payment links)
+- Profile page (extend with portfolio section)
+- Settings page (connect real user data)
+- Services: coinService, missionService, referralService, flashcardService
 
-Token: `localStorage['auth_token']`
-User: `localStorage['auth_user']`
-Daily coins: fires on `[user]` change — checks `localStorage['last_login_date']`, awards 10 coins + streak bonus if new day.
-Role redirect on login: teacher → `/teacher`, investor → `/investor`, else `/dashboard`
+### MUST BUILD (the actual Visionary Arc product):
+1. Track Hub pages (5 career tracks)
+2. AI Brief Generator (personalized project briefs per track+difficulty)
+3. Project submission flow (paste link → XP → portfolio card)
+4. Auto-portfolio page (public profile with project cards)
+5. Status tier system (XP thresholds + feature gates)
+6. Sponsored challenges board (company-posted challenges)
+7. Friend system (follow, friend streaks, friend leaderboard)
+8. Onboarding (3-step first-run experience)
+9. Landing page rebuild (career accelerator angle)
+10. Supabase SQL tables (ALL 12 tables)
 
----
-
-## 4. MOCK SYSTEM
-
-**Toggle:** `const USE_REAL_API = false` in `src/services/apiService.js` line 1.
-
-**How it works:** `mockAdapter.js` registers `axios.interceptors.request.use()`. Every `/api/*` call is intercepted and resolved with mock data. Real network never called.
-
-**Persistent mock state:**
-- Coin balance: `localStorage['mock_coins']`
-- Streak: `localStorage['mock_streak']`
-
-**To enable real API:** Set `USE_REAL_API = true` in apiService.js AND provide a real backend at `REACT_APP_BACKEND_URL`.
-
----
-
-## 5. REAL CONNECTIONS (Already Working)
-
-| Service | File | Status |
-|---|---|---|
-| Groq AI (Llama 3.3 70B) | `src/components/study-hub/anthropicClient.js` | REAL — direct browser fetch |
-| Liveblocks (study rooms) | `src/liveblocks.config.js` | REAL — needs valid key |
-| Stripe.js | `src/pages/Store.jsx` | LOADED — test key, no webhook |
-
-**Groq call pattern:**
-```js
-fetch('https://api.groq.com/openai/v1/chat/completions', {
-  method: 'POST',
-  headers: { Authorization: `Bearer ${process.env.REACT_APP_GROQ_API_KEY}` },
-  body: JSON.stringify({ model: 'meta-llama/llama-3.3-70b-instruct:free', messages })
-})
-```
-
----
-
-## 6. ENV VARIABLES
-
-```
-REACT_APP_BACKEND_URL=http://localhost:8000     (no server running)
-REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...    (test key, set)
-REACT_APP_LIVEBLOCKS_PUBLIC_KEY=pk_dev_...      (set)
-REACT_APP_GROQ_API_KEY=gsk_...                  (set, working)
-REACT_APP_ENABLE_VISUAL_EDITS=false
-DISABLE_HOT_RELOAD=true
-GENERATE_SOURCEMAP=false
-SKIP_PREFLIGHT_CHECK=true
-```
-
-**Missing (not set):**
-- `REACT_APP_SUPABASE_URL`
-- `REACT_APP_SUPABASE_ANON_KEY`
-- `REACT_APP_GOOGLE_CLIENT_ID`
+### REMOVE FROM ROUTER (hide, keep files):
+- /teacher/* — all teacher routes
+- /investor — investor dashboard
+- /community — replace with simple activity feed in Phase 2
+- /wishlists — Phase 2
+- /schools — absorb into onboarding (text field only)
 
 ---
 
-## 7. KEY DATA SHAPES
-
-### User object (in AuthContext + localStorage)
-```js
-{
-  id: string,           // uuid
-  email: string,
-  name: string,
-  role: 'student' | 'teacher' | 'investor',
-  avatar: string,
-  school: string,
-  grade: number,
-  xp: number,
-  level: number,
-  coins: number,
-  streak: number,
-  max_streak: number,
-  last_activity_date: string, // ISO date
-  is_premium: boolean,
-  founder_tier: 'seed' | 'bronze' | 'silver' | 'gold' | null
-}
-```
-
-### Coin transaction
-```js
-{ id, user_id, amount, reason, balance_after, created_at }
-```
-
-### Mission
-```js
-{ id, type: 'daily'|'weekly', title, description, xp_reward, coins_reward, progress, target, completed, claimed }
-```
-
----
-
-## 8. ROUTES (All in App.js)
-
-Public: `/`, `/auth`, `/pricing`, `/auth/callback`
-
-Protected (wrapped in Layout): `/dashboard`, `/tasks`, `/study`, `/library`, `/community`, `/shop`, `/competitions`, `/referrals`, `/practice`, `/practice-hub`, `/strengths`, `/notes-studio`, `/graph`, `/profile`, `/profile/:userId`, `/settings`, `/rewards`, `/schools`, `/wishlists`, `/store`, `/investor`, `/teacher`, `/teacher/classes`, `/teacher/assignments`, `/teacher/assignments/create`, `/teacher/students`, `/teacher/students/intelligence`, `/teacher/gradebook`, `/teacher/resources`, `/teacher/ai-tools`, `/student/ai-tools`
-
-Special (no Layout): `/community/room/:roomId`
-
----
-
-## 9. WHAT IS BUILT vs MISSING
-
-### ✅ FULLY BUILT (do not rewrite)
-- All page routes and navigation
-- All UI components (Layout, Sidebar, Dashboard, StudyHub, Notes, Shop, etc.)
-- Study Hub AI chat with QuizView, FlashcardView, SummaryView, SlidesView
-- Floating VisionaryChatbox
-- All teacher pages (Classes, Assignments, Gradebook, Students, Intelligence, Resources)
-- All gamification UI (XP display, coins, streaks, leaderboard, missions, rewards track)
-- Competitions (3 game modes, mock AI opponent)
-- SAT/ACT practice (mock questions)
-- Liveblocks study rooms + Excalidraw whiteboard
-- Auth flow (mock), role selection, protected routes
-- Founder tier system (founder.js), FounderBadge, UpgradeBanner
-- Theme system (6 themes), font switching, Settings page
-- Stripe.js loading, Store page UI, CheckoutSuccess page
-
-### ❌ MISSING / BROKEN (these are the tasks)
-- Supabase database + real auth (everything is localStorage)
-- Real backend API server (no server.js exists)
-- `/api/ai/generate` endpoint (returns 404, all AI tools use mock)
-- Stripe webhook (payments complete but nothing happens)
-- Coins ↔ AI usage connection (coins never deducted on real AI calls)
-- File upload / Supabase Storage
-- Google OAuth (AuthCallback exists but no provider configured)
-- Real leaderboard (50 hardcoded users)
-- Mission auto-reset cron
-- Tango Card gift card redemption
-- Push notifications
-
----
-
-## 10. INSTALLED PACKAGES (do not re-install these)
-
-axios, react-router-dom, framer-motion, tailwindcss, @radix-ui/* (21 pkgs), shadcn pattern, lucide-react, phosphor-react, recharts, react-force-graph-2d, d3-force, @tiptap/react + extensions, @excalidraw/excalidraw, @liveblocks/client + react + yjs, yjs, @stripe/stripe-js, @dnd-kit/core + sortable + utilities, react-hook-form, @hookform/resolvers, zod, date-fns, embla-carousel-react, react-markdown, remark-gfm, react-resizable-panels, sonner, vaul, cmdk, input-otp, next-themes, socket.io-client, class-variance-authority, clsx, tailwind-merge, tailwindcss-animate
-
-**Not installed yet (needed for upcoming tasks):**
-- `@supabase/supabase-js` — for database + auth
-- `dexie` — IndexedDB offline storage
-- `pptxgenjs` — PPTX export
-- `docx` — DOCX export
-- `jspdf` — PDF export
-
----
-
-## 11. SUPABASE SCHEMA (to be created — not yet in DB)
+## 4. DATABASE TABLES (paste in Supabase SQL Editor)
 
 ```sql
--- Users (mirrors existing user shape)
-users: id uuid, email, name, role, avatar, school, grade, xp, level, coins, streak, max_streak, last_activity_date, is_premium, founder_tier, created_at
+-- Enable UUID extension
+create extension if not exists "uuid-ossp";
 
--- Coins
-coins_transactions: id uuid, user_id, amount, reason, balance_after, created_at
+-- profiles (extends auth.users)
+create table profiles (
+  id uuid references auth.users(id) primary key,
+  email text, name text, avatar text,
+  school text, grade integer,
+  xp integer default 0, level integer default 1,
+  coins integer default 100,
+  streak integer default 0, max_streak integer default 0,
+  last_activity_date date,
+  founder_tier text check (founder_tier in ('seed','bronze','silver','gold')),
+  is_premium boolean default false,
+  onboarded boolean default false,
+  track_primary text,
+  created_at timestamptz default now()
+);
+alter table profiles enable row level security;
+create policy "own profile" on profiles for all using (auth.uid() = id);
 
--- XP
-xp_events: id uuid, user_id, amount, reason, created_at
+-- streaks
+create table streaks (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  current_streak integer default 0,
+  max_streak integer default 0,
+  last_activity_date date,
+  freeze_count integer default 0,
+  created_at timestamptz default now()
+);
+alter table streaks enable row level security;
+create policy "own streaks" on streaks for all using (auth.uid() = user_id);
 
--- Streaks
-streaks: user_id, current_streak, max_streak, last_activity_date
+-- study_sessions (XP activity log)
+create table study_sessions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  activity_type text, -- 'flashcards','quiz','summary','notes','whiteboard','practice'
+  subject text,
+  xp_earned integer default 0,
+  coins_earned integer default 0,
+  duration_seconds integer,
+  created_at timestamptz default now()
+);
+alter table study_sessions enable row level security;
+create policy "own sessions" on study_sessions for all using (auth.uid() = user_id);
 
--- Missions
-missions: id, user_id, type, title, description, xp_reward, coins_reward, progress, target, completed, claimed, reset_at
+-- missions (daily missions)
+create table missions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  type text, -- 'daily','weekly'
+  title text, description text,
+  xp_reward integer, coins_reward integer,
+  progress integer default 0, target integer,
+  completed boolean default false,
+  claimed boolean default false,
+  date date default current_date,
+  created_at timestamptz default now()
+);
+alter table missions enable row level security;
+create policy "own missions" on missions for all using (auth.uid() = user_id);
 
--- Classes
-classes: id, teacher_id, name, subject, grade_level, join_code, created_at
-class_members: class_id, student_id, joined_at
+-- transactions (coin ledger, append-only)
+create table transactions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  amount integer, -- positive = credit, negative = debit
+  reason text,
+  balance_after integer,
+  created_at timestamptz default now()
+);
+alter table transactions enable row level security;
+create policy "own transactions" on transactions for all using (auth.uid() = user_id);
 
--- Assignments
-assignments: id, class_id, teacher_id, title, description, due_date, created_at
-submissions: id, assignment_id, student_id, content, grade, feedback, submitted_at
+-- projects (brief + submission)
+create table projects (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  track text, difficulty text,
+  title text, role text, client_name text,
+  brief_json jsonb, -- full brief object from AI
+  status text default 'active' check (status in ('active','submitted','completed','abandoned')),
+  submission_url text,
+  submission_notes text,
+  xp_awarded integer default 0,
+  coins_awarded integer default 0,
+  submitted_at timestamptz,
+  completed_at timestamptz,
+  created_at timestamptz default now()
+);
+alter table projects enable row level security;
+create policy "own projects" on projects for all using (auth.uid() = user_id);
 
--- Flashcard Sets
-flashcard_sets: id, user_id, title, subject, created_at
-flashcards: id, set_id, front, back, difficulty
+-- portfolio_entries (public)
+create table portfolio_entries (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  project_id uuid references projects(id),
+  track text, title text, role text,
+  description text, skills text[],
+  submission_url text,
+  is_public boolean default true,
+  created_at timestamptz default now()
+);
+alter table portfolio_entries enable row level security;
+create policy "read public" on portfolio_entries for select using (is_public = true);
+create policy "own entries" on portfolio_entries for all using (auth.uid() = user_id);
 
--- AI Usage
-ai_usage_log: id, user_id, model, tokens_used, coins_deducted, feature, created_at
+-- challenges (company-sponsored)
+create table challenges (
+  id uuid primary key default uuid_generate_v4(),
+  sponsor_name text, sponsor_logo_url text,
+  title text, description text, track text,
+  reward_type text, reward_value text,
+  max_slots integer, current_slots integer default 0,
+  required_tier text default 'Beginner',
+  status text default 'open',
+  deadline timestamptz,
+  created_at timestamptz default now()
+);
+alter table challenges enable row level security;
+create policy "read all challenges" on challenges for select using (status = 'open');
 
--- Leaderboard (view or materialized)
-leaderboard: user_id, name, avatar, school, xp, level, streak, founder_tier, weekly_xp
+-- referrals
+create table referrals (
+  id uuid primary key default uuid_generate_v4(),
+  referrer_id uuid references profiles(id),
+  referred_id uuid references profiles(id),
+  status text default 'pending', -- 'pending','signed_up','streak_7','upgraded'
+  coins_awarded integer default 0,
+  created_at timestamptz default now()
+);
+alter table referrals enable row level security;
+create policy "own referrals" on referrals for all using (auth.uid() = referrer_id);
+
+-- friends
+create table friends (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  friend_id uuid references profiles(id),
+  status text default 'pending', -- 'pending','accepted'
+  friend_streak integer default 0,
+  last_both_active date,
+  created_at timestamptz default now()
+);
+alter table friends enable row level security;
+create policy "own friends" on friends for all using (auth.uid() = user_id or auth.uid() = friend_id);
+
+-- ai_usage_log (cost tracking)
+create table ai_usage_log (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id),
+  feature text, model text,
+  tokens_used integer, coins_deducted integer,
+  created_at timestamptz default now()
+);
+alter table ai_usage_log enable row level security;
+create policy "own usage" on ai_usage_log for all using (auth.uid() = user_id);
+
+-- leaderboard materialized view (refresh hourly)
+create materialized view leaderboard_weekly as
+select id, name, avatar, school, xp, level, streak,
+  rank() over (order by xp desc) as rank
+from profiles
+order by xp desc limit 100;
+
+-- Indexes for performance
+create index on study_sessions(user_id, created_at);
+create index on transactions(user_id, created_at);
+create index on missions(user_id, date);
+create index on projects(user_id, status);
+create index on portfolio_entries(user_id, is_public);
 ```
 
 ---
 
-## 12. AI ROUTING LOGIC (to be implemented)
+## 5. XP EARNING TABLE
 
-Route by task complexity. Add this to a new file `src/services/aiRouter.js`:
-
-```
-Tier 1 — FAST (1 coin): simple tasks (grammar, short summaries, single flashcard)
-  → model: 'meta-llama/llama-3.3-70b-instruct:free' via Groq
-
-Tier 2 — STANDARD (3 coins): lesson plans, essay feedback, quiz generation, document drafting
-  → model: 'anthropic/claude-sonnet-4-5' via OpenRouter
-
-Tier 3 — POWER (8 coins): slides, visual tasks, screenshot-to-code, deep research
-  → model: 'moonshotai/kimi-k2.5' via OpenRouter
-
-All calls go through: POST /api/ai/generate (backend route)
-Backend logs to ai_usage_log, deducts coins, returns result.
-```
+| Action | XP | Coin | Daily limit |
+|---|---|---|---|
+| Daily login | +5 | +2 | 1/day |
+| Flashcard session (10+ cards) | +15 | +5 | 1/subject/day |
+| Quiz (5+ questions) | +20 | +8 | 1/subject/day |
+| Summary/notes saved | +10 | +3 | 1/day |
+| Whiteboard saved | +10 | +3 | 1/day |
+| Vocab drill (20 words) | +15 | +5 | 1/day |
+| Daily mission completed | +25–75 | +10–25 | 3/day |
+| SAT/ACT session | +30 | +10 | 1/day |
+| 7-day streak bonus | +200 | +50 | Once at 7 days |
+| 30-day streak bonus | +1,000 | +200 | Once at 30 days |
+| Generate project brief | +50 | +5 | 1/track/week |
+| Submit completed project (Starter) | +200 | +50 | Per project |
+| Submit completed project (Standard) | +400 | +100 | Per project |
+| Submit completed project (Advanced) | +700 | +175 | Per project |
+| Submit completed project (Expert) | +1,000 | +250 | Per project |
+| Refer friend (signs up) | +300 | +100 | Per referral |
+| Refer friend (hits 7-day streak) | +100 | +50 | Per referral |
+| Refer friend (upgrades to paid) | +500 | +250 | Per referral |
+| Friend both active (friend streak day) | +20 | +10 | Per active friend |
+| Portfolio entry published | +25 | +5 | Per project |
 
 ---
 
-## 13. COIN DEDUCTION RULES
+## 6. STATUS TIER THRESHOLDS
+
+| Tier | XP | Unlocks |
+|---|---|---|
+| Beginner | 0 | Study tools, Starter briefs (1/week) |
+| Builder | 500 | Standard briefs, public profile visible |
+| Creator | 2,000 | Advanced briefs, challenge board access |
+| Pro | 6,000 | Exclusive cohorts, apply to company challenges |
+| Elite | 15,000 | Featured on discovery, direct company opportunities |
+
+---
+
+## 7. AI PROMPT RULES (save credits)
+
+System prompts MUST be under 150 tokens. Always request JSON output.
+
+**Flashcards:**
+System: `Generate {n} flashcards as JSON array [{front, back}]. JSON only, no markdown.`
+
+**Quiz:**
+System: `Generate {n} MCQ questions as JSON [{question, options:["a","b","c","d"], answer:"a", explanation:""}]. JSON only.`
+
+**Summary:**
+System: `Summarize as {style} style. Use markdown headers and bullets. Max {length}.`
+
+**Project brief:**
+System: `You are a senior project director. Return ONLY JSON: {"title":"","role":"","client":"","clientNeed":"","briefSummary":"","deliverables":[],"skills":[],"timeline":"","difficulty":""}`
+User: `Track: {track}. Difficulty: {difficulty}. Grade: {grade}. School: {school}.`
+Model: Claude Haiku 4.5 via OpenRouter (quality required here)
+
+**Cache everything:** 24h for briefs, per-content-hash for flashcards/quizzes.
+
+---
+
+## 8. ENVIRONMENT VARIABLES NEEDED
 
 ```
-Free tier (seed): 50 coins/day, resets midnight UTC
-Bronze: 500 coins/month
-Silver: 1500 coins/month
-Gold: 10000 coins/month (effectively unlimited)
-
-Cost per action:
-- Fast AI call: 1 coin
-- Standard AI call: 3 coins
-- Power AI call: 8 coins
-- Slide generation: 15 coins
-- Meeting transcription: 20 coins
-- Study Jam win bonus: +25 coins earned
-- Daily quest complete: +10 coins earned
-- Referral: +50 coins earned
+REACT_APP_SUPABASE_URL=                    # supabase.com → project → settings → API
+REACT_APP_SUPABASE_ANON_KEY=               # same place
+REACT_APP_OPENROUTER_API_KEY=              # openrouter.ai/keys
+REACT_APP_GROQ_API_KEY=                    # console.groq.com (for fast interactive)
+REACT_APP_STRIPE_PUBLISHABLE_KEY=          # stripe.com (already set)
+REACT_APP_USE_MOCK=false                   # switch to true locally if needed
 ```
+
+After adding keys: NEVER commit to GitHub. Keys go in .env.local only.
+After building Supabase Edge Functions: move ALL AI calls server-side.
+
+---
+
+## 9. CODING RULES FOR CURSOR
+
+- Read the ENTIRE file before editing any part of it
+- Keep USE_REAL_API toggle working — mock always stays as fallback
+- Add loading skeleton to every component that fetches data
+- Use existing shadcn/radix components — no new UI libraries
+- Use Framer Motion for animations — it's already installed
+- After EVERY change, verify the app compiles without errors
+- Commit after every successful Cursor session: git add . && git commit -m "what I built" && git push
+
+NEVER:
+- Set USE_REAL_API=true before Supabase tables are confirmed to exist
+- Add new npm packages without checking existing packages first
+- Make direct API calls from page components — always use aiRouter.js
+- Hardcode user data — always pull from AuthContext
+- Build teacher/investor pages
+- Expose API keys in browser code (after backend is ready)

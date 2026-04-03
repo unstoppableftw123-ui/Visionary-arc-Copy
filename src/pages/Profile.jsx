@@ -35,12 +35,15 @@ import {
   Eye,
   EyeOff,
   ShieldCheck,
-  Lock
+  Lock,
+  Briefcase,
+  ExternalLink,
 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
 import { Switch } from "../components/ui/switch";
 import dataService from "../services/dataService";
 import TransactionLog from "../components/TransactionLog";
+import { getPortfolio } from "../services/db";
 
 // Map task template category to note template preview (for thumbnail fallback)
 const CATEGORY_PREVIEW_MAP = {
@@ -99,6 +102,7 @@ export default function Profile() {
   const [profileErrors, setProfileErrors] = useState({});
   const [behavioralProfile, setBehavioralProfile] = useState(null);
   const [scorePublic, setScorePublic] = useState(true);
+  const [portfolioEntries, setPortfolioEntries] = useState([]);
 
   const headers = useMemo(() => (token ? { Authorization: `Bearer ${token}` } : {}), [token]);
   const isOwnProfile = !userId || userId === currentUser?.user_id;
@@ -135,6 +139,9 @@ export default function Profile() {
     } catch {
       setScorePublic(isOwnProfile);
     }
+    getPortfolio(effectiveUserId).then(({ data }) => {
+      if (data) setPortfolioEntries(data.slice(0, 3));
+    }).catch(() => {});
   }, [effectiveUserId, isOwnProfile]);
 
   const setScorePublicAndPersist = (value) => {
@@ -384,6 +391,15 @@ export default function Profile() {
                     <span className="text-sm font-medium">{profile?.coins ?? 0} coins</span>
                   </div>
                 </div>
+
+                {/* View Portfolio button */}
+                <div className="mt-4">
+                  <Link to="/portfolio">
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <Briefcase className="w-4 h-4" /> View Portfolio
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -434,6 +450,61 @@ export default function Profile() {
             </div>
           </motion.div>
         </div>
+
+        {/* Portfolio preview */}
+        {portfolioEntries.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.17 }}
+            className="mt-6"
+          >
+            <Card className="border-border overflow-hidden">
+              <CardContent className="p-4 md:p-6">
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <div>
+                    <h2 className="font-heading text-lg font-semibold">Portfolio</h2>
+                    <p className="text-sm text-muted-foreground">Recent completed projects</p>
+                  </div>
+                  <Link to="/portfolio">
+                    <Button variant="ghost" size="sm" className="gap-1 text-xs">
+                      View all <ArrowRight className="w-3 h-3" />
+                    </Button>
+                  </Link>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {portfolioEntries.map((entry, i) => (
+                    <motion.div
+                      key={entry.id ?? i}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 * i }}
+                    >
+                      <div className="rounded-xl border border-border bg-muted/30 p-3 h-full">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                          {entry.role}
+                        </p>
+                        <h3 className="text-sm font-semibold text-foreground line-clamp-2 mb-2">
+                          {entry.title}
+                        </h3>
+                        {entry.submission_url && (
+                          <a
+                            href={entry.submission_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-primary hover:opacity-80 transition-opacity"
+                          >
+                            View project <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {profile?.role === "student" && (
           <motion.div

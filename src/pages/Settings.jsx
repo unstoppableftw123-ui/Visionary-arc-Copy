@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo } from "react";
+import { useContext, useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
@@ -32,32 +32,19 @@ import {
   Type,
   RotateCcw,
   Zap,
-  CreditCard,
   Coins,
   ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 import AIToolsPanel from "../components/ai-tools/AIToolsPanel";
-
-const PLAN_LIMITS = {
-  free:    { daily: 6,  weekly: 30  },
-  teacher: { daily: 20, weekly: 100 },
-  investor:{ daily: 10, weekly: 50  },
-  pro:     { daily: 25, weekly: 150 },
-  founder: { daily: 60, weekly: 400 },
-};
+import { getUsageToday, getLimits } from "../services/usageService";
 
 const PLAN_TABLE = [
-  { label: "Free",    daily: 6,  weekly: 30  },
-  { label: "Pro",     daily: 25, weekly: 150 },
-  { label: "Founder", daily: 60, weekly: 400 },
+  { label: "Free",        flashcards: "10/day", quiz: "5/day",  summary: "5/day"  },
+  { label: "Seed/Bronze", flashcards: "30/day", quiz: "15/day", summary: "15/day" },
+  { label: "Silver",      flashcards: "60/day", quiz: "30/day", summary: "30/day" },
+  { label: "Gold",        flashcards: "100/day",quiz: "50/day", summary: "50/day" },
 ];
 
-const CREDIT_PACKS = [
-  { id: "starter",  label: "Starter",  calls: 20,  price: 0.99, popular: true  },
-  { id: "standard", label: "Standard", calls: 60,  price: 2.49, popular: false },
-  { id: "power",    label: "Power",    calls: 150, price: 4.99, popular: false },
-];
 
 function usageBarColor(pct) {
   if (pct > 80) return "bg-red-500";
@@ -107,21 +94,17 @@ export default function Settings() {
 
   // AI Usage state
   const [showPlanLimits, setShowPlanLimits] = useState(false);
-  const [extraUsageEnabled, setExtraUsageEnabled] = useState(false);
   const [aiToolsExpanded, setAiToolsExpanded] = useState(false);
-  const [coinPacks, setCoinPacks] = useState(1);
-  const [selectedCreditPack, setSelectedCreditPack] = useState("starter");
+  const [aiUsage, setAiUsage] = useState({ flashcards: 0, quiz: 0, summary: 0, brief: 0 });
 
-  const planKey = founder ? "founder" : user?.is_premium ? "pro" : user?.role === "teacher" ? "teacher" : user?.role === "investor" ? "investor" : "free";
-  const limits = PLAN_LIMITS[planKey] ?? PLAN_LIMITS.free;
-  const mockUsage = {
-    daily:  { used: 4,  limit: limits.daily,  resetsIn: "3 hr 34 min" },
-    weekly: { used: 19, limit: limits.weekly, resetsOn: "Tue 10:00 PM" },
-    plan: planKey,
-  };
+  const isFreeTier = !user?.founder_tier;
+  const limits = getLimits(user?.founder_tier ?? null);
 
-  const selectedPack = CREDIT_PACKS.find((p) => p.id === selectedCreditPack);
-  const coinCost = coinPacks * 50;
+  useEffect(() => {
+    if (!user?.id) return;
+    getUsageToday(user.id).then(setAiUsage).catch(() => {});
+  }, [user?.id]);
+
   const userCoins = user?.coins ?? 0;
 
   const handleLogout = async () => {
@@ -266,47 +249,45 @@ export default function Settings() {
               </CardHeader>
               <CardContent className="space-y-5">
 
-                {/* Free-tier upgrade callout */}
-                {(planKey === "free" || planKey === "teacher" || planKey === "investor") && (
-                  <div className="flex items-center justify-between gap-3 rounded-xl bg-primary/5 border border-primary/20 px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-primary shrink-0" />
-                      <p className="text-sm text-foreground">
-                        Upgrade to Pro for <span className="font-semibold">25 daily calls</span> and priority generation
-                      </p>
-                    </div>
-                    <Link to="/pricing" className="text-xs font-semibold text-primary whitespace-nowrap hover:underline">
-                      Upgrade →
-                    </Link>
-                  </div>
-                )}
-
-                {/* Usage bars */}
+                {/* Per-feature usage bars */}
                 <div className="space-y-4">
-                  <UsageBar
-                    label="Today"
-                    subtext={`Resets in ${mockUsage.daily.resetsIn}`}
-                    used={mockUsage.daily.used}
-                    limit={mockUsage.daily.limit}
-                  />
-                  <UsageBar
-                    label="This Week"
-                    subtext={`Resets ${mockUsage.weekly.resetsOn}`}
-                    used={mockUsage.weekly.used}
-                    limit={mockUsage.weekly.limit}
-                  />
+                  {[
+                    { key: "flashcards", label: "Flashcards" },
+                    { key: "quiz",       label: "Quizzes"    },
+                    { key: "summary",    label: "Summaries"  },
+                  ].map(({ key, label }) => (
+                    <UsageBar
+                      key={key}
+                      label={label}
+                      subtext="Resets at midnight"
+                      used={aiUsage[key] ?? 0}
+                      limit={limits[key]}
+                    />
+                  ))}
                 </div>
 
-                {/* Last updated */}
+                {/* Refresh */}
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <button
                     type="button"
-                    onClick={() => toast.success("Usage refreshed")}
+                    onClick={() => {
+                      if (user?.id) getUsageToday(user.id).then(setAiUsage).catch(() => {});
+                      toast.success("Usage refreshed");
+                    }}
                     className="hover:text-foreground transition-colors"
                   >
                     <RotateCcw className="w-3 h-3" />
                   </button>
-                  Last updated: less than a minute ago
+                  Last updated: just now
+                </div>
+
+                {/* Coin cost info */}
+                <div className="flex items-center gap-2 rounded-xl bg-amber-400/8 border border-amber-400/20 px-4 py-3 text-sm">
+                  <Coins className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span className="text-muted-foreground">
+                    Extra calls cost <span className="font-semibold text-foreground">50 coins</span> each.
+                    You have <span className="font-semibold text-foreground">{userCoins} coins</span>.
+                  </span>
                 </div>
 
                 {/* Plan limits collapsible */}
@@ -325,16 +306,23 @@ export default function Settings() {
                         <thead>
                           <tr className="bg-secondary/50">
                             <th className="text-left px-3 py-2 font-semibold text-muted-foreground">Plan</th>
-                            <th className="text-right px-3 py-2 font-semibold text-muted-foreground">Daily</th>
-                            <th className="text-right px-3 py-2 font-semibold text-muted-foreground">Weekly</th>
+                            <th className="text-right px-3 py-2 font-semibold text-muted-foreground">Flashcards</th>
+                            <th className="text-right px-3 py-2 font-semibold text-muted-foreground">Quizzes</th>
+                            <th className="text-right px-3 py-2 font-semibold text-muted-foreground">Summaries</th>
                           </tr>
                         </thead>
                         <tbody>
                           {PLAN_TABLE.map((row, i) => (
-                            <tr key={row.label} className={i < PLAN_TABLE.length - 1 ? "border-t border-border" : ""}>
-                              <td className="px-3 py-2 text-muted-foreground">{row.label}</td>
-                              <td className="px-3 py-2 text-right tabular-nums">{row.daily}</td>
-                              <td className="px-3 py-2 text-right tabular-nums">{row.weekly}</td>
+                            <tr
+                              key={row.label}
+                              className={`${i < PLAN_TABLE.length - 1 ? "border-t border-border" : ""} ${
+                                row.label === "Free" && isFreeTier ? "bg-primary/5" : ""
+                              }`}
+                            >
+                              <td className="px-3 py-2 text-muted-foreground font-medium">{row.label}</td>
+                              <td className="px-3 py-2 text-right tabular-nums">{row.flashcards}</td>
+                              <td className="px-3 py-2 text-right tabular-nums">{row.quiz}</td>
+                              <td className="px-3 py-2 text-right tabular-nums">{row.summary}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -343,98 +331,14 @@ export default function Settings() {
                   )}
                 </div>
 
-                <Separator />
-
-                {/* Extra Usage toggle */}
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <Label className="text-sm font-medium">Extra Usage</Label>
-                    <p className="text-xs text-muted-foreground mt-0.5">Keep generating after your limit using coins or a credit pack</p>
-                  </div>
-                  <Switch checked={extraUsageEnabled} onCheckedChange={setExtraUsageEnabled} />
-                </div>
-
-                {/* Buy options panel */}
-                {extraUsageEnabled && (
-                  <div className="grid sm:grid-cols-2 gap-3">
-
-                    {/* Option A — Coins */}
-                    <div className="rounded-xl border border-border p-4 space-y-3">
-                      <div>
-                        <p className="text-sm font-semibold flex items-center gap-1.5"><Coins className="w-4 h-4 text-amber-400" /> Use Coins</p>
-                        <p className="text-xs text-muted-foreground mt-1">Spend coins earned from studying for extra AI calls.</p>
-                        <p className="text-xs text-muted-foreground">Rate: <span className="font-medium text-foreground">50 coins = 5 extra calls</span></p>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{userCoins} coins available</p>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setCoinPacks((p) => Math.max(1, p - 1))}
-                          className="w-7 h-7 rounded-lg border border-border flex items-center justify-center text-sm hover:bg-secondary transition-colors"
-                        >−</button>
-                        <span className="text-sm font-medium w-16 text-center">{coinPacks} pack{coinPacks > 1 ? "s" : ""}</span>
-                        <button
-                          type="button"
-                          onClick={() => setCoinPacks((p) => p + 1)}
-                          className="w-7 h-7 rounded-lg border border-border flex items-center justify-center text-sm hover:bg-secondary transition-colors"
-                        >+</button>
-                      </div>
-                      <p className="text-xs text-muted-foreground">= {coinPacks * 5} extra calls for {coinCost} coins</p>
-                      <Button
-                        size="sm"
-                        className="w-full"
-                        disabled={userCoins < coinCost}
-                        onClick={() => toast.success(`${coinPacks * 5} extra calls added! ${coinCost} coins deducted.`)}
-                      >
-                        Buy with Coins
-                      </Button>
-                      {userCoins < coinCost && (
-                        <p className="text-[10px] text-destructive">Not enough coins</p>
-                      )}
-                    </div>
-
-                    {/* Option B — Credit Packs */}
-                    <div className="rounded-xl border border-border p-4 space-y-3">
-                      <div>
-                        <p className="text-sm font-semibold flex items-center gap-1.5"><CreditCard className="w-4 h-4 text-primary" /> Credit Packs</p>
-                        <p className="text-xs text-muted-foreground mt-1">One-time purchases. Never expire.</p>
-                      </div>
-                      <div className="space-y-1.5">
-                        {CREDIT_PACKS.map((pack) => (
-                          <button
-                            key={pack.id}
-                            type="button"
-                            onClick={() => setSelectedCreditPack(pack.id)}
-                            className={`w-full flex items-center justify-between rounded-lg border px-3 py-2 text-xs transition-all ${
-                              selectedCreditPack === pack.id
-                                ? "border-primary bg-primary/5 text-foreground"
-                                : "border-border hover:border-primary/40 text-muted-foreground"
-                            }`}
-                          >
-                            <span className="flex items-center gap-1.5">
-                              {pack.label}
-                              {pack.popular && (
-                                <span className="text-[9px] font-bold bg-primary text-primary-foreground rounded-full px-1.5 py-0.5">Popular</span>
-                              )}
-                            </span>
-                            <span className="flex items-center gap-2">
-                              <span className="text-muted-foreground">{pack.calls} calls</span>
-                              <span className="font-semibold text-foreground">${pack.price}</span>
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => toast.info("Redirecting to checkout... (coming soon)")}
-                      >
-                        Buy Pack — ${selectedPack?.price}
-                      </Button>
-                    </div>
-
-                  </div>
+                {/* Upgrade CTA for free tier */}
+                {isFreeTier && (
+                  <Link to="/pricing">
+                    <Button variant="outline" className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/5">
+                      <Zap className="w-4 h-4" />
+                      Upgrade for more calls →
+                    </Button>
+                  </Link>
                 )}
               </CardContent>
             </Card>

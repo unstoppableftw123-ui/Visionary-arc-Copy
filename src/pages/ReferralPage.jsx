@@ -1,621 +1,254 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../App";
 import { toast } from "sonner";
 import { getReferralCode, getReferralStats } from "../services/referralService";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import {
-  Copy,
-  Check,
-  Twitter,
-  Mail,
-  MessageCircle,
-  Link2,
-  Coins,
-  Trophy,
-  Lock,
-  CheckCircle2,
-  Users,
-  Gift,
-  Zap,
-  Clock,
-} from "lucide-react";
+import { Check, Copy, Coins, Link2, Share2, Trophy, Users } from "lucide-react";
 
+const DEFAULT_STATS = {
+  total: 0,
+  signed_up: 0,
+  streak_7: 0,
+  upgraded: 0,
+  coins_earned: 0,
+};
 
-const MILESTONES = [
-  {
-    friends: 1,
-    coins: 50,
-    bonus: null,
-    label: "First Invite",
-  },
-  {
-    friends: 3,
-    coins: 100,
-    bonus: '"Connector" Badge',
-    label: "Social Starter",
-  },
-  {
-    friends: 5,
-    coins: 200,
-    bonus: "Exclusive Avatar Frame",
-    label: "Connector",
-  },
-  {
-    friends: 10,
-    coins: 500,
-    bonus: "1 Month Free Seed Pass",
-    label: "Community Builder",
-  },
-  {
-    friends: 25,
-    coins: 1500,
-    bonus: "Free Seed Pass 🏆",
-    label: "Legend",
-  },
+const REWARD_TIERS = [
+  { title: "Level 1", label: "Friend signs up", xp: 300, coins: 100 },
+  { title: "Level 2", label: "Friend hits 7-day streak", xp: 100, coins: 50 },
+  { title: "Level 3", label: "Friend upgrades to paid", xp: 500, coins: 250 },
 ];
 
-// ─── Countdown timer hook ─────────────────────────────────────────────────────
-function useCountdown(targetDate) {
-  const [timeLeft, setTimeLeft] = useState({});
-
-  useEffect(() => {
-    const calc = () => {
-      const diff = new Date(targetDate) - new Date();
-      if (diff <= 0) return setTimeLeft({ expired: true });
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
-    };
-    calc();
-    const id = setInterval(calc, 1000);
-    return () => clearInterval(id);
-  }, [targetDate]);
-
-  return timeLeft;
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let cursorY = y;
+  for (const word of words) {
+    const testLine = `${line}${word} `;
+    if (ctx.measureText(testLine).width > maxWidth && line) {
+      ctx.fillText(line.trim(), x, cursorY);
+      line = `${word} `;
+      cursorY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line) ctx.fillText(line.trim(), x, cursorY);
 }
 
-// ─── Animated coin stack ──────────────────────────────────────────────────────
-function CoinStack() {
-  return (
-    <div className="relative flex items-end justify-center h-20 w-20 mx-auto">
-      <style>{`
-        @keyframes coinBounce1 {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-6px); }
-        }
-        @keyframes coinBounce2 {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes coinBounce3 {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-14px); }
-        }
-        @keyframes coinSpin {
-          0% { transform: rotateY(0deg) scale(1); }
-          50% { transform: rotateY(180deg) scale(1.08); }
-          100% { transform: rotateY(360deg) scale(1); }
-        }
-        @keyframes goldPulse {
-          0%, 100% { box-shadow: 0 0 8px 2px rgba(245,158,11,0.35), 0 0 0 1px rgba(245,158,11,0.2); }
-          50% { box-shadow: 0 0 20px 6px rgba(245,158,11,0.6), 0 0 0 2px rgba(245,158,11,0.4); }
-        }
-        @keyframes borderPulse {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 1; }
-        }
-        .coin-1 { animation: coinBounce1 1.8s ease-in-out infinite; }
-        .coin-2 { animation: coinBounce2 1.8s ease-in-out 0.2s infinite; }
-        .coin-3 { animation: coinBounce3 1.8s ease-in-out 0.4s infinite; }
-        .coin-spin { animation: coinSpin 3s ease-in-out infinite; }
-        .gold-glow { animation: goldPulse 2s ease-in-out infinite; }
-        .border-pulse { animation: borderPulse 2s ease-in-out infinite; }
-      `}</style>
-
-      {/* Stack base coins */}
-      <div
-        className="coin-1 absolute bottom-0 left-1/2 -translate-x-1/2"
-        style={{ marginBottom: "0px" }}
-      >
-        <div
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 flex items-center justify-center gold-glow"
-          style={{ boxShadow: "0 4px 0 #92400e" }}
-        >
-          <span className="text-amber-900 font-black text-lg select-none">$</span>
-        </div>
-      </div>
-      <div className="coin-2 absolute" style={{ bottom: "14px", left: "50%", transform: "translateX(-50%)" }}>
-        <div
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-yellow-300 via-amber-400 to-yellow-500 flex items-center justify-center"
-          style={{ boxShadow: "0 4px 0 #92400e" }}
-        >
-          <span className="text-amber-900 font-black text-lg select-none">$</span>
-        </div>
-      </div>
-      <div className="coin-3 absolute" style={{ bottom: "28px", left: "50%", transform: "translateX(-50%)" }}>
-        <div
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-200 via-yellow-300 to-amber-400 coin-spin flex items-center justify-center"
-          style={{ boxShadow: "0 4px 0 #92400e" }}
-        >
-          <Coins className="w-7 h-7 text-amber-800" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Reward Card ──────────────────────────────────────────────────────────────
-function RewardCard({ label, coins, sublabel }) {
-  return (
-    <div
-      className="flex-1 rounded-2xl p-5 text-center relative overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(234,179,8,0.10) 100%)",
-        border: "1.5px solid transparent",
-        backgroundClip: "padding-box",
-      }}
-    >
-      {/* Gold gradient border overlay */}
-      <div
-        className="absolute inset-0 rounded-2xl border-pulse pointer-events-none"
-        style={{
-          border: "1.5px solid",
-          borderImage: "linear-gradient(135deg, #f59e0b, #eab308, #f59e0b) 1",
-          borderRadius: "inherit",
-        }}
-      />
-      <div
-        className="absolute inset-0 rounded-2xl pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(234,179,8,0.18) 100%)",
-          boxShadow: "inset 0 0 24px rgba(245,158,11,0.08)",
-        }}
-      />
-      <div className="relative z-10">
-        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">
-          {label}
-        </p>
-        <div className="flex items-center justify-center gap-2 mb-1">
-          <Coins className="w-6 h-6 text-amber-400" />
-          <span className="text-3xl font-black text-amber-400">{coins.toLocaleString()}</span>
-        </div>
-        <p className="text-xs text-muted-foreground">{sublabel}</p>
-      </div>
-    </div>
-  );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function ReferralPage() {
   const { user } = useContext(AuthContext);
+  const [stats, setStats] = useState(DEFAULT_STATS);
+  const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const [referralData, setReferralData] = useState({ total_referrals: 0, completed_referrals: 0, coins_earned: 0 });
-  const inputRef = useRef(null);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => {
-    if (!user?.id) return;
+    let mounted = true;
+    if (!user?.id) {
+      setLoading(false);
+      return () => {
+        mounted = false;
+      };
+    }
+
+    setLoading(true);
     getReferralStats(user.id)
-      .then(setReferralData)
-      .catch(() => {});
+      .then((data) => {
+        if (mounted) setStats(data ?? DEFAULT_STATS);
+      })
+      .catch(() => {
+        if (mounted) setStats(DEFAULT_STATS);
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, [user?.id]);
 
-  // 14 days from today
-  const bonusDeadline = new Date("2026-03-28T23:59:59");
-  const bonusDeadlineStr = bonusDeadline.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-  const countdown = useCountdown(bonusDeadline);
+  const referralCode = useMemo(() => getReferralCode(user?.id), [user?.id]);
+  const referralLink = `${window.location.origin}/auth?ref=${referralCode}`;
 
-  const refCode = user?.id ? getReferralCode(user.id) : "LOADING";
-  const referralLink = `${window.location.origin}/auth?ref=${refCode}`;
-  const shareText = `I'm using Visionary Academy to level up my grades 🎓 Join me and get 25 free coins to start! ${referralLink}`;
-
-  const totalReferrals = referralData.total_referrals;
-
-  // Find next unclaimed milestone
-  const nextMilestone = MILESTONES.find((m) => m.friends > totalReferrals) || null;
-  const friendsNeeded = nextMilestone ? nextMilestone.friends - totalReferrals : 0;
-
-  const nextMilestoneProgress = nextMilestone
-    ? Math.min(100, (totalReferrals / nextMilestone.friends) * 100)
-    : 100;
-
-  // Determine milestone claimed state
-  const getMilestoneState = (milestone) => {
-    if (totalReferrals >= milestone.friends) return "claimed";
-    if (milestone === nextMilestone) return "next";
-    return "locked";
-  };
+  const achievedTier = useMemo(() => {
+    if (stats.upgraded > 0) return "Level 3";
+    if (stats.streak_7 > 0) return "Level 2";
+    return "Level 1";
+  }, [stats.upgraded, stats.streak_7]);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      toast.success("Copied your referral link.");
+      setTimeout(() => setCopied(false), 1800);
     } catch {
-      if (inputRef.current) {
-        inputRef.current.select();
-        document.execCommand("copy");
-      }
+      toast.error("Could not copy link.");
     }
-    setCopied(true);
-    toast.success("Link copied!", {
-      description: "Share it with your friends to earn coins.",
-      duration: 2500,
-    });
-    setTimeout(() => setCopied(false), 2500);
   };
 
-  const shareLinks = [
-    {
-      id: "twitter",
-      label: "Twitter / X",
-      icon: <Twitter className="w-4 h-4" />,
-      color: "hover:bg-sky-500/10 hover:border-sky-500/40 hover:text-sky-400",
-      href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,
-    },
-    {
-      id: "whatsapp",
-      label: "WhatsApp",
-      icon: <MessageCircle className="w-4 h-4" />,
-      color: "hover:bg-green-500/10 hover:border-green-500/40 hover:text-green-400",
-      href: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
-    },
-    {
-      id: "email",
-      label: "Email",
-      icon: <Mail className="w-4 h-4" />,
-      color: "hover:bg-purple-500/10 hover:border-purple-500/40 hover:text-purple-400",
-      href: `mailto:?subject=Join%20Visionary%20Academy%20and%20get%2025%20free%20coins!&body=${encodeURIComponent(shareText)}`,
-    },
-    {
-      id: "copy",
-      label: copied ? "Copied!" : "Copy Link",
-      icon: copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />,
-      color: copied
-        ? "bg-green-500/10 border-green-500/40 text-green-400"
-        : "hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-400",
-      onClick: handleCopy,
-    },
+  const handleShareImage = async () => {
+    setSharing(true);
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080;
+      canvas.height = 1080;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas not available");
+
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, "#0f172a");
+      gradient.addColorStop(1, "#1e293b");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "bold 64px sans-serif";
+      ctx.fillText("Visionary Arc", 80, 130);
+
+      ctx.fillStyle = "#f8fafc";
+      ctx.font = "bold 58px sans-serif";
+      ctx.fillText(`I just hit ${achievedTier}!`, 80, 250);
+
+      ctx.font = "38px sans-serif";
+      wrapText(
+        ctx,
+        `I just hit ${achievedTier} on Visionary Arc! Study smarter -> ${referralLink}`,
+        80,
+        330,
+        920,
+        52
+      );
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "32px sans-serif";
+      ctx.fillText(`Total referrals: ${stats.total}`, 80, 520);
+      ctx.fillText(`Signed up: ${stats.signed_up}`, 80, 580);
+      ctx.fillText(`7-day streak: ${stats.streak_7}`, 80, 640);
+      ctx.fillText(`Upgraded: ${stats.upgraded}`, 80, 700);
+      ctx.fillText(`Coins earned: ${stats.coins_earned}`, 80, 760);
+
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob((result) => {
+          if (result) resolve(result);
+          else reject(new Error("Image generation failed"));
+        }, "image/png");
+      });
+
+      const file = new File([blob], "visionary-arc-referral.png", { type: "image/png" });
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({ files: [file] })
+      ) {
+        await navigator.share({
+          title: "Visionary Arc Referral",
+          text: "I just hit a referral milestone on Visionary Arc.",
+          files: [file],
+        });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "visionary-arc-referral.png";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      toast.success("Share image ready.");
+    } catch {
+      toast.error("Could not generate share image.");
+    } finally {
+      setSharing(false);
+    }
+  };
+
+  const statCards = [
+    { label: "Total referrals", value: stats.total, icon: Users },
+    { label: "Signed up", value: stats.signed_up, icon: Check },
+    { label: "Hit 7-day streak", value: stats.streak_7, icon: Trophy },
+    { label: "Upgraded to paid", value: stats.upgraded, icon: Link2 },
   ];
 
   return (
-    <div className="min-h-screen bg-background py-10 px-4">
-      <div className="max-w-2xl mx-auto space-y-8">
-
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <div className="text-center space-y-4">
-          <CoinStack />
-          <div className="space-y-2 mt-6">
-            <h1 className="font-heading text-4xl font-black tracking-tight text-foreground">
-              Invite Friends,{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">
-                Earn Together
-              </span>
-            </h1>
-            <p className="text-muted-foreground text-base max-w-md mx-auto leading-relaxed">
-              You get{" "}
-              <span className="text-amber-400 font-semibold">50 coins</span> per
-              friend who joins. They start with{" "}
-              <span className="text-amber-400 font-semibold">25 bonus coins</span>{" "}
-              on signup.
-            </p>
-          </div>
-
-          {/* Reward cards */}
-          <div className="flex gap-4 mt-6">
-            <RewardCard
-              label="You Earn"
-              coins={50}
-              sublabel="per friend who joins"
-            />
-            <RewardCard
-              label="Friend Gets"
-              coins={25}
-              sublabel="bonus coins on signup"
-            />
-          </div>
-        </div>
-
-        {/* ── REFERRAL LINK ────────────────────────────────────────────────── */}
+    <div className="min-h-screen bg-background py-8 px-4">
+      <div className="max-w-4xl mx-auto space-y-6">
         <Card className="border-border bg-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-heading text-base flex items-center gap-2">
-              <Link2 className="w-4 h-4 text-amber-400" />
-              Your unique referral link
+          <CardHeader>
+            <CardTitle className="text-xl flex items-center gap-2">
+              <Users className="w-5 h-5 text-amber-500" />
+              Invite Friends, Earn Rewards
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Link input + copy button */}
-            <div className="flex gap-2">
-              <div className="flex-1 relative">
-                <input
-                  ref={inputRef}
-                  readOnly
-                  value={referralLink}
-                  className="w-full h-11 px-4 rounded-xl bg-secondary border border-border text-sm font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/40 select-all cursor-text"
-                  onFocus={(e) => e.target.select()}
-                />
-              </div>
+            <p className="text-sm text-muted-foreground">
+              Your referral link
+            </p>
+            <div className="rounded-lg border bg-secondary/40 p-3 font-mono text-sm break-all">
+              {referralLink}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button onClick={handleCopy} className="gap-2">
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? "Copied!" : "Copy link"}
+              </Button>
               <Button
-                onClick={handleCopy}
-                className={`h-11 px-5 rounded-xl font-semibold transition-all duration-300 ${
-                  copied
-                    ? "bg-green-500 hover:bg-green-600 text-white"
-                    : "bg-amber-500 hover:bg-amber-600 text-amber-950"
-                }`}
+                variant="outline"
+                onClick={handleShareImage}
+                disabled={sharing}
+                className="gap-2"
               >
-                {copied ? (
-                  <Check className="w-4 h-4 mr-1.5" />
-                ) : (
-                  <Copy className="w-4 h-4 mr-1.5" />
-                )}
-                {copied ? "Copied!" : "Copy"}
+                <Share2 className="w-4 h-4" />
+                {sharing ? "Generating..." : "Share as image"}
               </Button>
             </div>
-
-            {/* Share buttons */}
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {shareLinks.map((btn) =>
-                btn.onClick ? (
-                  <button
-                    key={btn.id}
-                    onClick={btn.onClick}
-                    className={`flex items-center justify-center gap-2 h-10 rounded-xl border border-border bg-secondary/50 text-sm font-medium text-muted-foreground transition-all duration-200 ${btn.color}`}
-                  >
-                    {btn.icon}
-                    {btn.label}
-                  </button>
-                ) : (
-                  <a
-                    key={btn.id}
-                    href={btn.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center justify-center gap-2 h-10 rounded-xl border border-border bg-secondary/50 text-sm font-medium text-muted-foreground transition-all duration-200 ${btn.color}`}
-                  >
-                    {btn.icon}
-                    {btn.label}
-                  </a>
-                )
-              )}
-            </div>
           </CardContent>
         </Card>
 
-        {/* ── PROGRESS TRACKER ─────────────────────────────────────────────── */}
-        <Card className="border-border bg-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-heading text-base flex items-center gap-2">
-              <Users className="w-4 h-4 text-amber-400" />
-              Your Referrals
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Big number + progress */}
-            <div className="text-center space-y-3">
-              <div className="flex items-end justify-center gap-2">
-                <span className="text-6xl font-black text-foreground leading-none">
-                  {totalReferrals}
-                </span>
-                <span className="text-lg text-muted-foreground mb-2">friends joined</span>
-              </div>
-
-              {nextMilestone && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs text-muted-foreground px-1">
-                    <span>{totalReferrals} friends</span>
-                    <span>{nextMilestone.friends} friends</span>
-                  </div>
-                  <div className="h-3 rounded-full bg-secondary overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-700"
-                      style={{ width: `${nextMilestoneProgress}%` }}
-                    />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    <span className="text-amber-400 font-semibold">
-                      {friendsNeeded} more{" "}
-                      {friendsNeeded === 1 ? "friend" : "friends"}
-                    </span>{" "}
-                    = bonus{" "}
-                    <span className="font-semibold text-foreground">
-                      {nextMilestone.coins.toLocaleString()} coins
-                    </span>
-                    {nextMilestone.bonus && (
-                      <> + {nextMilestone.bonus}</>
-                    )}
-                  </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {statCards.map(({ label, value, icon: Icon }) => (
+            <Card key={label} className="border-border bg-card">
+              <CardContent className="pt-6 space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">{label}</p>
+                  <Icon className="w-4 h-4 text-amber-500" />
                 </div>
-              )}
-            </div>
-
-            {/* Milestone step tracker */}
-            <div className="space-y-2">
-              {MILESTONES.map((m, i) => {
-                const state = getMilestoneState(m);
-                return (
-                  <div
-                    key={i}
-                    className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
-                      state === "claimed"
-                        ? "bg-green-500/8 border-green-500/20"
-                        : state === "next"
-                        ? "bg-amber-500/8 border-amber-500/30"
-                        : "bg-secondary/30 border-border/50 opacity-60"
-                    }`}
-                  >
-                    {/* Icon */}
-                    <div
-                      className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                        state === "claimed"
-                          ? "bg-green-500/20 text-green-400"
-                          : state === "next"
-                          ? "bg-amber-500/20 text-amber-400"
-                          : "bg-secondary text-muted-foreground"
-                      }`}
-                    >
-                      {state === "claimed" ? (
-                        <CheckCircle2 className="w-4 h-4" />
-                      ) : state === "locked" ? (
-                        <Lock className="w-3.5 h-3.5" />
-                      ) : (
-                        <Zap className="w-4 h-4" />
-                      )}
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-semibold text-foreground">
-                          {m.friends} {m.friends === 1 ? "friend" : "friends"}
-                        </span>
-                        {state === "next" && (
-                          <Badge className="text-[10px] py-0 px-1.5 bg-amber-500/20 text-amber-400 border-amber-500/30">
-                            Next goal
-                          </Badge>
-                        )}
-                        {state === "claimed" && (
-                          <Badge className="text-[10px] py-0 px-1.5 bg-green-500/20 text-green-400 border-green-500/30">
-                            ✓ Claimed
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        <span className="text-amber-400 font-medium">
-                          {m.coins.toLocaleString()} coins
-                        </span>
-                        {m.bonus && (
-                          <span> + {m.bonus}</span>
-                        )}
-                      </p>
-                    </div>
-
-                    {/* Coins icon */}
-                    <div className="flex-shrink-0 flex items-center gap-1 text-xs font-bold text-amber-400">
-                      <Coins className="w-3.5 h-3.5" />
-                      {(m.coins / 1000).toFixed(m.coins < 1000 ? 0 : 1)}
-                      {m.coins >= 1000 ? "k" : ""}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* TODO: POST /api/referrals/claim-reward */}
-          </CardContent>
-        </Card>
-
-        {/* ── REFERRAL HISTORY TABLE ───────────────────────────────────────── */}
-        {/* TODO: GET /api/referrals/my-referrals */}
-        <Card className="border-border bg-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-heading text-base flex items-center gap-2">
-              <Gift className="w-4 h-4 text-amber-400" />
-              Referral History
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            {totalReferrals === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                <p className="text-sm">No referrals yet — share your link to get started!</p>
-              </div>
-            ) : (
-              <div className="px-5 py-4 text-center space-y-1">
-                <div className="flex items-center justify-center gap-2">
-                  <Coins className="w-5 h-5 text-amber-400" />
-                  <span className="text-2xl font-black text-amber-400">{referralData.coins_earned.toLocaleString()}</span>
-                  <span className="text-sm text-muted-foreground">coins earned</span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {referralData.completed_referrals} of {totalReferrals} referral{totalReferrals !== 1 ? "s" : ""} completed
-                </p>
-              </div>
-            )}
-
-            <div className="px-5 py-3 border-t border-border bg-secondary/20 rounded-b-xl">
-              <p className="text-xs text-muted-foreground">
-                <span className="font-medium text-amber-400">Note:</span> Coins are
-                awarded only after your friend completes their first 10 practice
-                questions. Pending = signed up but not yet active.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* ── BOTTOM BANNER ────────────────────────────────────────────────── */}
-        <div
-          className="relative rounded-2xl p-6 text-center overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(234,179,8,0.12) 100%)",
-          }}
-        >
-          {/* Pulsing gold border */}
-          <div
-            className="absolute inset-0 rounded-2xl pointer-events-none border-pulse"
-            style={{
-              boxShadow:
-                "0 0 0 1.5px rgba(245,158,11,0.5), 0 0 24px rgba(245,158,11,0.15)",
-            }}
-          />
-
-          <div className="relative z-10 space-y-4">
-            <div className="flex items-center justify-center gap-2">
-              <Zap className="w-5 h-5 text-amber-400" />
-              <p className="text-base font-bold text-foreground">
-                Limited Time:{" "}
-                <span className="text-amber-400">Referral coins are 2x</span> until{" "}
-                {bonusDeadlineStr} 🎉
-              </p>
-            </div>
-
-            {/* Countdown */}
-            {!countdown.expired ? (
-              <div className="flex items-center justify-center gap-3">
-                {[
-                  { value: countdown.days, label: "Days" },
-                  { value: countdown.hours, label: "Hours" },
-                  { value: countdown.minutes, label: "Min" },
-                  { value: countdown.seconds, label: "Sec" },
-                ].map(({ value, label }, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    {i > 0 && (
-                      <span className="text-amber-400/60 font-bold text-lg">:</span>
-                    )}
-                    <div className="flex flex-col items-center">
-                      <div className="w-14 h-14 rounded-xl bg-secondary border border-amber-500/20 flex items-center justify-center">
-                        <span className="text-2xl font-black text-amber-400 tabular-nums">
-                          {String(value ?? 0).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <span className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wide font-medium">
-                        {label}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">Bonus period has ended.</p>
-            )}
-
-            <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" />
-              Don't miss out — every referral earns double coins until the deadline!
-            </p>
-          </div>
+                <p className="text-2xl font-bold">{loading ? "--" : value}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        {/* Bottom spacer */}
-        <div className="h-4" />
+        <Card className="border-border bg-card">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2">
+              <Coins className="w-5 h-5 text-amber-500" />
+              <p className="text-sm text-muted-foreground">Coins earned from referrals</p>
+            </div>
+            <p className="text-3xl font-black mt-2 text-amber-500">
+              {loading ? "--" : stats.coins_earned.toLocaleString()}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border bg-card">
+          <CardHeader>
+            <CardTitle className="text-base">Referral Reward Tiers</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {REWARD_TIERS.map((tier) => (
+              <div key={tier.title} className="rounded-lg border bg-secondary/20 p-4">
+                <p className="font-semibold">{tier.title} - {tier.label}</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  +{tier.xp} XP + {tier.coins} coins
+                </p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Mono:ital,wght@0,300..500;1,300..500&display=swap');
+@import './styles/design-system.css';
 
 @tailwind base;
 @tailwind components;
@@ -92,18 +91,21 @@
     * {
         @apply border-border;
     }
-    
+
     body {
-        @apply bg-background text-foreground antialiased;
-        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
-    
+
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Manrope', sans-serif;
+        font-family: var(--font-display);
     }
-    
+
     code, pre {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: var(--font-mono);
     }
 }
 
@@ -160,23 +162,7 @@
     }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    @apply bg-muted;
-}
-
-::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/30 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/50;
-}
+/* Scrollbar styling — uses design-system.css vars (defined there) */
 
 /* Discord-style chat background for community */
 .discord-bg {

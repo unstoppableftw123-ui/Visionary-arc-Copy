@@ -18,7 +18,6 @@ import {
   Shield,
   Loader2,
   Sprout,
-  Users,
   Flame,
   ArrowRight,
   Coins,
@@ -28,16 +27,28 @@ import {
   RefreshCw,
   HelpCircle,
   Brain,
-  BookOpen,
   Cpu,
-  BarChart2,
   Lock,
 } from "lucide-react";
-import { loadStripe } from "@stripe/stripe-js";
+/*
+  MANUAL SETUP REQUIRED:
+  1. Go to stripe.com → Products → Create these 4 products:
+     - Seed Pass: $9.99 one-time
+     - Bronze Pass: $24.99 one-time
+     - Silver Pass: $49.99 one-time
+     - Gold Pass: $99.99 one-time
+  2. For each product, create a Payment Link
+  3. On each link, add metadata: { founder_tier: 'seed' | 'bronze' | 'silver' | 'gold' }
+  4. Set success URL: https://visionary-arc.vercel.app/checkout-success?tier=TIER_NAME
+  5. Replace PLACEHOLDER URLs below with real Stripe Payment Link URLs
+*/
 
-const stripePromise = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
-  : null;
+const PAYMENT_LINKS = {
+  seed:   'https://buy.stripe.com/PLACEHOLDER_SEED',
+  bronze: 'https://buy.stripe.com/PLACEHOLDER_BRONZE',
+  silver: 'https://buy.stripe.com/PLACEHOLDER_SILVER',
+  gold:   'https://buy.stripe.com/PLACEHOLDER_GOLD',
+};
 
 // ─── Tier Data ───────────────────────────────────────────────────────────────
 const TIERS = [
@@ -323,9 +334,9 @@ function TierCard({ tier, index, loadingTier, onCheckout }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Pricing() {
-  const { user, token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [loadingTier, setLoadingTier] = useState(null);
+  const loadingTier = null; // no async loading — checkout opens a new tab
   const [founderCount, setFounderCount] = useState(512);
   const faqRef = useRef(null);
 
@@ -341,13 +352,10 @@ export default function Pricing() {
       .catch(() => {});
   }, []);
 
-  const handleCheckout = async (tierId) => {
+  const handleCheckout = (tierId) => {
     // Guard: must be logged in
-    if (!user || !token) {
-      toast.info("Please sign in to purchase a Founder Pass.", {
-        action: { label: "Sign in", onClick: () => navigate("/auth", { state: { from: "/pricing" } }) },
-      });
-      navigate("/auth", { state: { from: "/pricing" } });
+    if (!user) {
+      navigate("/auth?returnTo=/pricing");
       return;
     }
 
@@ -360,27 +368,8 @@ export default function Pricing() {
       }
     }
 
-    setLoadingTier(tierId);
-    try {
-      const res = await fetch(`${API}/checkout/founder-pass`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ tier: tierId }),
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || "Checkout failed");
-      }
-      const { checkout_url } = await res.json();
-      await stripePromise; // warm up Stripe.js before leaving page
-      window.location.href = checkout_url;
-    } catch (err) {
-      toast.error(err.message || "Failed to start checkout. Please try again.");
-      setLoadingTier(null);
-    }
+    const url = `${PAYMENT_LINKS[tierId]}?prefilled_email=${encodeURIComponent(user.email)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (

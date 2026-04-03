@@ -4,6 +4,7 @@
 
 import { callAI } from '../../services/aiRouter';
 import { getStudyHubMockResponse } from './studyHubMock';
+import { awardActivityXP } from '../../services/xpService';
 
 const AGENT_LABELS = {
   deep: "Deep Analysis",
@@ -89,6 +90,14 @@ const FEATURE_MAP = {
   notes: 'summarize',
 };
 
+const TAB_ACTIVITY_MAP = {
+  flashcards: 'flashcards',
+  quiz: 'quiz',
+  summarize: 'summary',
+  notes: 'notes',
+  slides: 'summary',
+};
+
 export async function callAnthropic(activeTab, options, textContent, attachments = [], refreshCoins) {
   const feature = FEATURE_MAP[activeTab] ?? 'fast';
   const systemPrompt = buildSystemPrompt(activeTab, options);
@@ -99,6 +108,11 @@ export async function callAnthropic(activeTab, options, textContent, attachments
   try {
     raw = await callAI({ feature, prompt, systemPrompt, userId, onCoinsUpdated: refreshCoins });
     raw = (raw ?? "").trim();
+    // Award XP for successful generation (fire-and-forget, don't block response)
+    const activityType = TAB_ACTIVITY_MAP[activeTab];
+    if (userId && activityType) {
+      awardActivityXP(userId, activityType, null).catch(() => {});
+    }
   } catch (err) {
     if (err?.message === 'INSUFFICIENT_COINS') throw err;
     return getStudyHubMockResponse(activeTab, options, textContent, attachments);

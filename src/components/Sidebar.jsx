@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect, useRef } from "react";
+import { toast } from "sonner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -23,6 +24,8 @@ import { FounderDot } from "./FounderBadge";
 import { isFounder, getFounderMeta } from "../lib/founder";
 import {
   LayoutDashboard,
+  Home,
+  Map,
   GraduationCap,
   Target,
   User,
@@ -47,6 +50,7 @@ import {
   Search,
   Star,
   Briefcase,
+  ShoppingBag,
   FileText,
   Gamepad2,
   HardDrive,
@@ -58,10 +62,13 @@ import {
   School,
   Zap,
   MessageSquare,
+  UserCheck,
+  MoreHorizontal,
 } from "lucide-react";
 import { Notebook, Books, Users, Storefront, PencilLine } from "phosphor-react";
 import PhosphorIcon from "./icons/PhosphorIcon";
 import axios from "axios";
+import { supabase } from "../services/supabaseClient";
 
 const DM_API = `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000'}/api/messages/inbox`;
 
@@ -89,15 +96,24 @@ function isSubActive(href, pathname, search) {
   return pathname === href;
 }
 
+function isNavItemActive(item, pathname, search) {
+  if (!item?.href) return false;
+  if (item.href.includes("?")) {
+    const [p, q] = item.href.split("?");
+    return pathname === p && search.includes(q);
+  }
+  return pathname === item.href;
+}
+
 const STORAGE_DATA = {
   used: 1.4,
   total: 2,
   plan: "Free",
   addedThisMonth: 0.2,
   breakdown: [
-    { label: "Notes",       gb: 0.6, Icon: FileText, color: "#007aff" },
-    { label: "Whiteboards", gb: 0.4, Icon: Layers,   color: "#af52de" },
-    { label: "Files",       gb: 0.4, Icon: Archive,  color: "#ff9500" },
+    { label: "Notes",       gb: 0.6, Icon: FileText, color: "var(--track-tech)" },
+    { label: "Whiteboards", gb: 0.4, Icon: Layers,   color: "var(--track-content)" },
+    { label: "Files",       gb: 0.4, Icon: Archive,  color: "var(--track-impact)" },
   ],
 };
 
@@ -189,32 +205,34 @@ function ProfileCardWithPopover({
             {founder ? (
               <FounderDot user={user} className="absolute -bottom-0.5 -right-0.5" />
             ) : user?.is_premium ? (
-              <div className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500">
-                <Crown className="h-2.5 w-2.5 text-white" />
+              <div className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, var(--rank-s), var(--rank-a))" }}>
+                <Crown className="h-2.5 w-2.5" style={{ color: "var(--bg-base)" }} />
               </div>
             ) : null}
           </div>
           {!collapsed && (
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 min-w-0">
-                <p className="truncate text-sm font-medium">{user?.name}</p>
+                <p className="truncate text-sm font-medium" style={{ color: "var(--text-primary)" }}>{user?.name}</p>
                 {user?.role === 'student' && (
-                  <span className="shrink-0 rounded-full bg-blue-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-blue-500 leading-none">Student</span>
+                  <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "rgba(59,130,246,0.12)", color: "var(--rank-c)" }}>Student</span>
                 )}
                 {user?.role === 'teacher' && (
-                  <span className="shrink-0 rounded-full bg-green-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-green-500 leading-none">Teacher</span>
+                  <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "rgba(34,197,94,0.12)", color: "var(--rank-d)" }}>Teacher</span>
                 )}
                 {user?.role === 'investor' && (
-                  <span className="shrink-0 rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-amber-500 leading-none">Investor</span>
+                  <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "var(--accent-dim)", color: "var(--accent)" }}>Investor</span>
                 )}
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
                 <span>Lvl {level}</span>
                 <span className="flex items-center gap-0.5">
                   <Coins className="h-3 w-3" /> {user?.coins ?? 0}
                 </span>
               </div>
-              <Progress value={levelProgress} className="mt-1 h-1" />
+              <div className="xp-bar-track mt-1" style={{ height: 4 }}>
+                <div className="xp-bar-fill" data-rank="C" style={{ width: `${levelProgress}%` }} />
+              </div>
             </div>
           )}
         </button>
@@ -334,6 +352,7 @@ export default function Sidebar() {
   const [aiToolsOpen, setAiToolsOpen] = useState(false);
   const [storageOpen, setStorageOpen] = useState(false);
   const [dmUnread, setDmUnread] = useState(0);
+  const [pendingFriends, setPendingFriends] = useState(0);
 
   useEffect(() => {
     const fetchDmUnread = () => {
@@ -346,6 +365,22 @@ export default function Sidebar() {
     const poll = setInterval(fetchDmUnread, 30000);
     return () => clearInterval(poll);
   }, []);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const fetchPending = () => {
+      supabase
+        .from('friends')
+        .select('id', { count: 'exact', head: true })
+        .eq('friend_id', user.id)
+        .eq('status', 'pending')
+        .then(({ count }) => setPendingFriends(count ?? 0))
+        .catch(() => {});
+    };
+    fetchPending();
+    const poll = setInterval(fetchPending, 60000);
+    return () => clearInterval(poll);
+  }, [user?.id]);
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_COLLAPSED_KEY, JSON.stringify(collapsed));
@@ -375,66 +410,36 @@ export default function Sidebar() {
   const xpInLevel = xp - xpForCurrentLevel;
   const levelProgress = Math.min(100, (xpInLevel / xpForNextLevel) * 100);
 
-  const studentItems = [
-    { icon: <LayoutDashboard className="w-5 h-5 shrink-0" />, label: "Home", href: "/dashboard" },
-    {
-      key: "learn",
-      icon: <PhosphorIcon icon={Notebook} className="w-5 h-5 shrink-0" />,
-      label: "Learn",
-      sub: [
-        { icon: <PhosphorIcon icon={Notebook} />, label: "Study Hub", href: "/study" },
-        { icon: <PhosphorIcon icon={Books} />, label: "Library", href: "/library" },
-        { icon: <PhosphorIcon icon={PencilLine} />, label: "Notes", href: "/notes-studio" },
-        { icon: <Network className="w-4 h-4" />, label: "Graph", href: "/graph" },
-        { icon: <GraduationCap className="w-4 h-4" />, label: "SAT / ACT", href: "/practice" },
-        { icon: <Target className="w-4 h-4" />, label: "Strengths", href: "/strengths" },
-      ],
-    },
-    { icon: <Zap className="w-5 h-5 shrink-0" />, label: "Practice", href: "/practice-hub" },
-    { icon: <Trophy className="w-5 h-5 shrink-0" />, label: "Compete", href: "/competitions" },
-    { icon: <MessageSquare className="w-5 h-5 shrink-0" />, label: "Messages", href: "/messages", badge: dmUnread > 0 ? dmUnread : undefined },
-    {
-      key: "community",
-      icon: <PhosphorIcon icon={Users} className="w-5 h-5 shrink-0" />,
-      label: "Community",
-      sub: [
-        { icon: <School className="w-4 h-4" />, label: "Classes", href: "/community?tab=classes", badge: 3 },
-        { icon: <PhosphorIcon icon={Users} className="w-4 h-4" />, label: "Feed", href: "/community?tab=feed" },
-      ],
-    },
-  ];
-
-  const teacherItems = [
-    { icon: <LayoutDashboard className="w-5 h-5 shrink-0" />, label: "Dashboard", href: "/teacher" },
-    {
-      key: "classes",
-      icon: <PhosphorIcon icon={Users} className="w-5 h-5 shrink-0" />,
-      label: "My Classes",
-      sub: [
-        { icon: <PhosphorIcon icon={Users} className="w-4 h-4" />, label: "Classes", href: "/teacher/classes" },
-        { icon: <ClipboardList className="w-4 h-4" />, label: "Assignments", href: "/teacher/assignments" },
-        { icon: <BarChart2 className="w-4 h-4" />, label: "Gradebook", href: "/teacher/gradebook" },
-        { icon: <GraduationCap className="w-4 h-4" />, label: "Students", href: "/teacher/students" },
-        { icon: <Brain className="w-4 h-4" />, label: "Intelligence", href: "/teacher/students/intelligence" },
-      ],
-    },
-    { icon: <Gamepad2 className="w-5 h-5 shrink-0" />, label: "Quiz Creator", href: "/teacher/ai-generator" },
-    { icon: <BookOpen className="w-5 h-5 shrink-0" />, label: "Resources", href: "/teacher/resources" },
-    { icon: <MessageSquare className="w-5 h-5 shrink-0" />, label: "Messages", href: "/messages", badge: dmUnread > 0 ? dmUnread : undefined },
-  ];
-
-  const investorItems = [
-    { icon: <LayoutDashboard className="w-5 h-5 shrink-0" />, label: "Dashboard", href: "/investor" },
-    { icon: <Search className="w-5 h-5 shrink-0" />, label: "Discover", href: "/investor/discover" },
-    { icon: <Star className="w-5 h-5 shrink-0" />, label: "Watchlist", href: "/investor/watchlist" },
-    { icon: <Briefcase className="w-5 h-5 shrink-0" />, label: "Opportunities", href: "/investor/opportunities" },
-    { icon: <FileText className="w-5 h-5 shrink-0" />, label: "Applications", href: "/investor/applications" },
-    { icon: <BarChart2 className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/investor/analytics" },
+  const navItems = [
+    { icon: <Home className="w-5 h-5 shrink-0" />, label: "Dashboard", href: "/dashboard" },
+    { icon: <Map className="w-5 h-5 shrink-0" />, label: "Tracks", href: "/tracks" },
+    { icon: <Brain className="w-5 h-5 shrink-0" />, label: "Study Hub", href: "/study" },
+    { icon: <Target className="w-5 h-5 shrink-0" />, label: "Practice", href: "/practice" },
+    { icon: <FileText className="w-5 h-5 shrink-0" />, label: "Notes", href: "/notes-studio" },
+    { icon: <Trophy className="w-5 h-5 shrink-0" />, label: "Challenges", href: "/challenges" },
+    { icon: <BarChart2 className="w-5 h-5 shrink-0" />, label: "Leaderboard", href: "/rewards" },
+    { icon: <UserCheck className="w-5 h-5 shrink-0" />, label: "Friends", href: "/friends", badge: pendingFriends > 0 ? pendingFriends : null },
+    { icon: <Briefcase className="w-5 h-5 shrink-0" />, label: "Portfolio", href: "/portfolio" },
+    { icon: <TrendingUp className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/analytics" },
+    { icon: <ShoppingBag className="w-5 h-5 shrink-0" />, label: "Shop", href: "/shop" },
+    { icon: <PhosphorIcon icon={Users} className="w-5 h-5 shrink-0" />, label: "Referrals", href: "/referrals" },
     { icon: <User className="w-5 h-5 shrink-0" />, label: "Profile", href: "/profile" },
     { icon: <Settings className="w-5 h-5 shrink-0" />, label: "Settings", href: "/settings" },
   ];
 
-  const primaryItems = isTeacher ? teacherItems : isInvestor ? investorItems : studentItems;
+  const primaryItems = navItems;
+  const mobileBottomItems = [
+    { icon: <Home className="h-5 w-5" />, label: "Home", href: "/dashboard" },
+    { icon: <Map className="h-5 w-5" />, label: "Tracks", href: "/tracks" },
+    { icon: <Brain className="h-5 w-5" />, label: "Study", href: "/study" },
+    { icon: <User className="h-5 w-5" />, label: "Profile", href: "/profile" },
+  ];
+  const mobileMoreItems = navItems.filter(
+    (item) => !mobileBottomItems.some((bottomItem) => bottomItem.href === item.href)
+  );
+  const moreActive = mobileMoreItems.some((item) =>
+    isNavItemActive(item, location.pathname, location.search)
+  );
 
   const navLinkClass = (isActive) =>
     `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors border-l-2 ${
@@ -743,14 +748,26 @@ export default function Sidebar() {
             );
           }
 
-          const isActive = (() => {
-            if (item.href.includes('?')) {
-              const [p, q] = item.href.split('?');
-              return location.pathname === p && location.search.includes(q);
-            }
-            return location.pathname === item.href;
+          const isActive = !item.comingSoon && (() => {
+            return isNavItemActive(item, location.pathname, location.search);
           })();
-          const link = (
+          const link = item.comingSoon ? (
+            <button
+              type="button"
+              onClick={() => {
+                toast("Coming soon! Check back after the next update.");
+                setMobileOpen(false);
+              }}
+              className={`${navLinkClass(false)} w-full`}
+              data-testid={`nav-${item.label.toLowerCase()}`}
+            >
+              {item.icon}
+              <span className="label font-medium flex-1 text-left">{item.label}</span>
+              {!collapsed && (
+                <span className="text-[9px] font-bold uppercase tracking-wide bg-secondary text-muted-foreground rounded-full px-1.5 py-0.5 shrink-0">Soon</span>
+              )}
+            </button>
+          ) : (
             <Link
               to={item.href}
               onClick={() => setMobileOpen(false)}
@@ -873,33 +890,61 @@ export default function Sidebar() {
   return (
     <TooltipProvider delayDuration={300}>
       {/* Mobile Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-border bg-background p-4 md:hidden">
-        <Link to="/dashboard" className="flex items-center gap-2">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-border bg-background/95 p-4 backdrop-blur md:hidden">
+        <Link to="/dashboard" className="flex min-w-0 items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="font-heading font-semibold">TaskFlow</span>
+          <span className="truncate font-heading font-semibold">TaskFlow</span>
         </Link>
         <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
       </div>
 
-      {/* Mobile Sidebar */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={() => setMobileOpen(false)}
-          aria-hidden
-        >
-          <div
-            className="absolute left-0 top-0 bottom-0 flex w-[220px] flex-col border-r border-border bg-card pt-16"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {/* Mobile More Drawer */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="w-[min(85vw,320px)] p-0 md:hidden">
+          <div className="flex h-full flex-col pt-16">
             <SidebarContent />
           </div>
+        </SheetContent>
+      </Sheet>
+
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 px-2 pb-[calc(env(safe-area-inset-bottom,0px)+0.4rem)] pt-2 backdrop-blur md:hidden">
+        <div className="grid grid-cols-5 gap-1">
+          {mobileBottomItems.map((item) => {
+            const active = isNavItemActive(item, location.pathname, location.search);
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium transition-colors ${
+                  active
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                {item.icon}
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setMobileOpen(true)}
+            className={`flex h-auto min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium ${
+              moreActive
+                ? "bg-primary/10 text-primary hover:bg-primary/10"
+                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+            }`}
+          >
+            <MoreHorizontal className="h-5 w-5" />
+            <span className="truncate">More</span>
+          </Button>
         </div>
-      )}
+      </nav>
 
       {/* Desktop Sidebar */}
       <aside
@@ -910,7 +955,8 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      <div className="md:hidden h-16" aria-hidden />
+      <div className="h-16 md:hidden" aria-hidden />
+      <div className="h-20 md:hidden" aria-hidden />
 
       {/* AI Tools Sheet */}
       {(isStudent || isTeacher) && (

@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../../App";
 import { callAI } from "../../../services/aiRouter";
+import { awardActivityXP } from "../../../services/xpService";
 
 // ─── Mock responses per tool type ────────────────────────────────────────────
 
@@ -497,6 +498,12 @@ const TOOL_FEATURE_MAP = {
   "Slide Deck Builder": "slides",
 };
 
+const TOOL_ACTIVITY_MAP = {
+  "Flashcard Generator": "flashcards",
+  "Quiz Generator": "quiz",
+  "Summarizer": "summary",
+};
+
 export function useAITool() {
   const { user, refreshCoins } = useContext(AuthContext);
   const [result, setResult] = useState(null);
@@ -514,6 +521,11 @@ export function useAITool() {
     try {
       const text = await callAI({ feature, prompt, userId: user?.id, onCoinsUpdated: refreshCoins });
       setResult(text);
+      // Award XP for successful generation (fire-and-forget)
+      const activityType = TOOL_ACTIVITY_MAP[toolName];
+      if (user?.id && activityType) {
+        awardActivityXP(user.id, activityType, null).catch(() => {});
+      }
       return text;
     } catch (err) {
       if (err.message === "INSUFFICIENT_COINS") {

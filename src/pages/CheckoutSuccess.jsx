@@ -1,74 +1,111 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
-import { CheckCircle2, Crown, ArrowRight, Loader2 } from "lucide-react";
+import { CheckCircle2, ArrowRight, Zap, Coins, Brain } from "lucide-react";
 import { AuthContext } from "../App";
-import { supabase } from "../services/supabaseClient";
+import { updateProfile, awardCoins } from "../services/db";
+import confetti from "canvas-confetti";
 
-const PRODUCT_LABELS = {
-  coins_100: "100 coins have been added to your account.",
-  coins_500: "500 coins have been added to your account.",
-  coins_2000: "2,000 coins have been added to your account.",
-  founder_bronze: "Your Bronze Founder Pass is now active.",
-  founder_silver: "Your Silver Founder Pass is now active.",
-  founder_gold: "Your Gold Founder Pass is now active.",
+const TIER_META = {
+  seed: {
+    label: "Seed",
+    launchCoins: 200,
+    dailyAI: 12,
+    coinMultiplier: "1×",
+  },
+  bronze: {
+    label: "Bronze",
+    launchCoins: 500,
+    dailyAI: 20,
+    coinMultiplier: "1.5×",
+  },
+  silver: {
+    label: "Silver",
+    launchCoins: 1500,
+    dailyAI: 35,
+    coinMultiplier: "2×",
+  },
+  gold: {
+    label: "Gold",
+    launchCoins: 3000,
+    dailyAI: 60,
+    coinMultiplier: "3×",
+  },
 };
 
 export default function CheckoutSuccess() {
   const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get("session_id");
-  const product = searchParams.get("product");
+  const tier = searchParams.get("tier")?.toLowerCase();
   const { user, setUser } = useContext(AuthContext);
-  const [visible, setVisible] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [showDashboardBtn, setShowDashboardBtn] = useState(false);
+  const [activated, setActivated] = useState(false);
+  const didActivate = useRef(false);
 
+  const meta = TIER_META[tier];
+
+  // Fire confetti on mount
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 100);
+    const fire = (angle, origin) =>
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        angle,
+        origin,
+        colors: ["#a855f7", "#ec4899", "#f59e0b", "#10b981"],
+      });
+    const t = setTimeout(() => {
+      fire(60, { x: 0, y: 0.6 });
+      fire(120, { x: 1, y: 0.6 });
+    }, 300);
     return () => clearTimeout(t);
   }, []);
 
-  // Re-fetch user profile from Supabase to pick up coins/founder_tier changes
+  // Show "Go to Dashboard" button after 3s
   useEffect(() => {
-    if (!user?.id) return;
-    const refreshProfile = async () => {
-      setRefreshing(true);
-      try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-        if (!error && data) {
-          const updated = { ...user, ...data };
-          setUser(updated);
-          localStorage.setItem("auth_user", JSON.stringify(updated));
-        }
-      } catch {
-        // Supabase not yet configured — silently skip
-      } finally {
-        setRefreshing(false);
-      }
-    };
-    refreshProfile();
-  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    const t = setTimeout(() => setShowDashboardBtn(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
 
-  const isFounder = product?.startsWith("founder_");
-  const heading = isFounder ? "You're a Founder! 🎉" : "Purchase Complete! 🎉";
-  const subtext = PRODUCT_LABELS[product] ?? "Your purchase was successful.";
+  // Update profile + award launch coins (runs once)
+  useEffect(() => {
+    if (!user?.id || !tier || !meta || didActivate.current) return;
+    didActivate.current = true;
+
+    const activate = async () => {
+      await updateProfile(user.id, { founder_tier: tier });
+      await awardCoins(user.id, meta.launchCoins, `${meta.label} Founder Pass launch coins`);
+      setUser((prev) => ({ ...prev, founder_tier: tier }));
+      setActivated(true);
+    };
+    activate();
+  }, [user?.id, tier]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!meta) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Purchase Complete!</h1>
+          <Button asChild>
+            <Link to="/dashboard">Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" /></Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={visible ? { opacity: 1, scale: 1, y: 0 } : {}}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="max-w-md w-full text-center"
       >
-        {/* Success Icon */}
+        {/* Success icon */}
         <motion.div
           initial={{ scale: 0 }}
-          animate={visible ? { scale: 1 } : {}}
+          animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
           className="flex justify-center mb-6"
         >
@@ -80,48 +117,54 @@ export default function CheckoutSuccess() {
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={visible ? { opacity: 1, y: 0 } : {}}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
         >
-          <h1 className="text-3xl font-bold mb-2">{heading}</h1>
-          <p className="text-muted-foreground text-lg mb-2">{subtext}</p>
-          {isFounder && (
-            <p className="text-muted-foreground text-sm mb-4">
-              Your exclusive perks and badge are now active. Keep an eye on your email for updates.
-            </p>
-          )}
+          <h1 className="text-3xl font-bold mb-2">
+            Welcome to the {meta.label} Founder Pass! 🎉
+          </h1>
+          <p className="text-muted-foreground mb-6">
+            Your exclusive perks are now active.
+          </p>
 
-          {refreshing && (
-            <p className="text-xs text-muted-foreground mb-4 flex items-center justify-center gap-1">
-              <Loader2 className="w-3 h-3 animate-spin" /> Updating your account…
-            </p>
-          )}
+          {/* Unlocks */}
+          <div className="bg-card border border-border rounded-2xl p-5 mb-8 space-y-3 text-left">
+            <p className="text-sm font-semibold text-foreground mb-1">What you unlocked:</p>
+            <div className="flex items-center gap-3 text-sm">
+              <Coins className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <span><span className="font-semibold">{meta.launchCoins.toLocaleString()} coins</span> credited on launch day</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm">
+              <Zap className="w-4 h-4 text-violet-400 flex-shrink-0" />
+              <span><span className="font-semibold">{meta.dailyAI} free AI calls/day</span> — forever</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm">
+              <Brain className="w-4 h-4 text-pink-400 flex-shrink-0" />
+              <span><span className="font-semibold">{meta.coinMultiplier} coin multiplier</span> on all study sessions</span>
+            </div>
+          </div>
 
-          {sessionId && (
-            <p className="text-xs text-muted-foreground mb-6 font-mono bg-muted rounded-lg px-3 py-2 inline-block">
-              Order ID: {sessionId}
+          {activated && (
+            <p className="text-xs text-emerald-400 mb-4">
+              ✓ {meta.launchCoins.toLocaleString()} coins added to your account
             </p>
           )}
         </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={visible ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-3 justify-center"
-        >
-          <Button asChild className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 text-white">
-            <Link to="/dashboard">
-              Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/store">
-              <Crown className="w-4 h-4 mr-2" /> Back to Store
-            </Link>
-          </Button>
-        </motion.div>
+        {/* CTA — shown after 3s */}
+        {showDashboardBtn && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Button asChild className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 text-white w-full">
+              <Link to="/dashboard">
+                Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );
