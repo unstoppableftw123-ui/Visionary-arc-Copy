@@ -55,6 +55,18 @@ module.exports = {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+        brand: {
+          orange:  '#FF7A3D',
+          deep:    '#C4581A',
+          brown:   '#8B4513',
+          pastel:  '#F0C9A0',
+          cream:   '#FFE8D6',
+          muted:   '#D4A58A',
+          bg:      '#150A06',
+          surface: '#1F0E08',
+          card:    '#2A1208',
+          border:  '#3D1F0D',
+        },
         hub: {
           bg: "var(--hub-bg)",
           surface: "var(--hub-surface)",

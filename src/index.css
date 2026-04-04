@@ -1,5 +1,26 @@
 @import './styles/design-system.css';
 
+:root {
+  --va-orange: #FF7A3D;
+  --va-deep:   #C4581A;
+  --va-brown:  #8B4513;
+  --va-pastel: #F0C9A0;
+  --va-cream:  #FFE8D6;
+  --va-muted:  #D4A58A;
+  --va-off:    #C9B8AD;
+  --va-bg:     #150A06;
+  --va-surface:#1F0E08;
+  --va-card:   #2A1208;
+  --va-border: #3D1F0D;
+  --va-text:   #FFE8D6;
+  --va-text-muted: #8B6A5A;
+}
+
+body {
+  background-color: var(--va-bg) !important;
+  color: var(--va-text) !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
