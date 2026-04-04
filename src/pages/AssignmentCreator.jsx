@@ -854,7 +854,7 @@ export default function AssignmentCreator() {
                         return (
                           <div className="rounded-xl border border-border bg-card px-4 py-3 shadow-lg flex items-center gap-3 cursor-grabbing opacity-95">
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[q.type] || "bg-gray-500/15"}`}>
+                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[q.type] || "bg-[var(--va-border)]/30"}`}>
                               {label}
                             </span>
                             <span className="text-sm truncate max-w-[300px]">{text}</span>
@@ -1408,7 +1408,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
         </button>
         <div className="flex-1 min-w-0 space-y-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <Badge className={typeColors[question.type] || "bg-gray-500/15"}>
+            <Badge className={typeColors[question.type] || "bg-[var(--va-border)]/30"}>
               {question.type?.replace("_", " ") || "question"}
             </Badge>
           </div>
@@ -1724,13 +1724,13 @@ function CanvasCard({ card, onUpdate, onRemove }) {
     hint_card: "bg-yellow-500/10 border-yellow-500/30 text-yellow-700",
     explanation_card: "bg-purple-500/10 border-purple-500/30 text-purple-700",
     true_false_card: "bg-teal-500/10 border-teal-500/30 text-teal-700",
-    text_block: "bg-gray-500/10 border-gray-500/30",
+    text_block: "bg-[var(--va-border)]/20 border-[var(--va-border)]",
     image_block: "bg-indigo-500/10 border-indigo-500/30 text-indigo-700",
     fill_blank_card: "bg-pink-500/10 border-pink-500/30 text-pink-700",
     slider_card: "bg-cyan-500/10 border-cyan-500/30 text-cyan-700",
-    divider: "bg-gray-400/10 border-gray-400/30",
+    divider: "bg-[var(--va-border)]/15 border-[var(--va-border)]",
     link_block: "bg-orange-500/10 border-orange-500/30 text-orange-700",
-  }[card.type] || "bg-gray-500/10";
+  }[card.type] || "bg-[var(--va-border)]/20";
 
   return (
     <div

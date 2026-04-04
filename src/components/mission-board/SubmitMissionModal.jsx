@@ -61,7 +61,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
       <DialogContent className="bg-[#12121A] border border-white/10 text-white max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold">Submit Your Work</DialogTitle>
-          <DialogDescription className="text-gray-400 text-sm">
+          <DialogDescription className="text-muted-foreground text-sm">
             Paste a link to your completed work. The company reviewer will check it and award XP.
           </DialogDescription>
         </DialogHeader>
@@ -69,14 +69,14 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
         <div className="flex flex-col gap-4 py-2">
           {/* URL input */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-foreground/80 uppercase tracking-wide">
               Project URL <span className="text-red-400">*</span>
             </label>
             <Input
               placeholder="https://github.com/your-project"
               value={url}
               onChange={handleUrlChange}
-              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-white/30"
+              className="bg-[var(--va-surface)] border-[var(--va-border)] text-white placeholder:text-muted-foreground focus:border-[var(--va-orange)]/50"
             />
             {urlError && (
               <p className="text-xs text-red-400">{urlError}</p>
@@ -85,9 +85,9 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
 
           {/* Note textarea */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-foreground/80 uppercase tracking-wide">
               Note to reviewer{' '}
-              <span className="text-gray-500 font-normal normal-case">(optional)</span>
+              <span className="text-muted-foreground font-normal normal-case">(optional)</span>
             </label>
             <textarea
               rows={3}
@@ -95,9 +95,9 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
               placeholder="Anything you want the reviewer to know..."
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="w-full rounded-md bg-white/5 border border-white/10 text-white placeholder:text-gray-500 text-sm px-3 py-2 resize-none focus:outline-none focus:border-white/30 transition-colors"
+              className="w-full rounded-md bg-white/5 border border-white/10 text-white placeholder:text-muted-foreground text-sm px-3 py-2 resize-none focus:outline-none focus:border-[var(--va-orange)]/50 transition-colors"
             />
-            <p className="text-xs text-gray-500 text-right">
+            <p className="text-xs text-muted-foreground text-right">
               {note.length}/{NOTE_MAX}
             </p>
           </div>
@@ -106,7 +106,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
         <DialogFooter className="gap-2">
           <Button
             variant="outline"
-            className="border-white/10 text-gray-300 hover:bg-white/10 hover:text-white"
+            className="border-white/10 text-foreground/80 hover:bg-white/10 hover:text-white"
             onClick={onClose}
             disabled={loading}
           >

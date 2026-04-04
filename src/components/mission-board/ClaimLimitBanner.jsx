@@ -60,7 +60,7 @@ export default function ClaimLimitBanner({ dailyCount, userCoins, userId, onSlot
           <span className="text-xl">🪙</span>
           <span className="text-amber-300 font-medium">
             You've claimed 3 missions today.{' '}
-            <span className="text-gray-400 font-normal">Resets at midnight UTC.</span>
+            <span className="text-muted-foreground font-normal">Resets at midnight UTC.</span>
           </span>
         </div>
 

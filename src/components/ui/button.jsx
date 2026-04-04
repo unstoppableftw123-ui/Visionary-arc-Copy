@@ -25,16 +25,16 @@ const buttonVariants = cva(
         // Solid variants: lift + deepen shadow on hover
         default:
           "bg-primary text-primary-foreground shadow " +
-          "hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-md",
+          "hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-hover",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm " +
-          "hover:bg-destructive/90 hover:-translate-y-0.5 hover:shadow-md",
+          "bg-destructive text-destructive-foreground shadow-rest" +
+          "hover:bg-destructive/90 hover:-translate-y-0.5 hover:shadow-hover",
         outline:
-          "border border-input bg-background shadow-sm " +
-          "hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 hover:shadow-md",
+          "border border-input bg-background shadow-rest" +
+          "hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 hover:shadow-hover",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm " +
-          "hover:bg-secondary/80 hover:-translate-y-0.5 hover:shadow-md",
+          "bg-secondary text-secondary-foreground shadow-rest" +
+          "hover:bg-secondary/80 hover:-translate-y-0.5 hover:shadow-hover",
         // Subtle variants: no lift, no shadow
         ghost:
           "hover:bg-accent hover:text-accent-foreground",

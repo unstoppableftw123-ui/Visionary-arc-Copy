@@ -13,7 +13,7 @@ import { Switch } from '../components/ui/switch';
 
 // ── Tier display config ─────────────────────────────────────────────────────
 const TIER_CONFIG = {
-  Beginner: { bg: 'bg-gray-500/20',   text: 'text-gray-400',   dot: 'bg-gray-400' },
+  Beginner: { bg: 'bg-[var(--va-border)]/40', text: 'text-muted-foreground', dot: 'bg-[var(--va-muted)]' },
   Builder:  { bg: 'bg-green-500/20',  text: 'text-green-400',  dot: 'bg-green-400' },
   Creator:  { bg: 'bg-blue-500/20',   text: 'text-blue-400',   dot: 'bg-blue-400' },
   Pro:      { bg: 'bg-purple-500/20', text: 'text-purple-400', dot: 'bg-purple-400' },

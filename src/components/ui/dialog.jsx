@@ -20,7 +20,7 @@ const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
     ref={ref}
     className={cn(
       "fixed inset-0 z-50",
-      "bg-black/60 backdrop-blur-sm",
+      "bg-[var(--va-bg)]/80 backdrop-blur-sm",
       "data-[state=open]:animate-in  data-[state=open]:fade-in-0",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
       className
@@ -45,7 +45,7 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
         // Layout
         "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg gap-4",
         "translate-x-[-50%] translate-y-[-50%]",
-        "border bg-background p-6 shadow-xl sm:rounded-xl",
+        "border bg-background p-6 shadow-hover sm:rounded-xl",
         // Open animation — spring easing applied via index.css selector
         "duration-300",
         "data-[state=open]:animate-in",

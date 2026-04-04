@@ -203,7 +203,7 @@ export function GenerateButton({ disabled, children }) {
         "before:content-[''] before:absolute before:inset-0 before:-translate-x-full",
         "before:bg-gradient-to-r before:from-transparent before:via-white/[0.14] before:to-transparent",
         "hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out",
-        "hover:shadow-lg hover:shadow-primary/30 hover:brightness-110",
+        "hover:shadow-hover hover:shadow-primary/30 hover:brightness-110",
         "active:scale-[0.99] active:brightness-95",
         disabled ? "opacity-50 cursor-not-allowed" : "",
       ].join(" ")}

@@ -202,7 +202,7 @@ function SubjectSidebar({
               {/* Subject row */}
               <button
                 onClick={() => onToggleSubject(subject.id)}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-left transition-all hover:bg-white/5 rounded-lg mx-1"
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-left transition-all hover:bg-[var(--va-surface)] rounded-lg mx-1"
                 style={{ width: "calc(100% - 8px)" }}
               >
                 {/* Icon + ring */}
@@ -708,7 +708,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
               onKeyDown={(e) => e.key === "Enter" && !submitted && handleSubmit()}
               disabled={submitted}
               placeholder="Type your answer..."
-              className="flex-1 rounded-xl px-4 py-3 text-sm font-medium bg-white/5 outline-none transition-all placeholder:text-white/25"
+              className="flex-1 rounded-xl px-4 py-3 text-sm font-medium bg-[var(--va-surface)] outline-none transition-all placeholder:text-white/25"
               style={{
                 border: submitted
                   ? isCorrect

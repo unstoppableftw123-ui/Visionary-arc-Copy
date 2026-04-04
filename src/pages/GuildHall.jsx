@@ -36,7 +36,7 @@ function meetsRequirements(guild, userRank, userStars) {
 function MissionCard({ mission, accent }) {
   const diffColor = RANK_COLORS[mission.difficulty]?.color ?? '#9CA3AF';
   return (
-    <Card className="bg-white/5 border-white/10 hover:border-white/20 transition-colors">
+    <Card className="bg-[var(--va-surface)] border-[var(--va-border)] hover:border-[var(--va-orange)]/40 transition-colors">
       <CardContent className="p-4 space-y-2">
         <div className="flex items-start justify-between gap-2">
           <span className="font-semibold text-sm leading-tight">{mission.title}</span>
@@ -307,7 +307,7 @@ export default function GuildHall() {
 
         {/* Requirements card */}
         {(guild.entry_min_rank || guild.entry_min_stars || guild.entry_track) && (
-          <Card className="bg-white/5 border-white/10">
+          <Card className="bg-[var(--va-surface)] border-[var(--va-border)]">
             <CardContent className="p-4">
               <p className="text-sm font-semibold mb-2" style={{ color: accent }}>Entry Requirements</p>
               <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
@@ -381,7 +381,7 @@ export default function GuildHall() {
             <Trophy className="h-5 w-5" style={{ color: accent }} />
             Top Members
           </h2>
-          <Card className="bg-white/5 border-white/10">
+          <Card className="bg-[var(--va-surface)] border-[var(--va-border)]">
             <CardContent className="p-4 divide-y divide-white/5">
               {members.length === 0 ? (
                 <p className="text-muted-foreground text-sm py-2">No members yet.</p>

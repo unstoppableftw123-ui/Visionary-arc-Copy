@@ -13,7 +13,7 @@ import { sendFriendRequest, acceptFriendRequest } from '../services/db';
 import { getTierForXP } from '../services/xpService';
 
 const TIER_COLOR = {
-  Beginner: 'text-gray-400',
+  Beginner: 'text-muted-foreground',
   Builder:  'text-green-400',
   Creator:  'text-blue-400',
   Pro:      'text-purple-400',
@@ -382,7 +382,7 @@ function LeaderboardTab({ userId }) {
               >
                 {/* Rank */}
                 <span className={`w-7 text-center text-sm font-bold shrink-0 ${
-                  i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-amber-600' : 'text-muted-foreground'
+                  i === 0 ? 'text-yellow-400' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-amber-600' : 'text-muted-foreground'
                 }`}>
                   {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
                 </span>

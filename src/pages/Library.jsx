@@ -714,7 +714,7 @@ function GridCard({ item, tags, registry, search, isSelected, isMultiSelected, i
             { Icon:TrashSimple,  fn:e=>{ e.stopPropagation(); onDelete(item.item_id); }, red:true },
           ].map(({ Icon, fn, red }, i) => (
             <motion.button key={i} whileHover={{ scale:1.14 }} whileTap={{ scale:0.9 }} onClick={fn}
-              className={`w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow transition-colors ${red?"text-red-500 hover:bg-red-500 hover:text-white":"text-gray-800 hover:bg-white"}`}>
+              className={`w-8 h-8 rounded-full bg-[var(--va-card)] flex items-center justify-center shadow-rest transition-colors ${red?"text-red-400 hover:bg-red-500/20 hover:text-red-400":"text-foreground hover:bg-[var(--va-surface)]"}`}>
               <Icon size={14} weight="fill" />
             </motion.button>
           ))}

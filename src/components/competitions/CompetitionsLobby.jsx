@@ -417,7 +417,7 @@ export default function CompetitionsLobby({
 
             <Button
               variant="outline"
-              className="border-white/10 text-[#efefef] hover:bg-white/5"
+              className="border-[var(--va-border)] text-foreground hover:bg-[var(--va-surface)]"
               onClick={onJoinPublicMatch}
             >
               Join Public Match

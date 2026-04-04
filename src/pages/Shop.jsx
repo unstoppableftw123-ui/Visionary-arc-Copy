@@ -1,545 +1,418 @@
-import { useState, useEffect, useContext, useCallback, useMemo } from "react";
+import { useState, useContext } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
+import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
-import { AuthContext, API } from "../App";
+import { AuthContext } from "../App";
+import { supabase } from "../services/supabaseClient";
+import {
+  purchaseSeasonPass,
+  purchaseCoinTopUp,
+  spendCoins,
+} from "../services/stripeService";
 import { toast } from "sonner";
-import { 
-  ShoppingBag, 
-  Gift, 
-  Heart,
-  Plus, 
-  ExternalLink,
+import {
   Coins,
   Sparkles,
   Zap,
   Palette,
-  BookTemplate,
-  Lock,
-  Users
+  Star,
+  Crown,
+  ShoppingBag,
+  Check,
 } from "lucide-react";
+import CoinIcon from "../components/ui/CoinIcon";
+import Icon from "../components/ui/Icon";
+import { Icons } from "../assets/icons";
 
-export default function Shop({ embed = false }) {
-  const { user, token } = useContext(AuthContext);
-  const [activeTab, setActiveTab] = useState("store");
-  const [storeItems, setStoreItems] = useState([]);
-  const [wishlists, setWishlists] = useState([]);
-  const [exchanges, setExchanges] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  // Wishlist form
-  const [wishlistOpen, setWishlistOpen] = useState(false);
-  const [wishlistName, setWishlistName] = useState("");
-  const [wishlistDesc, setWishlistDesc] = useState("");
-  
-  // Item form
-  const [itemOpen, setItemOpen] = useState(false);
-  const [selectedWishlist, setSelectedWishlist] = useState(null);
-  const [itemTitle, setItemTitle] = useState("");
-  const [itemUrl, setItemUrl] = useState("");
-  const [itemPrice, setItemPrice] = useState("");
-  const [itemNotes, setItemNotes] = useState("");
-  
-  // Exchange form
-  const [exchangeOpen, setExchangeOpen] = useState(false);
-  const [exchangeName, setExchangeName] = useState("");
-  const [exchangeDesc, setExchangeDesc] = useState("");
-  const [exchangeBudget, setExchangeBudget] = useState("");
+// ── Cosmetics catalogue ───────────────────────────────────────────────────────
 
-  const headers = useMemo(() => token ? { Authorization: `Bearer ${token}` } : {}, [token]);
+const BORDER_OPTIONS = [
+  { id: "default",      label: "Default",       price: 0,   preview: "border-border",                       style: {} },
+  { id: "neon-purple",  label: "Neon Purple",   price: 150, preview: "border-purple-500",                   style: { borderColor: "#a855f7", boxShadow: "0 0 8px #a855f788" } },
+  { id: "gold",         label: "Gold",          price: 200, preview: "border-yellow-400",                   style: { borderColor: "#facc15", boxShadow: "0 0 8px #facc1588" } },
+  { id: "fire",         label: "Fire",          price: 300, preview: "border-orange-500",                   style: { borderColor: "#f97316", boxShadow: "0 0 8px #f9731688" } },
+  { id: "frost",        label: "Frost",         price: 300, preview: "border-cyan-400",                     style: { borderColor: "#22d3ee", boxShadow: "0 0 8px #22d3ee88" } },
+  { id: "galaxy",       label: "Galaxy",        price: 500, preview: "border-indigo-500",                   style: { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px #a855f744" } },
+];
 
-  const fetchAll = useCallback(async () => {
+const CARD_BG_OPTIONS = [
+  { id: "default",      label: "Default",       price: 0,   bg: "bg-card",                                  style: {} },
+  { id: "dark-carbon",  label: "Dark Carbon",   price: 150, bg: "bg-zinc-900",                              style: { background: "repeating-linear-gradient(45deg,#18181b,#18181b 4px,#27272a 4px,#27272a 8px)" } },
+  { id: "aurora",       label: "Aurora",        price: 250, bg: "bg-emerald-950",                           style: { background: "linear-gradient(135deg,#064e3b,#1e3a5f,#312e81)" } },
+  { id: "sunset",       label: "Sunset",        price: 250, bg: "bg-rose-950",                              style: { background: "linear-gradient(135deg,#450a0a,#7c2d12,#4c1d95)" } },
+  { id: "ocean",        label: "Ocean",         price: 200, bg: "bg-sky-950",                               style: { background: "linear-gradient(135deg,#0c4a6e,#164e63,#0f172a)" } },
+];
+
+// ── Coin packs ────────────────────────────────────────────────────────────────
+
+const COIN_PACKS = [
+  { id: "starter",  coins: 200,  price: "$3.99",  label: "Starter",  color: "from-slate-600 to-slate-800" },
+  { id: "standard", coins: 600,  price: "$9.99",  label: "Standard", color: "from-violet-600 to-purple-800", bestValue: true },
+  { id: "pro",      coins: 1500, price: "$19.99", label: "Pro",       color: "from-amber-500 to-orange-700" },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+export default function Shop() {
+  const { user, setUser } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState("season");
+  const [buying, setBuying] = useState(null);
+  const [equipping, setEquipping] = useState(null);
+
+  const cosmetics = user?.cosmetics ?? { border: "default", card_bg: "default", badge_frame: "default" };
+
+  // Owned cosmetics are those the user has previously equipped or purchased.
+  // We store equipped state in profile.cosmetics. For "owned" tracking we check
+  // if the item id is the currently equipped one OR if it's "default" (always free).
+  // A stricter approach would require a separate owned_cosmetics array — kept simple here.
+  const ownedBorders  = new Set([cosmetics.border,  "default"]);
+  const ownedCardBgs  = new Set([cosmetics.card_bg, "default"]);
+
+  // ── Handlers ─────────────────────────────────────────────────────────────
+
+  async function handleSeasonPass() {
+    if (!user) return;
+    setBuying("season_pass");
     try {
-      const [storeRes, wishlistRes, exchangeRes] = await Promise.all([
-        axios.get(`${API}/store/items`, { headers, withCredentials: true }),
-        axios.get(`${API}/wishlists`, { headers, withCredentials: true }),
-        axios.get(`${API}/exchanges`, { headers, withCredentials: true })
-      ]);
-      setStoreItems(storeRes.data);
-      setWishlists(wishlistRes.data);
-      setExchanges(exchangeRes.data);
-    } catch (error) {
-      toast.error("Failed to load data");
+      const url = await purchaseSeasonPass(user.id);
+      window.location.href = url;
+    } catch (err) {
+      toast.error(err.message ?? "Failed to start checkout");
+      setBuying(null);
+    }
+  }
+
+  async function handleCoinTopUp(packId) {
+    if (!user) return;
+    setBuying(packId);
+    try {
+      const url = await purchaseCoinTopUp(user.id, packId);
+      window.location.href = url;
+    } catch (err) {
+      toast.error(err.message ?? "Failed to start checkout");
+      setBuying(null);
+    }
+  }
+
+  async function handleBuyCosmetic(type, item) {
+    if (!user) return;
+    const key = `${type}:${item.id}`;
+    setEquipping(key);
+    try {
+      // Deduct coins
+      await spendCoins(user.id, item.price, `cosmetic:${type}:${item.id}`);
+      // Equip immediately after purchase
+      await equipCosmetic(type, item.id, true);
+    } catch (err) {
+      toast.error(err.message ?? "Purchase failed");
     } finally {
-      setLoading(false);
+      setEquipping(null);
     }
-  }, [headers]);
+  }
 
-  useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+  async function handleEquipCosmetic(type, itemId) {
+    const key = `${type}:${itemId}`;
+    setEquipping(key);
+    await equipCosmetic(type, itemId, false);
+    setEquipping(null);
+  }
 
-  const handleCreateWishlist = async () => {
-    if (!wishlistName.trim()) return;
-    try {
-      const response = await axios.post(`${API}/wishlists`, {
-        name: wishlistName,
-        description: wishlistDesc
-      }, { headers, withCredentials: true });
-      setWishlists([response.data, ...wishlists]);
-      setWishlistName("");
-      setWishlistDesc("");
-      setWishlistOpen(false);
-      toast.success("Wishlist created!");
-    } catch (error) {
-      toast.error("Failed to create wishlist");
+  async function equipCosmetic(type, itemId, wasPurchased) {
+    const field = type === "border" ? "border" : "card_bg";
+    const updatedCosmetics = { ...cosmetics, [field]: itemId };
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({ cosmetics: updatedCosmetics })
+      .eq("id", user.id);
+
+    if (error) {
+      toast.error("Failed to save cosmetic");
+      return;
     }
-  };
 
-  const handleAddItem = async () => {
-    if (!itemTitle.trim() || !selectedWishlist) return;
-    try {
-      await axios.post(`${API}/wishlists/items`, {
-        wishlist_id: selectedWishlist,
-        title: itemTitle,
-        url: itemUrl || null,
-        price: itemPrice ? parseFloat(itemPrice) : null,
-        notes: itemNotes || null
-      }, { headers, withCredentials: true });
-      
-      // Refresh wishlists
-      const response = await axios.get(`${API}/wishlists`, { headers, withCredentials: true });
-      setWishlists(response.data);
-      
-      setItemTitle("");
-      setItemUrl("");
-      setItemPrice("");
-      setItemNotes("");
-      setItemOpen(false);
-      toast.success("Item added!");
-    } catch (error) {
-      toast.error("Failed to add item");
-    }
-  };
+    // Refresh local user state
+    setUser((prev) => ({ ...prev, cosmetics: updatedCosmetics, coins: wasPurchased ? (prev.coins - (type === "border" ? BORDER_OPTIONS.find(b => b.id === itemId)?.price : CARD_BG_OPTIONS.find(c => c.id === itemId)?.price) ?? prev.coins) : prev.coins }));
+    toast.success(wasPurchased ? "Purchased and equipped!" : "Equipped!");
+  }
 
-  const handleCreateExchange = async () => {
-    if (!exchangeName.trim()) return;
-    try {
-      const response = await axios.post(`${API}/exchanges`, {
-        name: exchangeName,
-        description: exchangeDesc,
-        budget: exchangeBudget ? parseFloat(exchangeBudget) : null
-      }, { headers, withCredentials: true });
-      setExchanges([response.data, ...exchanges]);
-      setExchangeName("");
-      setExchangeDesc("");
-      setExchangeBudget("");
-      setExchangeOpen(false);
-      toast.success("Exchange created!");
-    } catch (error) {
-      toast.error("Failed to create exchange");
-    }
-  };
+  // ── Loading skeleton ──────────────────────────────────────────────────────
 
-  const handleJoinExchange = async (exchangeId) => {
-    try {
-      await axios.post(`${API}/exchanges/${exchangeId}/join`, {}, { headers, withCredentials: true });
-      toast.success("Joined exchange!");
-      fetchAll();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || "Failed to join");
-    }
-  };
-
-  const categoryInfo = {
-    avatar_cosmetics: { icon: <Palette className="w-5 h-5" />, label: "Cosmetics", color: "from-pink-500 to-rose-500" },
-    xp_boosters: { icon: <Zap className="w-5 h-5" />, label: "XP Boosters", color: "from-yellow-500 to-orange-500" },
-    study_aids: { icon: <BookTemplate className="w-5 h-5" />, label: "Study Aids", color: "from-blue-500 to-cyan-500" },
-    template_packs: { icon: <Sparkles className="w-5 h-5" />, label: "Templates", color: "from-purple-500 to-violet-500" }
-  };
-
-  if (loading) {
-    const loadingContent = (
-      <div>
+  if (!user) {
+    return (
+      <div className="flex-1 p-8">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 w-32 bg-muted rounded"></div>
-          <div className="h-64 bg-muted rounded-xl"></div>
+          <div className="h-8 w-48 bg-muted rounded" />
+          <div className="h-64 bg-muted rounded-xl" />
         </div>
       </div>
     );
-    if (embed) return loadingContent;
-    return loadingContent;
   }
 
-  const shopMain = (
+  // ── Render ────────────────────────────────────────────────────────────────
+
+  return (
     <div className="flex-1 p-4 md:p-8 overflow-auto" data-testid="shop-page">
-        {/* Hero Header */}
-        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-pink-600 via-purple-500 to-indigo-500">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvZz48L3N2Zz4=')] opacity-30"></div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative z-10"
-          >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                  <ShoppingBag className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="font-heading text-2xl md:text-3xl font-bold text-white">Shop & Gifts</h1>
-                  <p className="text-white/80 text-sm md:text-base">Store, wishlists & gift exchanges</p>
-                </div>
+      {/* Hero */}
+      <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-violet-700 via-purple-600 to-indigo-600">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
+                <ShoppingBag className="w-6 h-6 text-white" />
               </div>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur rounded-lg px-4 py-2">
-                <Coins className="w-5 h-5 text-amber-300" />
-                <span className="text-white font-bold">{user?.coins || 0}</span>
-                <span className="text-white/70 text-sm">coins</span>
+              <div>
+                <h1 className="font-heading text-2xl md:text-3xl font-bold text-white">Shop</h1>
+                <p className="text-white/80 text-sm">Season Pass · Coins · Cosmetics</p>
               </div>
             </div>
-          </motion.div>
-        </div>
-
-        {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 max-w-md mb-6">
-            <TabsTrigger value="store" data-testid="tab-store">
-              <ShoppingBag className="w-4 h-4 mr-2" /> Store
-            </TabsTrigger>
-            <TabsTrigger value="wishlists" data-testid="tab-wishlists">
-              <Heart className="w-4 h-4 mr-2" /> Wishlists
-            </TabsTrigger>
-            <TabsTrigger value="exchanges" data-testid="tab-exchanges">
-              <Gift className="w-4 h-4 mr-2" /> Exchanges
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Store Tab */}
-          <TabsContent value="store">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {storeItems.map((item, index) => {
-                const catInfo = categoryInfo[item.category] || categoryInfo.avatar_cosmetics;
-                return (
-                  <motion.div
-                    key={item.item_id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <Card className="border-border h-full relative overflow-hidden group">
-                      {item.coming_soon && (
-                        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
-                          <Badge variant="secondary" className="text-sm">
-                            <Lock className="w-4 h-4 mr-1" /> Coming Soon
-                          </Badge>
-                        </div>
-                      )}
-                      <CardContent className="p-4">
-                        <div className={`w-full h-24 rounded-lg bg-gradient-to-br ${catInfo.color} flex items-center justify-center mb-3`}>
-                          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white">
-                            {catInfo.icon}
-                          </div>
-                        </div>
-                        <h3 className="font-medium mb-1">{item.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{item.description}</p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1 text-amber-500">
-                            <Coins className="w-4 h-4" />
-                            <span className="font-bold">{item.price}</span>
-                          </div>
-                          <Badge variant="outline" className="text-xs">{catInfo.label}</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur rounded-lg px-4 py-2">
+              <CoinIcon animated={true} size={20} />
+              <span className="text-white font-bold">{(user.coins ?? 0).toLocaleString()}</span>
+              <span className="text-white/70 text-sm">coins</span>
             </div>
-          </TabsContent>
-
-          {/* Wishlists Tab */}
-          <TabsContent value="wishlists">
-            <div className="flex justify-end mb-4">
-              <Dialog open={wishlistOpen} onOpenChange={setWishlistOpen}>
-                <DialogTrigger asChild>
-                  <Button data-testid="create-wishlist-btn">
-                    <Plus className="w-4 h-4 mr-2" /> New Wishlist
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create Wishlist</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 mt-4">
-                    <div className="space-y-2">
-                      <Label>Name</Label>
-                      <Input value={wishlistName} onChange={(e) => setWishlistName(e.target.value)} placeholder="My Birthday Wishlist" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description (optional)</Label>
-                      <Textarea value={wishlistDesc} onChange={(e) => setWishlistDesc(e.target.value)} placeholder="Things I'd love to receive..." />
-                    </div>
-                    <Button onClick={handleCreateWishlist} className="w-full">Create Wishlist</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {wishlists.map((wishlist) => (
-                <Card key={wishlist.wishlist_id} className="border-border">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Heart className="w-5 h-5 text-pink-500" />
-                        {wishlist.name}
-                      </CardTitle>
-                      <Badge variant="secondary">{wishlist.items?.length || 0} items</Badge>
-                    </div>
-                    {wishlist.description && (
-                      <CardDescription>{wishlist.description}</CardDescription>
-                    )}
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 mb-4">
-                      {wishlist.items?.slice(0, 3).map((item) => (
-                        <div key={item.item_id} className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg">
-                          <span className="text-sm truncate flex-1">{item.title}</span>
-                          {item.url && (
-                            <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                              <ExternalLink className="w-4 h-4" />
-                            </a>
-                          )}
-                          {item.price && (
-                            <span className="text-sm text-muted-foreground ml-2">${item.price}</span>
-                          )}
-                        </div>
-                      ))}
-                      {(wishlist.items?.length || 0) > 3 && (
-                        <p className="text-xs text-muted-foreground text-center">+{wishlist.items.length - 3} more items</p>
-                      )}
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => { setSelectedWishlist(wishlist.wishlist_id); setItemOpen(true); }}
-                    >
-                      <Plus className="w-4 h-4 mr-2" /> Add Item
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-
-              {wishlists.length === 0 && (
-                <Card className="border-border border-dashed col-span-full">
-                  <CardContent className="py-12 text-center">
-                    <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">No wishlists yet</p>
-                    <Button onClick={() => setWishlistOpen(true)}>
-                      <Plus className="w-4 h-4 mr-2" /> Create your first wishlist
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
-            {/* Add Item Dialog */}
-            <Dialog open={itemOpen} onOpenChange={setItemOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add Item to Wishlist</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <Label>Item Name *</Label>
-                    <Input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} placeholder="What do you want?" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>URL (optional)</Label>
-                    <Input value={itemUrl} onChange={(e) => setItemUrl(e.target.value)} placeholder="https://..." />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Price (optional)</Label>
-                    <Input type="number" value={itemPrice} onChange={(e) => setItemPrice(e.target.value)} placeholder="29.99" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Notes (optional)</Label>
-                    <Textarea value={itemNotes} onChange={(e) => setItemNotes(e.target.value)} placeholder="Size, color, etc." />
-                  </div>
-                  <Button onClick={handleAddItem} className="w-full">Add Item</Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </TabsContent>
-
-          {/* Exchanges Tab */}
-          <TabsContent value="exchanges">
-            <div className="flex justify-end mb-4">
-              <Dialog open={exchangeOpen} onOpenChange={setExchangeOpen}>
-                <DialogTrigger asChild>
-                  <Button data-testid="create-exchange-btn">
-                    <Plus className="w-4 h-4 mr-2" /> New Exchange
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create Gift Exchange</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 mt-4">
-                    <div className="space-y-2">
-                      <Label>Name</Label>
-                      <Input value={exchangeName} onChange={(e) => setExchangeName(e.target.value)} placeholder="Secret Santa 2024" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description (optional)</Label>
-                      <Textarea value={exchangeDesc} onChange={(e) => setExchangeDesc(e.target.value)} placeholder="Annual gift exchange..." />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Budget (optional)</Label>
-                      <Input type="number" value={exchangeBudget} onChange={(e) => setExchangeBudget(e.target.value)} placeholder="25" />
-                    </div>
-                    <Button onClick={handleCreateExchange} className="w-full">Create Exchange</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {exchanges.map((exchange) => (
-                <Card key={exchange.exchange_id} className="border-border">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Gift className="w-5 h-5 text-green-500" />
-                        {exchange.name}
-                      </CardTitle>
-                    </div>
-                    {exchange.description && (
-                      <CardDescription>{exchange.description}</CardDescription>
-                    )}
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Users className="w-4 h-4" /> {exchange.participant_count || 0} joined
-                      </span>
-                      {exchange.budget && (
-                        <span>Budget: ${exchange.budget}</span>
-                      )}
-                    </div>
-                    <Button onClick={() => handleJoinExchange(exchange.exchange_id)} className="w-full">
-                      Join Exchange
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-
-              {exchanges.length === 0 && (
-                <Card className="border-border border-dashed col-span-full">
-                  <CardContent className="py-12 text-center">
-                    <Gift className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">No gift exchanges yet</p>
-                    <Button onClick={() => setExchangeOpen(true)}>
-                      <Plus className="w-4 h-4 mr-2" /> Create a gift exchange
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* ── REAL REWARDS TEASER ──────────────────────────────────────────── */}
-        <div className="mt-10 pt-8 border-t-2 border-amber-500/20" style={{ borderImage: "linear-gradient(90deg, transparent, rgba(245,158,11,0.4), rgba(234,179,8,0.4), transparent) 1" }}>
-          <style>{`
-            @keyframes comingSoonPulse {
-              0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
-              50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(245,158,11,0); }
-            }
-            @keyframes goldShimmer {
-              0% { background-position: -200% center; }
-              100% { background-position: 200% center; }
-            }
-            .coming-soon-badge { animation: comingSoonPulse 2s ease-in-out infinite; }
-            .gold-shimmer-border {
-              background: linear-gradient(90deg, rgba(245,158,11,0.3), rgba(234,179,8,0.6), rgba(245,158,11,0.3));
-              background-size: 200% auto;
-              animation: goldShimmer 3s linear infinite;
-            }
-          `}</style>
-
-          {/* Section header */}
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-1">
-              <h2 className="font-heading text-xl font-bold text-foreground">Real Rewards</h2>
-              <span className="coming-soon-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                Coming Soon
-              </span>
-            </div>
-            <p className="text-sm text-muted-foreground">Earn coins. Redeem for real things.</p>
           </div>
+        </motion.div>
+      </div>
 
-          {/* Brand cards grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            {[
-              { name: "Starbucks", price: "~500 coins", emoji: "☕" },
-              { name: "Roblox", price: "~500 coins", emoji: "🎮" },
-              { name: "DoorDash", price: "~1,000 coins", emoji: "🍔" },
-              { name: "Amazon", price: "~1,000 coins", emoji: "📦" },
-            ].map((brand) => (
-              <div key={brand.name} className="relative rounded-xl overflow-hidden cursor-default select-none">
-                {/* Gold shimmer border */}
-                <div className="absolute inset-0 rounded-xl p-px">
-                  <div className="gold-shimmer-border absolute inset-0 rounded-xl" />
-                </div>
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-3 max-w-md mb-8">
+          <TabsTrigger value="season"><Crown className="w-4 h-4 mr-2" />Season Pass</TabsTrigger>
+          <TabsTrigger value="coins"><Coins className="w-4 h-4 mr-2" />Coins</TabsTrigger>
+          <TabsTrigger value="cosmetics"><Palette className="w-4 h-4 mr-2" />Cosmetics</TabsTrigger>
+        </TabsList>
 
-                {/* Card content — blurred + grayscale */}
-                <div
-                  className="relative rounded-xl border border-amber-500/20 bg-card p-5 text-center"
-                  style={{ filter: "blur(1.5px) grayscale(1)", opacity: 0.5 }}
-                >
-                  <div className="text-3xl mb-2">{brand.emoji}</div>
-                  <p className="font-bold text-sm text-foreground">{brand.name}</p>
-                  <p className="text-xs text-muted-foreground mt-1 flex items-center justify-center gap-1">
-                    <Coins className="w-3 h-3 text-amber-400" />
-                    {brand.price}
-                  </p>
+        {/* ── Season Pass ── */}
+        <TabsContent value="season">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="max-w-lg mx-auto">
+            <Card className="border-2 border-violet-500/50 overflow-hidden">
+              <div className="bg-gradient-to-br from-violet-600 to-indigo-700 p-6 text-white">
+                <div className="flex items-center gap-3 mb-2">
+                  <Crown className="w-8 h-8 text-yellow-300" />
+                  <h2 className="text-2xl font-bold">Season Pass</h2>
                 </div>
-
-                {/* Lock overlay */}
-                <div className="absolute inset-0 flex items-center justify-center rounded-xl">
-                  <div className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center border border-border">
-                    <Lock className="w-4 h-4 text-muted-foreground" />
-                  </div>
-                </div>
+                <p className="text-white/80 text-sm">One-time purchase · Active for 90 days</p>
+                <p className="text-3xl font-bold mt-4">$9.99</p>
               </div>
+              <CardContent className="p-6 space-y-4">
+                {user.season_pass_active ? (
+                  <div className="flex items-center gap-2 text-emerald-500 font-medium">
+                    <Check className="w-5 h-5" />
+                    Season Pass active — expires {new Date(user.season_pass_expires_at).toLocaleDateString()}
+                  </div>
+                ) : null}
+
+                <ul className="space-y-3">
+                  {[
+                    { icon: <Zap className="w-5 h-5 text-yellow-400" />, text: "25% XP boost on all activities" },
+                    { icon: <Star className="w-5 h-5 text-amber-400" />, text: "Exclusive season badge on your profile" },
+                    { icon: <Crown className="w-5 h-5 text-violet-400" />, text: "Priority display on the weekly leaderboard" },
+                    { icon: <Sparkles className="w-5 h-5 text-pink-400" />, text: "Early access to new career tracks" },
+                  ].map(({ icon, text }) => (
+                    <li key={text} className="flex items-start gap-3 text-sm">
+                      {icon}
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button
+                  className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white"
+                  disabled={!!user.season_pass_active || buying === "season_pass"}
+                  onClick={handleSeasonPass}
+                >
+                  {user.season_pass_active
+                    ? "Already Active"
+                    : buying === "season_pass"
+                    ? "Redirecting…"
+                    : "Buy Season Pass — $9.99"}
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </TabsContent>
+
+        {/* ── Coin Packs ── */}
+        <TabsContent value="coins">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            {COIN_PACKS.map((pack, i) => (
+              <motion.div
+                key={pack.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.07 }}
+                className="relative"
+              >
+                {pack.bestValue && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                    <Badge className="bg-amber-500 text-white px-3 py-0.5 text-xs font-bold">Best Value</Badge>
+                  </div>
+                )}
+                <Card className={`border-2 overflow-hidden h-full ${pack.bestValue ? "border-amber-500/70" : "border-border"}`}>
+                  <div className={`bg-gradient-to-br ${pack.color} p-6 text-white text-center`}>
+                    <div className="flex justify-center mb-2">
+                      <CoinIcon animated={true} size={40} variant="stack" />
+                    </div>
+                    <p className="text-3xl font-bold">{pack.coins.toLocaleString()}</p>
+                    <p className="text-white/70 text-sm">coins</p>
+                  </div>
+                  <CardContent className="p-5 flex flex-col gap-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{pack.price}</p>
+                      <p className="text-muted-foreground text-sm">{pack.label} Pack</p>
+                    </div>
+                    <Button
+                      className="w-full"
+                      variant={pack.bestValue ? "default" : "outline"}
+                      disabled={buying === pack.id}
+                      onClick={() => handleCoinTopUp(pack.id)}
+                    >
+                      {buying === pack.id ? "Redirecting…" : `Buy for ${pack.price}`}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="text-center space-y-4">
-            <p className="text-sm text-muted-foreground">The more you study, the more you earn.</p>
-            <Button
-              variant="outline"
-              className="w-full sm:w-auto min-w-48 border-amber-500/40 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/60"
-              onClick={() => {
-                // TODO: POST /api/rewards/waitlist
-                toast.success("You're on the list!", {
-                  description: "We'll let you know when Real Rewards launches 🎉",
-                  duration: 3500,
-                });
-              }}
-            >
-              Notify Me
-            </Button>
-          </div>
-
-          {/* Footnote */}
-          <p className="mt-6 text-xs text-muted-foreground/60 text-center leading-relaxed">
-            Real Rewards requires coins earned through studying and missions. Purchased coins also qualify.
-            <br />
-            Launching when we hit 1,000 active students.
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            Coins can be spent on cosmetics and extra mission claim slots.
+            Coins earned through studying also qualify for Real Rewards (coming soon).
           </p>
-        </div>
+        </TabsContent>
+
+        {/* ── Cosmetics ── */}
+        <TabsContent value="cosmetics">
+          <div className="space-y-10">
+            {/* Profile Borders */}
+            <section>
+              <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Palette className="w-5 h-5 text-violet-400" /> Profile Borders
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                {BORDER_OPTIONS.map((item, i) => {
+                  const owned   = ownedBorders.has(item.id);
+                  const equipped = cosmetics.border === item.id;
+                  const key = `border:${item.id}`;
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.04 }}
+                    >
+                      <Card className={`overflow-hidden border-2 ${equipped ? "border-violet-500" : "border-border"}`}>
+                        {/* Preview */}
+                        <div className="p-3 flex items-center justify-center bg-card/80">
+                          <div
+                            className="w-14 h-14 rounded-full border-4 bg-muted flex items-center justify-center text-lg"
+                            style={item.style}
+                          >
+                            👤
+                          </div>
+                        </div>
+                        <CardContent className="p-3 space-y-2">
+                          <p className="text-xs font-medium text-center">{item.label}</p>
+                          {item.price > 0 && (
+                            <p className="text-xs text-amber-500 text-center flex items-center justify-center gap-1">
+                              <Coins className="w-3 h-3" /> {item.price}
+                            </p>
+                          )}
+                          {equipped ? (
+                            <Button size="sm" className="w-full text-xs" disabled>Equipped</Button>
+                          ) : owned ? (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full text-xs"
+                              disabled={equipping === key}
+                              onClick={() => handleEquipCosmetic("border", item.id)}
+                            >
+                              {equipping === key ? "…" : "Equip"}
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              className="w-full text-xs"
+                              disabled={equipping === key || (user.coins ?? 0) < item.price}
+                              onClick={() => handleBuyCosmetic("border", item)}
+                            >
+                              {equipping === key ? "…" : "Buy"}
+                            </Button>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* Card Backgrounds */}
+            <section>
+              <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-pink-400" /> Card Backgrounds
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                {CARD_BG_OPTIONS.map((item, i) => {
+                  const owned    = ownedCardBgs.has(item.id);
+                  const equipped = cosmetics.card_bg === item.id;
+                  const key = `card_bg:${item.id}`;
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.04 }}
+                    >
+                      <Card className={`overflow-hidden border-2 ${equipped ? "border-violet-500" : "border-border"}`}>
+                        {/* Preview swatch */}
+                        <div
+                          className="h-20 w-full rounded-t-md"
+                          style={item.style || {}}
+                        />
+                        <CardContent className="p-3 space-y-2">
+                          <p className="text-xs font-medium text-center">{item.label}</p>
+                          {item.price > 0 && (
+                            <p className="text-xs text-amber-500 text-center flex items-center justify-center gap-1">
+                              <Coins className="w-3 h-3" /> {item.price}
+                            </p>
+                          )}
+                          {equipped ? (
+                            <Button size="sm" className="w-full text-xs" disabled>Equipped</Button>
+                          ) : owned ? (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full text-xs"
+                              disabled={equipping === key}
+                              onClick={() => handleEquipCosmetic("card_bg", item.id)}
+                            >
+                              {equipping === key ? "…" : "Equip"}
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              className="w-full text-xs"
+                              disabled={equipping === key || (user.coins ?? 0) < item.price}
+                              onClick={() => handleBuyCosmetic("card_bg", item)}
+                            >
+                              {equipping === key ? "…" : "Buy"}
+                            </Button>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </section>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
-
-  return shopMain;
 }

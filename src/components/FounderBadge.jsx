@@ -48,7 +48,7 @@ export default function FounderBadge({ user, size = "md", showLabel = false, cla
               `bg-gradient-to-r ${meta.gradient} text-white`,
               `border-transparent`,
               // Subtle glow on hover
-              `hover:shadow-md hover:${meta.glow}`,
+              `hover:shadow-hover hover:${meta.glow}`,
               sz.wrap,
               className,
             )}

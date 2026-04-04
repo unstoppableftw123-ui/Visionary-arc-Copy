@@ -255,7 +255,7 @@ function ProfileCardWithPopover({
                 to { opacity: 1; transform: translateY(0) scale(1); }
               }
             `}</style>
-            <div className="w-56 rounded-xl border border-border bg-popover p-1 shadow-lg">
+            <div className="w-56 rounded-xl border border-border bg-popover p-1 shadow-hover">
             <div className="px-2 py-2 border-b border-border mb-1">
               <p className="font-medium truncate">{user?.name}</p>
               <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
@@ -625,7 +625,7 @@ export default function Sidebar() {
             </Button>
             {notifOpen && (
               <div
-                className="absolute z-50 top-full right-0 mt-1 w-72 rounded-xl border border-border bg-card shadow-xl overflow-hidden"
+                className="absolute z-50 top-full right-0 mt-1 w-72 rounded-xl border border-border bg-card shadow-hover overflow-hidden"
                 style={{ animation: "profilePopoverIn 0.15s ease-out forwards" }}
               >
                 <div className="px-4 py-3 border-b border-border">
@@ -868,7 +868,7 @@ export default function Sidebar() {
               )}
             </Button>
             {notifOpen && (
-              <div className="absolute z-50 top-full right-0 mt-1 w-72 rounded-xl border border-border bg-card shadow-xl overflow-hidden">
+              <div className="absolute z-50 top-full right-0 mt-1 w-72 rounded-xl border border-border bg-card shadow-hover overflow-hidden">
                 <div className="px-4 py-3 border-b border-border">
                   <p className="font-semibold text-sm">Notifications</p>
                 </div>

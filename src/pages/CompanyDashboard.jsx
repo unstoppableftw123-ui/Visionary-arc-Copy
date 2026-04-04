@@ -11,6 +11,10 @@ import {
   approveApplication,
   rejectApplication,
 } from '../services/guildService';
+import {
+  createGuildSubscription,
+  depositCoinBudget,
+} from '../services/stripeService';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -76,7 +80,7 @@ function StarSelector({ value, onChange }) {
 
 function StatusBadge({ status }) {
   const styles = {
-    draft: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+    draft: 'bg-[var(--va-border)]/40 text-muted-foreground border-[var(--va-border)]',
     published: 'bg-green-500/20 text-green-400 border-green-500/30',
     completed: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     expired: 'bg-red-500/20 text-red-400 border-red-500/30',
@@ -333,7 +337,7 @@ function MissionsTab({ guild }) {
       ) : (
         <div className="space-y-2">
           {missions.map(m => (
-            <Card key={m.id} className="bg-white/5 border-white/10">
+            <Card key={m.id} className="bg-[var(--va-surface)] border-[var(--va-border)]">
               <CardContent className="p-4 flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -470,7 +474,7 @@ function SubmissionsTab({ guild }) {
       ) : (
         <div className="space-y-2">
           {submissions.map(s => (
-            <Card key={s.id} className="bg-white/5 border-white/10">
+            <Card key={s.id} className="bg-[var(--va-surface)] border-[var(--va-border)]">
               <CardContent className="p-4 flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium">{s.guild_missions?.title ?? 'Unknown mission'}</p>
@@ -602,7 +606,7 @@ function ApplicationsTab({ guild }) {
             const initial = name.charAt(0).toUpperCase();
             const hue = (name.charCodeAt(0) * 19) % 360;
             return (
-              <Card key={a.user_id} className="bg-white/5 border-white/10">
+              <Card key={a.user_id} className="bg-[var(--va-surface)] border-[var(--va-border)]">
                 <CardContent className="p-4 flex items-center gap-4">
                   <div
                     className="h-9 w-9 rounded-full flex items-center justify-center text-white font-semibold shrink-0"
@@ -637,12 +641,18 @@ function ApplicationsTab({ guild }) {
   );
 }
 
+const DEPOSIT_OPTIONS = [500, 1000, 2500, 5000];
+
 // ── Tab: Wallet ───────────────────────────────────────────────────────────────
 function WalletTab({ guild }) {
   const { user } = useContext(AuthContext);
   const [wallet, setWallet] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [depositOpen, setDepositOpen] = useState(false);
+  const [depositAmount, setDepositAmount] = useState(500);
+  const [depositing, setDepositing] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -666,42 +676,132 @@ function WalletTab({ guild }) {
     load();
   }, [user]);
 
-  const isLowBalance = wallet && wallet.total_deposited > 0
-    && (wallet.coin_balance / wallet.total_deposited) < 0.2;
+  const coinBalance = wallet?.coin_balance ?? 0;
+  const isLowBalance = coinBalance < 100;
+  const progressPct = Math.min((coinBalance / 500) * 100, 100);
+
+  async function handleDeposit() {
+    if (!guild) return;
+    setDepositing(true);
+    try {
+      const url = await depositCoinBudget(user.id, guild.id, depositAmount);
+      window.location.href = url;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Deposit failed');
+      setDepositing(false);
+    }
+  }
+
+  async function handleUpgradeToElite() {
+    setUpgrading(true);
+    try {
+      const url = await createGuildSubscription(user.id, 'elite');
+      window.location.href = url;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upgrade failed');
+      setUpgrading(false);
+    }
+  }
 
   if (loading) return <div className="space-y-2">{[0,1,2].map(i => <Skeleton key={i} className="h-12 rounded-lg" />)}</div>;
 
   return (
     <div className="space-y-6 max-w-xl">
+      {/* Low balance alert */}
+      {isLowBalance && (
+        <div className="flex items-center gap-2 text-orange-400 text-sm bg-orange-400/10 border border-orange-400/20 rounded-lg px-4 py-3">
+          <AlertTriangle className="h-4 w-4 shrink-0" />
+          Low balance — add coins to keep rewarding students for completed missions.
+        </div>
+      )}
+
       {/* Balance card */}
-      <Card className="bg-white/5 border-white/10">
-        <CardContent className="p-5 space-y-3">
+      <Card className="bg-[var(--va-surface)] border-[var(--va-border)]">
+        <CardContent className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground">Available Balance</p>
-              <p className="text-3xl font-bold text-yellow-400">{wallet?.coin_balance ?? 0} <span className="text-base text-muted-foreground">coins</span></p>
+              <p className="text-3xl font-bold text-yellow-400">
+                {coinBalance} <span className="text-base text-muted-foreground">coins</span>
+              </p>
             </div>
             <Wallet className="h-8 w-8 text-muted-foreground" />
           </div>
+
+          {/* Progress toward suggested 500-coin minimum */}
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Balance</span>
+              <span>{coinBalance} / 500 recommended</span>
+            </div>
+            <div className="h-2 rounded-full bg-[var(--va-border)] overflow-hidden">
+              <div
+                className="h-full rounded-full bg-yellow-400 transition-all duration-500"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+          </div>
+
           <div className="flex gap-4 text-xs text-muted-foreground">
             <span>Total deposited: {wallet?.total_deposited ?? 0}</span>
             <span>Total spent: {wallet?.total_spent ?? 0}</span>
           </div>
-          {isLowBalance && (
-            <div className="flex items-center gap-2 text-orange-400 text-xs bg-orange-400/10 rounded-md px-3 py-2">
-              <AlertTriangle className="h-4 w-4 shrink-0" />
-              Low balance — less than 20% remaining. Top up to keep posting missions.
-            </div>
-          )}
         </CardContent>
       </Card>
 
-      <Button
-        onClick={() => toast.info('Stripe top-up integration coming soon!')}
-        className="w-full"
-      >
-        <Plus className="h-4 w-4 mr-2" /> Deposit More Coins (Stripe)
-      </Button>
+      {/* Action buttons */}
+      <div className="flex flex-col gap-2">
+        <Button onClick={() => setDepositOpen(true)} className="w-full">
+          <Plus className="h-4 w-4 mr-2" /> Deposit Coins
+        </Button>
+
+        {guild?.tier === 'basic' && (
+          <Button
+            variant="outline"
+            className="w-full border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/10"
+            onClick={handleUpgradeToElite}
+            disabled={upgrading}
+          >
+            <TrendingUp className="h-4 w-4 mr-2" />
+            {upgrading ? 'Redirecting…' : 'Upgrade to Elite ($149/mo)'}
+          </Button>
+        )}
+      </div>
+
+      {/* Deposit dialog */}
+      <Dialog open={depositOpen} onOpenChange={setDepositOpen}>
+        <DialogContent className="bg-background border-white/10 max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Deposit Coins</DialogTitle>
+            <DialogDescription>
+              1 coin = $0.02. Minimum deposit is 500 coins ($10). Coins fund mission rewards for students.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-2 py-2">
+            {DEPOSIT_OPTIONS.map(amt => (
+              <button
+                key={amt}
+                type="button"
+                onClick={() => setDepositAmount(amt)}
+                className={`rounded-lg border py-3 text-sm font-medium transition-colors ${
+                  depositAmount === amt
+                    ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
+                    : 'border-white/10 text-muted-foreground hover:border-white/30'
+                }`}
+              >
+                {amt.toLocaleString()} coins
+                <span className="block text-xs opacity-60">${(amt * 0.02).toFixed(0)}</span>
+              </button>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setDepositOpen(false)}>Cancel</Button>
+            <Button onClick={handleDeposit} disabled={depositing}>
+              {depositing ? 'Redirecting…' : `Pay $${(depositAmount * 0.02).toFixed(0)} via Stripe`}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Transaction history */}
       <div className="space-y-2">
@@ -804,7 +904,7 @@ function AnalyticsTab({ guild }) {
     <div className="space-y-6">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {statCards.map(({ label, value, icon: Icon }) => (
-          <Card key={label} className="bg-white/5 border-white/10">
+          <Card key={label} className="bg-[var(--va-surface)] border-[var(--va-border)]">
             <CardContent className="p-4 flex items-center gap-3">
               <Icon className="h-5 w-5 text-muted-foreground shrink-0" />
               <div>
