@@ -12,7 +12,7 @@ import { awardBadge, checkAndAwardBadges, showBadgeUnlockToast } from '../lib/ba
 import { getXpForLevel, getXpForNextLevel } from '../data/rewardsProgram';
 
 // Keep false for local dev without backend; set true to use real backend APIs
-const USE_REAL_API = true;
+const USE_REAL_API = false;
 
 // API configuration for real backend
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';

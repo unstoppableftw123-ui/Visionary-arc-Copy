@@ -26,6 +26,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "../components/ui/input";
 import FounderBadge from "../components/FounderBadge";
 import PageHeader from "../components/PageHeader";
+import CommunityProgressBar from "../components/CommunityProgressBar";
 import AssignmentRadar from "../components/AssignmentRadar";
 import { toast } from "sonner";
 import { isFounder, getFounderMeta, TIER_META, canUpgrade, nextTier, formatPurchaseDate } from "../lib/founder";
@@ -1060,6 +1061,11 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </motion.div>
+        </div>
+
+        {/* Community Unlocks */}
+        <div className="mt-6">
+          <CommunityProgressBar />
         </div>
 
         {/* My Analytics */}

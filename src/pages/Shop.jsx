@@ -11,6 +11,9 @@ import {
   purchaseCoinTopUp,
   spendCoins,
 } from "../services/stripeService";
+import { redeemCoinsForGiftCard } from "../services/usageService";
+import { useFeatureGate } from "../hooks/useFeatureGate";
+import LockedFeatureOverlay from "../components/LockedFeatureOverlay";
 import { toast } from "sonner";
 import {
   Coins,
@@ -21,6 +24,10 @@ import {
   Crown,
   ShoppingBag,
   Check,
+  Gift,
+  ChevronDown,
+  ChevronUp,
+  AlertCircle,
 } from "lucide-react";
 import CoinIcon from "../components/ui/CoinIcon";
 import Icon from "../components/ui/Icon";
@@ -55,11 +62,19 @@ const COIN_PACKS = [
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+const COIN_TO_DOLLAR = 1000;
+const GIFT_CARD_MIN = 5000;
+const GIFT_CARD_INCREMENTS = [5000, 10000, 15000, 25000];
+
 export default function Shop() {
   const { user, setUser } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("season");
   const [buying, setBuying] = useState(null);
   const [equipping, setEquipping] = useState(null);
+  const [giftAmount, setGiftAmount] = useState(GIFT_CARD_MIN);
+  const [giftSubmitted, setGiftSubmitted] = useState(false);
+  const [giftLoading, setGiftLoading] = useState(false);
+  const giftGate = useFeatureGate('gift_card_redemption');
 
   const cosmetics = user?.cosmetics ?? { border: "default", card_bg: "default", badge_frame: "default" };
 
@@ -179,10 +194,11 @@ export default function Shop() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 max-w-md mb-8">
+        <TabsList className="grid w-full grid-cols-4 max-w-xl mb-8">
           <TabsTrigger value="season"><Crown className="w-4 h-4 mr-2" />Season Pass</TabsTrigger>
           <TabsTrigger value="coins"><Coins className="w-4 h-4 mr-2" />Coins</TabsTrigger>
           <TabsTrigger value="cosmetics"><Palette className="w-4 h-4 mr-2" />Cosmetics</TabsTrigger>
+          <TabsTrigger value="giftcards"><Gift className="w-4 h-4 mr-2" />Gift Cards</TabsTrigger>
         </TabsList>
 
         {/* ── Season Pass ── */}
@@ -411,6 +427,146 @@ export default function Shop() {
               </div>
             </section>
           </div>
+        </TabsContent>
+
+        {/* ── Gift Cards ── */}
+        <TabsContent value="giftcards">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative max-w-lg mx-auto"
+          >
+            {/* Feature gate overlay */}
+            {!giftGate.loading && !giftGate.unlocked && (
+              <LockedFeatureOverlay
+                featureName="Gift Card Redemptions"
+                threshold={giftGate.threshold}
+                currentUsers={giftGate.currentUsers}
+              />
+            )}
+
+            <Card className="border-2 border-amber-500/30 overflow-hidden bg-zinc-950">
+              <div className="bg-gradient-to-br from-amber-600/30 to-orange-700/20 border-b border-amber-500/20 p-6">
+                <div className="flex items-center gap-3 mb-1">
+                  <Gift className="w-7 h-7 text-amber-400" />
+                  <h2 className="text-xl font-bold text-white">Gift Cards</h2>
+                </div>
+                <p className="text-white/50 text-sm">Redeem your coins for real gift cards</p>
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 rounded-lg bg-amber-500/15 border border-amber-500/25 px-3 py-1.5 text-sm font-semibold text-amber-400">
+                    <Coins className="w-4 h-4" />
+                    1,000 coins = $1
+                  </div>
+                  <span className="text-xs text-white/30">Minimum: 5,000 coins ($5)</span>
+                </div>
+              </div>
+
+              <CardContent className="p-6 space-y-6">
+                {giftSubmitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center space-y-3 py-4"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto">
+                      <Check className="w-7 h-7 text-emerald-400" />
+                    </div>
+                    <p className="text-lg font-bold text-white">Request Submitted!</p>
+                    <p className="text-sm text-white/50">
+                      Your ${(giftAmount / COIN_TO_DOLLAR).toFixed(0)} gift card request is processing.
+                      <br />We'll send it within 48 hours.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-white/10 text-white/50 hover:text-white mt-2"
+                      onClick={() => setGiftSubmitted(false)}
+                    >
+                      Request Another
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <>
+                    {/* Balance */}
+                    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/4 px-4 py-3">
+                      <span className="text-sm text-white/50">Your balance</span>
+                      <div className="flex items-center gap-1.5">
+                        <CoinIcon animated={false} size={16} />
+                        <span className="font-bold text-white">{(user.coins ?? 0).toLocaleString()}</span>
+                        <span className="text-white/40 text-xs">coins</span>
+                      </div>
+                    </div>
+
+                    {(user.coins ?? 0) < GIFT_CARD_MIN ? (
+                      <div className="rounded-xl border border-amber-500/20 bg-amber-500/8 p-4 flex gap-3">
+                        <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-amber-300">Not enough coins</p>
+                          <p className="text-xs text-white/40">
+                            You need {(GIFT_CARD_MIN - (user.coins ?? 0)).toLocaleString()} more
+                            coins to redeem. Earn coins by studying, completing missions, and
+                            referring friends.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Amount selector */}
+                        <div className="space-y-2">
+                          <p className="text-xs uppercase tracking-widest text-white/30">Select amount</p>
+                          <div className="grid grid-cols-2 gap-2">
+                            {GIFT_CARD_INCREMENTS.filter((a) => a <= (user.coins ?? 0)).map((amount) => (
+                              <button
+                                key={amount}
+                                onClick={() => setGiftAmount(amount)}
+                                className={`rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                                  giftAmount === amount
+                                    ? "border-amber-500/60 bg-amber-500/15 text-amber-400"
+                                    : "border-white/8 bg-white/4 text-white/60 hover:border-white/20 hover:text-white"
+                                }`}
+                              >
+                                ${(amount / COIN_TO_DOLLAR).toFixed(0)}
+                                <span className="block text-[10px] opacity-60 mt-0.5 font-normal">
+                                  {amount.toLocaleString()} coins
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <Button
+                          className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 font-bold border-0"
+                          disabled={giftLoading}
+                          onClick={async () => {
+                            if (!user?.id) return;
+                            setGiftLoading(true);
+                            try {
+                              await redeemCoinsForGiftCard(user.id, giftAmount);
+                              setUser((prev) => ({ ...prev, coins: (prev.coins ?? 0) - giftAmount }));
+                              setGiftSubmitted(true);
+                            } catch (err) {
+                              toast.error(err.message ?? "Redemption failed.");
+                            } finally {
+                              setGiftLoading(false);
+                            }
+                          }}
+                        >
+                          {giftLoading
+                            ? "Processing…"
+                            : `Redeem ${giftAmount.toLocaleString()} coins for $${(giftAmount / COIN_TO_DOLLAR).toFixed(0)}`}
+                        </Button>
+                      </>
+                    )}
+
+                    <p className="text-[10px] text-white/25 text-center">
+                      Requests are reviewed manually and fulfilled within 48 hours.
+                      Gift cards are sent to your account email.
+                    </p>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
         </TabsContent>
       </Tabs>
     </div>

@@ -1,6 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../App";
+import { useFeatureGate } from "../hooks/useFeatureGate";
+import LockedFeatureOverlay from "../components/LockedFeatureOverlay";
 import { supabase } from "../services/supabaseClient";
 import { getTierForXP } from "../services/xpService";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
@@ -64,6 +66,7 @@ function SponsorAvatar({ name }) {
 export default function ChallengesPage() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const gate = useFeatureGate('challenge_board');
   const [loading, setLoading] = useState(true);
   const [challenges, setChallenges] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -128,7 +131,14 @@ export default function ChallengesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 sm:py-8">
+    <div className="relative min-h-screen bg-background px-4 py-6 sm:py-8">
+      {!gate.loading && !gate.unlocked && (
+        <LockedFeatureOverlay
+          featureName="Company Challenge Board"
+          threshold={gate.threshold}
+          currentUsers={gate.currentUsers}
+        />
+      )}
       <div className="max-w-5xl mx-auto space-y-5">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Sponsored Challenges</h1>

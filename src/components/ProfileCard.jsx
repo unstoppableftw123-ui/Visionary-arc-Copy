@@ -10,10 +10,21 @@ import {
 } from "recharts";
 import html2canvas from "html2canvas";
 import { motion } from "framer-motion";
-import { Download, ExternalLink, Flame, Star, CheckSquare, Briefcase } from "lucide-react";
+import { Download, ExternalLink, Star, CheckSquare, Briefcase } from "lucide-react";
 import { Button } from "./ui/button";
 import { RANK_COLORS } from "../styles/ranks";
 import { AuthContext } from "../App";
+import RankBadge from "./ui/RankBadge";
+import StreakFlame from "./ui/StreakFlame";
+
+const RANK_TO_BADGE_KEY = {
+  E: 'initiate',
+  D: 'apprentice',
+  C: 'journeyman',
+  B: 'expert',
+  A: 'master',
+  S: 'elite',
+};
 
 // Map XP to rank key
 function xpToRank(xp = 0) {
@@ -41,6 +52,25 @@ function nextRankKey(rank) {
   return order[Math.min(idx + 1, order.length - 1)];
 }
 
+// ── Cosmetic style maps (must match Shop.jsx catalogue) ──────────────────────
+
+const BORDER_STYLES = {
+  "default":      {},
+  "neon-purple":  { borderColor: "#a855f7", boxShadow: "0 0 8px #a855f788" },
+  "gold":         { borderColor: "#facc15", boxShadow: "0 0 8px #facc1588" },
+  "fire":         { borderColor: "#f97316", boxShadow: "0 0 8px #f9731688" },
+  "frost":        { borderColor: "#22d3ee", boxShadow: "0 0 8px #22d3ee88" },
+  "galaxy":       { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px #a855f744" },
+};
+
+const CARD_BG_STYLES = {
+  "default":      {},
+  "dark-carbon":  { background: "repeating-linear-gradient(45deg,#18181b,#18181b 4px,#27272a 4px,#27272a 8px)" },
+  "aurora":       { background: "linear-gradient(135deg,#064e3b,#1e3a5f,#312e81)" },
+  "sunset":       { background: "linear-gradient(135deg,#450a0a,#7c2d12,#4c1d95)" },
+  "ocean":        { background: "linear-gradient(135deg,#0c4a6e,#164e63,#0f172a)" },
+};
+
 export default function ProfileCard({ profile, guilds = [], viewOnly = false }) {
   const cardRef = useRef(null);
   const navigate = useNavigate();
@@ -50,6 +80,11 @@ export default function ProfileCard({ profile, guilds = [], viewOnly = false }) 
   const xp = data.xp ?? 0;
   const rank = xpToRank(xp);
   const rankMeta = RANK_COLORS[rank];
+
+  // Cosmetics — fall back to defaults if not set
+  const cosmetics = data.cosmetics ?? {};
+  const borderStyle = BORDER_STYLES[cosmetics.border] ?? {};
+  const cardBgStyle = CARD_BG_STYLES[cosmetics.card_bg] ?? {};
   const next = nextRankKey(rank);
   const nextMeta = RANK_COLORS[next];
   const { min, max } = RANK_XP[rank];
@@ -99,19 +134,16 @@ export default function ProfileCard({ profile, guilds = [], viewOnly = false }) 
           display: "flex",
           flexDirection: "column",
           gap: 16,
-          borderColor: rankMeta.color,
+          // Cosmetic border overrides rank border when equipped
+          borderColor: borderStyle.borderColor ?? rankMeta.color,
+          ...(borderStyle.boxShadow ? { boxShadow: borderStyle.boxShadow } : {}),
+          ...cardBgStyle,
         }}
       >
         {/* Header row */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           {/* Rank badge */}
-          <div
-            className="badge-rank lg"
-            data-rank={rank}
-            style={{ borderRadius: 12 }}
-          >
-            {rank}
-          </div>
+          <RankBadge rank={RANK_TO_BADGE_KEY[rank] ?? 'initiate'} size={36} animate={true} />
 
           {/* Username + tier */}
           <div style={{ textAlign: "center", flex: 1, padding: "0 12px" }}>
@@ -209,7 +241,7 @@ export default function ProfileCard({ profile, guilds = [], viewOnly = false }) 
         {/* Stats row */}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-primary)" }}>
-            <Flame size={15} style={{ color: "var(--rank-a)" }} />
+            <StreakFlame isActive={(data.streak ?? 0) > 0} streakCount={data.streak ?? 0} size={18} />
             <span>Streak: <strong>{data.streak ?? 0} days</strong></span>
             {data.max_streak > 0 && (
               <span style={{ color: "var(--text-muted)", fontSize: 11 }}>· best {data.max_streak}</span>

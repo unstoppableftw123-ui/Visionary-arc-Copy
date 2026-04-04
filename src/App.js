@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import "./styles/animations.css";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import axios from "axios";
@@ -69,6 +70,8 @@ const GuildHall = lazy(() => import("./pages/GuildHall"));
 const CompanyDashboard = lazy(() => import("./pages/CompanyDashboard"));
 const PublicProfile = lazy(() => import("./pages/PublicProfile"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
+const DiscoverPage = lazy(() => import("./pages/DiscoverPage"));
+const GuildDiscover = lazy(() => import("./pages/GuildDiscover"));
 
 // ── Global axios interceptor: catch 429 rate-limit responses and show a toast ──
 axios.interceptors.response.use(
@@ -555,6 +558,12 @@ function AppRouter() {
       </Route>
       <Route path="/guild/:slug" element={<GuildHall />} />
       <Route path="/company" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
+      <Route path="/discover" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<DiscoverPage />} />
+      </Route>
+      <Route path="/guilds" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<GuildDiscover />} />
+      </Route>
       <Route path="/u/:username" element={<PublicProfile />} />
       <Route path="/u/:username/portfolio" element={<Portfolio />} />
       <Route path="/pricing" element={<Pricing />} />

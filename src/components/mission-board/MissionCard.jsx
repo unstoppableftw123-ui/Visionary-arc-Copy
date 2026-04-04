@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Lock, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/button';
 import { RANK_COLORS, TRACK_ICONS } from '../../styles/ranks';
+import TierBadge from '../ui/TierBadge';
+import QuestCheck from '../ui/QuestCheck';
 
 const RANK_ORDER = ['E', 'D', 'C', 'B', 'A', 'S'];
 
@@ -94,10 +96,16 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
         {/* Difficulty badge */}
         <div className="badge-rank" data-rank={rank}>{rank}</div>
 
-        {/* Track */}
-        <div className="track-pill">
-          <span>{trackIcon}</span>
-          <span className="capitalize">{mission.track ?? 'General'}</span>
+        <div className="flex items-center gap-2">
+          {/* Tier badge */}
+          {mission.tier && ['d','c','b','a','s'].includes(mission.tier.toLowerCase()) && (
+            <TierBadge tier={mission.tier.toLowerCase()} size={20} />
+          )}
+          {/* Track */}
+          <div className="track-pill">
+            <span>{trackIcon}</span>
+            <span className="capitalize">{mission.track ?? 'General'}</span>
+          </div>
         </div>
       </div>
 
@@ -174,7 +182,10 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
 
       {isCompleted && (
         <div className="flex items-center justify-between mt-1">
-          <span className="text-xs font-medium" style={{ color: "var(--rank-d)" }}>Approved ✓</span>
+          <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "var(--rank-d)" }}>
+            <QuestCheck isComplete={true} size={16} />
+            Approved
+          </span>
           {assignment?.submission_url && (
             <a
               href={assignment.submission_url}

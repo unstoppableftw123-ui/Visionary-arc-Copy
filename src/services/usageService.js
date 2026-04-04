@@ -93,3 +93,84 @@ export async function canMakeCall(userId, feature, founderTier = null) {
 
   return { allowed: false, reason: 'limit_reached' };
 }
+
+// ─── Gift Card Redemption ─────────────────────────────────────────────────────
+
+const REDEMPTION_MIN_COINS = 5000;
+const REDEMPTION_MIN_SUBSCRIBERS = 5;
+
+/**
+ * Check whether a user can redeem coins for a gift card.
+ *
+ * Returns:
+ *   { eligible: true }
+ *   { eligible: false, reason: 'redemptions_disabled' | 'not_enough_subscribers' | 'not_enough_coins', coinsNeeded: number }
+ */
+export async function checkRedemptionEligibility(userId) {
+  const { data: stats } = await supabase
+    .from('community_stats')
+    .select('redemptions_enabled, subscriber_count')
+    .eq('id', 1)
+    .single();
+
+  if (!stats?.redemptions_enabled) {
+    return { eligible: false, reason: 'redemptions_disabled', coinsNeeded: 0 };
+  }
+
+  if ((stats.subscriber_count ?? 0) < REDEMPTION_MIN_SUBSCRIBERS) {
+    return { eligible: false, reason: 'not_enough_subscribers', coinsNeeded: 0 };
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('coins')
+    .eq('id', userId)
+    .single();
+
+  const coins = profile?.coins ?? 0;
+  if (coins < REDEMPTION_MIN_COINS) {
+    return {
+      eligible: false,
+      reason: 'not_enough_coins',
+      coinsNeeded: REDEMPTION_MIN_COINS - coins,
+    };
+  }
+
+  return { eligible: true, coinsNeeded: 0 };
+}
+
+/**
+ * Redeem coins for a gift card request.
+ * Validates eligibility first, then deducts coins and queues the request.
+ *
+ * @param {string} userId
+ * @param {number} coinAmount — must be a multiple of 1000, minimum 5000
+ * @returns {{ success: true, dollarValue: number }}
+ */
+export async function redeemCoinsForGiftCard(userId, coinAmount) {
+  const eligibility = await checkRedemptionEligibility(userId);
+  if (!eligibility.eligible) {
+    throw new Error(eligibility.reason);
+  }
+
+  if (coinAmount < REDEMPTION_MIN_COINS || coinAmount % 1000 !== 0) {
+    throw new Error('Invalid coin amount. Minimum 5,000 coins in 1,000-coin increments.');
+  }
+
+  const { spendCoins } = await import('./coinService');
+  const newBalance = await spendCoins(userId, coinAmount, 'gift_card_redemption');
+  if (newBalance === null) {
+    throw new Error('Insufficient coins.');
+  }
+
+  const dollarValue = coinAmount / 1000;
+  const { error } = await supabase.from('gift_card_requests').insert({
+    user_id: userId,
+    coin_amount: coinAmount,
+    dollar_value: dollarValue,
+    status: 'pending',
+  });
+
+  if (error) throw error;
+  return { success: true, dollarValue };
+}

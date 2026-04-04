@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import axios from "axios";
 import { AuthContext } from "../App";
+import { useFeatureGate } from "../hooks/useFeatureGate";
+import LockedFeatureOverlay from "../components/LockedFeatureOverlay";
 import CompetitionsLobby from "../components/competitions/CompetitionsLobby";
 import WaitingRoom from "../components/competitions/WaitingRoom";
 import VocabJamGame, { VocabJamResults } from "../components/competitions/VocabJamGame";
@@ -370,10 +372,18 @@ export default function Competitions() {
 
   const phase = gameState.phase;
   const mode = gameState.mode;
+  const gate = useFeatureGate('competitions');
 
   return (
     <>
-    <div className="flex flex-1 flex-col overflow-auto bg-background" data-testid="competitions-page">
+    <div className="relative flex flex-1 flex-col overflow-auto bg-background" data-testid="competitions-page">
+      {!gate.loading && !gate.unlocked && (
+        <LockedFeatureOverlay
+          featureName="Guild Competitions"
+          threshold={gate.threshold}
+          currentUsers={gate.currentUsers}
+        />
+      )}
         {phase === "lobby" && (
           <CompetitionsLobby
             onCreateRoom={handleCreateRoom}
