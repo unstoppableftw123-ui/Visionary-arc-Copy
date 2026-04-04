@@ -55,7 +55,7 @@ const MODEL_OPTIONS = [
 
 const CHIP_COLORS = {
   link: "border-blue-500/25 bg-blue-500/10 text-blue-400",
-  image: "border-purple-500/25 bg-purple-500/10 text-purple-400",
+  image: "border-orange-500/30 bg-orange-600/10 text-orange-400",
   paste: "border-emerald-500/25 bg-emerald-500/10 text-emerald-400",
   file: "border-hub-border bg-hub-elevated text-hub-text",
 };

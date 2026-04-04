@@ -213,7 +213,7 @@ export default function Settings() {
                 ) : (
                   /* Non-founder CTA */
                   <div className="flex flex-col items-center gap-4 py-4 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-700 to-orange-600 flex items-center justify-center">
                       <Sparkles className="w-7 h-7 text-white" />
                     </div>
                     <div>
@@ -223,7 +223,7 @@ export default function Settings() {
                       </p>
                     </div>
                     <Link to="/pricing">
-                      <Button className="bg-gradient-to-r from-violet-600 to-purple-600 text-white gap-2 hover:from-violet-500 hover:to-purple-500">
+                      <Button className="bg-gradient-to-r from-orange-700 to-orange-600 text-white gap-2 hover:from-orange-700 hover:to-orange-600">
                         View Founder Passes
                         <ChevronRight className="w-4 h-4" />
                       </Button>

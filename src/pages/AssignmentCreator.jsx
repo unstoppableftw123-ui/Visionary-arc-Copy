@@ -846,7 +846,7 @@ export default function AssignmentCreator() {
                           true_false: "bg-green-500/15 text-green-700",
                           short_answer: "bg-orange-500/15 text-orange-700",
                           fill_blank: "bg-pink-500/15 text-pink-700",
-                          vocab: "bg-violet-500/15 text-violet-700",
+                          vocab: "bg-orange-600/15 text-orange-400",
                           slider: "bg-teal-500/15 text-teal-700",
                         };
                         const label = q.type?.replace("_", " ") || "question";
@@ -1387,7 +1387,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
     true_false: "bg-green-500/15 text-green-700",
     short_answer: "bg-orange-500/15 text-orange-700",
     fill_blank: "bg-pink-500/15 text-pink-700",
-    vocab: "bg-violet-500/15 text-violet-700",
+    vocab: "bg-orange-600/15 text-orange-400",
     slider: "bg-teal-500/15 text-teal-700",
   };
 
@@ -1722,10 +1722,10 @@ function CanvasCard({ card, onUpdate, onRemove }) {
     correct_card: "bg-green-500/10 border-green-500/30 text-green-700",
     incorrect_card: "bg-red-500/10 border-red-500/30 text-red-700",
     hint_card: "bg-yellow-500/10 border-yellow-500/30 text-yellow-700",
-    explanation_card: "bg-purple-500/10 border-purple-500/30 text-purple-700",
+    explanation_card: "bg-orange-600/10 border-orange-500/30 text-orange-400",
     true_false_card: "bg-teal-500/10 border-teal-500/30 text-teal-700",
     text_block: "bg-[var(--va-border)]/20 border-[var(--va-border)]",
-    image_block: "bg-indigo-500/10 border-indigo-500/30 text-indigo-700",
+    image_block: "bg-orange-600/10 border-orange-500/30 text-orange-400",
     fill_blank_card: "bg-pink-500/10 border-pink-500/30 text-pink-700",
     slider_card: "bg-cyan-500/10 border-cyan-500/30 text-cyan-700",
     divider: "bg-[var(--va-border)]/15 border-[var(--va-border)]",

@@ -77,7 +77,7 @@ import {
 
 const XP_TIERS = [
   { min: 15000, label: "Elite",    color: "text-yellow-500",  rank: "S" },
-  { min: 6000,  label: "Pro",      color: "text-purple-500",  rank: "A" },
+  { min: 6000,  label: "Pro",      color: "text-orange-400",  rank: "A" },
   { min: 2000,  label: "Creator",  color: "text-blue-500",    rank: "B" },
   { min: 500,   label: "Builder",  color: "text-green-500",   rank: "C" },
   { min: 0,     label: "Beginner", color: "text-muted-foreground", rank: "E" },
@@ -342,8 +342,8 @@ export default function Dashboard() {
 
   const quickLinks = [
     { icon: <CheckSquare className="w-5 h-5" />, label: "Tasks", href: "/tasks", color: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400" },
-    { icon: <Book className="w-5 h-5" />, label: "Study Hub", href: "/study", color: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400" },
-    { icon: <GraduationCap className="w-5 h-5" />, label: "SAT / ACT", href: "/practice", color: "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" },
+    { icon: <Book className="w-5 h-5" />, label: "Study Hub", href: "/study", color: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
+    { icon: <GraduationCap className="w-5 h-5" />, label: "SAT / ACT", href: "/practice", color: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
     { icon: <Users className="w-5 h-5" />, label: "Community", href: "/community", color: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400" },
     { icon: <Trophy className="w-5 h-5" />, label: "Competitions", href: "/competitions", color: "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400" },
     { icon: <Gift className="w-5 h-5" />, label: "Shop", href: "/shop", color: "bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400" },
@@ -590,11 +590,11 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
           >
-            <Card className="h-full border-border hover:shadow-medium transition-shadow bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30">
+            <Card className="h-full border-border hover:shadow-medium transition-shadow bg-gradient-to-br from-orange-700 to-orange-600 dark:from-orange-900/30 dark:to-orange-950/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 text-purple-500" />
+                    <Star className="w-5 h-5 text-orange-400" />
                     <span className="font-medium">Level {supabaseData?.profile?.level ?? gamificationStats?.level ?? 1}</span>
                   </div>
                   <div className="flex items-center gap-1 text-amber-500">
@@ -863,7 +863,7 @@ export default function Dashboard() {
                           </p>
                           <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
-                              <Star className="w-3 h-3 text-purple-500" /> {mission.xp_reward} XP
+                              <Star className="w-3 h-3 text-orange-400" /> {mission.xp_reward} XP
                             </span>
                             <span className="flex items-center gap-1">
                               <Coins className="w-3 h-3 text-amber-500" /> {mission.coin_reward}
@@ -946,20 +946,20 @@ export default function Dashboard() {
             transition={{ delay: 0.52 }}
             className="md:col-span-2"
           >
-            <Card className="h-full border-border bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-indigo-950/30 dark:to-sky-950/30">
+            <Card className="h-full border-border bg-gradient-to-br from-orange-700 to-sky-50 dark:from-orange-900/30 dark:to-sky-950/30">
               <CardContent className="pt-5 pb-4">
                 <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0">
-                    <Zap className="w-5 h-5 text-indigo-500" />
+                  <div className="w-10 h-10 rounded-xl bg-orange-600/10 dark:bg-orange-600/10 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-orange-400" />
                   </div>
-                  <Badge variant="secondary" className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-700 shrink-0">
+                  <Badge variant="secondary" className="text-[10px] bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400 border-orange-500/30 dark:border-orange-500/30 shrink-0">
                     Daily
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium mb-0.5">
                   Today's Track
                 </p>
-                <p className="text-base font-semibold text-indigo-700 dark:text-indigo-300 mb-1">
+                <p className="text-base font-semibold text-orange-400 dark:text-orange-400 mb-1">
                   {todayTrack}
                 </p>
                 <p className="text-xs text-muted-foreground mb-4">
@@ -967,7 +967,7 @@ export default function Dashboard() {
                 </p>
                 <Button
                   size="sm"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white gap-1.5"
+                  className="bg-orange-600 hover:bg-orange-700 text-white gap-1.5"
                   onClick={() => {
                     toast.info("Tracks coming soon!", {
                       description: "Project briefs are on the roadmap. Stay tuned!",

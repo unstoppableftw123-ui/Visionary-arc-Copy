@@ -8,7 +8,7 @@ import { MOCK_LIBRARY_FILES } from "./mockLibraryData";
 import { format } from "date-fns";
 
 const TYPE_CONFIG = {
-  note: { label: "Notes", Icon: FileText, color: "text-violet-400" },
+  note: { label: "Notes", Icon: FileText, color: "text-orange-400" },
   summary: { label: "Summaries", Icon: BookOpen, color: "text-teal-400" },
   flashcard_deck: { label: "Flashcard Decks", Icon: Layers, color: "text-orange-400" },
 };

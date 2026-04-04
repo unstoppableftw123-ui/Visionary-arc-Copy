@@ -152,7 +152,7 @@ export default function Store() {
                 >
                   {p.popular && (
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-gradient-to-r from-violet-500 to-indigo-500 text-white text-xs">Best Value</Badge>
+                      <Badge className="bg-gradient-to-r from-orange-700 to-orange-600 text-white text-xs">Best Value</Badge>
                     </div>
                   )}
                   <CardContent className="p-6 flex flex-col gap-4">

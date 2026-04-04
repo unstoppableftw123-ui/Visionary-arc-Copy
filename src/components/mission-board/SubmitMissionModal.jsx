@@ -115,7 +115,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
           <Button
             onClick={handleSubmit}
             disabled={loading || !url.trim()}
-            className="bg-violet-600 hover:bg-violet-500 text-white"
+            className="bg-orange-600 hover:bg-orange-600 text-white"
           >
             {loading ? 'Submitting…' : 'Submit Work'}
           </Button>

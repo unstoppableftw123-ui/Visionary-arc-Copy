@@ -24,7 +24,7 @@ const TYPE_META = {
   summary:    { label: "Note",       color: "#34c759", grad: "from-emerald-500 to-green-400", Icon: Article  },
   flashcards: { label: "Flashcards", color: "#007aff", grad: "from-blue-500 to-cyan-400",    Icon: Cards    },
   quiz:       { label: "Quiz",       color: "#ff9500", grad: "from-orange-500 to-amber-400", Icon: Question },
-  template:   { label: "Visual Map", color: "#af52de", grad: "from-purple-500 to-violet-400",Icon: Sparkle  },
+  template:   { label: "Visual Map", color: "#af52de", grad: "from-orange-700 to-orange-600",Icon: Sparkle  },
 };
 
 const SIDEBAR_FOLDERS = [
@@ -44,7 +44,7 @@ const SORT_OPTIONS = [
 /* 10-colour tag palette */
 const TAG_PALETTE = [
   { bg: "bg-blue-100   dark:bg-blue-900/30",   text: "text-blue-700   dark:text-blue-300",   dot: "bg-blue-500"   },
-  { bg: "bg-violet-100 dark:bg-violet-900/30", text: "text-violet-700 dark:text-violet-300", dot: "bg-violet-500" },
+  { bg: "bg-orange-600/10 dark:bg-orange-600/10", text: "text-orange-400 dark:text-orange-400", dot: "bg-orange-600" },
   { bg: "bg-green-100  dark:bg-green-900/30",  text: "text-green-700  dark:text-green-300",  dot: "bg-green-500"  },
   { bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-700 dark:text-orange-300", dot: "bg-orange-500" },
   { bg: "bg-pink-100   dark:bg-pink-900/30",   text: "text-pink-700   dark:text-pink-300",   dot: "bg-pink-500"   },
@@ -52,7 +52,7 @@ const TAG_PALETTE = [
   { bg: "bg-red-100    dark:bg-red-900/30",    text: "text-red-700    dark:text-red-300",    dot: "bg-red-500"    },
   { bg: "bg-yellow-100 dark:bg-yellow-900/30", text: "text-yellow-700 dark:text-yellow-300", dot: "bg-yellow-500" },
   { bg: "bg-teal-100   dark:bg-teal-900/30",   text: "text-teal-700   dark:text-teal-300",   dot: "bg-teal-500"   },
-  { bg: "bg-indigo-100 dark:bg-indigo-900/30", text: "text-indigo-700 dark:text-indigo-300", dot: "bg-indigo-500" },
+  { bg: "bg-orange-600/10 dark:bg-orange-600/10", text: "text-orange-400 dark:text-orange-400", dot: "bg-orange-600" },
 ];
 
 const LS_VIEW_KEY    = "library-view-mode";

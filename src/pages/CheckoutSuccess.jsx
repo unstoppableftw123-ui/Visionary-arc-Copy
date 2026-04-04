@@ -135,7 +135,7 @@ export default function CheckoutSuccess() {
               <span><span className="font-semibold">{meta.launchCoins.toLocaleString()} coins</span> credited on launch day</span>
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <Zap className="w-4 h-4 text-violet-400 flex-shrink-0" />
+              <Zap className="w-4 h-4 text-orange-400 flex-shrink-0" />
               <span><span className="font-semibold">{meta.dailyAI} free AI calls/day</span> — forever</span>
             </div>
             <div className="flex items-center gap-3 text-sm">
@@ -158,7 +158,7 @@ export default function CheckoutSuccess() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Button asChild className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 text-white w-full">
+            <Button asChild className="bg-gradient-to-r from-orange-700 to-orange-600 hover:opacity-90 text-white w-full">
               <Link to="/dashboard">
                 Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
               </Link>

@@ -110,12 +110,12 @@ function HeroBriefCard() {
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
-      className="relative mt-10 rounded-2xl border border-purple-500/40 bg-zinc-900/80 backdrop-blur p-5 shadow-xl shadow-purple-900/20 text-left max-w-lg mx-auto"
+      className="relative mt-10 rounded-2xl border border-orange-500/30 bg-zinc-900/80 backdrop-blur p-5 shadow-xl shadow-purple-900/20 text-left max-w-lg mx-auto"
     >
       {/* Header row */}
       <div className="flex items-center gap-2 mb-3">
-        <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-        <span className="text-xs font-semibold text-purple-400 uppercase tracking-widest">AI Brief — Design & Branding</span>
+        <span className="w-2 h-2 rounded-full bg-orange-600 animate-pulse" />
+        <span className="text-xs font-semibold text-orange-400 uppercase tracking-widest">AI Brief — Design & Branding</span>
       </div>
 
       <p className="text-xs text-zinc-400 font-medium mb-1">Role</p>
@@ -129,13 +129,13 @@ function HeroBriefCard() {
       <p className="text-xs text-zinc-400 font-medium mb-1">Brief</p>
       <p className="text-sm text-zinc-200 min-h-[3.5rem]">
         {displayed}
-        {!done && <span className="inline-block w-0.5 h-4 bg-purple-400 ml-0.5 animate-pulse align-middle" />}
+        {!done && <span className="inline-block w-0.5 h-4 bg-orange-600/10 ml-0.5 animate-pulse align-middle" />}
       </p>
 
       {/* Skills */}
       <div className="flex flex-wrap gap-1.5 mt-4">
         {["Brand Strategy", "Visual Identity", "Social Media", "Copywriting"].map((s) => (
-          <span key={s} className="text-xs px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/20">
+          <span key={s} className="text-xs px-2 py-0.5 rounded-full bg-orange-600/15 text-orange-400 border border-orange-500/30">
             {s}
           </span>
         ))}
@@ -240,7 +240,7 @@ export default function LandingPage() {
             <div key={i}>
               <p className="text-2xl sm:text-3xl font-extrabold text-white leading-none mb-1">
                 {stat.static ? (
-                  <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">✓</span>
+                  <span className="bg-gradient-to-r from-orange-700 to-pink-400 bg-clip-text text-transparent">✓</span>
                 ) : (
                   <CountUp target={stat.value} suffix={stat.suffix} />
                 )}

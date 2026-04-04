@@ -33,7 +33,7 @@ const TRACK_BADGE_STYLES = {
   "tech-ai": "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
   "design-branding": "bg-pink-500/15 text-pink-400 border-pink-500/30",
   "social-impact": "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  business: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
+  business: "bg-orange-600/15 text-orange-400 border-orange-500/30",
   "content-storytelling": "bg-orange-500/15 text-orange-400 border-orange-500/30",
 };
 

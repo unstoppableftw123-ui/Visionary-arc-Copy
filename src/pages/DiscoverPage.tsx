@@ -17,7 +17,7 @@ import { Search, Star, Eye, User, Briefcase } from 'lucide-react';
 const TRACKS = ['All', 'tech', 'design', 'content', 'business', 'impact'];
 const RANK_COLORS: Record<string, string> = {
   S: 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black',
-  A: 'bg-purple-600 text-white',
+  A: 'bg-orange-600 text-white',
   B: 'bg-blue-600 text-white',
   C: 'bg-green-600 text-white',
   D: 'bg-[var(--va-surface)] text-[var(--va-text)] border border-[var(--va-border)]',

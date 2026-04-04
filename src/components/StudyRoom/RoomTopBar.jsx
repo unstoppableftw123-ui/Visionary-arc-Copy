@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRoomPresence } from "./useStudyRoom";
 
 const SUBJECT_TAG_COLORS = {
-  Math: "bg-violet-500/20 text-violet-300 border-violet-500/40",
+  Math: "bg-orange-600/20 text-orange-400 border-orange-500/30",
   Science: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
   English: "bg-blue-500/20 text-blue-300 border-blue-500/40",
   "SAT/ACT": "bg-amber-500/20 text-amber-300 border-amber-500/40",

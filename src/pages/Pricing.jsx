@@ -378,7 +378,7 @@ export default function Pricing() {
       {/* ── Hero ─────────────────────────────────────────────── */}
       <div className="relative overflow-hidden">
         {/* Background layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-purple-900 to-indigo-950" />
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-700 via-purple-900 to-orange-600" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,40,200,0.4),transparent)]" />
         {/* Dot grid */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxLjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNikiLz48L3N2Zz4=')] opacity-60" />
@@ -404,7 +404,7 @@ export default function Pricing() {
           >
             Lock in lifetime
             <br />
-            <span className="bg-gradient-to-r from-violet-300 via-pink-300 to-amber-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-700 via-pink-300 to-amber-300 bg-clip-text text-transparent">
               access today.
             </span>
           </motion.h1>
@@ -430,7 +430,7 @@ export default function Pricing() {
             className="inline-flex items-center gap-3 bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl px-5 py-3"
           >
             <div className="flex -space-x-2">
-              {["bg-violet-500", "bg-pink-500", "bg-amber-500", "bg-teal-500", "bg-indigo-500"].map(
+              {["bg-orange-600", "bg-pink-500", "bg-amber-500", "bg-teal-500", "bg-orange-600"].map(
                 (c, i) => (
                   <div
                     key={i}
@@ -467,7 +467,7 @@ export default function Pricing() {
             { icon: Zap, text: "Instant access after purchase" },
           ].map(({ icon: Icon, text }, i) => (
             <span key={i} className="flex items-center gap-2">
-              <Icon className="w-4 h-4 text-violet-500" />
+              <Icon className="w-4 h-4 text-orange-400" />
               {text}
             </span>
           ))}
@@ -544,7 +544,7 @@ export default function Pricing() {
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 text-violet-500 text-sm font-medium mb-3">
+          <div className="inline-flex items-center gap-2 text-orange-400 text-sm font-medium mb-3">
             <HelpCircle className="w-4 h-4" />
             FAQ
           </div>
@@ -562,7 +562,7 @@ export default function Pricing() {
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
-                className="border border-border rounded-xl px-5 data-[state=open]:border-violet-500/50 transition-colors"
+                className="border border-border rounded-xl px-5 data-[state=open]:border-orange-500/30 transition-colors"
               >
                 <AccordionTrigger className="text-left font-semibold text-sm py-4 hover:no-underline">
                   {faq.q}
@@ -587,7 +587,7 @@ export default function Pricing() {
             Still have questions?{" "}
             <a
               href="mailto:hello@visionaryacademy.com"
-              className="text-violet-500 hover:underline font-medium"
+              className="text-orange-400 hover:underline font-medium"
             >
               Drop us an email
             </a>

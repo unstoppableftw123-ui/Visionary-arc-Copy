@@ -22,10 +22,10 @@ export default function UpgradeBanner() {
     <motion.div
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mb-4 p-3 rounded-lg bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/20 flex items-center justify-between"
+      className="mb-4 p-3 rounded-lg bg-gradient-to-r from-orange-900/30 to-orange-950/20 border border-orange-500/30 flex items-center justify-between"
     >
       <div className="flex items-center gap-2">
-        <Zap className="w-4 h-4 text-violet-500" />
+        <Zap className="w-4 h-4 text-orange-400" />
         <span className="text-sm">Upgrade to Lite — Faster AI, Saving, More Refinements</span>
       </div>
       <Link to="/pricing">

@@ -32,7 +32,7 @@ const MASTERY_CONFIG = {
   Struggling:  { bg: "rgba(239,68,68,0.18)",   text: "#f87171",  label: "Struggling"  },
   Practicing:  { bg: "rgba(234,179,8,0.18)",   text: "#fbbf24",  label: "Practicing"  },
   Proficient:  { bg: "rgba(34,197,94,0.18)",   text: "#4ade80",  label: "Proficient"  },
-  Mastered:    { bg: "rgba(139,92,246,0.18)",  text: "#a78bfa",  label: "Mastered"    },
+  Mastered:    { bg: "rgba(220,95,20,0.18)",  text: "#a78bfa",  label: "Mastered"    },
 };
 
 const GRADE_LEVELS = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College"];
@@ -873,8 +873,8 @@ function StatsPanel({ userStats }) {
       {/* Level card */}
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-2 mb-1">
-          <Sparkles className="w-4 h-4 text-purple-400" />
-          <span className="text-xs font-bold text-purple-300">Level {userStats.level} {userStats.levelTitle}</span>
+          <Sparkles className="w-4 h-4 text-orange-400" />
+          <span className="text-xs font-bold text-orange-400">Level {userStats.level} {userStats.levelTitle}</span>
         </div>
         <div className="flex items-end justify-between mb-1.5">
           <span className="text-xs text-white/40">{userStats.xp} / {userStats.xpForNextLevel} XP</span>
@@ -997,11 +997,11 @@ function StatsPanel({ userStats }) {
       {/* Daily challenge */}
       <div
         className="rounded-xl p-4"
-        style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(109,40,217,0.1))", border: "1px solid rgba(139,92,246,0.25)" }}
+        style={{ background: "linear-gradient(135deg, rgba(220,95,20,0.15), rgba(109,40,217,0.1))", border: "1px solid rgba(220,95,20,0.25)" }}
       >
         <div className="flex items-center gap-1.5 mb-2">
-          <Target className="w-3.5 h-3.5 text-purple-400" />
-          <span className="text-xs font-bold text-purple-300">Daily Challenge</span>
+          <Target className="w-3.5 h-3.5 text-orange-400" />
+          <span className="text-xs font-bold text-orange-400">Daily Challenge</span>
         </div>
         <p className="text-[11px] text-white/60 mb-3 leading-relaxed">
           Complete {userStats.dailyChallengeGoal} more {userStats.dailyChallengeSubject} questions for a bonus{" "}
@@ -1009,7 +1009,7 @@ function StatsPanel({ userStats }) {
         </p>
         <div className="mb-1.5 flex justify-between text-[10px]">
           <span className="text-white/40">{userStats.dailyChallengeProgress}/{userStats.dailyChallengeGoal} done</span>
-          <span className="text-purple-400">{Math.round((userStats.dailyChallengeProgress / userStats.dailyChallengeGoal) * 100)}%</span>
+          <span className="text-orange-400">{Math.round((userStats.dailyChallengeProgress / userStats.dailyChallengeGoal) * 100)}%</span>
         </div>
         <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
           <motion.div

@@ -61,7 +61,7 @@ html {
   /* Track colors */
   --track-tech:    #3B82F6;
   --track-design:  #EC4899;
-  --track-content: #8B5CF6;
+  --track-content: var(--accent);
   --track-biz:     #10B981;
   --track-impact:  #F59E0B;
 

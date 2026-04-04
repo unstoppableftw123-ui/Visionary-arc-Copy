@@ -7,7 +7,7 @@ const RANK_META = {
   E: { label: 'E',  color: 'var(--rank-e)', glow: 'var(--glow-e)', bg: 'from-slate-400 to-slate-600' },
   D: { label: 'D',  color: 'var(--rank-d)', glow: 'var(--glow-d)', bg: 'from-green-400 to-emerald-600' },
   C: { label: 'C',  color: 'var(--rank-c)', glow: 'var(--glow-c)', bg: 'from-blue-400 to-blue-600' },
-  B: { label: 'B',  color: 'var(--rank-b)', glow: 'var(--glow-b)', bg: 'from-purple-400 to-purple-700' },
+  B: { label: 'B',  color: 'var(--rank-b)', glow: 'var(--glow-b)', bg: 'from-orange-700 to-orange-600' },
   A: { label: 'A',  color: 'var(--rank-a)', glow: 'var(--glow-a)', bg: 'from-amber-400 to-orange-500' },
   S: { label: 'S',  color: 'var(--rank-s)', glow: 'var(--glow-s)', bg: 'from-yellow-400 to-amber-500' },
 };

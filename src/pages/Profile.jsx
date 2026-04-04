@@ -68,7 +68,7 @@ const SUBJECT_COLORS = {
   sat_prep: { border: "border-l-amber-500", bg: "bg-amber-50 dark:bg-amber-950/30", badge: "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300" },
   english: { border: "border-l-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30", badge: "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300" },
   science: { border: "border-l-green-500", bg: "bg-green-50 dark:bg-green-950/30", badge: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300" },
-  history: { border: "border-l-violet-500", bg: "bg-violet-50 dark:bg-violet-950/30", badge: "bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300" },
+  history: { border: "border-l-violet-500", bg: "bg-orange-600/10 dark:bg-orange-600/10", badge: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
   default: { border: "border-l-primary", bg: "bg-muted/50", badge: "bg-secondary text-secondary-foreground" }
 };
 
@@ -379,7 +379,7 @@ export default function Profile() {
                 {/* XP & Level (compact) */}
                 <div className="flex flex-wrap gap-3 mt-6">
                   <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Star className="w-4 h-4 text-purple-500" />
+                    <Star className="w-4 h-4 text-orange-400" />
                     <span className="text-sm font-medium">Level {profile?.level ?? 1}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-muted-foreground">

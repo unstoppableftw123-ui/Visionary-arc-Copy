@@ -134,7 +134,7 @@ export default function Schools() {
 
   const schoolTypeInfo = {
     high_school: { label: "High School", color: "from-blue-500 to-cyan-500" },
-    university: { label: "University", color: "from-purple-500 to-pink-500" },
+    university: { label: "University", color: "from-orange-700 to-pink-500" },
     other: { label: "Other", color: "from-green-500 to-emerald-500" }
   };
 
@@ -157,7 +157,7 @@ export default function Schools() {
       <Sidebar />
       <main className="flex-1 p-4 md:p-8 overflow-auto" data-testid="schools-page">
         {/* Hero Header */}
-        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-500 to-purple-500">
+        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-500 to-orange-600">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAxMEwyMCAyNWgyMHoiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-20"></div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -176,7 +176,7 @@ export default function Schools() {
               </div>
               <Dialog open={createOpen} onOpenChange={setCreateOpen}>
                 <DialogTrigger asChild>
-                  <Button size="lg" className="bg-white text-indigo-600 hover:bg-white/90" data-testid="create-school-btn">
+                  <Button size="lg" className="bg-white text-orange-400 hover:bg-white/90" data-testid="create-school-btn">
                     <Plus className="w-5 h-5 mr-2" /> Create School
                   </Button>
                 </DialogTrigger>

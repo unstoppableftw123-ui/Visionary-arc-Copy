@@ -94,7 +94,7 @@ const MOCK_CLASSES = [
     subject: 'Mathematics',
     grade: '11th Grade',
     studentCount: 24,
-    color: 'from-blue-500 to-indigo-600',
+    color: 'from-blue-500 to-orange-600',
     nextClass: 'Today, 2:00 PM',
     channels: [{ name: 'general', unread: 0 }, { name: 'q-and-a', unread: 5 }],
     pendingAssignments: 1,
@@ -142,7 +142,7 @@ const MOCK_CLASSES = [
 ];
 
 const PUBLIC_CLASSES = [
-  { id: 'pub1', name: 'Intro to Chemistry', teacher: 'Ms. Lee', school: 'Riverside High', studentCount: 35, color: 'from-purple-500 to-violet-600', subject: 'Science' },
+  { id: 'pub1', name: 'Intro to Chemistry', teacher: 'Ms. Lee', school: 'Riverside High', studentCount: 35, color: 'from-orange-700 to-orange-600', subject: 'Science' },
   { id: 'pub2', name: 'English Literature', teacher: 'Mr. Thompson', school: 'Lincoln Academy', studentCount: 22, color: 'from-rose-500 to-pink-600', subject: 'English' },
   { id: 'pub3', name: 'Economics 101', teacher: 'Dr. Kim', school: 'Westside Prep', studentCount: 19, color: 'from-teal-500 to-cyan-600', subject: 'Social Studies' },
 ];
@@ -738,7 +738,7 @@ export default function Community() {
                 </div>
                 
                 {isAcademy && (
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
+                  <div className="p-3 rounded-lg bg-gradient-to-r from-orange-900/30 to-blue-500/10 border border-orange-500/30">
                     <p className="text-sm text-muted-foreground">
                       🎓 Create a school server with leaderboards, classes, and academic features
                     </p>
@@ -1546,7 +1546,7 @@ export default function Community() {
                               if (!alreadyJoined) {
                                 setEnrolledClasses(prev => [...prev, {
                                   ...joinPreview,
-                                  color: 'from-purple-500 to-violet-600',
+                                  color: 'from-orange-700 to-orange-600',
                                   pendingAssignments: 0,
                                   channels: [{ name: 'general', unread: 0 }],
                                   announcements: [],

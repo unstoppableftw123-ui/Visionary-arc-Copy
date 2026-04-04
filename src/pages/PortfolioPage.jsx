@@ -16,7 +16,7 @@ const TIER_CONFIG = {
   Beginner: { bg: 'bg-[var(--va-border)]/40', text: 'text-muted-foreground', dot: 'bg-[var(--va-muted)]' },
   Builder:  { bg: 'bg-green-500/20',  text: 'text-green-400',  dot: 'bg-green-400' },
   Creator:  { bg: 'bg-blue-500/20',   text: 'text-blue-400',   dot: 'bg-blue-400' },
-  Pro:      { bg: 'bg-purple-500/20', text: 'text-purple-400', dot: 'bg-purple-400' },
+  Pro:      { bg: 'bg-orange-600/20', text: 'text-orange-400', dot: 'bg-orange-600/10' },
   Elite:    { bg: 'bg-yellow-500/20', text: 'text-yellow-400', dot: 'bg-yellow-400' },
 };
 

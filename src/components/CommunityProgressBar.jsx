@@ -57,8 +57,8 @@ export default function CommunityProgressBar() {
       {/* Header row */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-violet-500/20 flex items-center justify-center">
-            <Users className="w-3.5 h-3.5 text-violet-400" />
+          <div className="w-7 h-7 rounded-lg bg-orange-600/20 flex items-center justify-center">
+            <Users className="w-3.5 h-3.5 text-orange-400" />
           </div>
           <span className="text-sm font-semibold text-white/90">Community Unlocks</span>
         </div>
@@ -75,8 +75,8 @@ export default function CommunityProgressBar() {
           </motion.span>
           <span className="text-xs text-white/40">members</span>
           <span className="relative flex h-2 w-2 ml-1">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-600/10 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-600" />
           </span>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function CommunityProgressBar() {
           </div>
           <div className="h-2 rounded-full bg-white/8 overflow-hidden">
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-violet-500 to-amber-400"
+              className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
@@ -123,17 +123,17 @@ export default function CommunityProgressBar() {
                   transition={{ delay: 0.3 + i * 0.08 }}
                   className={`flex items-center gap-2.5 rounded-lg px-3 py-2 ${
                     isNext
-                      ? 'bg-violet-500/10 border border-violet-500/20'
+                      ? 'bg-orange-600/10 border border-orange-500/30'
                       : 'bg-white/4 border border-white/6'
                   }`}
                 >
                   <div
                     className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
-                      isNext ? 'bg-violet-500/20' : 'bg-white/8'
+                      isNext ? 'bg-orange-600/20' : 'bg-white/8'
                     }`}
                   >
                     <Lock
-                      className={`w-3 h-3 ${isNext ? 'text-violet-400' : 'text-white/30'}`}
+                      className={`w-3 h-3 ${isNext ? 'text-orange-400' : 'text-white/30'}`}
                     />
                   </div>
                   <span

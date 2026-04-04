@@ -58,8 +58,8 @@ const TIER_META = {
 // ─── Confetti burst (CSS-only, no dependency) ────────────────────────────────
 function Confetti() {
   const colors = [
-    "bg-violet-500", "bg-pink-500", "bg-amber-400",
-    "bg-teal-400", "bg-indigo-500", "bg-rose-400", "bg-emerald-400",
+    "bg-orange-600", "bg-pink-500", "bg-amber-400",
+    "bg-teal-400", "bg-orange-600", "bg-rose-400", "bg-emerald-400",
   ];
   const pieces = Array.from({ length: 28 });
   return (
@@ -95,8 +95,8 @@ function VerifyingView() {
   return (
     <div className="flex flex-col items-center gap-5 py-16">
       <div className="relative">
-        <div className="w-20 h-20 rounded-full border-4 border-violet-500/30 border-t-violet-500 animate-spin" />
-        <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-violet-400" />
+        <div className="w-20 h-20 rounded-full border-4 border-orange-500/30 border-t-violet-500 animate-spin" />
+        <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-orange-400" />
       </div>
       <div className="text-center">
         <p className="font-semibold text-lg">Confirming your payment…</p>
@@ -246,13 +246,13 @@ function SuccessView({ data, userName }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
-        className="w-full max-w-sm rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3 mb-6 text-left"
+        className="w-full max-w-sm rounded-xl bg-orange-600/10 border border-orange-500/30 px-4 py-3 mb-6 text-left"
       >
-        <p className="text-xs text-violet-400 font-medium flex items-start gap-1.5">
+        <p className="text-xs text-orange-400 font-medium flex items-start gap-1.5">
           <Sparkles className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
           <span>
             <span className="font-bold">Test mode:</span> Use card{" "}
-            <code className="bg-violet-500/20 rounded px-1">4242 4242 4242 4242</code>,
+            <code className="bg-orange-600/20 rounded px-1">4242 4242 4242 4242</code>,
             any future date, any CVC. Real cards work in production.
           </span>
         </p>
@@ -374,7 +374,7 @@ export default function Success() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-md relative">
         {/* Background glow blob */}
-        <div className="absolute -inset-10 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -inset-10 bg-orange-600/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative bg-card border border-border rounded-3xl shadow-2xl overflow-hidden">
           {/* Confetti fires once on success */}
@@ -386,10 +386,10 @@ export default function Success() {
               status === "success"
                 ? verifyData?.tier
                   ? TIER_META[verifyData.tier]?.gradient
-                  : "from-violet-500 to-indigo-500"
+                  : "from-orange-700 to-orange-600"
                 : status === "error"
                 ? "from-red-500 to-rose-500"
-                : "from-violet-500/50 to-indigo-500/50"
+                : "from-orange-900/30 to-orange-950/20"
             }`}
           />
 

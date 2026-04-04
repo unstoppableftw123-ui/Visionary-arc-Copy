@@ -87,7 +87,7 @@ export function getBadgeColorClasses(color, unlocked) {
     case "cyan":
       return "bg-cyan-500/15 text-cyan-400 border-cyan-500/30";
     case "violet":
-      return "bg-violet-500/15 text-violet-400 border-violet-500/30";
+      return "bg-orange-600/15 text-orange-400 border-orange-500/30";
     case "rose":
       return "bg-rose-500/15 text-rose-400 border-rose-500/30";
     case "amber":

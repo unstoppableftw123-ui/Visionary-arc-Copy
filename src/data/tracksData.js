@@ -29,13 +29,13 @@ export const TRACKS = [
     tagline: 'Turn ideas into identity',
     color: 'purple',
     colors: {
-      border:  'border-purple-500',
-      bg:      'bg-purple-500/10',
-      bgSolid: 'bg-purple-500',
-      text:    'text-purple-400',
-      badge:   'bg-purple-500/20 text-purple-300',
-      button:  'bg-purple-600 hover:bg-purple-500 text-white',
-      ring:    'ring-purple-500/40',
+      border:  'border-orange-500/30',
+      bg:      'bg-orange-600/10',
+      bgSolid: 'bg-orange-600',
+      text:    'text-orange-400',
+      badge:   'bg-orange-600/20 text-orange-400',
+      button:  'bg-orange-600 hover:bg-orange-600 text-white',
+      ring:    'ring-orange-500/40',
     },
     description:
       'Craft visual identities, UI/UX flows, and brand strategy for real clients. ' +

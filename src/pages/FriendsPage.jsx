@@ -16,7 +16,7 @@ const TIER_COLOR = {
   Beginner: 'text-muted-foreground',
   Builder:  'text-green-400',
   Creator:  'text-blue-400',
-  Pro:      'text-purple-400',
+  Pro:      'text-orange-400',
   Elite:    'text-yellow-400',
 };
 

@@ -316,7 +316,7 @@ export default function RewardsTrack() {
                           ) : (
                             <Sparkles
                               className={`w-3.5 h-3.5 shrink-0 ${
-                                isPast ? "text-muted-foreground" : "text-violet-400"
+                                isPast ? "text-muted-foreground" : "text-orange-400"
                               }`}
                             />
                           )}

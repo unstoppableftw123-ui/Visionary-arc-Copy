@@ -357,7 +357,7 @@ const TRACK_COLORS = {
   design: "#EC4899",
   content: "#F59E0B",
   business: "#10B981",
-  impact: "#8B5CF6",
+  impact: "var(--accent)",
 };
 
 const DIFFICULTY_COLORS = {
@@ -475,7 +475,7 @@ function MissionBreakdown({ assignments, loading }) {
 const DIFF_COLORS = {
   Starter: "bg-green-500/20 text-green-400",
   Standard: "bg-blue-500/20 text-blue-400",
-  Advanced: "bg-purple-500/20 text-purple-400",
+  Advanced: "bg-orange-600/20 text-orange-400",
   Expert: "bg-orange-500/20 text-orange-400",
 };
 

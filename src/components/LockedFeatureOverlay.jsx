@@ -34,7 +34,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
       {/* Gradient border wrapper */}
       <div className="relative p-px rounded-2xl"
         style={{
-          background: 'linear-gradient(135deg, #8B5CF6 0%, #F59E0B 100%)',
+          background: 'linear-gradient(135deg, var(--accent) 0%, #F59E0B 100%)',
         }}
       >
         <motion.div
@@ -46,11 +46,11 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
           {/* Lock icon */}
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
             style={{
-              background: 'linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(245,158,11,0.15) 100%)',
-              border: '1px solid rgba(139,92,246,0.3)',
+              background: 'linear-gradient(135deg, rgba(220,95,20,0.2) 0%, rgba(245,158,11,0.15) 100%)',
+              border: '1px solid rgba(220,95,20,0.3)',
             }}
           >
-            <Lock className="w-7 h-7 text-violet-400" />
+            <Lock className="w-7 h-7 text-orange-400" />
           </div>
 
           {/* Feature name */}
@@ -77,7 +77,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
             </div>
             <div className="h-1.5 w-full rounded-full bg-white/8 overflow-hidden">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-violet-500 to-amber-400"
+                className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
@@ -88,7 +88,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
           {/* CTA */}
           <Link to="/referral" className="w-full">
             <Button
-              className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white border-0"
+              className="w-full bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600 text-white border-0"
             >
               Invite Friends to Unlock Faster
             </Button>

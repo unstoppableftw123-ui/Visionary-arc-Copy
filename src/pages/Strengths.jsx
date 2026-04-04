@@ -388,7 +388,7 @@ export default function Strengths() {
   if (step === "intro") {
     return (
       <div className="max-w-2xl mx-auto text-center p-4 md:p-8">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-orange-700 to-orange-600 flex items-center justify-center">
               <Brain className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold mb-4">Discover Your Strengths</h1>
@@ -506,7 +506,7 @@ export default function Strengths() {
     <div className="max-w-4xl mx-auto p-4 md:p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <Badge className="mb-4 bg-gradient-to-r from-violet-500 to-purple-600 text-white">
+            <Badge className="mb-4 bg-gradient-to-r from-orange-700 to-orange-600 text-white">
               <Sparkles className="w-3 h-3 mr-1" /> Assessment Complete
             </Badge>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">Your Strength Profile</h1>

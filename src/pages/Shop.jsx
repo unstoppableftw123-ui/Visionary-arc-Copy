@@ -37,11 +37,11 @@ import { Icons } from "../assets/icons";
 
 const BORDER_OPTIONS = [
   { id: "default",      label: "Default",       price: 0,   preview: "border-border",                       style: {} },
-  { id: "neon-purple",  label: "Neon Purple",   price: 150, preview: "border-purple-500",                   style: { borderColor: "#a855f7", boxShadow: "0 0 8px #a855f788" } },
+  { id: "neon-purple",  label: "Neon Purple",   price: 150, preview: "border-orange-500/30",                   style: { borderColor: "#a855f7", boxShadow: "0 0 8px #a855f788" } },
   { id: "gold",         label: "Gold",          price: 200, preview: "border-yellow-400",                   style: { borderColor: "#facc15", boxShadow: "0 0 8px #facc1588" } },
   { id: "fire",         label: "Fire",          price: 300, preview: "border-orange-500",                   style: { borderColor: "#f97316", boxShadow: "0 0 8px #f9731688" } },
   { id: "frost",        label: "Frost",         price: 300, preview: "border-cyan-400",                     style: { borderColor: "#22d3ee", boxShadow: "0 0 8px #22d3ee88" } },
-  { id: "galaxy",       label: "Galaxy",        price: 500, preview: "border-indigo-500",                   style: { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px #a855f744" } },
+  { id: "galaxy",       label: "Galaxy",        price: 500, preview: "border-orange-500/30",                   style: { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px #a855f744" } },
 ];
 
 const CARD_BG_OPTIONS = [
@@ -56,7 +56,7 @@ const CARD_BG_OPTIONS = [
 
 const COIN_PACKS = [
   { id: "starter",  coins: 200,  price: "$3.99",  label: "Starter",  color: "from-slate-600 to-slate-800" },
-  { id: "standard", coins: 600,  price: "$9.99",  label: "Standard", color: "from-violet-600 to-purple-800", bestValue: true },
+  { id: "standard", coins: 600,  price: "$9.99",  label: "Standard", color: "from-orange-700 to-orange-600", bestValue: true },
   { id: "pro",      coins: 1500, price: "$19.99", label: "Pro",       color: "from-amber-500 to-orange-700" },
 ];
 
@@ -171,7 +171,7 @@ export default function Shop() {
   return (
     <div className="flex-1 p-4 md:p-8 overflow-auto" data-testid="shop-page">
       {/* Hero */}
-      <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-violet-700 via-purple-600 to-indigo-600">
+      <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-orange-700 via-purple-600 to-orange-600">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -204,8 +204,8 @@ export default function Shop() {
         {/* ── Season Pass ── */}
         <TabsContent value="season">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="max-w-lg mx-auto">
-            <Card className="border-2 border-violet-500/50 overflow-hidden">
-              <div className="bg-gradient-to-br from-violet-600 to-indigo-700 p-6 text-white">
+            <Card className="border-2 border-orange-500/30 overflow-hidden">
+              <div className="bg-gradient-to-br from-orange-700 to-orange-600 p-6 text-white">
                 <div className="flex items-center gap-3 mb-2">
                   <Crown className="w-8 h-8 text-yellow-300" />
                   <h2 className="text-2xl font-bold">Season Pass</h2>
@@ -225,7 +225,7 @@ export default function Shop() {
                   {[
                     { icon: <Zap className="w-5 h-5 text-yellow-400" />, text: "25% XP boost on all activities" },
                     { icon: <Star className="w-5 h-5 text-amber-400" />, text: "Exclusive season badge on your profile" },
-                    { icon: <Crown className="w-5 h-5 text-violet-400" />, text: "Priority display on the weekly leaderboard" },
+                    { icon: <Crown className="w-5 h-5 text-orange-400" />, text: "Priority display on the weekly leaderboard" },
                     { icon: <Sparkles className="w-5 h-5 text-pink-400" />, text: "Early access to new career tracks" },
                   ].map(({ icon, text }) => (
                     <li key={text} className="flex items-start gap-3 text-sm">
@@ -236,7 +236,7 @@ export default function Shop() {
                 </ul>
 
                 <Button
-                  className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white"
+                  className="w-full bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600 text-white"
                   disabled={!!user.season_pass_active || buying === "season_pass"}
                   onClick={handleSeasonPass}
                 >
@@ -306,7 +306,7 @@ export default function Shop() {
             {/* Profile Borders */}
             <section>
               <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
-                <Palette className="w-5 h-5 text-violet-400" /> Profile Borders
+                <Palette className="w-5 h-5 text-orange-400" /> Profile Borders
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                 {BORDER_OPTIONS.map((item, i) => {
@@ -320,7 +320,7 @@ export default function Shop() {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.04 }}
                     >
-                      <Card className={`overflow-hidden border-2 ${equipped ? "border-violet-500" : "border-border"}`}>
+                      <Card className={`overflow-hidden border-2 ${equipped ? "border-orange-500/30" : "border-border"}`}>
                         {/* Preview */}
                         <div className="p-3 flex items-center justify-center bg-card/80">
                           <div
@@ -384,7 +384,7 @@ export default function Shop() {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.04 }}
                     >
-                      <Card className={`overflow-hidden border-2 ${equipped ? "border-violet-500" : "border-border"}`}>
+                      <Card className={`overflow-hidden border-2 ${equipped ? "border-orange-500/30" : "border-border"}`}>
                         {/* Preview swatch */}
                         <div
                           className="h-20 w-full rounded-t-md"

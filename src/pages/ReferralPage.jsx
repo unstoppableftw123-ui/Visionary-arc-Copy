@@ -34,7 +34,7 @@ const DEFAULT_STATS = {
 function MilestoneIcon({ milestone, achieved }) {
   if (milestone.count === 1)  return <Star  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-white/20"}`} />;
   if (milestone.count === 5)  return <Trophy className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-white/20"}`} />;
-  if (milestone.count === 10) return <Zap   className={`w-5 h-5 ${achieved ? "text-violet-400" : "text-white/20"}`} />;
+  if (milestone.count === 10) return <Zap   className={`w-5 h-5 ${achieved ? "text-orange-400" : "text-white/20"}`} />;
   if (milestone.count === 25) return <Gift  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-white/20"}`} />;
   return <Lock className="w-5 h-5 text-white/20" />;
 }
@@ -202,7 +202,7 @@ export default function ReferralPage() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-white/10 bg-gradient-to-br from-violet-900/40 via-purple-900/20 to-amber-900/10 backdrop-blur-md p-6 space-y-4"
+          className="rounded-2xl border border-white/10 bg-gradient-to-br from-orange-900/30 via-purple-900/20 to-amber-900/10 backdrop-blur-md p-6 space-y-4"
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
@@ -222,7 +222,7 @@ export default function ReferralPage() {
           <div className="flex flex-wrap gap-2">
             <Button
               onClick={handleCopy}
-              className="gap-2 bg-violet-600 hover:bg-violet-700 text-white border-0"
+              className="gap-2 bg-orange-600 hover:bg-orange-700 text-white border-0"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {copied ? (
@@ -263,7 +263,7 @@ export default function ReferralPage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Total referrals", value: stats.total,        color: "text-violet-400" },
+            { label: "Total referrals", value: stats.total,        color: "text-orange-400" },
             { label: "Signed up",       value: stats.signed_up,    color: "text-emerald-400" },
             { label: "Hit 7-day streak",value: stats.streak_7,     color: "text-amber-400" },
             { label: "Upgraded",        value: stats.upgraded,      color: "text-pink-400" },
@@ -326,7 +326,7 @@ export default function ReferralPage() {
             <div className="space-y-1.5">
               <div className="h-2 rounded-full bg-white/8 overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-violet-500 to-amber-400"
+                  className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
                   initial={{ width: 0 }}
                   animate={{ width: `${milestoneProgress}%` }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
@@ -382,7 +382,7 @@ export default function ReferralPage() {
                     </div>
                     <div className="flex flex-wrap gap-3 mt-1.5 text-xs text-white/40">
                       <span className="text-amber-400/80">+{milestone.coins} coins</span>
-                      <span className="text-violet-400/80">+{milestone.xp} XP</span>
+                      <span className="text-orange-400/80">+{milestone.xp} XP</span>
                       {milestone.frame && (
                         <span className="text-pink-400/80">Avatar frame: {milestone.frame}</span>
                       )}
@@ -424,7 +424,7 @@ export default function ReferralPage() {
               {badges.map((b) => (
                 <div
                   key={b.badge_key}
-                  className="flex items-center gap-1.5 rounded-lg border border-violet-500/30 bg-violet-500/10 px-3 py-1.5 text-xs text-violet-300"
+                  className="flex items-center gap-1.5 rounded-lg border border-orange-500/30 bg-orange-600/10 px-3 py-1.5 text-xs text-orange-400"
                 >
                   <Star className="w-3 h-3 text-amber-400" />
                   {b.badge_key.replace(/_/g, " ")}
@@ -439,7 +439,7 @@ export default function ReferralPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-4 flex items-center justify-between gap-4"
+          className="rounded-xl border border-orange-500/30 bg-orange-600/5 p-4 flex items-center justify-between gap-4"
         >
           <p className="text-sm text-white/60">
             Invite more friends to unlock community features faster.
@@ -447,7 +447,7 @@ export default function ReferralPage() {
           <Button
             size="sm"
             onClick={handleCopy}
-            className="bg-violet-600 hover:bg-violet-700 text-white border-0 shrink-0"
+            className="bg-orange-600 hover:bg-orange-700 text-white border-0 shrink-0"
           >
             <Copy className="w-3.5 h-3.5 mr-1.5" />
             Copy Link

@@ -187,9 +187,9 @@ export default function SATACTPractice() {
     <div className="p-4 md:p-8 overflow-auto">
         {/* Lite Upgrade Banner */}
         {!isLite && (
-          <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/20 flex items-center justify-between">
+          <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-orange-900/30 to-orange-950/20 border border-orange-500/30 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-violet-500" />
+              <Zap className="w-4 h-4 text-orange-400" />
               <span className="text-sm">Upgrade to Lite — Faster AI, Saving, More Refinements</span>
             </div>
             <Button size="sm" variant="outline" onClick={handleUpgradeToLite}>Upgrade</Button>
@@ -427,7 +427,7 @@ export default function SATACTPractice() {
 
             {/* Lite Upgrade Banner on Results */}
             {!isLite && (
-              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/20">
+              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-orange-900/30 to-orange-950/20 border border-orange-500/30">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">Upgrade to Lite</p>

@@ -234,7 +234,7 @@ export default function VisionaryChatbox() {
         onClick={() => setIsOpen(true)}
         className={cn(
           "fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg",
-          "bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500",
+          "bg-gradient-to-br from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600",
           "flex items-center justify-center text-white transition-all duration-300",
           "hover:scale-110 hover:shadow-xl",
           isOpen && "scale-0 opacity-0"
@@ -254,7 +254,7 @@ export default function VisionaryChatbox() {
         )}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-3 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-orange-700 to-orange-600 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {showHistory ? (
               <button
@@ -378,7 +378,7 @@ export default function VisionaryChatbox() {
             <ScrollArea className="flex-1 p-3">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center px-4">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-indigo-100 dark:from-violet-900/30 dark:to-indigo-900/30 flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-700 to-orange-600 dark:from-orange-900/30 dark:to-orange-950/20 flex items-center justify-center mb-4">
                     <SparklesIcon />
                   </div>
                   <h4 className="font-semibold text-foreground mb-1">Hello! I'm Visionary AI</h4>
@@ -415,7 +415,7 @@ export default function VisionaryChatbox() {
                         className={cn(
                           "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm",
                           msg.role === "user"
-                            ? "bg-gradient-to-br from-violet-600 to-indigo-600 text-white rounded-br-md"
+                            ? "bg-gradient-to-br from-orange-700 to-orange-600 text-white rounded-br-md"
                             : msg.isError
                             ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-bl-md"
                             : "bg-muted text-foreground rounded-bl-md"
@@ -435,9 +435,9 @@ export default function VisionaryChatbox() {
                     <div className="flex justify-start">
                       <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3">
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-violet-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <span className="w-2 h-2 bg-violet-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <span className="w-2 h-2 bg-violet-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                          <span className="w-2 h-2 bg-orange-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <span className="w-2 h-2 bg-orange-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <span className="w-2 h-2 bg-orange-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                         </div>
                       </div>
                     </div>
@@ -459,7 +459,7 @@ export default function VisionaryChatbox() {
                   disabled={loading}
                   className={cn(
                     "flex-1 px-4 py-2.5 rounded-full text-sm",
-                    "bg-muted border-0 focus:ring-2 focus:ring-violet-600/50 outline-none",
+                    "bg-muted border-0 focus:ring-2 focus:ring-orange-500/50 outline-none",
                     "placeholder:text-muted-foreground"
                   )}
                 />
@@ -467,7 +467,7 @@ export default function VisionaryChatbox() {
                   type="submit"
                   disabled={!input.trim() || loading}
                   size="icon"
-                  className="rounded-full w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500"
+                  className="rounded-full w-10 h-10 bg-gradient-to-br from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600"
                 >
                   <SendIcon />
                 </Button>

@@ -515,8 +515,8 @@ export default function Wishlists() {
                     >
                       <CardContent className="p-6">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                            <ShoppingBag className="w-6 h-6 text-purple-500" />
+                          <div className="w-12 h-12 rounded-xl bg-orange-600/10 dark:bg-orange-600/10 flex items-center justify-center">
+                            <ShoppingBag className="w-6 h-6 text-orange-400" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-medium">{exchange.name}</p>
