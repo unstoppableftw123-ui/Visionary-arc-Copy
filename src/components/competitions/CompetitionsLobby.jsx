@@ -125,7 +125,7 @@ function GameModeCard({ mode, onPlay, onCreateRoom }) {
       </CardHeader>
       <CardContent className="space-y-4 pt-0">
         <div className="grid gap-2">
-          <Label className="text-xs text-[var(--text-secondary)]">Difficulty</Label>
+          <Label className="text-sm md:text-xs text-[var(--text-secondary)]">Difficulty</Label>
           <Select value={difficulty} onValueChange={setDifficulty}>
             <SelectTrigger className="bg-[var(--surface-2)] border-[var(--border)]">
               <SelectValue />
@@ -140,7 +140,7 @@ function GameModeCard({ mode, onPlay, onCreateRoom }) {
           </Select>
         </div>
         <div className="grid gap-2">
-          <Label className="text-xs text-[var(--text-secondary)]">Topic</Label>
+          <Label className="text-sm md:text-xs text-[var(--text-secondary)]">Topic</Label>
           <Select value={topicType} onValueChange={setTopicType}>
             <SelectTrigger className="bg-[var(--surface-2)] border-[var(--border)]">
               <SelectValue />
@@ -233,7 +233,7 @@ export default function CompetitionsLobby({
       />
 
       <Tabs defaultValue="solo" className="w-full">
-        <TabsList className="bg-[var(--surface-2)] border border-[var(--border)] mb-6 grid grid-cols-3">
+        <TabsList className="bg-[var(--surface-2)] border border-[var(--border)] mb-6 grid grid-cols-1 sm:grid-cols-3">
           <TabsTrigger value="solo" className="data-[state=active]:bg-[#6e5ff0]">
             Solo
           </TabsTrigger>
@@ -291,7 +291,7 @@ export default function CompetitionsLobby({
                       </div>
                       <span
                         className={cn(
-                          "shrink-0 text-xs font-medium px-2 py-1 rounded",
+                          "shrink-0 text-sm md:text-xs font-medium px-2 py-1 rounded",
                           comp.start_time && new Date(comp.start_time).getTime() <= Date.now() &&
                           comp.end_time && new Date(comp.end_time).getTime() >= Date.now()
                             ? "bg-green-500/20 text-green-400"
@@ -303,7 +303,7 @@ export default function CompetitionsLobby({
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0 space-y-3">
-                    <div className="flex flex-wrap gap-2 text-xs text-[var(--text-secondary)]">
+                    <div className="flex flex-wrap gap-2 text-sm md:text-xs text-[var(--text-secondary)]">
                       <span>{comp.current_participants ?? 0}/{comp.max_participants ?? 0} joined</span>
                       <span className="capitalize">{comp.difficulty}</span>
                     </div>
@@ -341,7 +341,7 @@ export default function CompetitionsLobby({
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label className="text-[var(--text-secondary)] text-xs">Game mode</Label>
+                    <Label className="text-[var(--text-secondary)] text-sm md:text-xs">Game mode</Label>
                     <Select value={createMode} onValueChange={setCreateMode}>
                       <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
@@ -354,7 +354,7 @@ export default function CompetitionsLobby({
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-[var(--text-secondary)] text-xs">Topic</Label>
+                    <Label className="text-[var(--text-secondary)] text-sm md:text-xs">Topic</Label>
                     <Select value={createTopic} onValueChange={setCreateTopic}>
                       <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
@@ -366,7 +366,7 @@ export default function CompetitionsLobby({
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-[var(--text-secondary)] text-xs">Difficulty</Label>
+                    <Label className="text-[var(--text-secondary)] text-sm md:text-xs">Difficulty</Label>
                     <Select value={createDifficulty} onValueChange={setCreateDifficulty}>
                       <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
@@ -381,7 +381,7 @@ export default function CompetitionsLobby({
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-[var(--text-secondary)] text-xs">Max players</Label>
+                    <Label className="text-[var(--text-secondary)] text-sm md:text-xs">Max players</Label>
                     <Select value={createMaxPlayers} onValueChange={setCreateMaxPlayers}>
                       <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
@@ -464,11 +464,11 @@ export default function CompetitionsLobby({
                 <DialogTitle className="text-[var(--text-primary)]">District Leaderboard</DialogTitle>
               </DialogHeader>
               <Tabs defaultValue="all" className="flex-1 min-h-0 flex flex-col">
-                <TabsList className="bg-[var(--surface-2)] border border-[var(--border)] w-full grid grid-cols-4">
-                  <TabsTrigger value="week" className="text-xs">This Week</TabsTrigger>
-                  <TabsTrigger value="all" className="text-xs">All Time</TabsTrigger>
-                  <TabsTrigger value="school" className="text-xs">My School</TabsTrigger>
-                  <TabsTrigger value="district" className="text-xs">District</TabsTrigger>
+                <TabsList className="bg-[var(--surface-2)] border border-[var(--border)] w-full grid grid-cols-1 sm:grid-cols-4">
+                  <TabsTrigger value="week" className="text-sm md:text-xs">This Week</TabsTrigger>
+                  <TabsTrigger value="all" className="text-sm md:text-xs">All Time</TabsTrigger>
+                  <TabsTrigger value="school" className="text-sm md:text-xs">My School</TabsTrigger>
+                  <TabsTrigger value="district" className="text-sm md:text-xs">District</TabsTrigger>
                 </TabsList>
                 <TabsContent value="week" className="flex-1 overflow-auto mt-3">
                   <LeaderboardList list={MOCK_LEADERBOARD} currentName={userDisplayName} />
@@ -512,7 +512,7 @@ function LeaderboardList({ list, currentName }) {
           <PlayerAvatar name={row.name} size="sm" />
           <div className="flex-1 min-w-0">
             <p className="font-medium text-[var(--text-primary)] truncate">{row.name}</p>
-            <p className="text-xs text-[var(--text-secondary)]">Lvl {row.level} · {row.xp} XP · {row.winRate} wins</p>
+            <p className="text-sm md:text-xs text-[var(--text-secondary)]">Lvl {row.level} · {row.xp} XP · {row.winRate} wins</p>
           </div>
         </motion.li>
       ))}

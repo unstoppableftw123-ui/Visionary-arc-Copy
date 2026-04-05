@@ -49,7 +49,7 @@ export default function ChatWithDocsTool({ prefilled = {} }) {
                 required
                 className="rounded-xl border-2 border-border bg-secondary/40 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/45 resize-none focus:border-primary/60 focus:bg-secondary/60 focus:outline-none leading-relaxed"
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm md:text-xs text-muted-foreground">
                 Paste the text from your document. File upload coming soon.
               </p>
             </div>

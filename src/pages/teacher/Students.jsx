@@ -59,7 +59,7 @@ export default function Students() {
               key={f}
               type="button"
               onClick={() => setFilter(f)}
-              className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`rounded-md px-3 py-1.5 text-sm md:text-xs font-medium transition-colors ${
                 filter === f ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -71,7 +71,7 @@ export default function Students() {
 
       {/* Student list */}
       <div className="rounded-lg border border-border overflow-hidden">
-        <div className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-x-4 px-4 py-2.5 bg-muted/40 text-xs font-medium text-muted-foreground border-b border-border">
+        <div className="hidden gap-x-4 border-b border-border bg-muted/40 px-4 py-2.5 text-sm font-medium text-muted-foreground lg:grid lg:grid-cols-[auto_1fr_auto_auto_auto_auto] lg:text-xs">
           <span>Student</span>
           <span />
           <span>Status</span>
@@ -88,23 +88,23 @@ export default function Students() {
                 key={s.id}
                 type="button"
                 onClick={() => toast.info("Student profile coming soon")}
-                className="w-full grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-x-4 items-center px-4 py-3 hover:bg-muted/30 transition-colors text-left"
+                className="grid w-full grid-cols-1 gap-2 px-4 py-3 text-left transition-colors hover:bg-muted/30 lg:grid-cols-[auto_1fr_auto_auto_auto_auto] lg:gap-x-4 lg:gap-y-0"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground">
                   {initials}
                 </div>
                 <div>
                   <p className="text-sm font-medium">{s.name}</p>
-                  <p className="text-xs text-muted-foreground">{s.grade} Grade · {s.assignmentsCompleted}/{s.assignmentsTotal} assignments done</p>
+                  <p className="text-sm md:text-xs text-muted-foreground">{s.grade} Grade · {s.assignmentsCompleted}/{s.assignmentsTotal} assignments done</p>
                 </div>
-                <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${cfg.className}`}>
+                <span className={`rounded-full border px-2 py-0.5 text-sm md:text-[10px] font-semibold ${cfg.className}`}>
                   {cfg.label}
                 </span>
                 <div className="flex items-center gap-2 w-28">
                   <Progress value={s.consistencyScore} className="h-1.5 flex-1" />
-                  <span className="text-xs text-muted-foreground w-7 text-right">{s.consistencyScore}%</span>
+                  <span className="text-sm md:text-xs text-muted-foreground w-7 text-right">{s.consistencyScore}%</span>
                 </div>
-                <span className="text-xs text-muted-foreground whitespace-nowrap">{s.lastActive}</span>
+                <span className="text-sm md:text-xs text-muted-foreground whitespace-nowrap">{s.lastActive}</span>
                 <span className={`text-sm font-bold ${GRADE_COLORS[s.currentGrade]}`}>{s.currentGrade}</span>
               </button>
             );

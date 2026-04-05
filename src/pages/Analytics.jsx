@@ -138,7 +138,7 @@ function ActivityHeatmap({ missionDates, rankColor, loading }) {
             return (
               <div key={wi} style={{ width: 14, marginRight: 2, flexShrink: 0 }}>
                 {entry && (
-                  <span className="text-[10px] text-muted-foreground">{entry.label}</span>
+                  <span className="text-sm md:text-[10px] text-muted-foreground">{entry.label}</span>
                 )}
               </div>
             );
@@ -151,7 +151,7 @@ function ActivityHeatmap({ missionDates, rankColor, loading }) {
             {DAY_LABELS.map((day, i) => (
               <div
                 key={day}
-                className="text-[10px] text-muted-foreground leading-none"
+                className="text-sm md:text-[10px] text-muted-foreground leading-none"
                 style={{ height: 12, marginBottom: 2, lineHeight: "12px" }}
               >
                 {i % 2 === 1 ? day : ""}
@@ -190,7 +190,7 @@ function ActivityHeatmap({ missionDates, rankColor, loading }) {
         {/* Tooltip */}
         {tooltip && (
           <div
-            className="fixed z-50 px-2 py-1 rounded text-xs bg-popover border border-border shadow text-foreground pointer-events-none"
+            className="fixed z-50 px-2 py-1 rounded text-sm md:text-xs bg-popover border border-border shadow text-foreground pointer-events-none"
             style={{ top: tooltip.y - 36, left: tooltip.x - 60 }}
           >
             {tooltip.cell.count} mission{tooltip.cell.count !== 1 ? "s" : ""} submitted on{" "}
@@ -522,7 +522,7 @@ function RecentActivity({ assignments, loading }) {
               <div className="flex items-center gap-2 mt-0.5">
                 {diff && (
                   <span
-                    className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                    className={`text-sm md:text-[10px] font-medium px-1.5 py-0.5 rounded ${
                       DIFF_COLORS[diff] ?? "bg-muted text-muted-foreground"
                     }`}
                   >
@@ -530,13 +530,13 @@ function RecentActivity({ assignments, loading }) {
                   </span>
                 )}
                 {guildName && (
-                  <span className="text-[10px] text-muted-foreground">{guildName}</span>
+                  <span className="text-sm md:text-[10px] text-muted-foreground">{guildName}</span>
                 )}
               </div>
             </div>
             <div className="text-right shrink-0">
               <p className="text-sm font-bold text-yellow-400">+{xp} XP</p>
-              <p className="text-[11px] text-muted-foreground">{timeAgo(date)}</p>
+              <p className="text-sm md:text-[11px] text-muted-foreground">{timeAgo(date)}</p>
             </div>
           </motion.div>
         );
@@ -559,7 +559,7 @@ function StatCard({ icon: Icon, label, value, loading }) {
           ) : (
             <p className="text-lg font-bold leading-none">{value}</p>
           )}
-          <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+          <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{label}</p>
         </div>
       </CardContent>
     </Card>
@@ -686,7 +686,7 @@ export default function Analytics() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         <StatCard icon={Flame} label="Current Streak" value={`${currentStreak}d`} loading={loading} />
         <StatCard icon={Trophy} label="Longest Streak" value={`${maxStreak}d`} loading={loading} />
         <StatCard icon={Zap} label="Total XP" value={xp.toLocaleString()} loading={loading} />
@@ -710,7 +710,7 @@ export default function Analytics() {
             loading={loading}
           />
           <div className="flex items-center gap-2 mt-3 justify-end">
-            <span className="text-xs text-muted-foreground">Less</span>
+            <span className="text-sm md:text-xs text-muted-foreground">Less</span>
             {[0, 1, 2, 3, 4].map((c) => (
               <div
                 key={c}
@@ -722,7 +722,7 @@ export default function Analytics() {
                 }}
               />
             ))}
-            <span className="text-xs text-muted-foreground">More</span>
+            <span className="text-sm md:text-xs text-muted-foreground">More</span>
           </div>
         </CardContent>
       </Card>

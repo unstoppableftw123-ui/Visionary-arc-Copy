@@ -65,14 +65,14 @@ export default function AttachMenu({
       transition={{ duration: 0.15, ease: "easeOut" }}
       className="absolute bottom-full left-0 z-50 mb-2 w-64 rounded-2xl border border-hub-border bg-hub-surface p-3 shadow-xl"
     >
-      <p className="mb-2.5 font-hub-sans text-xs font-medium text-hub-muted">Add to chat</p>
+      <p className="mb-2.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Add to chat</p>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {/* File tile */}
         <label className={tileBase}>
           <FileText className="h-4 w-4 text-hub-muted" />
           <p className="font-hub-sans text-sm font-medium text-hub-text">File</p>
-          <p className="font-hub-sans text-xs text-hub-muted">PDF, TXT, DOCX</p>
+          <p className="font-hub-sans text-sm md:text-xs text-hub-muted">PDF, TXT, DOCX</p>
           <input
             type="file"
             accept={FILE_ACCEPT}
@@ -89,7 +89,7 @@ export default function AttachMenu({
         <label className={tileBase}>
           <ImageIcon className="h-4 w-4 text-hub-muted" />
           <p className="font-hub-sans text-sm font-medium text-hub-text">Image</p>
-          <p className="font-hub-sans text-xs text-hub-muted">PNG, JPG</p>
+          <p className="font-hub-sans text-sm md:text-xs text-hub-muted">PNG, JPG</p>
           <input
             type="file"
             accept={IMAGE_ACCEPT}
@@ -110,7 +110,7 @@ export default function AttachMenu({
         >
           <LinkIcon className="h-4 w-4 text-hub-muted" />
           <p className="font-hub-sans text-sm font-medium text-hub-text">Link</p>
-          <p className="font-hub-sans text-xs text-hub-muted">URL</p>
+          <p className="font-hub-sans text-sm md:text-xs text-hub-muted">URL</p>
         </button>
 
         {/* Paste Text tile */}
@@ -124,7 +124,7 @@ export default function AttachMenu({
         >
           <ClipboardPaste className="h-4 w-4 text-hub-muted" />
           <p className="font-hub-sans text-sm font-medium text-hub-text">Paste Text</p>
-          <p className="font-hub-sans text-xs text-hub-muted">Opens a text editor</p>
+          <p className="font-hub-sans text-sm md:text-xs text-hub-muted">Opens a text editor</p>
         </button>
       </div>
 

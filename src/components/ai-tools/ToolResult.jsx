@@ -35,7 +35,7 @@ export function ResultSkeleton() {
       <div className="shimmer-line h-4 w-4/5" />
       <div className="shimmer-line h-4 w-full" />
       <div className="shimmer-line h-4 w-3/5" />
-      <p className="text-xs text-muted-foreground text-center pt-2 animate-pulse">
+      <p className="text-sm md:text-xs text-muted-foreground text-center pt-2 animate-pulse">
         Generating with Claude...
       </p>
     </div>
@@ -83,7 +83,7 @@ function renderMarkdown(text) {
       );
       elements.push(
         <div key={`table-${i}`} className="overflow-x-auto my-3 rounded-lg border border-border">
-          <table className="w-full text-xs">
+          <table className="w-full text-sm md:text-xs">
             <thead className="bg-secondary">
               <tr>
                 {headers.map((h, hi) => (
@@ -186,7 +186,7 @@ function inlineFormat(text) {
       parts.push(<em key={match.index}>{raw.slice(1, -1)}</em>);
     } else if (raw.startsWith("`")) {
       parts.push(
-        <code key={match.index} className="rounded bg-secondary px-1 py-0.5 text-xs font-mono">
+        <code key={match.index} className="rounded bg-secondary px-1 py-0.5 text-sm md:text-xs font-mono">
           {raw.slice(1, -1)}
         </code>
       );

@@ -31,7 +31,7 @@ function PublicPortfolioCard({ entry }) {
       className={`rounded-2xl border border-border bg-card overflow-hidden border-l-4 ${colors.border}`}
     >
       <div className={`px-5 py-4 ${colors.bg}`}>
-        <p className={`text-xs font-semibold uppercase tracking-wide mb-1 ${colors.text}`}>
+        <p className={`text-sm md:text-xs font-semibold uppercase tracking-wide mb-1 ${colors.text}`}>
           {track?.name ?? entry.track}
         </p>
         <h3 className="font-bold text-foreground leading-snug">{entry.title}</h3>
@@ -46,7 +46,7 @@ function PublicPortfolioCard({ entry }) {
             {entry.skills.map((s) => (
               <span
                 key={s}
-                className={`text-xs px-2 py-0.5 rounded-full font-medium ${colors.badge}`}
+                className={`text-sm md:text-xs px-2 py-0.5 rounded-full font-medium ${colors.badge}`}
               >
                 {s}
               </span>
@@ -55,14 +55,14 @@ function PublicPortfolioCard({ entry }) {
         )}
         <div className="flex items-center justify-between">
           {completedDate && (
-            <span className="text-xs text-muted-foreground">{completedDate}</span>
+            <span className="text-sm md:text-xs text-muted-foreground">{completedDate}</span>
           )}
           {entry.submission_url && (
             <a
               href={entry.submission_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm md:text-xs font-medium text-primary hover:underline"
             >
               View Project <ExternalLink size={11} />
             </a>

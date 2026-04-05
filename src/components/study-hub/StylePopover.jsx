@@ -37,7 +37,7 @@ function Segment({ options, value, onChange }) {
             key={id}
             type="button"
             onClick={() => onChange(id)}
-            className={`rounded-md px-2.5 py-1.5 font-hub-sans text-xs transition ${
+            className={`rounded-md px-2.5 py-1.5 font-hub-sans text-sm md:text-xs transition ${
               isActive ? "bg-hub-accent text-[var(--text-primary)]" : "text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
             }`}
           >
@@ -90,7 +90,7 @@ export default function StylePopover({
       {mode === "summarize" && (
         <div className="space-y-3">
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Style</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Style</p>
             <select
               value={summarizeOpts.summaryStyle ?? "Concise"}
               onChange={(e) => onChange("summarize", { ...summarizeOpts, summaryStyle: e.target.value })}
@@ -102,7 +102,7 @@ export default function StylePopover({
             </select>
           </div>
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Length</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Length</p>
             <Segment
               options={SUMMARY_LENGTHS}
               value={summarizeOpts.summaryLength ?? "Medium"}
@@ -110,7 +110,7 @@ export default function StylePopover({
             />
           </div>
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Agent</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Agent</p>
             <Segment
               options={AGENTS}
               value={summarizeOpts.agent ?? "deep"}
@@ -122,7 +122,7 @@ export default function StylePopover({
       {mode === "quiz" && (
         <div className="space-y-3">
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Type</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Type</p>
             <Segment
               options={QUESTION_TYPES}
               value={quizOpts.questionType ?? "multiple_choice"}
@@ -130,14 +130,14 @@ export default function StylePopover({
             />
           </div>
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Count</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Count</p>
             <div className="flex gap-1">
               {QUESTION_COUNTS.map((n) => (
                 <button
                   key={n}
                   type="button"
                   onClick={() => onChange("quiz", { ...quizOpts, numQuestions: n })}
-                  className={`h-8 w-8 rounded-lg font-hub-sans text-xs font-medium transition ${
+                  className={`h-8 w-8 rounded-lg font-hub-sans text-sm md:text-xs font-medium transition ${
                     (quizOpts.numQuestions ?? 5) === n ? "bg-hub-accent text-[var(--text-primary)]" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
                   }`}
                 >
@@ -147,7 +147,7 @@ export default function StylePopover({
             </div>
           </div>
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Difficulty</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Difficulty</p>
             <Segment
               options={DIFFICULTIES}
               value={quizOpts.difficulty ?? "Medium"}
@@ -159,14 +159,14 @@ export default function StylePopover({
       {mode === "flashcards" && (
         <div className="space-y-3">
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Count</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Count</p>
             <div className="flex gap-1">
               {CARD_COUNTS.map((n) => (
                 <button
                   key={n}
                   type="button"
                   onClick={() => onChange("flashcards", { ...flashcardOpts, numCards: n })}
-                  className={`h-8 w-10 rounded-lg font-hub-sans text-xs font-medium transition ${
+                  className={`h-8 w-10 rounded-lg font-hub-sans text-sm md:text-xs font-medium transition ${
                     (flashcardOpts.numCards ?? 10) === n ? "bg-hub-accent text-[var(--text-primary)]" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
                   }`}
                 >
@@ -176,7 +176,7 @@ export default function StylePopover({
             </div>
           </div>
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Format</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Format</p>
             <Segment
               options={CARD_STYLES}
               value={flashcardOpts.cardStyle ?? "term_def"}
@@ -188,7 +188,7 @@ export default function StylePopover({
       {mode === "notes" && (
         <div className="space-y-3">
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Style</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Style</p>
             <Segment
               options={NOTES_STYLES}
               value={notesOpts.notesStyle ?? "Outline"}
@@ -200,14 +200,14 @@ export default function StylePopover({
       {mode === "slides" && (
         <div className="space-y-3">
           <div>
-            <p className="mb-1.5 font-hub-sans text-xs font-medium text-hub-muted">Slide count</p>
+            <p className="mb-1.5 font-hub-sans text-sm md:text-xs font-medium text-hub-muted">Slide count</p>
             <div className="flex flex-wrap gap-1">
               {SLIDE_COUNTS.map((n) => (
                 <button
                   key={n}
                   type="button"
                   onClick={() => onChange("slides", { ...slidesOpts, slideCount: n })}
-                  className={`h-8 w-10 rounded-lg font-hub-sans text-xs font-medium transition ${
+                  className={`h-8 w-10 rounded-lg font-hub-sans text-sm md:text-xs font-medium transition ${
                     (slidesOpts.slideCount ?? 5) === n ? "bg-hub-accent text-[var(--text-primary)]" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
                   }`}
                 >

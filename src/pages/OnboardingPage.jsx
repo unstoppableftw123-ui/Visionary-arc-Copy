@@ -108,7 +108,7 @@ function TrackOption({ track, selected, onSelect, index }) {
             {track.skills.slice(0, 4).map((skill) => (
               <span
                 key={skill}
-                className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${track.colors.badge}`}
+                className={`rounded-full px-2.5 py-1 text-sm md:text-[11px] font-medium ${track.colors.badge}`}
               >
                 {skill}
               </span>
@@ -132,15 +132,15 @@ function WalkthroughVisual({ step }) {
             exit={{ opacity: 0, y: -18 }}
             className="space-y-4"
           >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <div className="flex items-center gap-2 text-sm md:text-xs uppercase tracking-[0.2em] text-muted-foreground">
               <Sparkles className="h-4 w-4" /> AI brief incoming
             </div>
             <div className="rounded-2xl border border-sky-400/30 bg-sky-500/10 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <span className="rounded-full bg-sky-500/20 px-2.5 py-1 text-xs font-medium text-sky-300">
+                <span className="rounded-full bg-sky-500/20 px-2.5 py-1 text-sm md:text-xs font-medium text-sky-300">
                   Tech & AI
                 </span>
-                <span className="text-xs text-muted-foreground">Starter</span>
+                <span className="text-sm md:text-xs text-muted-foreground">Starter</span>
               </div>
               <p className="text-base font-semibold text-foreground">Build an AI helper for a local nonprofit</p>
               <p className="mt-2 text-sm text-muted-foreground">Client goal: save volunteers time and make support easier.</p>
@@ -156,7 +156,7 @@ function WalkthroughVisual({ step }) {
             exit={{ opacity: 0, y: -18 }}
             className="space-y-4"
           >
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:grid-cols-4">
               {[
                 { label: "Figma", className: "bg-rose-500/15 text-rose-300" },
                 { label: "Docs", className: "bg-blue-500/15 text-blue-300" },
@@ -409,7 +409,7 @@ export default function OnboardingPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <p className="text-base font-semibold text-foreground">{currentWalkthrough.title}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm md:text-xs text-muted-foreground">
                         {walkthroughIndex + 1} / {WALKTHROUGH_STEPS.length}
                       </p>
                     </div>
@@ -469,7 +469,7 @@ export default function OnboardingPage() {
                   </div>
 
                   <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                    <p className="mb-3 text-sm md:text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                       Difficulty
                     </p>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -485,7 +485,7 @@ export default function OnboardingPage() {
                           }`}
                         >
                           <p className="font-semibold">{option.label}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{option.detail}</p>
+                          <p className="mt-1 text-sm md:text-xs text-muted-foreground">{option.detail}</p>
                         </button>
                       ))}
                     </div>

@@ -164,9 +164,9 @@ function StatCard({ icon: Icon, title, value, sub, color = "text-foreground", ic
           <Icon className={`h-5 w-5 ${color}`} />
         </div>
         <div className="min-w-0">
-          <p className="text-xs text-muted-foreground truncate">{title}</p>
+          <p className="text-sm md:text-xs text-muted-foreground truncate">{title}</p>
           <p className={`text-2xl font-bold leading-tight ${color}`}>{value}</p>
-          {sub && <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>}
+          {sub && <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{sub}</p>}
         </div>
       </CardContent>
     </Card>
@@ -189,12 +189,12 @@ function InterventionCard({ type, studentName, onAssign, onMessage, onLog }) {
         </div>
         <div>
           <p className="font-semibold text-sm">{suggestion.label}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">{suggestion.description}</p>
+          <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{suggestion.description}</p>
           <div className="flex items-center gap-2 mt-1.5">
-            <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <span className="text-sm md:text-xs text-muted-foreground flex items-center gap-1">
               <Clock className="h-3 w-3" /> {suggestion.estimatedTime}
             </span>
-            <span className={`text-xs px-1.5 py-0.5 rounded-full border font-medium ${
+            <span className={`text-sm md:text-xs px-1.5 py-0.5 rounded-full border font-medium ${
               suggestion.difficulty === "easy"
                 ? "bg-green-500/10 text-green-600 border-green-500/30"
                 : "bg-amber-500/10 text-amber-600 border-amber-500/30"
@@ -203,13 +203,13 @@ function InterventionCard({ type, studentName, onAssign, onMessage, onLog }) {
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant="default" className="text-xs h-7" onClick={onAssign}>
+        <Button size="sm" variant="default" className="text-sm md:text-xs h-7" onClick={onAssign}>
           Assign Practice
         </Button>
-        <Button size="sm" variant="outline" className="text-xs h-7" onClick={onMessage}>
+        <Button size="sm" variant="outline" className="text-sm md:text-xs h-7" onClick={onMessage}>
           Send Message
         </Button>
-        <Button size="sm" variant="ghost" className="text-xs h-7" onClick={() => setLogging(l => !l)}>
+        <Button size="sm" variant="ghost" className="text-sm md:text-xs h-7" onClick={() => setLogging(l => !l)}>
           Log Intervention
         </Button>
       </div>
@@ -219,18 +219,18 @@ function InterventionCard({ type, studentName, onAssign, onMessage, onLog }) {
             placeholder="What did you do?"
             value={logNote}
             onChange={e => setLogNote(e.target.value)}
-            className="text-xs resize-none h-16"
+            className="text-sm md:text-xs resize-none h-16"
           />
           <div className="flex gap-2">
-            <Input type="date" className="text-xs h-7 w-auto" defaultValue={new Date().toISOString().slice(0, 10)} />
-            <select className="text-xs h-7 rounded-md border border-input bg-background px-2">
+            <Input type="date" className="text-sm md:text-xs h-7 w-auto" defaultValue={new Date().toISOString().slice(0, 10)} />
+            <select className="text-sm md:text-xs h-7 rounded-md border border-input bg-background px-2">
               <option value="extra_practice">Extra Practice</option>
               <option value="peer_tutoring">Peer Tutoring</option>
               <option value="one_on_one">One-on-One</option>
               <option value="parent_contact">Parent Contact</option>
             </select>
           </div>
-          <Button size="sm" className="text-xs h-7" onClick={onLog}>
+          <Button size="sm" className="text-sm md:text-xs h-7" onClick={onLog}>
             Save Log
           </Button>
         </div>
@@ -278,18 +278,18 @@ function StudentDrawer({ student, open, onClose }) {
               <div className="text-left">
                 <p className="font-semibold text-base leading-tight">{student.name}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full border font-medium ${cfg.badgeCls}`}>
+                  <span className={`text-sm md:text-xs px-1.5 py-0.5 rounded-full border font-medium ${cfg.badgeCls}`}>
                     {cfg.label}
                   </span>
-                  <span className="text-xs text-muted-foreground">Grade {student.grade}</span>
-                  <span className="text-xs text-muted-foreground">· {student.lastActive}</span>
+                  <span className="text-sm md:text-xs text-muted-foreground">Grade {student.grade}</span>
+                  <span className="text-sm md:text-xs text-muted-foreground">· {student.lastActive}</span>
                   {student.trend === "improving" && (
-                    <span className="text-xs text-green-500 font-medium flex items-center gap-0.5">
+                    <span className="text-sm md:text-xs text-green-500 font-medium flex items-center gap-0.5">
                       <TrendingUp className="h-3 w-3" /> +{student.trendDelta}%
                     </span>
                   )}
                   {student.trend === "declining" && (
-                    <span className="text-xs text-red-500 font-medium flex items-center gap-0.5">
+                    <span className="text-sm md:text-xs text-red-500 font-medium flex items-center gap-0.5">
                       <TrendingDown className="h-3 w-3" /> {student.trendDelta}%
                     </span>
                   )}
@@ -315,18 +315,18 @@ function StudentDrawer({ student, open, onClose }) {
                   <div key={std.id}>
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-1.5 min-w-0">
-                        <span className="text-xs font-mono text-muted-foreground shrink-0">{std.code}</span>
-                        <span className="text-xs truncate">{std.label}</span>
+                        <span className="text-sm md:text-xs font-mono text-muted-foreground shrink-0">{std.code}</span>
+                        <span className="text-sm md:text-xs truncate">{std.label}</span>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                        <span className="text-xs font-semibold" style={{ color: col }}>{score}%</span>
+                        <span className="text-sm md:text-xs font-semibold" style={{ color: col }}>{score}%</span>
                         {score > 85 && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-500/15 text-green-600 border border-green-500/30 font-medium">
+                          <span className="text-sm md:text-[10px] px-1.5 py-0.5 rounded-full bg-green-500/15 text-green-600 border border-green-500/30 font-medium">
                             Mastered
                           </span>
                         )}
                         {score < 65 && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-500/15 text-red-600 border border-red-500/30 font-medium">
+                          <span className="text-sm md:text-[10px] px-1.5 py-0.5 rounded-full bg-red-500/15 text-red-600 border border-red-500/30 font-medium">
                             Needs work
                           </span>
                         )}
@@ -338,7 +338,7 @@ function StudentDrawer({ student, open, onClose }) {
                         style={{ width: `${score}%`, backgroundColor: col }}
                       />
                     </div>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">
+                    <p className="text-sm md:text-[10px] text-muted-foreground mt-0.5">
                       {entry?.attempts ?? 0} attempts · Last: {entry?.lastAttempt ?? "—"}
                     </p>
                   </div>
@@ -354,19 +354,19 @@ function StudentDrawer({ student, open, onClose }) {
             </h3>
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 rounded-full bg-violet-500/15 text-violet-600 border border-violet-500/30 font-medium">
+                <span className="text-sm md:text-xs px-2 py-1 rounded-full bg-violet-500/15 text-violet-600 border border-violet-500/30 font-medium">
                   {STYLE_LABELS[student.learningStyle] ?? student.learningStyle}
                 </span>
-                <span className="text-xs px-2 py-1 rounded-full bg-blue-500/15 text-blue-600 border border-blue-500/30 font-medium capitalize">
+                <span className="text-sm md:text-xs px-2 py-1 rounded-full bg-blue-500/15 text-blue-600 border border-blue-500/30 font-medium capitalize">
                   {student.workStyle.replace("_", " ")} worker
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground italic">
+              <p className="text-sm md:text-xs text-muted-foreground italic">
                 {getLearningStyleInsight(student.learningStyle)}
               </p>
               <div className="flex flex-wrap gap-1.5 mt-1">
                 {student.cognitiveStrengths.map(str => (
-                  <span key={str} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-foreground border border-border">
+                  <span key={str} className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-secondary text-foreground border border-border">
                     {str}
                   </span>
                 ))}
@@ -384,16 +384,16 @@ function StudentDrawer({ student, open, onClose }) {
             </h3>
             <div className="space-y-2">
               {student.recentScores.map((entry, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs">
+                <div key={i} className="flex items-center gap-2 text-sm md:text-xs">
                   <div
-                    className="h-6 w-6 rounded flex items-center justify-center text-[var(--text-primary)] font-bold text-[10px] shrink-0"
+                    className="h-6 w-6 rounded flex items-center justify-center text-[var(--text-primary)] font-bold text-sm md:text-[10px] shrink-0"
                     style={{ backgroundColor: scoreColor(entry.score) }}
                   >
                     {entry.score}
                   </div>
                   <span className="flex-1 min-w-0 truncate">{entry.assignmentTitle}</span>
                   <span className="text-muted-foreground shrink-0">{entry.date}</span>
-                  <span className="shrink-0 px-1.5 py-0.5 rounded-full bg-secondary border border-border text-[10px]">
+                  <span className="shrink-0 px-1.5 py-0.5 rounded-full bg-secondary border border-border text-sm md:text-[10px]">
                     {entry.type}
                   </span>
                 </div>
@@ -415,7 +415,7 @@ function StudentDrawer({ student, open, onClose }) {
                 onLog={() => toast.success("Intervention logged")}
               />
             ) : (
-              <p className="text-xs text-muted-foreground">No active intervention needed.</p>
+              <p className="text-sm md:text-xs text-muted-foreground">No active intervention needed.</p>
             )}
           </section>
 
@@ -428,7 +428,7 @@ function StudentDrawer({ student, open, onClose }) {
               {!editingNote && (
                 <button
                   onClick={() => setEditingNote(true)}
-                  className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
+                  className="text-sm md:text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
                 >
                   Edit Note
                 </button>
@@ -439,10 +439,10 @@ function StudentDrawer({ student, open, onClose }) {
                 <Textarea
                   value={noteText}
                   onChange={e => setNoteText(e.target.value)}
-                  className="text-xs resize-none"
+                  className="text-sm md:text-xs resize-none"
                   rows={3}
                 />
-                <Button size="sm" className="text-xs h-7" onClick={() => {
+                <Button size="sm" className="text-sm md:text-xs h-7" onClick={() => {
                   setEditingNote(false);
                   toast.success("Note saved");
                 }}>
@@ -450,7 +450,7 @@ function StudentDrawer({ student, open, onClose }) {
                 </Button>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground leading-relaxed">{noteText}</p>
+              <p className="text-sm md:text-xs text-muted-foreground leading-relaxed">{noteText}</p>
             )}
           </section>
 
@@ -485,33 +485,33 @@ function StudentCard({ student, onViewProfile }) {
             >
               {getInitials(student.name)}
             </div>
-            <span className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium leading-tight ${cfg.badgeCls}`}>
+            <span className={`text-sm md:text-[10px] px-1.5 py-0.5 rounded-full border font-medium leading-tight ${cfg.badgeCls}`}>
               {cfg.label}
             </span>
             {student.trend === "improving" && (
-              <span className="text-[10px] text-green-500 font-medium">↑ +{student.trendDelta}%</span>
+              <span className="text-sm md:text-[10px] text-green-500 font-medium">↑ +{student.trendDelta}%</span>
             )}
             {student.trend === "declining" && (
-              <span className="text-[10px] text-red-500 font-medium">↓ {student.trendDelta}%</span>
+              <span className="text-sm md:text-[10px] text-red-500 font-medium">↓ {student.trendDelta}%</span>
             )}
             {student.trend === "stable" && (
-              <span className="text-[10px] text-muted-foreground">→ stable</span>
+              <span className="text-sm md:text-[10px] text-muted-foreground">→ stable</span>
             )}
           </div>
 
           {/* MIDDLE — Name, ring, strengths */}
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-sm truncate">{student.name}</p>
-            <p className="text-xs text-muted-foreground mb-2">Grade {student.grade}</p>
+            <p className="text-sm md:text-xs text-muted-foreground mb-2">Grade {student.grade}</p>
             <div className="flex items-center gap-3">
               <CircularProgress value={student.overallMastery} color={cfg.color} size={60} />
               <div className="min-w-0">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Top Standard</p>
-                <p className="text-xs font-medium truncate text-green-600">{top.label}</p>
-                <p className="text-xs text-green-600 font-bold">{top.score}%</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide mt-1">Biggest Gap</p>
-                <p className="text-xs font-medium truncate text-red-500">{gap.label}</p>
-                <p className="text-xs text-red-500 font-bold">{gap.score}%</p>
+                <p className="text-sm md:text-[10px] text-muted-foreground uppercase tracking-wide">Top Standard</p>
+                <p className="text-sm md:text-xs font-medium truncate text-green-600">{top.label}</p>
+                <p className="text-sm md:text-xs text-green-600 font-bold">{top.score}%</p>
+                <p className="text-sm md:text-[10px] text-muted-foreground uppercase tracking-wide mt-1">Biggest Gap</p>
+                <p className="text-sm md:text-xs font-medium truncate text-red-500">{gap.label}</p>
+                <p className="text-sm md:text-xs text-red-500 font-bold">{gap.score}%</p>
               </div>
             </div>
           </div>
@@ -519,8 +519,8 @@ function StudentCard({ student, onViewProfile }) {
           {/* RIGHT — Engagement stats */}
           <div className="shrink-0 text-right space-y-1.5 min-w-[80px]">
             <div>
-              <p className="text-[10px] text-muted-foreground">Study hrs</p>
-              <p className="text-xs font-semibold">{student.studyHoursThisWeek}h</p>
+              <p className="text-sm md:text-[10px] text-muted-foreground">Study hrs</p>
+              <p className="text-sm md:text-xs font-semibold">{student.studyHoursThisWeek}h</p>
               <div className="flex justify-end items-center gap-0.5 mt-0.5">
                 <div className="h-1.5 rounded-full bg-secondary overflow-hidden w-12">
                   <div
@@ -531,17 +531,17 @@ function StudentCard({ student, onViewProfile }) {
               </div>
             </div>
             <div>
-              <p className="text-[10px] text-muted-foreground">Assignments</p>
-              <p className="text-xs font-semibold">{student.assignmentsCompleted}/{student.assignmentsTotal}</p>
+              <p className="text-sm md:text-[10px] text-muted-foreground">Assignments</p>
+              <p className="text-sm md:text-xs font-semibold">{student.assignmentsCompleted}/{student.assignmentsTotal}</p>
             </div>
             <div>
-              <p className="text-[10px] text-muted-foreground">Last active</p>
-              <p className="text-xs truncate">{student.lastActive}</p>
+              <p className="text-sm md:text-[10px] text-muted-foreground">Last active</p>
+              <p className="text-sm md:text-xs truncate">{student.lastActive}</p>
             </div>
             {student.streakDays > 0 && (
               <div className="flex items-center justify-end gap-0.5">
                 <Flame className="h-3 w-3 text-orange-500" />
-                <span className="text-xs text-orange-500 font-medium">{student.streakDays}d</span>
+                <span className="text-sm md:text-xs text-orange-500 font-medium">{student.streakDays}d</span>
               </div>
             )}
           </div>
@@ -551,7 +551,7 @@ function StudentCard({ student, onViewProfile }) {
         {student.flags.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {student.flags.map((flag, i) => (
-              <span key={i} className="text-[10px] px-1.5 py-0.5 rounded-full border font-medium bg-red-500/10 text-red-600 border-red-500/30">
+              <span key={i} className="text-sm md:text-[10px] px-1.5 py-0.5 rounded-full border font-medium bg-red-500/10 text-red-600 border-red-500/30">
                 {flag}
               </span>
             ))}
@@ -563,18 +563,18 @@ function StudentCard({ student, onViewProfile }) {
           <div className="rounded-md border border-amber-500/30 bg-amber-500/8 px-3 py-2 flex items-start gap-2">
             <AlertTriangle className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
             <div className="min-w-0">
-              <p className="text-[10px] font-semibold text-amber-600">Intervention Suggested</p>
-              <p className="text-[10px] text-muted-foreground truncate">{interventionSugg.description}</p>
+              <p className="text-sm md:text-[10px] font-semibold text-amber-600">Intervention Suggested</p>
+              <p className="text-sm md:text-[10px] text-muted-foreground truncate">{interventionSugg.description}</p>
             </div>
           </div>
         )}
 
         {/* Actions */}
         <div className="flex gap-2 pt-1 border-t border-border">
-          <Button size="sm" variant="default" className="flex-1 text-xs h-7" onClick={onViewProfile}>
+          <Button size="sm" variant="default" className="flex-1 text-sm md:text-xs h-7" onClick={onViewProfile}>
             View Full Profile →
           </Button>
-          <Button size="sm" variant="outline" className="text-xs h-7"
+          <Button size="sm" variant="outline" className="text-sm md:text-xs h-7"
             onClick={() => toast.success(`Message sent to ${student.name}`)}>
             Message
           </Button>
@@ -610,7 +610,7 @@ function ClassOverviewTab({ onStudentBarClick }) {
     const d = payload[0].payload;
     const cfg = STATUS_CONFIG[d.status];
     return (
-      <div className="rounded-lg border border-border bg-popover px-3 py-2 shadow-lg text-xs">
+      <div className="rounded-lg border border-border bg-popover px-3 py-2 shadow-lg text-sm md:text-xs">
         <p className="font-semibold">{d.fullName}</p>
         <p>Mastery: <strong>{d.mastery}%</strong></p>
         <p className={`font-medium`} style={{ color: cfg.color }}>{cfg.label}</p>
@@ -671,12 +671,12 @@ function ClassOverviewTab({ onStudentBarClick }) {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Student Mastery Distribution</CardTitle>
-          <p className="text-xs text-muted-foreground">Click any bar to open that student's profile</p>
+          <p className="text-sm md:text-xs text-muted-foreground">Click any bar to open that student's profile</p>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-3 mb-3 flex-wrap">
             {Object.entries(STATUS_CONFIG).map(([k, v]) => (
-              <span key={k} className="flex items-center gap-1.5 text-xs">
+              <span key={k} className="flex items-center gap-1.5 text-sm md:text-xs">
                 <span className="h-2.5 w-2.5 rounded-full inline-block" style={{ backgroundColor: v.color }} />
                 {v.label}
               </span>
@@ -706,16 +706,16 @@ function ClassOverviewTab({ onStudentBarClick }) {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Class Standards Mastery Heatmap</CardTitle>
-          <p className="text-xs text-muted-foreground">Red cells = intervention needed · Hover for score</p>
+          <p className="text-sm md:text-xs text-muted-foreground">Red cells = intervention needed · Hover for score</p>
         </CardHeader>
         <CardContent className="overflow-x-auto">
-          <table className="text-xs border-collapse min-w-full">
+          <table className="text-sm md:text-xs border-collapse min-w-full">
             <thead>
               <tr>
-                <th className="text-left pr-3 pb-2 font-medium text-muted-foreground w-28 text-xs">Student</th>
+                <th className="text-left pr-3 pb-2 font-medium text-muted-foreground w-28 text-sm md:text-xs">Student</th>
                 {BIO_STANDARDS.map(std => (
                   <th key={std.id} className="pb-2 px-1 text-center">
-                    <div title={std.label} className="font-mono text-[10px] text-muted-foreground cursor-help">
+                    <div title={std.label} className="font-mono text-sm md:text-[10px] text-muted-foreground cursor-help">
                       {std.code}
                     </div>
                   </th>
@@ -725,7 +725,7 @@ function ClassOverviewTab({ onStudentBarClick }) {
             <tbody>
               {heatStudents.map(student => (
                 <tr key={student.id}>
-                  <td className="pr-3 py-0.5 text-xs text-muted-foreground whitespace-nowrap">
+                  <td className="pr-3 py-0.5 text-sm md:text-xs text-muted-foreground whitespace-nowrap">
                     {student.name.split(" ")[0]} {student.name.split(" ")[1]?.[0]}.
                   </td>
                   {BIO_STANDARDS.map(std => {
@@ -734,7 +734,7 @@ function ClassOverviewTab({ onStudentBarClick }) {
                       <td key={std.id} className="px-1 py-0.5">
                         <div
                           title={`${student.name} · ${std.label}: ${score}%`}
-                          className="h-7 w-10 rounded flex items-center justify-center text-[10px] font-semibold cursor-help transition-transform hover:scale-110"
+                          className="h-7 w-10 rounded flex items-center justify-center text-sm md:text-[10px] font-semibold cursor-help transition-transform hover:scale-110"
                           style={{ backgroundColor: scoreCellBg(score), color: scoreCellText(score) }}
                         >
                           {score}
@@ -754,18 +754,18 @@ function ClassOverviewTab({ onStudentBarClick }) {
               <p className="text-sm font-semibold">
                 ⚠️ Biggest class gap: {biggestGapStd?.label ?? ca.biggestClassGap} — {ca.standardsClassAvg[ca.biggestClassGap]?.below65Count} students below 65%
               </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-sm md:text-xs text-muted-foreground mt-0.5">
                 Consider reteaching this standard before moving on.
               </p>
             </div>
-            <Button size="sm" variant="outline" className="text-xs h-7 shrink-0 whitespace-nowrap"
+            <Button size="sm" variant="outline" className="text-sm md:text-xs h-7 shrink-0 whitespace-nowrap"
               onClick={() => {}}>
               Create Practice Assignment →
             </Button>
           </div>
 
           {/* Legend */}
-          <div className="mt-3 flex flex-wrap gap-3 text-[10px] text-muted-foreground">
+          <div className="mt-3 flex flex-wrap gap-3 text-sm md:text-[10px] text-muted-foreground">
             {[
               { label: "> 85 Mastered",    bg: "#14532d" },
               { label: "70–85 Proficient", bg: "#166534" },
@@ -786,7 +786,7 @@ function ClassOverviewTab({ onStudentBarClick }) {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Class Engagement</CardTitle>
-          <p className="text-xs text-muted-foreground">Avg study hours / week</p>
+          <p className="text-sm md:text-xs text-muted-foreground">Avg study hours / week</p>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={180}>
@@ -850,7 +850,7 @@ function StudentProfilesTab({ initialStudentId }) {
         <div className="relative flex-1 min-w-48">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
           <Input
-            className="pl-8 h-8 text-xs"
+            className="pl-8 h-8 text-sm md:text-xs"
             placeholder="Search students..."
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -860,7 +860,7 @@ function StudentProfilesTab({ initialStudentId }) {
           {STATUS_FILTERS.map(f => (
             <button key={f.value}
               onClick={() => setStatusFilter(f.value)}
-              className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+              className={`text-sm md:text-xs px-2.5 py-1 rounded-full border transition-colors ${
                 statusFilter === f.value
                   ? "bg-foreground text-background border-foreground"
                   : "bg-background text-muted-foreground border-border hover:border-foreground/50"
@@ -873,7 +873,7 @@ function StudentProfilesTab({ initialStudentId }) {
           {["all", "improving", "stable", "declining"].map(t => (
             <button key={t}
               onClick={() => setTrendFilter(t)}
-              className={`text-xs px-2.5 py-1 rounded-full border transition-colors capitalize ${
+              className={`text-sm md:text-xs px-2.5 py-1 rounded-full border transition-colors capitalize ${
                 trendFilter === t
                   ? "bg-foreground text-background border-foreground"
                   : "bg-background text-muted-foreground border-border hover:border-foreground/50"
@@ -885,7 +885,7 @@ function StudentProfilesTab({ initialStudentId }) {
         <select
           value={sort}
           onChange={e => setSort(e.target.value)}
-          className="text-xs h-8 rounded-md border border-input bg-background px-2 text-muted-foreground"
+          className="text-sm md:text-xs h-8 rounded-md border border-input bg-background px-2 text-muted-foreground"
         >
           <option value="mastery">Mastery ↓</option>
           <option value="name">Name A–Z</option>
@@ -894,7 +894,7 @@ function StudentProfilesTab({ initialStudentId }) {
         </select>
       </div>
 
-      <p className="text-xs text-muted-foreground mb-4">{filtered.length} students</p>
+      <p className="text-sm md:text-xs text-muted-foreground mb-4">{filtered.length} students</p>
 
       {/* Card grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -999,13 +999,13 @@ function StandardsGapsTab() {
                   <div className="flex items-start gap-4">
                     {/* Code badge + avg */}
                     <div className="shrink-0 text-center min-w-[72px]">
-                      <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-secondary border border-border">
+                      <span className="text-sm md:text-xs font-mono px-1.5 py-0.5 rounded bg-secondary border border-border">
                         {std.code}
                       </span>
                       <p className="text-2xl font-bold mt-1.5" style={{ color: stdColor }}>
                         {Math.round(stdStats.avg)}%
                       </p>
-                      <p className="text-[10px] text-muted-foreground">class avg</p>
+                      <p className="text-sm md:text-[10px] text-muted-foreground">class avg</p>
                     </div>
 
                     {/* Label + distribution */}
@@ -1035,7 +1035,7 @@ function StandardsGapsTab() {
                           title={`${belowCount} needs help (<65%)`}
                         />
                       </div>
-                      <div className="flex gap-3 mt-1.5 text-[10px] text-muted-foreground">
+                      <div className="flex gap-3 mt-1.5 text-sm md:text-[10px] text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <span className="h-2 w-2 rounded-full bg-green-500 inline-block" />
                           {masteredCount} mastered
@@ -1080,7 +1080,7 @@ function StandardsGapsTab() {
                           >
                             {getInitials(s.name)}
                           </div>
-                          <span className="text-xs flex-1 min-w-0 truncate">{s.name}</span>
+                          <span className="text-sm md:text-xs flex-1 min-w-0 truncate">{s.name}</span>
                           <div className="w-24 h-1.5 rounded-full bg-secondary overflow-hidden">
                             <div
                               className="h-full rounded-full transition-all"
@@ -1090,7 +1090,7 @@ function StandardsGapsTab() {
                               }}
                             />
                           </div>
-                          <span className="text-xs font-semibold w-8 text-right shrink-0"
+                          <span className="text-sm md:text-xs font-semibold w-8 text-right shrink-0"
                             style={{ color: scoreColor(s.stdScore) }}>
                             {s.stdScore}%
                           </span>
@@ -1110,13 +1110,13 @@ function StandardsGapsTab() {
                       <div className="flex items-start gap-2">
                         <AlertTriangle className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
                         <div>
-                          <p className="text-xs font-semibold text-amber-600">
+                          <p className="text-sm md:text-xs font-semibold text-amber-600">
                             Consider reteaching — {pctBelow}% of class struggling
                           </p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
+                          <p className="text-sm md:text-xs text-muted-foreground mt-0.5">
                             More than 30% of students are below 65% on this standard.
                           </p>
-                          <Button size="sm" variant="outline" className="text-xs h-6 mt-2"
+                          <Button size="sm" variant="outline" className="text-sm md:text-xs h-6 mt-2"
                             onClick={() => navigate("/teacher/assignments/create")}>
                             Create Review Assignment
                           </Button>
@@ -1126,13 +1126,13 @@ function StandardsGapsTab() {
                       <div className="flex items-start gap-2">
                         <CheckCircle className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
                         <div>
-                          <p className="text-xs font-semibold text-green-600">
+                          <p className="text-sm md:text-xs font-semibold text-green-600">
                             Class has strong mastery — ready to advance
                           </p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
+                          <p className="text-sm md:text-xs text-muted-foreground mt-0.5">
                             Less than 10% of students need support on this standard.
                           </p>
-                          <Button size="sm" variant="outline" className="text-xs h-6 mt-2"
+                          <Button size="sm" variant="outline" className="text-sm md:text-xs h-6 mt-2"
                             onClick={() => navigate("/teacher/assignments/create")}>
                             Create Extension Activity
                           </Button>
@@ -1213,7 +1213,7 @@ function StandardsGapsTab() {
               );
             })}
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm md:text-xs text-muted-foreground">
             Most students in this class show <strong>{topStrength}</strong> as a key strength.{" "}
             Leverage structured problem-solving and pattern-based explanations for best results.
           </p>
@@ -1305,12 +1305,12 @@ function MasteryHeatmapTab() {
         {/* Legend */}
         <div className="flex items-center gap-3 flex-wrap ml-auto">
           {Object.entries(MASTERY_TIERS).filter(([k]) => k !== "None").map(([key, cfg]) => (
-            <span key={key} className="flex items-center gap-1.5 text-xs">
+            <span key={key} className="flex items-center gap-1.5 text-sm md:text-xs">
               <span className="h-3 w-3 rounded inline-block" style={{ backgroundColor: cfg.bg }} />
               {cfg.label}
             </span>
           ))}
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-sm md:text-xs text-muted-foreground">
             <span className="h-3 w-3 rounded inline-block bg-secondary border border-border" />
             No data
           </span>
@@ -1319,16 +1319,16 @@ function MasteryHeatmapTab() {
 
       <Card>
         <CardContent className="p-4 overflow-x-auto">
-          <table className="text-xs border-collapse" style={{ minWidth: PRACTICE_TOPICS.length * 80 + 160 }}>
+          <table className="text-sm md:text-xs border-collapse" style={{ minWidth: PRACTICE_TOPICS.length * 80 + 160 }}>
             <thead>
               <tr>
-                <th className="text-left pr-3 pb-2 font-medium text-muted-foreground w-32 text-xs sticky left-0 bg-background z-10">
+                <th className="text-left pr-3 pb-2 font-medium text-muted-foreground w-32 text-sm md:text-xs sticky left-0 bg-background z-10">
                   Student
                 </th>
                 {PRACTICE_TOPICS.map(topic => (
                   <th key={topic.id} className="pb-2 px-1 text-center min-w-[72px]">
                     <div
-                      className="text-[10px] font-medium leading-tight"
+                      className="text-sm md:text-[10px] font-medium leading-tight"
                       title={topic.label}
                       style={{ color: topic.subjectColor, maxWidth: 72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
                     >
@@ -1341,7 +1341,7 @@ function MasteryHeatmapTab() {
             <tbody>
               {STUDENT_PROFILES.map(student => (
                 <tr key={student.id}>
-                  <td className="pr-3 py-1 text-xs text-muted-foreground whitespace-nowrap sticky left-0 bg-background z-10">
+                  <td className="pr-3 py-1 text-sm md:text-xs text-muted-foreground whitespace-nowrap sticky left-0 bg-background z-10">
                     {student.name.split(" ")[0]} {student.name.split(" ")[1]?.[0]}.
                   </td>
                   {PRACTICE_TOPICS.map(topic => {
@@ -1353,7 +1353,7 @@ function MasteryHeatmapTab() {
                         <button
                           onClick={() => handleCellClick(student, topic)}
                           title={`${student.name} · ${topic.label}: ${cfg.label}`}
-                          className="h-7 w-16 rounded text-[10px] font-semibold transition-all hover:scale-105 focus:outline-none w-full"
+                          className="h-7 w-16 rounded text-sm md:text-[10px] font-semibold transition-all hover:scale-105 focus:outline-none w-full"
                           style={{
                             backgroundColor: cfg.bg,
                             color: cfg.text,
@@ -1379,14 +1379,14 @@ function MasteryHeatmapTab() {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center gap-2">
               <span
-                className="h-7 w-7 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-xs shrink-0"
+                className="h-7 w-7 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-sm md:text-xs shrink-0"
                 style={{ backgroundColor: STATUS_CONFIG[selectedCell.student.status]?.color ?? "#7c3aed" }}
               >
                 {getInitials(selectedCell.student.name)}
               </span>
               {selectedCell.student.name} — {selectedCell.topic.label}
             </CardTitle>
-            <p className="text-xs text-muted-foreground">Last 10 answers (oldest → newest)</p>
+            <p className="text-sm md:text-xs text-muted-foreground">Last 10 answers (oldest → newest)</p>
           </CardHeader>
           <CardContent className="pb-4">
             <div className="space-y-3">
@@ -1398,9 +1398,9 @@ function MasteryHeatmapTab() {
                 return (
                   <div key={skillName}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-medium">{skillName}</span>
+                      <span className="text-sm md:text-xs font-medium">{skillName}</span>
                       <span
-                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold"
+                        className="text-sm md:text-[10px] px-2 py-0.5 rounded-full font-semibold"
                         style={{ backgroundColor: cfg.bg, color: cfg.text }}
                       >
                         {cfg.label} · {pct}%
@@ -1411,7 +1411,7 @@ function MasteryHeatmapTab() {
                         <div
                           key={i}
                           title={`Answer ${i + 1}: ${correct ? "Correct" : "Wrong"}`}
-                          className="h-6 w-6 rounded flex items-center justify-center text-[11px] font-bold text-[var(--text-primary)]"
+                          className="h-6 w-6 rounded flex items-center justify-center text-sm md:text-[11px] font-bold text-[var(--text-primary)]"
                           style={{ backgroundColor: correct ? "#16a34a" : "#dc2626" }}
                         >
                           {correct ? "✓" : "✗"}

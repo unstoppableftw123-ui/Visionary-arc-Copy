@@ -80,7 +80,7 @@ function RankBadge({ xp }) {
   const color = RANK_COLORS[rank] ?? RANK_COLORS.E;
   return (
     <span
-      className="text-xs font-bold px-1.5 py-0.5 rounded shrink-0"
+      className="rounded px-1.5 py-0.5 text-sm font-bold shrink-0 md:text-xs"
       style={{
         background: color + "22",
         color,
@@ -98,13 +98,13 @@ function PodiumEntry({ row, position, field, unit }) {
   const score = getScore(row, field);
 
   return (
-    <div className="flex flex-col items-center gap-1.5 flex-1">
+    <div className="flex w-full flex-col items-center gap-1.5 sm:flex-1">
       {row ? (
         <>
           <div className="relative">
             <AvatarInitial name={row.name} size="lg" />
             <span
-              className="absolute -bottom-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full text-xs font-black"
+              className="absolute -bottom-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full text-sm md:text-xs font-black"
               style={{ background: color, color: "#000" }}
             >
               {position}
@@ -112,13 +112,13 @@ function PodiumEntry({ row, position, field, unit }) {
           </div>
           <div className="text-center px-1">
             <p
-              className="text-xs font-semibold truncate w-20 mx-auto"
+              className="mx-auto w-20 truncate text-sm font-semibold md:text-xs"
               style={{ color: "var(--text-primary)" }}
             >
               {row.name}
             </p>
             <p
-              className="text-[10px] truncate w-20 mx-auto"
+              className="mx-auto w-20 truncate text-sm md:text-xs"
               style={{ color: "var(--text-muted)" }}
             >
               {row.school ?? "—"}
@@ -137,7 +137,7 @@ function PodiumEntry({ row, position, field, unit }) {
               <p className="text-sm font-bold" style={{ color }}>
                 {score.toLocaleString()}
               </p>
-              <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>
+              <p className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
                 {unit}
               </p>
             </div>
@@ -192,12 +192,12 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
             {row.name}
           </p>
           {isCurrentUser && (
-            <span className="text-xs shrink-0" style={{ color: "var(--accent)" }}>
+            <span className="text-sm md:text-xs shrink-0" style={{ color: "var(--accent)" }}>
               (you)
             </span>
           )}
         </div>
-        <p className="text-xs truncate" style={{ color: "var(--text-secondary)" }}>
+        <p className="text-sm md:text-xs truncate" style={{ color: "var(--text-secondary)" }}>
           {row.school ?? "—"}
         </p>
       </div>
@@ -205,7 +205,7 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
         <RankBadge xp={row.xp} />
         <p className="text-sm font-bold" style={{ color: "var(--text-primary)", minWidth: 56, textAlign: "right" }}>
           {score.toLocaleString()}{" "}
-          <span className="text-xs font-normal" style={{ color: "var(--text-muted)" }}>
+          <span className="text-sm md:text-xs font-normal" style={{ color: "var(--text-muted)" }}>
             {unit}
           </span>
         </p>
@@ -238,13 +238,13 @@ function ListSkeleton() {
 
 function PodiumSkeleton() {
   return (
-    <div className="flex items-end gap-3 justify-center py-6">
+    <div className="flex flex-col justify-center gap-3 py-6 sm:flex-row sm:items-end">
       {[
         { pos: 2, h: PODIUM_BAR_HEIGHTS[2] },
         { pos: 1, h: PODIUM_BAR_HEIGHTS[1] },
         { pos: 3, h: PODIUM_BAR_HEIGHTS[3] },
       ].map(({ pos, h }) => (
-        <div key={pos} className="flex flex-col items-center gap-2 flex-1">
+        <div key={pos} className="flex flex-col items-center gap-2 sm:flex-1">
           <Skeleton className="h-14 w-14 rounded-full" />
           <Skeleton className="h-4 w-16" />
           <div className="w-full rounded-t-lg" style={{ height: h }}>
@@ -295,7 +295,7 @@ export default function LeaderboardPage() {
   const showPinned = currentUserPosition > 20 && currentUserRow !== null;
 
   return (
-    <div className="max-w-3xl mx-auto p-4 lg:p-6 space-y-4">
+    <div className="mx-auto max-w-3xl space-y-4 px-4 py-4 lg:p-6">
       {/* Top-level tab bar */}
       <div
         className="flex gap-1 p-1 rounded-xl"
@@ -342,7 +342,7 @@ export default function LeaderboardPage() {
             {/* Header row: All-time badge + reset countdown */}
             <div className="flex items-center justify-between">
               <span
-                className="text-xs font-semibold px-2.5 py-1 rounded-md"
+                className="rounded-md px-2.5 py-1 text-sm font-semibold md:text-xs"
                 style={{
                   background: "var(--surface-2)",
                   color: "var(--text-secondary)",
@@ -351,7 +351,7 @@ export default function LeaderboardPage() {
               >
                 All-time
               </span>
-              <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+              <span className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
                 Resets in {formatCountdown(countdown)}
               </span>
             </div>
@@ -392,7 +392,7 @@ export default function LeaderboardPage() {
               <>
                 {/* Podium — 2nd left, 1st center (raised), 3rd right */}
                 <div
-                  className="flex items-end gap-3 justify-center py-4 px-2 rounded-xl"
+                  className="flex flex-col justify-center gap-3 rounded-xl px-4 py-4 sm:flex-row sm:items-end sm:px-2"
                   style={{
                     background: "var(--surface)",
                     border: "1px solid var(--border)",
@@ -435,7 +435,7 @@ export default function LeaderboardPage() {
                     style={{ borderTop: "1px solid var(--border)" }}
                   >
                     <p
-                      className="text-xs mb-2"
+                      className="text-sm md:text-xs mb-2"
                       style={{ color: "var(--text-muted)" }}
                     >
                       Your position

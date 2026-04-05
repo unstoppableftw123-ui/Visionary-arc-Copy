@@ -57,7 +57,7 @@ export default function SlidesView({
           <button
             type="button"
             onClick={handleExportPPTX}
-            className="flex items-center gap-1.5 rounded-lg border border-hub-border bg-hub-elevated px-3 py-1.5 font-hub-sans text-xs text-hub-text transition hover:bg-hub-bg"
+            className="flex items-center gap-1.5 rounded-lg border border-hub-border bg-hub-elevated px-3 py-1.5 font-hub-sans text-sm md:text-xs text-hub-text transition hover:bg-hub-bg"
           >
             <Download className="h-3.5 w-3.5" /> Download PPTX
           </button>

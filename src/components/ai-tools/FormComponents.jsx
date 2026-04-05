@@ -33,7 +33,7 @@ export function PromptBar({
         />
         <Sparkles className="absolute bottom-3.5 right-3.5 h-4 w-4 text-muted-foreground/25 pointer-events-none transition-colors group-focus-within:text-primary/45" />
       </div>
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="text-sm md:text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -50,10 +50,10 @@ export function DifficultyCards({ value, onChange, label = "Difficulty", levels 
   const opts = levels || DEFAULT_DIFFICULTY_LEVELS;
   const gridClass =
     opts.length === 2
-      ? "grid-cols-2"
+      ? "grid-cols-1 sm:grid-cols-2"
       : opts.length === 3
-      ? "grid-cols-3"
-      : "grid-cols-2";
+      ? "grid-cols-1 sm:grid-cols-3"
+      : "grid-cols-1 sm:grid-cols-2";
 
   return (
     <div className="space-y-2">
@@ -74,13 +74,13 @@ export function DifficultyCards({ value, onChange, label = "Difficulty", levels 
             >
               <span className="text-xl leading-none">{opt.icon}</span>
               <span
-                className={`text-xs font-semibold leading-tight ${
+                className={`text-sm md:text-xs font-semibold leading-tight ${
                   isSelected ? "text-primary" : "text-foreground"
                 }`}
               >
                 {opt.value}
               </span>
-              <span className="text-[10px] text-muted-foreground leading-tight">
+              <span className="text-sm md:text-[10px] text-muted-foreground leading-tight">
                 {opt.desc}
               </span>
             </button>
@@ -149,7 +149,7 @@ export function QuantitySlider({
           background: `linear-gradient(to right, hsl(var(--primary)) ${pct}%, hsl(var(--secondary)) ${pct}%)`,
         }}
       />
-      <div className="flex justify-between text-[10px] text-muted-foreground">
+      <div className="flex justify-between text-sm md:text-[10px] text-muted-foreground">
         <span>
           {min}
           {suffix}
@@ -178,7 +178,7 @@ export function ToggleOption({ checked, onCheckedChange, label, description }) {
       <div className="space-y-0.5 pr-4 flex-1">
         <p className="text-sm font-semibold text-foreground">{label}</p>
         {description && (
-          <p className="text-xs text-muted-foreground leading-snug">{description}</p>
+          <p className="text-sm md:text-xs text-muted-foreground leading-snug">{description}</p>
         )}
       </div>
       <Switch
@@ -224,12 +224,12 @@ export function LivePreviewHint({ lines }) {
     <div className="rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 space-y-1">
       <div className="flex items-center gap-1.5 mb-1.5">
         <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse inline-block" />
-        <span className="text-[10px] font-bold text-primary/70 uppercase tracking-widest">
+        <span className="text-sm md:text-[10px] font-bold text-primary/70 uppercase tracking-widest">
           Live Preview
         </span>
       </div>
       {visible.map((line, i) => (
-        <p key={i} className="text-xs text-muted-foreground leading-relaxed">
+        <p key={i} className="text-sm md:text-xs text-muted-foreground leading-relaxed">
           {line}
         </p>
       ))}

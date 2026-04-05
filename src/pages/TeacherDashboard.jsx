@@ -184,8 +184,8 @@ function AIGeneratorModal({ open, onClose }) {
               {MOCK_QUESTIONS.map((q, i) => (
                 <div key={i} className="rounded-lg border border-border bg-card p-3 space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground font-medium">Q{i + 1}</span>
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0">{q.type}</Badge>
+                    <span className="text-sm md:text-xs text-muted-foreground font-medium">Q{i + 1}</span>
+                    <Badge variant="outline" className="text-sm md:text-[10px] px-1.5 py-0">{q.type}</Badge>
                   </div>
                   <p className="text-sm font-medium">{q.question}</p>
                   {q.options && (
@@ -193,7 +193,7 @@ function AIGeneratorModal({ open, onClose }) {
                       {q.options.map((opt) => (
                         <p
                           key={opt}
-                          className={`text-xs ${opt === q.answer ? "text-green-600 font-semibold" : "text-muted-foreground"}`}
+                          className={`text-sm md:text-xs ${opt === q.answer ? "text-green-600 font-semibold" : "text-muted-foreground"}`}
                         >
                           {opt === q.answer ? "✓ " : ""}{opt}
                         </p>
@@ -201,7 +201,7 @@ function AIGeneratorModal({ open, onClose }) {
                     </div>
                   )}
                   {!q.options && (
-                    <p className="text-xs text-muted-foreground italic">Open-ended response expected</p>
+                    <p className="text-sm md:text-xs text-muted-foreground italic">Open-ended response expected</p>
                   )}
                 </div>
               ))}
@@ -245,10 +245,10 @@ function SubmissionCard({ sub, onApprove }) {
         <div className="flex items-start justify-between gap-2">
           <div>
             <p className="font-medium text-sm">{sub.studentName}</p>
-            <p className="text-xs text-muted-foreground">{sub.assignmentTitle} · {sub.submittedAt}</p>
+            <p className="text-sm md:text-xs text-muted-foreground">{sub.assignmentTitle} · {sub.submittedAt}</p>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
-            <div className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+            <div className={`rounded-full px-2.5 py-0.5 text-sm md:text-xs font-bold ${
               sub.aiGradeSuggestion.score >= 85 ? "bg-green-500/15 text-green-600" :
               sub.aiGradeSuggestion.score >= 70 ? "bg-blue-500/15 text-blue-600" :
               sub.aiGradeSuggestion.score >= 60 ? "bg-amber-500/15 text-amber-600" :
@@ -259,13 +259,13 @@ function SubmissionCard({ sub, onApprove }) {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground bg-muted/40 rounded-lg p-2.5 leading-relaxed line-clamp-3">
+        <p className="text-sm md:text-xs text-muted-foreground bg-muted/40 rounded-lg p-2.5 leading-relaxed line-clamp-3">
           {sub.content}
         </p>
 
         <div className="rounded-lg border border-primary/20 bg-primary/5 p-2.5 space-y-1">
-          <p className="text-xs font-medium text-primary">AI Feedback</p>
-          <p className="text-xs text-muted-foreground leading-relaxed">{sub.aiGradeSuggestion.feedback}</p>
+          <p className="text-sm md:text-xs font-medium text-primary">AI Feedback</p>
+          <p className="text-sm md:text-xs text-muted-foreground leading-relaxed">{sub.aiGradeSuggestion.feedback}</p>
         </div>
 
         {overriding ? (
@@ -275,24 +275,24 @@ function SubmissionCard({ sub, onApprove }) {
               placeholder="Enter grade (e.g. 85)"
               value={customGrade}
               onChange={(e) => setCustomGrade(e.target.value)}
-              className="h-8 text-sm"
+              className="text-sm"
               autoFocus
             />
-            <Button size="sm" onClick={handleOverride} className="h-8 gap-1">
+            <Button size="sm" onClick={handleOverride} className="gap-1">
               <Check className="h-3.5 w-3.5" />
               Confirm
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => setOverriding(false)} className="h-8">
+            <Button size="sm" variant="ghost" onClick={() => setOverriding(false)}>
               <X className="h-3.5 w-3.5" />
             </Button>
           </div>
         ) : (
           <div className="flex gap-2">
-            <Button size="sm" onClick={handleApprove} className="h-8 gap-1.5 flex-1">
+            <Button size="sm" onClick={handleApprove} className="gap-1.5 flex-1">
               <Check className="h-3.5 w-3.5" />
               Approve ({sub.aiGradeSuggestion.score})
             </Button>
-            <Button size="sm" variant="outline" onClick={() => setOverriding(true)} className="h-8">
+            <Button size="sm" variant="outline" onClick={() => setOverriding(true)}>
               Override
             </Button>
           </div>
@@ -361,13 +361,13 @@ export default function TeacherDashboard() {
                     <Icon className="h-5 w-5 text-primary" />
                   </div>
                   {card.badge && (
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${card.badge.className}`}>
+                    <span className={`rounded-full px-2 py-0.5 text-sm md:text-[10px] font-semibold ${card.badge.className}`}>
                       {card.badge.text}
                     </span>
                   )}
                 </div>
                 <p className="text-2xl font-bold">{card.value}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{card.label}</p>
+                <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{card.label}</p>
               </CardContent>
             </Card>
           );
@@ -386,7 +386,7 @@ export default function TeacherDashboard() {
           </div>
           <div>
             <p className="font-semibold text-primary">AI Generate Assignment</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Create questions instantly with AI</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Create questions instantly with AI</p>
           </div>
         </button>
         <button
@@ -399,7 +399,7 @@ export default function TeacherDashboard() {
           </div>
           <div>
             <p className="font-semibold">New Assignment</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Build manually from scratch</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Build manually from scratch</p>
           </div>
         </button>
       </div>
@@ -409,7 +409,7 @@ export default function TeacherDashboard() {
         <h2 className="font-heading text-lg font-semibold mb-3 flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-amber-500" />
           Students Needing Attention
-          <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-semibold text-amber-600">
+          <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-sm md:text-xs font-semibold text-amber-600">
             {alertStudents.length}
           </span>
         </h2>
@@ -427,23 +427,23 @@ export default function TeacherDashboard() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-sm">{s.name}</span>
-                        <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${cfg.className}`}>
+                        <span className={`rounded-full border px-2 py-0.5 text-sm md:text-[10px] font-semibold ${cfg.className}`}>
                           {cfg.label}
                         </span>
                       </div>
                       {s.flaggedReason && (
-                        <p className="text-xs text-muted-foreground mt-0.5">{s.flaggedReason}</p>
+                        <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{s.flaggedReason}</p>
                       )}
-                      <p className="text-xs text-muted-foreground">Last active: {s.lastActive}</p>
+                      <p className="text-sm md:text-xs text-muted-foreground">Last active: {s.lastActive}</p>
                     </div>
                     <div className="text-right shrink-0">
                       <p className="text-sm font-semibold">{s.currentGrade}</p>
-                      <p className="text-xs text-muted-foreground">{s.assignmentsCompleted}/{s.assignmentsTotal} done</p>
+                      <p className="text-sm md:text-xs text-muted-foreground">{s.assignmentsCompleted}/{s.assignmentsTotal} done</p>
                     </div>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-7 text-xs shrink-0"
+                      className="shrink-0"
                       onClick={() => toast.info("Student profile coming soon")}
                     >
                       View Profile
@@ -462,7 +462,7 @@ export default function TeacherDashboard() {
           <h2 className="font-heading text-lg font-semibold mb-3 flex items-center gap-2">
             <Clock className="h-5 w-5 text-primary" />
             Pending Submissions
-            <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-xs font-semibold text-red-600">
+            <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-sm md:text-xs font-semibold text-red-600">
               {visibleSubs.length}
             </span>
           </h2>

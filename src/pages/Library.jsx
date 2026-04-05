@@ -177,7 +177,7 @@ function TagChip({ tag, registry, size = "sm", active, onClick, onRemove, classN
     <span
       onClick={onClick ? (e) => { e.stopPropagation(); onClick(tag); } : undefined}
       className={`group inline-flex items-center gap-0.5 font-medium rounded-full whitespace-nowrap transition-opacity
-        ${size === "xs" ? "text-[9.5px] px-1.5 py-0" : "text-[11px] px-2 py-0.5"}
+        ${size === "xs" ? "text-[9.5px] px-1.5 py-0" : "text-sm md:text-[11px] px-2 py-0.5"}
         ${style.bg} ${style.text} ${ringCls}
         ${onClick ? "cursor-pointer hover:opacity-75" : "cursor-default"}
         ${className}`}
@@ -236,7 +236,7 @@ function AddTagInput({ itemId, existingTags = [], registry, onAdd, onClose }) {
             if (e.key === "Escape") { onClose(); }
           }}
           placeholder="Search or create tag…"
-          className="flex-1 text-[12px] bg-transparent focus:outline-none placeholder:text-muted-foreground/40 min-w-0"
+          className="flex-1 text-sm md:text-[12px] bg-transparent focus:outline-none placeholder:text-muted-foreground/40 min-w-0"
         />
         <button onClick={onClose} className="text-muted-foreground/40 hover:text-muted-foreground transition-colors">
           <X size={11} weight="bold" />
@@ -259,7 +259,7 @@ function AddTagInput({ itemId, existingTags = [], registry, onAdd, onClose }) {
                   className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-muted transition-colors text-left">
                   <span className={`w-2 h-2 rounded-full ${s.dot} shrink-0`} />
                   <span className="flex-1 text-[12.5px]">{tag}</span>
-                  <span className="text-[10px] text-muted-foreground/45">existing</span>
+                  <span className="text-sm md:text-[10px] text-muted-foreground/45">existing</span>
                 </button>
               );
             })}
@@ -270,7 +270,7 @@ function AddTagInput({ itemId, existingTags = [], registry, onAdd, onClose }) {
                 <span className="flex-1 text-[12.5px]">
                   Create <strong className={`font-semibold ${nextStyle.text.split(" ")[0]}`}>"{input}"</strong>
                 </span>
-                <span className="text-[10px] text-muted-foreground/45">new tag</span>
+                <span className="text-sm md:text-[10px] text-muted-foreground/45">new tag</span>
               </button>
             )}
           </motion.div>
@@ -307,7 +307,7 @@ function FilterPanel({ filters, onChange, registry, tagCounts, onClose, presets,
       </span>
       {dot && <span className={`w-2 h-2 rounded-full ${dot} shrink-0`} />}
       <span className="flex-1">{label}</span>
-      {count !== undefined && <span className="text-[10px] text-muted-foreground/50 tabular-nums">{count}</span>}
+      {count !== undefined && <span className="text-sm md:text-[10px] text-muted-foreground/50 tabular-nums">{count}</span>}
     </button>
   );
 
@@ -326,10 +326,10 @@ function FilterPanel({ filters, onChange, registry, tagCounts, onClose, presets,
       <div className="flex border-b border-border">
         {[["filters", Sliders, "Filters"], ["presets", BookmarkSimple, "Saved"]].map(([k, Ico, lbl]) => (
           <button key={k} onClick={() => setActiveTab(k)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-[12px] font-medium transition-colors ${activeTab===k ? "bg-muted/40 text-foreground border-b-2 border-primary" : "text-muted-foreground/60 hover:text-foreground"}`}>
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm md:text-[12px] font-medium transition-colors ${activeTab===k ? "bg-muted/40 text-foreground border-b-2 border-primary" : "text-muted-foreground/60 hover:text-foreground"}`}>
             <Ico size={13} />{lbl}
             {k === "filters" && hasFilters && <span className="w-[18px] h-[18px] rounded-full bg-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center">{filters.types.length+filters.tags.length+(filters.dateFrom?1:0)+(filters.dateTo?1:0)}</span>}
-            {k === "presets" && presets.length > 0 && <span className="text-[10px] text-muted-foreground/50">{presets.length}</span>}
+            {k === "presets" && presets.length > 0 && <span className="text-sm md:text-[10px] text-muted-foreground/50">{presets.length}</span>}
           </button>
         ))}
       </div>
@@ -349,13 +349,13 @@ function FilterPanel({ filters, onChange, registry, tagCounts, onClose, presets,
             <p className="text-[10.5px] font-bold uppercase tracking-wider text-muted-foreground/45 mb-1.5 px-1 flex items-center gap-1">
               <CalendarBlank size={11} /> Date Range
             </p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {[["dateFrom","From"],["dateTo","To"]].map(([field,lbl]) => (
                 <div key={field}>
-                  <p className="text-[10px] text-muted-foreground/50 mb-0.5 px-1">{lbl}</p>
+                  <p className="text-sm md:text-[10px] text-muted-foreground/50 mb-0.5 px-1">{lbl}</p>
                   <input type="date" value={filters[field]}
                     onChange={e => onChange(p => ({ ...p, [field]: e.target.value }))}
-                    className="w-full text-[11px] px-2 py-1.5 rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-1 focus:ring-primary/30 text-foreground/80" />
+                    className="w-full text-sm md:text-[11px] px-2 py-1.5 rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-1 focus:ring-primary/30 text-foreground/80" />
                 </div>
               ))}
             </div>
@@ -378,7 +378,7 @@ function FilterPanel({ filters, onChange, registry, tagCounts, onClose, presets,
           {/* Clear */}
           {hasFilters && (
             <button onClick={() => onChange(EMPTY_FILTERS)}
-              className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border text-[12px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border text-sm md:text-[12px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
               <X size={12} weight="bold" /> Clear all filters
             </button>
           )}
@@ -390,7 +390,7 @@ function FilterPanel({ filters, onChange, registry, tagCounts, onClose, presets,
           {presets.length === 0 && (
             <div className="py-8 flex flex-col items-center gap-2 text-center">
               <BookmarkSimple size={24} weight="duotone" className="text-muted-foreground/25" />
-              <p className="text-[12px] text-muted-foreground/55">No saved searches yet</p>
+              <p className="text-sm md:text-[12px] text-muted-foreground/55">No saved searches yet</p>
             </div>
           )}
           {presets.map(p => (
@@ -418,13 +418,13 @@ function FilterPanel({ filters, onChange, registry, tagCounts, onClose, presets,
                   <input autoFocus value={presetName} onChange={e => setPresetName(e.target.value)}
                     placeholder="Preset name…"
                     onKeyDown={e => { if (e.key==="Enter"&&presetName.trim()){ onSavePreset(presetName.trim()); setPresetName(""); setSavingPre(false); } if(e.key==="Escape") setSavingPre(false); }}
-                    className="flex-1 text-[12px] px-2.5 py-1.5 rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-1 focus:ring-primary/30" />
+                    className="flex-1 text-sm md:text-[12px] px-2.5 py-1.5 rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-1 focus:ring-primary/30" />
                   <button onClick={() => { if(presetName.trim()){ onSavePreset(presetName.trim()); setPresetName(""); setSavingPre(false); }}}
-                    className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-colors">Save</button>
+                    className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm md:text-[12px] font-medium hover:bg-primary/90 transition-colors">Save</button>
                 </div>
               ) : (
                 <button onClick={() => setSavingPre(true)}
-                  className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-dashed border-border text-[12px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+                  className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-dashed border-border text-sm md:text-[12px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
                   <FloppyDisk size={13} /> Save current search
                 </button>
               )}
@@ -518,7 +518,7 @@ function ContextMenu({ menu, onClose, actions }) {
       className={`w-full flex items-center gap-2.5 px-3 py-1.5 text-[12.5px] transition-colors rounded-lg mx-0.5 ${danger?"text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20":"hover:bg-muted text-foreground/80"}`}>
       {Icon && <Icon size={14} weight="fill" className="shrink-0" />}
       <span className="flex-1 text-left">{label}</span>
-      {shortcut && <kbd className="text-[10px] text-muted-foreground/50 font-mono bg-muted/50 px-1 rounded">{shortcut}</kbd>}
+      {shortcut && <kbd className="text-sm md:text-[10px] text-muted-foreground/50 font-mono bg-muted/50 px-1 rounded">{shortcut}</kbd>}
       {hasSubmenu && <SubArrow size={11} className="text-muted-foreground/50" />}
     </button>
   );
@@ -529,7 +529,7 @@ function ContextMenu({ menu, onClose, actions }) {
       style={{ position:"fixed", left:pos.left, top:pos.top, zIndex:9999, minWidth:210 }}
       className="bg-popover border border-border rounded-xl shadow-2xl overflow-visible py-1.5"
       onClick={e => e.stopPropagation()}>
-      {menu.count > 1 && <div className="px-3 py-1.5 mb-0.5 border-b border-border/60"><p className="text-[11px] font-semibold text-muted-foreground/60">{menu.count} items selected</p></div>}
+      {menu.count > 1 && <div className="px-3 py-1.5 mb-0.5 border-b border-border/60"><p className="text-sm md:text-[11px] font-semibold text-muted-foreground/60">{menu.count} items selected</p></div>}
       <Item icon={Eye}         label="Open"           shortcut="↩" onClick={actions.onOpen} />
       {menu.count === 1 && <Item icon={PencilSimple} label="Rename" shortcut="↵" onClick={actions.onRename} />}
       <Divider />
@@ -577,9 +577,9 @@ function SidebarSection({ icon: Icon, label, count, color, active, onClick, chil
       >
         {children && <motion.span animate={{ rotate: open?90:0 }} transition={{ duration:0.16 }} className="text-muted-foreground/50 group-hover:text-muted-foreground"><CaretRight size={11} weight="bold" /></motion.span>}
         {Icon && <Icon size={16} weight="fill" style={{ color }} className="shrink-0" />}
-        <span className={`text-[13px] font-medium flex-1 truncate ${isDragOver?"text-primary font-semibold":""}`}>{label}</span>
-        {isDragOver && <motion.span initial={{ scale:0 }} animate={{ scale:1 }} className="text-[10px] font-bold text-primary bg-primary/15 px-1.5 py-0.5 rounded-full">Drop</motion.span>}
-        {!isDragOver && count !== undefined && <span className="text-[11px] text-muted-foreground/60 tabular-nums">{count}</span>}
+        <span className={`text-sm md:text-[13px] font-medium flex-1 truncate ${isDragOver?"text-primary font-semibold":""}`}>{label}</span>
+        {isDragOver && <motion.span initial={{ scale:0 }} animate={{ scale:1 }} className="text-sm md:text-[10px] font-bold text-primary bg-primary/15 px-1.5 py-0.5 rounded-full">Drop</motion.span>}
+        {!isDragOver && count !== undefined && <span className="text-sm md:text-[11px] text-muted-foreground/60 tabular-nums">{count}</span>}
       </div>
       <AnimatePresence initial={false}>
         {children && open && (
@@ -606,7 +606,7 @@ function FinderSidebar({ activeFolder, onFolderChange, counts, dragOverFolder, o
   return (
     <div className="h-full overflow-y-auto px-2 py-4 space-y-4">
       <div>
-        <p className="px-3 mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Library</p>
+        <p className="px-3 mb-1 text-sm md:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Library</p>
         <SidebarSection icon={SquaresFour} label="All Items" count={counts.all} color="#6e6e73"
           active={activeFolder==="all"} onClick={() => onFolderChange("all")} />
         {SIDEBAR_FOLDERS.filter(f => f.key !== "starred").map(f => (
@@ -620,7 +620,7 @@ function FinderSidebar({ activeFolder, onFolderChange, counts, dragOverFolder, o
       </div>
 
       <div>
-        <p className="px-3 mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Favourites</p>
+        <p className="px-3 mb-1 text-sm md:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Favourites</p>
         <SidebarSection icon={Star} label="Starred" count={counts.starred??0} color="#ffcc00"
           active={activeFolder==="starred"} onClick={() => onFolderChange("starred")}
           isDragOver={dragOverFolder==="starred"}
@@ -630,7 +630,7 @@ function FinderSidebar({ activeFolder, onFolderChange, counts, dragOverFolder, o
       </div>
 
       <div>
-        <p className="px-3 mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Tags</p>
+        <p className="px-3 mb-1 text-sm md:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Tags</p>
         {allTags.length === 0 ? (
           <p className="px-3 py-2 text-[11.5px] text-muted-foreground/40 italic">No tags yet</p>
         ) : (
@@ -788,17 +788,17 @@ function ListRow({ item, index, tags, registry, search, isSelected, isMultiSelec
             onClick={e => e.stopPropagation()}
             onKeyDown={e => { if(e.key==="Enter"){e.stopPropagation();onRenameCommit(item.item_id,renameVal);} if(e.key==="Escape"){e.stopPropagation();onRenameCommit(item.item_id,null);} }}
             onBlur={() => onRenameCommit(item.item_id,renameVal)}
-            className="w-full text-[13px] font-medium bg-muted/50 border border-primary/30 rounded-md px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-primary/30" />
+            className="w-full text-sm md:text-[13px] font-medium bg-muted/50 border border-primary/30 rounded-md px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-primary/30" />
         ) : (
-          <p className="text-[13px] font-medium truncate"><Highlight text={item.title} query={search} /></p>
+          <p className="text-sm md:text-[13px] font-medium truncate"><Highlight text={item.title} query={search} /></p>
         )}
-        <p className="text-[11px] text-muted-foreground/55 truncate">{itemCount(item)}</p>
+        <p className="text-sm md:text-[11px] text-muted-foreground/55 truncate">{itemCount(item)}</p>
       </div>
       <div className="w-28 py-2.5 px-2 shrink-0">
-        <span className="inline-flex text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ background:meta.color+"18", color:meta.color }}>{meta.label}</span>
+        <span className="inline-flex text-sm md:text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ background:meta.color+"18", color:meta.color }}>{meta.label}</span>
       </div>
       <div className="w-32 py-2.5 px-2 shrink-0">
-        <span className="text-[12px] text-muted-foreground tabular-nums">{fmtDate(item.created_at)}</span>
+        <span className="text-sm md:text-[12px] text-muted-foreground tabular-nums">{fmtDate(item.created_at)}</span>
       </div>
       {/* Tags column */}
       <div className="w-28 py-2.5 px-2 shrink-0 flex flex-wrap gap-1" onClick={e => e.stopPropagation()}>
@@ -834,9 +834,9 @@ function EmptyState({ isFiltered, search, hasActiveFilters, onClearFilters }) {
       <p className="text-[14px] font-semibold text-foreground/70">
         {search ? `No results for "${search}"` : "No items match these filters"}
       </p>
-      <p className="text-[12px] text-muted-foreground/55">Try adjusting your search or filters.</p>
+      <p className="text-sm md:text-[12px] text-muted-foreground/55">Try adjusting your search or filters.</p>
       {(search || hasActiveFilters) && (
-        <button onClick={onClearFilters} className="text-[12px] text-primary/70 hover:text-primary transition-colors flex items-center gap-1 mt-1">
+        <button onClick={onClearFilters} className="text-sm md:text-[12px] text-primary/70 hover:text-primary transition-colors flex items-center gap-1 mt-1">
           <X size={12} weight="bold" /> Clear filters
         </button>
       )}
@@ -847,7 +847,7 @@ function EmptyState({ isFiltered, search, hasActiveFilters, onClearFilters }) {
       className="flex flex-col items-center justify-center py-24 gap-3 text-center">
       <div className="w-16 h-16 rounded-2xl bg-muted/50 flex items-center justify-center"><BookOpen size={28} weight="duotone" className="text-muted-foreground/30" /></div>
       <p className="text-[14px] font-semibold text-foreground/70">This folder is empty</p>
-      <p className="text-[12px] text-muted-foreground/55 max-w-[200px]">Drag items here or save from Study Hub.</p>
+      <p className="text-sm md:text-[12px] text-muted-foreground/55 max-w-[200px]">Drag items here or save from Study Hub.</p>
     </motion.div>
   );
   return (
@@ -859,7 +859,7 @@ function EmptyState({ isFiltered, search, hasActiveFilters, onClearFilters }) {
       </div>
       <div>
         <p className="text-[15px] font-semibold mb-1">No items yet</p>
-        <p className="text-[12px] text-muted-foreground/65 max-w-[220px] leading-relaxed">
+        <p className="text-sm md:text-[12px] text-muted-foreground/65 max-w-[220px] leading-relaxed">
           Create your first note, quiz, or flashcard in <span className="font-semibold text-primary">Study Hub</span> and save it here!
         </p>
       </div>
@@ -892,20 +892,20 @@ function FullViewModal({ item, onClose }) {
         className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-xl max-h-[80vh] flex flex-col overflow-hidden">
         <div className="flex items-center gap-3 px-5 py-4 border-b border-border shrink-0">
           <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${meta.grad} flex items-center justify-center shrink-0`}><Icon size={18} weight="duotone" className="text-[var(--text-primary)]" /></div>
-          <div className="flex-1 min-w-0"><p className="text-[14px] font-semibold truncate">{item.title}</p><p className="text-[11px] text-muted-foreground/60">{meta.label} · {itemCount(item)}</p></div>
+          <div className="flex-1 min-w-0"><p className="text-[14px] font-semibold truncate">{item.title}</p><p className="text-sm md:text-[11px] text-muted-foreground/60">{meta.label} · {itemCount(item)}</p></div>
           <button onClick={onClose} className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-muted text-muted-foreground transition-colors"><X size={13} weight="bold" /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
           {(item.item_type==="summary"||item.item_type==="template") && (
-            <pre className="whitespace-pre-wrap text-[13px] leading-relaxed font-sans text-foreground/80 bg-muted/25 rounded-xl p-4 overflow-auto">
+            <pre className="whitespace-pre-wrap text-sm md:text-[13px] leading-relaxed font-sans text-foreground/80 bg-muted/25 rounded-xl p-4 overflow-auto">
               {typeof item.content==="string" ? item.content : JSON.stringify(item.content,null,2)}
             </pre>
           )}
           {item.item_type==="quiz" && item.content?.questions?.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-[11px] uppercase font-bold tracking-wider text-muted-foreground/50">Question {q+1} / {item.content.questions.length}</p>
-                <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold" style={{ background:"#34c75920",color:"#34c759" }}>Score: {score}/{item.content.questions.length}</span>
+                <p className="text-sm md:text-[11px] uppercase font-bold tracking-wider text-muted-foreground/50">Question {q+1} / {item.content.questions.length}</p>
+                <span className="text-sm md:text-[11px] px-2 py-0.5 rounded-full font-semibold" style={{ background:"#34c75920",color:"#34c759" }}>Score: {score}/{item.content.questions.length}</span>
               </div>
               <p className="text-[15px] font-medium leading-snug">{item.content.questions[q]?.question}</p>
               <div className="space-y-2">
@@ -913,8 +913,8 @@ function FullViewModal({ item, onClose }) {
                   const isC=idx===item.content.questions[q].correct_answer, isS=idx===ans;
                   return (
                     <button key={idx} onClick={() => handleAnswer(idx)} disabled={show}
-                      className={`w-full text-left rounded-xl px-4 py-3 text-[13px] transition-all border-2 flex items-center gap-3 ${show?isC?"bg-green-100 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-200":isS?"bg-red-100 dark:bg-red-900/30 border-red-500 text-red-800 dark:text-red-200":"bg-muted border-transparent text-muted-foreground":"bg-muted border-transparent hover:border-primary/30 hover:bg-primary/5"}`}>
-                      <span className="w-6 h-6 rounded-full bg-background/60 flex items-center justify-center text-[10px] font-bold shrink-0">{String.fromCharCode(65+idx)}</span>
+                      className={`w-full text-left rounded-xl px-4 py-3 text-sm md:text-[13px] transition-all border-2 flex items-center gap-3 ${show?isC?"bg-green-100 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-200":isS?"bg-red-100 dark:bg-red-900/30 border-red-500 text-red-800 dark:text-red-200":"bg-muted border-transparent text-muted-foreground":"bg-muted border-transparent hover:border-primary/30 hover:bg-primary/5"}`}>
+                      <span className="w-6 h-6 rounded-full bg-background/60 flex items-center justify-center text-sm md:text-[10px] font-bold shrink-0">{String.fromCharCode(65+idx)}</span>
                       <span className="flex-1">{opt}</span>
                       {show && isC && <Check size={14} weight="bold" className="text-green-600 shrink-0" />}
                       {show && isS && !isC && <X size={14} weight="bold" className="text-red-600 shrink-0" />}
@@ -923,18 +923,18 @@ function FullViewModal({ item, onClose }) {
                 })}
               </div>
               <div className="flex items-center justify-between pt-1">
-                <button onClick={() => { setQ(n=>Math.max(0,n-1)); setAns(null); setShow(false); }} disabled={q===0} className="flex items-center gap-1 text-[12px] px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors disabled:opacity-40"><ChevronLeft size={14} /> Previous</button>
+                <button onClick={() => { setQ(n=>Math.max(0,n-1)); setAns(null); setShow(false); }} disabled={q===0} className="flex items-center gap-1 text-sm md:text-[12px] px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors disabled:opacity-40"><ChevronLeft size={14} /> Previous</button>
                 {q===item.content.questions.length-1 ? (
-                  <button onClick={() => { setQ(0); setAns(null); setShow(false); setScore(0); }} className="flex items-center gap-1 text-[12px] px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors"><ArrowCounterClockwise size={13} /> Restart</button>
+                  <button onClick={() => { setQ(0); setAns(null); setShow(false); setScore(0); }} className="flex items-center gap-1 text-sm md:text-[12px] px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors"><ArrowCounterClockwise size={13} /> Restart</button>
                 ) : (
-                  <button onClick={() => { setQ(n=>n+1); setAns(null); setShow(false); }} disabled={!show} className="flex items-center gap-1 text-[12px] px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40">Next <ChevronRight size={14} /></button>
+                  <button onClick={() => { setQ(n=>n+1); setAns(null); setShow(false); }} disabled={!show} className="flex items-center gap-1 text-sm md:text-[12px] px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40">Next <ChevronRight size={14} /></button>
                 )}
               </div>
             </div>
           )}
           {item.item_type==="flashcards" && item.content?.length > 0 && (
             <div className="space-y-4">
-              <p className="text-[11px] uppercase font-bold tracking-wider text-muted-foreground/50">Card {card+1} / {item.content.length}</p>
+              <p className="text-sm md:text-[11px] uppercase font-bold tracking-wider text-muted-foreground/50">Card {card+1} / {item.content.length}</p>
               <div className="relative h-52 cursor-pointer rounded-2xl overflow-hidden" style={{ perspective:"900px" }} onClick={() => setFlip(f=>!f)}>
                 <motion.div className="absolute inset-0 rounded-2xl flex items-center justify-center p-6 text-center text-[15px] font-medium"
                   style={{ background:flip?"hsl(var(--secondary))":meta.color+"1a", color:flip?"hsl(var(--secondary-foreground))":meta.color, border:`2px solid ${meta.color}30` }}
@@ -942,11 +942,11 @@ function FullViewModal({ item, onClose }) {
                   <p style={{ transform:flip?"rotateY(180deg)":"none" }}>{flip?item.content[card]?.back:item.content[card]?.front}</p>
                 </motion.div>
               </div>
-              <p className="text-[11px] text-center text-muted-foreground/50">Click card to flip</p>
+              <p className="text-sm md:text-[11px] text-center text-muted-foreground/50">Click card to flip</p>
               <div className="flex items-center justify-between">
-                <button onClick={() => { setCard(c=>Math.max(0,c-1)); setFlip(false); }} disabled={card===0} className="flex items-center gap-1 text-[13px] px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors disabled:opacity-40"><ChevronLeft size={14} /> Previous</button>
+                <button onClick={() => { setCard(c=>Math.max(0,c-1)); setFlip(false); }} disabled={card===0} className="flex items-center gap-1 text-sm md:text-[13px] px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors disabled:opacity-40"><ChevronLeft size={14} /> Previous</button>
                 <button onClick={() => { setCard(0); setFlip(false); }} className="w-9 h-9 rounded-lg border border-border hover:bg-muted flex items-center justify-center transition-colors"><ArrowCounterClockwise size={15} /></button>
-                <button onClick={() => { setCard(c=>Math.min(item.content.length-1,c+1)); setFlip(false); }} disabled={card===item.content.length-1} className="flex items-center gap-1 text-[13px] px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40">Next <ChevronRight size={14} /></button>
+                <button onClick={() => { setCard(c=>Math.min(item.content.length-1,c+1)); setFlip(false); }} disabled={card===item.content.length-1} className="flex items-center gap-1 text-sm md:text-[13px] px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40">Next <ChevronRight size={14} /></button>
               </div>
             </div>
           )}
@@ -976,16 +976,16 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
     if (selectedCount > 1) return (
       <div className="h-full flex flex-col items-center justify-center gap-3 text-center px-6">
         <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center"><Check size={24} weight="bold" className="text-primary/60" /></div>
-        <p className="text-[13px] font-semibold text-foreground/70">{selectedCount} items selected</p>
-        <p className="text-[11px] text-muted-foreground/50">Right-click for bulk actions</p>
+        <p className="text-sm md:text-[13px] font-semibold text-foreground/70">{selectedCount} items selected</p>
+        <p className="text-sm md:text-[11px] text-muted-foreground/50">Right-click for bulk actions</p>
       </div>
     );
     return (
       <div className="h-full flex flex-col items-center justify-center gap-3 text-center px-6">
         <div className="w-14 h-14 rounded-2xl bg-muted/40 flex items-center justify-center"><Eye size={24} weight="duotone" className="text-muted-foreground/30" /></div>
-        <p className="text-[13px] font-medium text-muted-foreground/70">Select an item</p>
-        <p className="text-[11px] text-muted-foreground/50 max-w-[160px] leading-relaxed">Click any item to preview it here</p>
-        <div className="flex items-center gap-1.5 text-muted-foreground/35 mt-2"><Keyboard size={11} /><span className="text-[10px]"><kbd className="font-mono bg-muted/50 px-1 rounded text-[9px]">Space</kbd> quick look</span></div>
+        <p className="text-sm md:text-[13px] font-medium text-muted-foreground/70">Select an item</p>
+        <p className="text-sm md:text-[11px] text-muted-foreground/50 max-w-[160px] leading-relaxed">Click any item to preview it here</p>
+        <div className="flex items-center gap-1.5 text-muted-foreground/35 mt-2"><Keyboard size={11} /><span className="text-sm md:text-[10px]"><kbd className="font-mono bg-muted/50 px-1 rounded text-[9px]">Space</kbd> quick look</span></div>
       </div>
     );
   }
@@ -1027,22 +1027,22 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
 
         {/* Metadata */}
         <div className="px-4 py-3.5 border-b border-border/50">
-          <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/45 mb-2.5">Info</p>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-2.5">
+          <p className="text-sm md:text-[10px] uppercase font-bold tracking-wider text-muted-foreground/45 mb-2.5">Info</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2.5">
             {[
               { k:"Type",     v:<span style={{ color:meta.color }} className="font-semibold">{meta.label}</span> },
               { k:"Size",     v:getItemSize(item) },
               { k:"Created",  v:fmtDate(item.created_at) },
               { k:"Modified", v:fmtDate(item.updated_at||item.created_at) },
             ].map(({ k, v }) => (
-              <div key={k}><p className="text-[9.5px] text-muted-foreground/45 uppercase font-semibold tracking-wider mb-0.5">{k}</p><p className="text-[12px]">{v}</p></div>
+              <div key={k}><p className="text-[9.5px] text-muted-foreground/45 uppercase font-semibold tracking-wider mb-0.5">{k}</p><p className="text-sm md:text-[12px]">{v}</p></div>
             ))}
           </div>
         </div>
 
         {/* Tags – using AddTagInput for rich creation */}
         <div className="px-4 py-3.5 border-b border-border/50">
-          <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/45 mb-2.5">Tags</p>
+          <p className="text-sm md:text-[10px] uppercase font-bold tracking-wider text-muted-foreground/45 mb-2.5">Tags</p>
           <div className="flex flex-wrap gap-1.5 mb-2">
             {chipTags.map((tag, i) => (
               <TagChip key={tag} tag={tag} registry={registry} onRemove={() => onRemoveTag(item.item_id, tag)} />
@@ -1053,7 +1053,7 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
               onAdd={onAddTag} onClose={() => setAddingTag(false)} />
           ) : (
             <button onClick={() => setAddingTag(true)}
-              className="flex items-center gap-1 text-[11px] text-muted-foreground/50 px-2 py-0.5 rounded-full border border-dashed border-border/60 hover:border-muted-foreground/40 hover:text-muted-foreground transition-colors">
+              className="flex items-center gap-1 text-sm md:text-[11px] text-muted-foreground/50 px-2 py-0.5 rounded-full border border-dashed border-border/60 hover:border-muted-foreground/40 hover:text-muted-foreground transition-colors">
               <Plus size={10} weight="bold" /> Add tag
             </button>
           )}
@@ -1061,14 +1061,14 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
 
         {/* Content preview */}
         <div className="px-4 py-3.5">
-          <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/45 mb-2.5">Preview</p>
+          <p className="text-sm md:text-[10px] uppercase font-bold tracking-wider text-muted-foreground/45 mb-2.5">Preview</p>
           {(item.item_type==="summary"||item.item_type==="template") && (
             <div className="space-y-1.5">
-              <p className="text-[12px] leading-relaxed text-foreground/70 whitespace-pre-wrap line-clamp-[12] bg-muted/25 rounded-xl p-3">
+              <p className="text-sm md:text-[12px] leading-relaxed text-foreground/70 whitespace-pre-wrap line-clamp-[12] bg-muted/25 rounded-xl p-3">
                 {typeof item.content==="string" ? item.content.slice(0,500)+(item.content.length>500?"…":"") : "No content"}
               </p>
               {typeof item.content==="string" && item.content.length > 500 && (
-                <button onClick={onOpen} className="text-[11px] text-primary/70 hover:text-primary transition-colors flex items-center gap-1"><ArrowSquareOut size={11} /> Read full content</button>
+                <button onClick={onOpen} className="text-sm md:text-[11px] text-primary/70 hover:text-primary transition-colors flex items-center gap-1"><ArrowSquareOut size={11} /> Read full content</button>
               )}
             </div>
           )}
@@ -1076,12 +1076,12 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
             <div className="space-y-2">
               {(Array.isArray(item.content)?item.content:[]).slice(0,3).map((card,i) => (
                 <div key={i} className="rounded-xl border border-border bg-card overflow-hidden">
-                  <div className="px-3 py-2 bg-muted/30 border-b border-border/50"><span className="text-[9.5px] text-muted-foreground/50 font-bold uppercase tracking-wider">Front</span><p className="text-[12px] font-medium mt-0.5 leading-snug">{card.front}</p></div>
+                  <div className="px-3 py-2 bg-muted/30 border-b border-border/50"><span className="text-[9.5px] text-muted-foreground/50 font-bold uppercase tracking-wider">Front</span><p className="text-sm md:text-[12px] font-medium mt-0.5 leading-snug">{card.front}</p></div>
                   <div className="px-3 py-2"><span className="text-[9.5px] text-muted-foreground/50 font-bold uppercase tracking-wider">Back</span><p className="text-[11.5px] text-muted-foreground/70 mt-0.5 leading-snug">{card.back}</p></div>
                 </div>
               ))}
               {Array.isArray(item.content) && item.content.length > 3 && (
-                <button onClick={onOpen} className="w-full py-2 text-[11px] text-muted-foreground/55 hover:text-primary transition-colors flex items-center justify-center gap-1 rounded-xl border border-dashed border-border/50 hover:border-primary/30"><ArrowSquareOut size={11} /> +{item.content.length-3} more cards</button>
+                <button onClick={onOpen} className="w-full py-2 text-sm md:text-[11px] text-muted-foreground/55 hover:text-primary transition-colors flex items-center justify-center gap-1 rounded-xl border border-dashed border-border/50 hover:border-primary/30"><ArrowSquareOut size={11} /> +{item.content.length-3} more cards</button>
               )}
             </div>
           )}
@@ -1093,7 +1093,7 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
                   <p className="text-[12.5px] font-medium leading-snug mb-2">{q.question}</p>
                   <div className="space-y-1">
                     {(q.options||[]).map((opt,j) => (
-                      <div key={j} className="flex items-center gap-2 text-[11px] text-muted-foreground/65">
+                      <div key={j} className="flex items-center gap-2 text-sm md:text-[11px] text-muted-foreground/65">
                         <span className="w-[18px] h-[18px] rounded-full border border-border/60 flex items-center justify-center text-[9px] font-bold shrink-0">{String.fromCharCode(65+j)}</span>{opt}
                       </div>
                     ))}
@@ -1101,14 +1101,14 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
                 </div>
               ))}
               {(item.content?.questions?.length||0) > 2 && (
-                <button onClick={onOpen} className="w-full py-2 text-[11px] text-muted-foreground/55 hover:text-primary transition-colors flex items-center justify-center gap-1 rounded-xl border border-dashed border-border/50 hover:border-primary/30"><ArrowSquareOut size={11} /> +{item.content.questions.length-2} more questions</button>
+                <button onClick={onOpen} className="w-full py-2 text-sm md:text-[11px] text-muted-foreground/55 hover:text-primary transition-colors flex items-center justify-center gap-1 rounded-xl border border-dashed border-border/50 hover:border-primary/30"><ArrowSquareOut size={11} /> +{item.content.questions.length-2} more questions</button>
               )}
             </div>
           )}
         </div>
         <div className="px-4 pb-3 flex items-center gap-1.5 text-muted-foreground/35">
           <Keyboard size={11} />
-          <span className="text-[10px]"><kbd className="font-mono bg-muted/50 px-1 rounded text-[9px]">Space</kbd> quick look &nbsp;·&nbsp;<kbd className="font-mono bg-muted/50 px-1 rounded text-[9px]">Esc</kbd> close</span>
+          <span className="text-sm md:text-[10px]"><kbd className="font-mono bg-muted/50 px-1 rounded text-[9px]">Space</kbd> quick look &nbsp;·&nbsp;<kbd className="font-mono bg-muted/50 px-1 rounded text-[9px]">Esc</kbd> close</span>
         </div>
       </div>
 
@@ -1119,21 +1119,21 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
             <motion.div key="confirm" initial={{ opacity:0,scale:0.97 }} animate={{ opacity:1,scale:1 }}
               exit={{ opacity:0,scale:0.97 }} transition={{ duration:0.14 }} className="space-y-2.5">
               <div className="flex items-center justify-center gap-2 text-[12.5px] font-semibold text-foreground/75"><WarningOctagon size={16} weight="fill" className="text-red-500" /> Delete this item?</div>
-              <p className="text-[11px] text-center text-muted-foreground/55">This action cannot be undone.</p>
+              <p className="text-sm md:text-[11px] text-center text-muted-foreground/55">This action cannot be undone.</p>
               <div className="flex gap-2">
-                <button onClick={() => setConfirmDel(false)} className="flex-1 py-2 rounded-xl border border-border text-[12px] hover:bg-muted transition-colors font-medium">Cancel</button>
-                <button onClick={() => onDelete(item.item_id)} className="flex-1 py-2 rounded-xl bg-red-500 text-[var(--text-primary)] text-[12px] font-semibold hover:bg-red-600 transition-colors">Delete</button>
+                <button onClick={() => setConfirmDel(false)} className="flex-1 py-2 rounded-xl border border-border text-sm md:text-[12px] hover:bg-muted transition-colors font-medium">Cancel</button>
+                <button onClick={() => onDelete(item.item_id)} className="flex-1 py-2 rounded-xl bg-red-500 text-[var(--text-primary)] text-sm md:text-[12px] font-semibold hover:bg-red-600 transition-colors">Delete</button>
               </div>
             </motion.div>
           ) : (
-            <motion.div key="actions" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.12 }} className="grid grid-cols-2 gap-2">
+            <motion.div key="actions" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.12 }} className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {[
                 { label:"Open",   Icon:ArrowSquareOut, fn:onOpen,               cls:"bg-primary text-primary-foreground hover:bg-primary/90 col-span-2 font-semibold" },
                 { label:"Share",  Icon:ShareNetwork,   fn:onShare,              cls:"border border-border hover:bg-muted" },
                 { label:"Export", Icon:DownloadSimple, fn:()=>onExport(item),   cls:"border border-border hover:bg-muted" },
                 { label:"Delete", Icon:TrashSimple,    fn:()=>setConfirmDel(true), cls:"border border-red-200 dark:border-red-900/40 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" },
               ].map(({ label, Icon, fn, cls }) => (
-                <button key={label} onClick={fn} className={`flex items-center justify-center gap-1.5 px-2 py-2 rounded-xl text-[12px] transition-colors ${cls}`}>
+                <button key={label} onClick={fn} className={`flex items-center justify-center gap-1.5 px-2 py-2 rounded-xl text-sm md:text-[12px] transition-colors ${cls}`}>
                   <Icon size={13} weight="fill" />{label}
                 </button>
               ))}
@@ -1551,7 +1551,7 @@ export default function Library() {
               <Skeleton className="h-3 w-16" delay={130} />
             </div>
 
-            <div className="flex-1 p-4 grid gap-3 grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 content-start">
+            <div className="flex-1 grid grid-cols-1 gap-3 p-4 content-start sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {[...Array(6)].map((_, i) => (
                 <LibraryCardSkeleton key={i} index={i} />
               ))}
@@ -1582,7 +1582,7 @@ export default function Library() {
               <input type="text" placeholder="Search title, content, tags…" value={search}
                 onChange={e => setSearch(e.target.value)}
                 onClick={e => e.stopPropagation()}
-                className="w-full pl-8 pr-8 py-1.5 rounded-lg bg-muted/50 border border-border text-[13px] placeholder:text-muted-foreground/45 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/30 transition-all" />
+                className="w-full pl-8 pr-8 py-1.5 rounded-lg bg-muted/50 border border-border text-sm md:text-[13px] placeholder:text-muted-foreground/45 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/30 transition-all" />
               {search && (
                 <button onClick={e => { e.stopPropagation(); setSearch(""); }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/45 hover:text-muted-foreground transition-colors">
                   <X size={12} weight="bold" />
@@ -1603,7 +1603,7 @@ export default function Library() {
             {selectedIds.size > 0 && (
               <motion.div initial={{ opacity:0,scale:0.9 }} animate={{ opacity:1,scale:1 }}
                 className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                <span className="text-[12px] font-semibold text-primary">{selectedIds.size} selected</span>
+                <span className="text-sm md:text-[12px] font-semibold text-primary">{selectedIds.size} selected</span>
                 <button onClick={e => { e.stopPropagation(); setSelectedIds(new Set()); setQuickLookItem(null); }} className="text-primary/60 hover:text-primary transition-colors"><X size={11} weight="bold" /></button>
               </motion.div>
             )}
@@ -1622,7 +1622,7 @@ export default function Library() {
               {/* Advanced filter button */}
               <div className="relative" ref={filterRef}>
                 <button onClick={e => { e.stopPropagation(); setFilterOpen(o => !o); setSortOpen(false); }}
-                  className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[12px] transition-colors ${filterOpen||activeFilterCount>0?"bg-primary/10 border-primary/30 text-primary":"border-border bg-card text-foreground/70 hover:bg-muted/60"}`}>
+                  className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm md:text-[12px] transition-colors ${filterOpen||activeFilterCount>0?"bg-primary/10 border-primary/30 text-primary":"border-border bg-card text-foreground/70 hover:bg-muted/60"}`}>
                   <Sliders size={13} weight={activeFilterCount>0?"fill":"regular"} />
                   <span>Filter</span>
                   {activeFilterCount > 0 && (
@@ -1646,7 +1646,7 @@ export default function Library() {
               {/* Sort */}
               <div className="relative" ref={sortRef}>
                 <button onClick={e => { e.stopPropagation(); setSortOpen(o=>!o); setFilterOpen(false); }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-card text-[12px] text-foreground/70 hover:bg-muted/60 transition-colors">
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-card text-sm md:text-[12px] text-foreground/70 hover:bg-muted/60 transition-colors">
                   {activeSort && <activeSort.Icon size={13} />}
                   <span>{activeSort?.label}</span>
                   <SortDescending size={12} className="text-muted-foreground/55" />
@@ -1658,7 +1658,7 @@ export default function Library() {
                       className="absolute right-0 top-full mt-1.5 z-50 w-44 bg-popover border border-border rounded-xl shadow-xl overflow-hidden py-1">
                       {SORT_OPTIONS.map(o => (
                         <button key={o.value} onClick={() => { setSort(o.value); setSortOpen(false); }}
-                          className={`w-full flex items-center gap-2.5 px-3 py-2 text-[12px] transition-colors ${sort===o.value?"bg-primary/10 text-primary":"hover:bg-muted text-foreground/75"}`}>
+                          className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm md:text-[12px] transition-colors ${sort===o.value?"bg-primary/10 text-primary":"hover:bg-muted text-foreground/75"}`}>
                           <o.Icon size={13} />{o.label}{sort===o.value&&<Check size={11} weight="bold" className="ml-auto" />}
                         </button>
                       ))}
@@ -1680,10 +1680,10 @@ export default function Library() {
               ].map(({ label, key, fn, red }) => (
                 <button key={label} onClick={e => { e.stopPropagation(); fn(); }}
                   className={`flex items-center gap-1.5 text-[11.5px] font-medium transition-colors ${red?"text-red-500 hover:text-red-600":"text-primary/70 hover:text-primary"}`}>
-                  <kbd className="font-mono text-[10px] bg-background border border-border rounded px-1">{key}</kbd>{label}
+                  <kbd className="font-mono text-sm md:text-[10px] bg-background border border-border rounded px-1">{key}</kbd>{label}
                 </button>
               ))}
-              <span className="ml-auto text-[11px] text-muted-foreground/50">
+              <span className="ml-auto text-sm md:text-[11px] text-muted-foreground/50">
                 <kbd className="font-mono text-[9px] bg-background border border-border rounded px-1">⌘A</kbd> all &nbsp;·&nbsp;
                 <kbd className="font-mono text-[9px] bg-background border border-border rounded px-1">Esc</kbd> deselect
               </span>
@@ -1717,7 +1717,7 @@ export default function Library() {
               {/* Breadcrumb + result count */}
               <div className="flex items-center justify-between px-5 pt-3.5 pb-2.5 border-b border-border/50 shrink-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[13px] font-semibold">
+                  <span className="text-sm md:text-[13px] font-semibold">
                     {activeTag ? `#${activeTag}` : activeFolder==="all" ? "All Items" : activeFolder==="starred" ? "Starred" : TYPE_META[activeFolder]?.label ?? activeFolder}
                   </span>
                   {/* Result count */}
@@ -1727,7 +1727,7 @@ export default function Library() {
                       {search ? ` for "${search}"` : ""}
                     </span>
                   ) : (
-                    <span className="text-[11px] text-muted-foreground/55">{visible.length} {visible.length===1?"item":"items"}</span>
+                    <span className="text-sm md:text-[11px] text-muted-foreground/55">{visible.length} {visible.length===1?"item":"items"}</span>
                   )}
                   {/* Active filter chips in breadcrumb */}
                   {filters.types.map(t => (
@@ -1750,7 +1750,7 @@ export default function Library() {
                 </div>
                 {draggingIds.size > 0 && (
                   <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }}
-                    className="text-[11px] text-muted-foreground/60 flex items-center gap-1.5">
+                    className="text-sm md:text-[11px] text-muted-foreground/60 flex items-center gap-1.5">
                     <FolderSimple size={13} className="text-primary/60" /> Drag to sidebar to move
                   </motion.div>
                 )}
@@ -1765,7 +1765,7 @@ export default function Library() {
                         onClearFilters={() => { setSearch(""); setFilters(EMPTY_FILTERS); setActiveTag(null); }} />
                     </motion.div>
                   ) : viewMode === "grid" ? (
-                    <motion.div key="grid" {...vv} className="p-4 grid gap-3 grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    <motion.div key="grid" {...vv} className="grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                       {visible.map(item => (
                         <GridCard key={item.item_id} item={item}
                           tags={itemTags[item.item_id]} registry={tagRegistry} search={search}

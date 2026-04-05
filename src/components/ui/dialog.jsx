@@ -43,9 +43,9 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
       ref={ref}
       className={cn(
         // Layout
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg gap-4",
+        "fixed left-[50%] top-[50%] z-50 grid w-[calc(100vw-2rem)] max-w-lg gap-4",
         "translate-x-[-50%] translate-y-[-50%]",
-        "border bg-background p-6 shadow-hover sm:rounded-xl",
+        "max-h-[calc(100vh-2rem)] overflow-y-auto border bg-background px-4 py-6 shadow-hover sm:rounded-xl sm:px-6",
         // Open animation — spring easing applied via index.css selector
         "duration-300",
         "data-[state=open]:animate-in",
@@ -66,7 +66,7 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
       {children}
       <DialogPrimitive.Close
         className={cn(
-          "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background",
+          "absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-sm opacity-70 ring-offset-background",
           "transition-all duration-150",
           "hover:opacity-100 hover:scale-110",
           "active:scale-90",

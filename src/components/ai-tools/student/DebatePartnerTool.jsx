@@ -44,7 +44,7 @@ export default function DebatePartnerTool({ prefilled = {} }) {
         {isLoading && <ResultSkeleton />}
         {!isLoading && (
           <>
-            <div className="rounded-xl border border-border bg-secondary/40 px-4 py-3 text-xs text-muted-foreground">
+            <div className="rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm md:text-xs text-muted-foreground">
               <strong className="text-foreground">How it works:</strong> Enter your topic and your position. The AI automatically takes the opposing side and opens the debate. You respond, and it continues.
             </div>
 

@@ -152,13 +152,13 @@ export default function DMInbox() {
                   <div className="flex items-center justify-between gap-1">
                     <p className="text-sm font-medium truncate">{conv.user.name}</p>
                     {conv.last_message && (
-                      <span className="text-[10px] text-muted-foreground shrink-0">
+                      <span className="text-sm md:text-[10px] text-muted-foreground shrink-0">
                         {formatTime(conv.last_message.sent_at)}
                       </span>
                     )}
                   </div>
                   {conv.last_message && (
-                    <p className={`text-xs truncate mt-0.5 ${
+                    <p className={`text-sm md:text-xs truncate mt-0.5 ${
                       conv.unread_count > 0 ? 'text-foreground font-medium' : 'text-muted-foreground'
                     }`}>
                       {conv.last_message.sender_id === user?.user_id ? 'You: ' : ''}
@@ -197,13 +197,13 @@ export default function DMInbox() {
                 <>
                   <Avatar className="h-8 w-8 shrink-0">
                     <AvatarImage src={partner.avatar} alt={partner.name} />
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                    <AvatarFallback className="bg-primary/10 text-primary text-sm md:text-xs font-semibold">
                       {partner.name?.charAt(0)?.toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm font-semibold leading-tight">{partner.name}</p>
-                    <p className="text-[10px] text-muted-foreground capitalize">{partner.role}</p>
+                    <p className="text-sm md:text-[10px] text-muted-foreground capitalize">{partner.role}</p>
                   </div>
                 </>
               )}
@@ -212,7 +212,7 @@ export default function DMInbox() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
               {thread.length === 0 && (
-                <p className="text-center text-xs text-muted-foreground mt-8">No messages yet. Say hello!</p>
+                <p className="text-center text-sm md:text-xs text-muted-foreground mt-8">No messages yet. Say hello!</p>
               )}
               {thread.map((msg) => {
                 const isOwn = msg.sender_id === user?.user_id;
@@ -224,7 +224,7 @@ export default function DMInbox() {
                         : 'bg-secondary text-foreground rounded-bl-sm'
                     }`}>
                       <p>{msg.content}</p>
-                      <p className={`text-[10px] mt-1 ${isOwn ? 'text-primary-foreground/60 text-right' : 'text-muted-foreground'}`}>
+                      <p className={`text-sm md:text-[10px] mt-1 ${isOwn ? 'text-primary-foreground/60 text-right' : 'text-muted-foreground'}`}>
                         {formatTime(msg.sent_at)}
                       </p>
                     </div>

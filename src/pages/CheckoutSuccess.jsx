@@ -145,7 +145,7 @@ export default function CheckoutSuccess() {
           </div>
 
           {activated && (
-            <p className="text-xs text-emerald-400 mb-4">
+            <p className="text-sm md:text-xs text-emerald-400 mb-4">
               ✓ {meta.launchCoins.toLocaleString()} coins added to your account
             </p>
           )}

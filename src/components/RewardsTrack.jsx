@@ -91,7 +91,7 @@ export default function RewardsTrack() {
         <CardContent className="pt-5 pb-5 relative z-10">
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-1">
+              <p className="text-sm md:text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-1">
                 Your Level
               </p>
               <p className="text-5xl font-bold leading-none text-foreground">
@@ -106,17 +106,17 @@ export default function RewardsTrack() {
             </div>
             {nextMilestone && (
               <div className="text-right shrink-0">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-1">
+                <p className="text-sm md:text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-1">
                   Next Reward
                 </p>
                 <p className="text-sm font-semibold">
                   Level {nextMilestone.level}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm md:text-xs text-muted-foreground">
                   {nextMilestone.emoji ? `${nextMilestone.emoji} ` : ""}
                   {nextMilestone.title}
                 </p>
-                <p className="text-xs text-amber-500 font-medium mt-0.5">
+                <p className="text-sm md:text-xs text-amber-500 font-medium mt-0.5">
                   +{nextMilestone.coins} coins
                 </p>
               </div>
@@ -124,13 +124,13 @@ export default function RewardsTrack() {
           </div>
 
           <Progress value={levelProgress} className="h-2 mb-2" />
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-sm md:text-xs text-muted-foreground">
             <span>{xpInLevel} XP</span>
             <span>{xpForNext} XP to next level</span>
           </div>
 
           {nextMilestone && (
-            <p className="text-xs text-primary mt-2">
+            <p className="text-sm md:text-xs text-primary mt-2">
               Next reward at Level {nextMilestone.level}:{" "}
               {nextMilestone.coins} coins + {nextMilestone.unlocks[0]}
             </p>
@@ -248,7 +248,7 @@ export default function RewardsTrack() {
                               animate={{ scale: [1, 1.05, 1] }}
                               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             >
-                              <Badge className="text-[10px] px-1.5 py-0 bg-[color:color-mix(in_srgb,var(--accent)_15%,transparent)] text-[var(--accent)] border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]">
+                              <Badge className="text-sm md:text-[10px] px-1.5 py-0 bg-[color:color-mix(in_srgb,var(--accent)_15%,transparent)] text-[var(--accent)] border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]">
                                 You are here
                               </Badge>
                             </motion.div>
@@ -256,14 +256,14 @@ export default function RewardsTrack() {
 
                           {/* Claimed badge for past levels */}
                           {isPast && (
-                            <Badge className="text-[10px] px-1.5 py-0 bg-green-500/15 text-green-400 border-green-500/25">
+                            <Badge className="text-sm md:text-[10px] px-1.5 py-0 bg-green-500/15 text-green-400 border-green-500/25">
                               Claimed
                             </Badge>
                           )}
 
                           {/* XP-unlocked future levels get a subtle green check */}
                           {isFuture && isXpUnlocked && (
-                            <Badge className="text-[10px] px-1.5 py-0 bg-green-500/10 text-green-400 border-green-500/20 flex items-center gap-0.5">
+                            <Badge className="text-sm md:text-[10px] px-1.5 py-0 bg-green-500/10 text-green-400 border-green-500/20 flex items-center gap-0.5">
                               <CheckCircle2 className="w-2.5 h-2.5" />
                               Unlocked
                             </Badge>
@@ -274,7 +274,7 @@ export default function RewardsTrack() {
                       {/* Rewards list */}
                       <ul className="space-y-1.5">
                         {/* Coins */}
-                        <li className="flex items-center gap-1.5 text-xs">
+                        <li className="flex items-center gap-1.5 text-sm md:text-xs">
                           <Coins
                             className={`w-3.5 h-3.5 shrink-0 ${
                               isFuture
@@ -292,7 +292,7 @@ export default function RewardsTrack() {
                             +{reward.coins} coins
                           </span>
                           {showFounderBonus && (
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-sm md:text-[10px] text-muted-foreground">
                               ({founderMeta.label.split(" ")[0]} founders:{" "}
                               {earnableCoins} coins)
                             </span>
@@ -301,7 +301,7 @@ export default function RewardsTrack() {
 
                         {/* Unlocks */}
                         {reward.unlocks.map((u, i) => (
-                          <li key={i} className="flex items-center gap-1.5 text-xs">
+                          <li key={i} className="flex items-center gap-1.5 text-sm md:text-xs">
                             {isFuture ? (
                               <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
                             ) : (
@@ -317,7 +317,7 @@ export default function RewardsTrack() {
 
                         {/* Badge */}
                         {reward.badge && (
-                          <li className="flex items-center gap-1.5 text-xs">
+                          <li className="flex items-center gap-1.5 text-sm md:text-xs">
                             {isFuture ? (
                               <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
                             ) : (
@@ -335,7 +335,7 @@ export default function RewardsTrack() {
 
                         {/* Bonuses */}
                         {reward.bonuses.map((b, i) => (
-                          <li key={i} className="flex items-center gap-1.5 text-xs">
+                          <li key={i} className="flex items-center gap-1.5 text-sm md:text-xs">
                             {isFuture ? (
                               <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
                             ) : (
@@ -351,7 +351,7 @@ export default function RewardsTrack() {
 
                         {/* Specials */}
                         {reward.specials.map((s, i) => (
-                          <li key={i} className="flex items-center gap-1.5 text-xs">
+                          <li key={i} className="flex items-center gap-1.5 text-sm md:text-xs">
                             {isFuture ? (
                               <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
                             ) : (
@@ -368,13 +368,13 @@ export default function RewardsTrack() {
 
                       {/* Note */}
                       {reward.note && (
-                        <p className="text-[10px] text-muted-foreground mt-2 italic">{reward.note}</p>
+                        <p className="text-sm md:text-[10px] text-muted-foreground mt-2 italic">{reward.note}</p>
                       )}
 
                       {/* XP progress bar — only on current milestone */}
                       {isCurrent && (
                         <div className="mt-3 pt-3 border-t border-yellow-500/15">
-                          <div className="flex justify-between text-[11px] text-muted-foreground mb-1.5">
+                          <div className="flex justify-between text-sm md:text-[11px] text-muted-foreground mb-1.5">
                             <span>Progress to next level</span>
                             <span>{xpInLevel} / {xpForNext} XP</span>
                           </div>
@@ -387,7 +387,7 @@ export default function RewardsTrack() {
                         <div className="mt-3 pt-2.5 border-t border-border">
                           <Link
                             to="/pricing"
-                            className="flex items-center gap-1 text-[11px] text-primary hover:text-primary/70 transition-colors"
+                            className="flex items-center gap-1 text-sm md:text-[11px] text-primary hover:text-primary/70 transition-colors"
                           >
                             <Sparkles className="w-3 h-3" />
                             Reach this faster with a Founder Pass
@@ -400,7 +400,7 @@ export default function RewardsTrack() {
                     {/* Centered unlock overlay — sits above the blurred content */}
                     {isLocked && (
                       <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                        <span className="text-xs font-semibold text-yellow-400 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-yellow-500/20">
+                        <span className="text-sm md:text-xs font-semibold text-yellow-400 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-yellow-500/20">
                           Unlocks at {xpThreshold.toLocaleString()} XP
                         </span>
                       </div>

@@ -195,7 +195,7 @@ function StatusBadge({ status }) {
     at_risk:   "bg-red-500/10 text-red-600",
   };
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${map[status] ?? "bg-secondary text-muted-foreground"}`}>
+    <span className={`text-sm md:text-xs px-2 py-0.5 rounded-full font-medium capitalize ${map[status] ?? "bg-secondary text-muted-foreground"}`}>
       {status?.replace("_", " ")}
     </span>
   );
@@ -704,7 +704,7 @@ export default function Classes() {
         <div className="p-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-semibold text-sm">My Classes</h2>
-            <span className="text-xs px-1.5 py-0.5 rounded bg-green-500/10 text-green-600 font-medium">Teacher</span>
+            <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-green-500/10 text-green-600 font-medium">Teacher</span>
           </div>
           <Button
             variant="outline"
@@ -732,7 +732,7 @@ export default function Classes() {
                 >
                   <span className={`w-2.5 h-2.5 rounded-sm shrink-0 ${c.dot}`} />
                   <span className="flex-1 text-sm truncate font-medium">{cls.name}</span>
-                  <span className="text-xs text-muted-foreground shrink-0">{cls.students?.length ?? 0}</span>
+                  <span className="text-sm md:text-xs text-muted-foreground shrink-0">{cls.students?.length ?? 0}</span>
                 </button>
               );
             })}
@@ -742,7 +742,7 @@ export default function Classes() {
         {/* Join Code chip */}
         {selectedClass && (
           <div className="p-3 border-t border-border">
-            <p className="text-xs text-muted-foreground uppercase font-medium mb-1.5">Class Code</p>
+            <p className="text-sm md:text-xs text-muted-foreground uppercase font-medium mb-1.5">Class Code</p>
             <button
               onClick={() => copyCode(selectedClass.join_code)}
               className="w-full flex items-center justify-between px-3 py-1.5 rounded-md bg-secondary hover:bg-secondary/80 transition-colors group"
@@ -766,23 +766,23 @@ export default function Classes() {
               <div className="flex items-center justify-between mb-1">
                 <div>
                   <h1 className="font-heading text-xl font-bold">{selectedClass.name}</h1>
-                  <p className="text-[color:color-mix(in_srgb,var(--text-primary)_75%,transparent)] text-xs mt-0.5">{selectedClass.subject} · {selectedClass.grade} Grade · {selectedClass.students?.length ?? 0} students</p>
+                  <p className="text-[color:color-mix(in_srgb,var(--text-primary)_75%,transparent)] text-sm md:text-xs mt-0.5">{selectedClass.subject} · {selectedClass.grade} Grade · {selectedClass.students?.length ?? 0} students</p>
                 </div>
               </div>
               <TabsList className="bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] border-0 mt-3 h-9 rounded-t-lg rounded-b-none gap-0 px-0">
-                <TabsTrigger value="overview"    className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none rounded-tl-lg h-9 px-4">Overview</TabsTrigger>
-                <TabsTrigger value="students"    className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Students</TabsTrigger>
-                <TabsTrigger value="assignments" className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Assignments</TabsTrigger>
-                <TabsTrigger value="resources"   className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Resources</TabsTrigger>
-                <TabsTrigger value="skills"      className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Skills</TabsTrigger>
-                <TabsTrigger value="chat"        className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Chat</TabsTrigger>
+                <TabsTrigger value="overview"    className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none rounded-tl-lg h-9 px-4">Overview</TabsTrigger>
+                <TabsTrigger value="students"    className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Students</TabsTrigger>
+                <TabsTrigger value="assignments" className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Assignments</TabsTrigger>
+                <TabsTrigger value="resources"   className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Resources</TabsTrigger>
+                <TabsTrigger value="skills"      className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Skills</TabsTrigger>
+                <TabsTrigger value="chat"        className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Chat</TabsTrigger>
               </TabsList>
             </div>
 
             {/* ── OVERVIEW ── */}
             <TabsContent value="overview" className="flex-1 overflow-auto p-5 mt-0">
               {/* Stats row */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 {[
                   { label: "Total Students", value: selectedClass.students?.length ?? 0, icon: Users, light: "bg-blue-500/10", iconColor: "text-blue-500" },
                   { label: "Avg Grade",      value: selectedClass.avgGrade ? `${selectedClass.avgGrade}%` : "N/A", icon: Award,  light: "bg-violet-500/10", iconColor: "text-violet-500" },
@@ -796,7 +796,7 @@ export default function Classes() {
                       </div>
                       <div>
                         <p className="text-xl font-bold">{stat.value}</p>
-                        <p className="text-xs text-muted-foreground">{stat.label}</p>
+                        <p className="text-sm md:text-xs text-muted-foreground">{stat.label}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -811,7 +811,7 @@ export default function Classes() {
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
                     {CLASS_RANK_LEVELS.map((rank) => (
                       <div key={rank.key} className="space-y-2">
                         <Label htmlFor={`rank-${rank.key}`}>{rank.label}</Label>
@@ -851,7 +851,7 @@ export default function Classes() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm leading-snug">{item.text}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">{item.time}</p>
+                          <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{item.time}</p>
                         </div>
                       </div>
                     ))}
@@ -933,7 +933,7 @@ export default function Classes() {
                   {/* Completion bar */}
                   {selectedClass.completionRate != null && (
                     <div className="mt-5 p-4 rounded-xl border bg-card">
-                      <div className="flex justify-between text-xs mb-2">
+                      <div className="flex justify-between text-sm md:text-xs mb-2">
                         <span className="font-medium">Assignment Completion</span>
                         <span className="text-muted-foreground">{selectedClass.completionRate}%</span>
                       </div>
@@ -981,26 +981,26 @@ export default function Classes() {
                               <div>
                                 <p className="text-sm font-semibold leading-tight">{c.title}</p>
                                 {c.goalDescription && (
-                                  <p className="text-xs text-muted-foreground">{c.goalDescription}</p>
+                                  <p className="text-sm md:text-xs text-muted-foreground">{c.goalDescription}</p>
                                 )}
                               </div>
                             </div>
                             <div className="text-right shrink-0">
-                              <p className="text-xs font-medium text-orange-500">{c.rewardCoins} coins</p>
+                              <p className="text-sm md:text-xs font-medium text-orange-500">{c.rewardCoins} coins</p>
                               {daysLeft !== null && !isComplete && (
-                                <p className={`text-xs ${daysLeft <= 2 ? "text-red-500" : "text-muted-foreground"}`}>
+                                <p className={`text-sm md:text-xs ${daysLeft <= 2 ? "text-red-500" : "text-muted-foreground"}`}>
                                   {daysLeft > 0 ? `${daysLeft}d left` : "Deadline passed"}
                                 </p>
                               )}
                             </div>
                           </div>
                           <div className="mt-3">
-                            <div className="flex justify-between text-xs mb-1.5">
+                            <div className="flex justify-between text-sm md:text-xs mb-1.5">
                               <span className="text-muted-foreground">{metricLabel}</span>
                               <span className="font-medium">{c.currentValue} / {c.targetValue}</span>
                             </div>
                             <Progress value={pct} className={`h-2 ${isComplete ? "[&>div]:bg-green-500" : "[&>div]:bg-orange-500"}`} />
-                            <p className="text-xs text-right mt-1 text-muted-foreground">{pct}%</p>
+                            <p className="text-sm md:text-xs text-right mt-1 text-muted-foreground">{pct}%</p>
                           </div>
                         </div>
                       );
@@ -1021,12 +1021,12 @@ export default function Classes() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{jam.wordSetName}</p>
-                          <p className="text-xs text-muted-foreground font-mono">{jam.code} · {jam.createdAt}</p>
+                          <p className="text-sm md:text-xs text-muted-foreground font-mono">{jam.code} · {jam.createdAt}</p>
                         </div>
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-7 text-xs shrink-0"
+                          className="h-7 text-sm md:text-xs shrink-0"
                           onClick={() => handleRunAgain(jam)}
                         >
                           Run again
@@ -1072,11 +1072,11 @@ export default function Classes() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b bg-secondary/30">
-                        <th className="text-left p-3 text-xs font-medium text-muted-foreground">Student</th>
-                        <th className="text-left p-3 text-xs font-medium text-muted-foreground hidden md:table-cell">Grade</th>
-                        <th className="text-left p-3 text-xs font-medium text-muted-foreground hidden lg:table-cell">Last Active</th>
-                        <th className="text-left p-3 text-xs font-medium text-muted-foreground">Avg Grade</th>
-                        <th className="text-left p-3 text-xs font-medium text-muted-foreground">Status</th>
+                        <th className="text-left p-3 text-sm md:text-xs font-medium text-muted-foreground">Student</th>
+                        <th className="text-left p-3 text-sm md:text-xs font-medium text-muted-foreground hidden md:table-cell">Grade</th>
+                        <th className="text-left p-3 text-sm md:text-xs font-medium text-muted-foreground hidden lg:table-cell">Last Active</th>
+                        <th className="text-left p-3 text-sm md:text-xs font-medium text-muted-foreground">Avg Grade</th>
+                        <th className="text-left p-3 text-sm md:text-xs font-medium text-muted-foreground">Status</th>
                         <th className="p-3" />
                       </tr>
                     </thead>
@@ -1088,15 +1088,15 @@ export default function Classes() {
                             <td className="p-3">
                               <div className="flex items-center gap-2.5">
                                 <Avatar className="w-8 h-8">
-                                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                                  <AvatarFallback className="bg-primary text-primary-foreground text-sm md:text-xs">
                                     {student.name.charAt(0)}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div>
                                   <p className="font-medium text-sm">{student.name}</p>
-                                  <p className="text-xs text-muted-foreground hidden sm:block">{student.grade} grade</p>
+                                  <p className="text-sm md:text-xs text-muted-foreground hidden sm:block">{student.grade} grade</p>
                                   {student.mutedUntil && (
-                                    <p className="text-[11px] text-amber-600 hidden sm:block">
+                                    <p className="text-sm md:text-[11px] text-amber-600 hidden sm:block">
                                       Muted until {formatMuteUntil(student.mutedUntil)}
                                     </p>
                                   )}
@@ -1118,7 +1118,7 @@ export default function Classes() {
                                 <Button
                                   size="sm"
                                   variant="ghost"
-                                  className="h-7 px-2 text-xs"
+                                  className="h-7 px-2 text-sm md:text-xs"
                                   onClick={() => toast.info("Student messaging coming soon!")}
                                 >
                                   <MessageSquare className="w-3.5 h-3.5" />
@@ -1170,7 +1170,7 @@ export default function Classes() {
                           placeholder="Assignment title"
                         />
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="space-y-1.5">
                           <Label>Type</Label>
                           <select
@@ -1229,9 +1229,9 @@ export default function Classes() {
                       <div>
                         <div className="flex items-center gap-2 mb-0.5">
                           <p className="font-medium text-sm">{asgn.title}</p>
-                          <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-muted-foreground capitalize">{asgn.type}</span>
+                          <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-secondary text-muted-foreground capitalize">{asgn.type}</span>
                         </div>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-3 text-sm md:text-xs text-muted-foreground">
                           <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> Due {asgn.dueDate}</span>
                           <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {asgn.submissionsReceived}/{asgn.totalStudents} submitted</span>
                           {asgn.avgGrade && <span className="flex items-center gap-1"><Award className="w-3 h-3" /> Avg {asgn.avgGrade}%</span>}
@@ -1241,7 +1241,7 @@ export default function Classes() {
                     </div>
                     {asgn.totalStudents > 0 && (
                       <div className="mt-2">
-                        <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                        <div className="flex justify-between text-sm md:text-xs text-muted-foreground mb-1">
                           <span>Submissions</span>
                           <span>{Math.round((asgn.submissionsReceived / asgn.totalStudents) * 100)}%</span>
                         </div>
@@ -1336,8 +1336,8 @@ export default function Classes() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm truncate">{res.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{res.author} · {res.date}</p>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-muted-foreground uppercase mt-1 inline-block">{res.type}</span>
+                      <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{res.author} · {res.date}</p>
+                      <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-secondary text-muted-foreground uppercase mt-1 inline-block">{res.type}</span>
                     </div>
                     <div className="flex flex-col gap-1 shrink-0">
                       {res.url && res.url !== "#" && (
@@ -1405,17 +1405,17 @@ export default function Classes() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm">{as.skillName}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{as.subjectName} · {as.topicName}</p>
+                        <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{as.subjectName} · {as.topicName}</p>
                         <div className="flex flex-wrap items-center gap-2 mt-2">
-                          <span className="text-xs px-2 py-0.5 rounded bg-secondary text-muted-foreground">
+                          <span className="text-sm md:text-xs px-2 py-0.5 rounded bg-secondary text-muted-foreground">
                             {as.assignedTo === "class" ? "Whole class" : `${as.assignedTo.length} student(s)`}
                           </span>
                           {as.dueDate && (
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                            <span className="text-sm md:text-xs text-muted-foreground flex items-center gap-1">
                               <Calendar className="w-3 h-3" /> Due {as.dueDate}
                             </span>
                           )}
-                          <span className="text-xs text-muted-foreground">Assigned {as.assignedAt}</span>
+                          <span className="text-sm md:text-xs text-muted-foreground">Assigned {as.assignedAt}</span>
                         </div>
                       </div>
                       <Button
@@ -1445,7 +1445,7 @@ export default function Classes() {
                       )}
                       <div className="flex items-start gap-3">
                         <Avatar className="w-9 h-9 shrink-0">
-                          <AvatarFallback className={`text-xs ${msg.isTeacher ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}>
+                          <AvatarFallback className={`text-sm md:text-xs ${msg.isTeacher ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}>
                             {(msg.sender || msg.authorName).charAt(0)}
                           </AvatarFallback>
                         </Avatar>
@@ -1453,12 +1453,12 @@ export default function Classes() {
                           <div className="flex items-center gap-2 mb-0.5">
                             <span className="font-medium text-sm">{msg.sender || msg.authorName}</span>
                             {msg.isTeacher && (
-                              <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
+                              <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
                             )}
                             {msg.pinned && (
-                              <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-medium">Pinned</span>
+                              <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-medium">Pinned</span>
                             )}
-                            <span className="text-xs text-muted-foreground">{msg.time}</span>
+                            <span className="text-sm md:text-xs text-muted-foreground">{msg.time}</span>
                           </div>
                           <p className="text-sm leading-relaxed">{msg.text || msg.content}</p>
                           {(msg.attachments ?? []).length > 0 && (
@@ -1476,7 +1476,7 @@ export default function Classes() {
                                         href={attachment.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-xs text-primary"
+                                        className="text-sm md:text-xs text-primary"
                                       >
                                         {attachment.name}
                                       </a>
@@ -1505,7 +1505,7 @@ export default function Classes() {
                                   key={`${msg.id}-${emoji}`}
                                   type="button"
                                   onClick={() => handleToggleReaction(msg.id, emoji)}
-                                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs transition-colors ${
+                                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-sm md:text-xs transition-colors ${
                                     reacted
                                       ? "border-primary bg-primary/10 text-primary"
                                       : "border-border bg-background text-muted-foreground hover:text-foreground"
@@ -1519,7 +1519,7 @@ export default function Classes() {
                             <button
                               type="button"
                               onClick={() => handleToggleThread(msg.id)}
-                              className="text-xs font-medium text-muted-foreground hover:text-foreground"
+                              className="text-sm md:text-xs font-medium text-muted-foreground hover:text-foreground"
                             >
                               Reply{msg.reply_count ? ` (${msg.reply_count})` : ""}
                             </button>
@@ -1532,7 +1532,7 @@ export default function Classes() {
                                   {(repliesByPost[msg.id] ?? []).map((reply) => (
                                     <div key={reply.id} className="flex items-start gap-2.5">
                                       <Avatar className="w-7 h-7 shrink-0">
-                                        <AvatarFallback className={`text-[10px] ${reply.isTeacher ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}>
+                                        <AvatarFallback className={`text-sm md:text-[10px] ${reply.isTeacher ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}>
                                           {reply.user_name.charAt(0)}
                                         </AvatarFallback>
                                       </Avatar>
@@ -1540,7 +1540,7 @@ export default function Classes() {
                                         <div className="flex items-center gap-2">
                                           <span className="text-sm font-medium">{reply.user_name}</span>
                                           {reply.isTeacher && (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
+                                            <span className="text-sm md:text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
                                           )}
                                         </div>
                                         <p className="text-sm">{reply.content}</p>
@@ -1583,7 +1583,7 @@ export default function Classes() {
                   {pendingAttachments.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {pendingAttachments.map((attachment) => (
-                        <div key={attachment.url} className="inline-flex items-center gap-2 rounded-full border bg-secondary/20 px-3 py-1 text-xs">
+                        <div key={attachment.url} className="inline-flex items-center gap-2 rounded-full border bg-secondary/20 px-3 py-1 text-sm md:text-xs">
                           <span>{attachment.name}</span>
                           <button
                             type="button"
@@ -1660,7 +1660,7 @@ export default function Classes() {
         <div className="hidden xl:flex xl:flex-col w-[260px] shrink-0 border-l border-border bg-card overflow-y-auto">
           {/* Join Code */}
           <div className="p-4 border-b border-border">
-            <p className="text-xs font-medium text-muted-foreground uppercase mb-2">Join Code</p>
+            <p className="text-sm md:text-xs font-medium text-muted-foreground uppercase mb-2">Join Code</p>
             <button
               onClick={() => copyCode(selectedClass.join_code)}
               className="w-full flex items-center justify-between p-3 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors group"
@@ -1671,12 +1671,12 @@ export default function Classes() {
                 : <Copy className="w-4 h-4 text-muted-foreground group-hover:text-foreground" />
               }
             </button>
-            <p className="text-xs text-muted-foreground mt-2 text-center">Share this code with your students</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-2 text-center">Share this code with your students</p>
           </div>
 
           {/* Class Info */}
           <div className="p-4 border-b border-border">
-            <p className="text-xs font-medium text-muted-foreground uppercase mb-3">Class Info</p>
+            <p className="text-sm md:text-xs font-medium text-muted-foreground uppercase mb-3">Class Info</p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Subject</span>
@@ -1699,21 +1699,21 @@ export default function Classes() {
 
           {/* Recent Students */}
           <div className="p-4 border-b border-border">
-            <p className="text-xs font-medium text-muted-foreground uppercase mb-3">Recent Students</p>
+            <p className="text-sm md:text-xs font-medium text-muted-foreground uppercase mb-3">Recent Students</p>
             {selectedClass.students?.length === 0 ? (
-              <p className="text-xs text-muted-foreground">No students yet</p>
+              <p className="text-sm md:text-xs text-muted-foreground">No students yet</p>
             ) : (
               <div className="space-y-2">
                 {selectedClass.students.slice(0, 4).map(s => (
                   <div key={s.id} className="flex items-center gap-2.5">
                     <Avatar className="w-7 h-7">
-                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-sm md:text-xs">
                         {s.name.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm truncate font-medium">{s.name}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm md:text-xs text-muted-foreground">
                         {s.mutedUntil ? `Muted until ${formatMuteUntil(s.mutedUntil)}` : s.lastActive}
                       </p>
                     </div>
@@ -1726,7 +1726,7 @@ export default function Classes() {
 
           {/* Quick Stats */}
           <div className="p-4">
-            <p className="text-xs font-medium text-muted-foreground uppercase mb-3">Quick Stats</p>
+            <p className="text-sm md:text-xs font-medium text-muted-foreground uppercase mb-3">Quick Stats</p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Submissions today</span>
@@ -1770,7 +1770,7 @@ export default function Classes() {
                 placeholder="e.g. Period 3 — Chemistry"
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label>Subject</Label>
                 <select
@@ -1824,7 +1824,7 @@ export default function Classes() {
                   ))}
                 </select>
               </div>
-              <p className="text-xs text-muted-foreground">Students join via a 6-character code on the Competitions page.</p>
+              <p className="text-sm md:text-xs text-muted-foreground">Students join via a 6-character code on the Competitions page.</p>
               <Button onClick={handleCreateJam} className="w-full" disabled={jamCreating}>
                 {jamCreating ? "Creating..." : "Create Jam"}
               </Button>
@@ -1832,9 +1832,9 @@ export default function Classes() {
           ) : (
             <div className="space-y-4 mt-2 text-center">
               <div className="p-4 rounded-xl bg-secondary">
-                <p className="text-xs text-muted-foreground mb-1">Room code</p>
+                <p className="text-sm md:text-xs text-muted-foreground mb-1">Room code</p>
                 <p className="font-mono text-4xl font-bold tracking-widest">{jamCreated.code}</p>
-                <p className="text-xs text-muted-foreground mt-1">{jamCreated.wordSetName}</p>
+                <p className="text-sm md:text-xs text-muted-foreground mt-1">{jamCreated.wordSetName}</p>
               </div>
               <p className="text-sm text-muted-foreground">Share this code with your students. They'll join on the Competitions page.</p>
               <div className="flex gap-2">
@@ -1873,7 +1873,7 @@ export default function Classes() {
                 onChange={e => setChallengeForm(f => ({ ...f, goalDescription: e.target.value }))}
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label>Target</Label>
                 <Input
@@ -2018,7 +2018,7 @@ export default function Classes() {
                       </label>
                     ))}
                     {(!selectedClass?.students || selectedClass.students.length === 0) && (
-                      <p className="text-xs text-muted-foreground">No students in this class</p>
+                      <p className="text-sm md:text-xs text-muted-foreground">No students in this class</p>
                     )}
                   </div>
                 )}

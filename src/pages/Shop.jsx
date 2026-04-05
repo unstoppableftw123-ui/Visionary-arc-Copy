@@ -194,7 +194,7 @@ export default function Shop() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 max-w-xl mb-8">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-4 max-w-xl mb-8">
           <TabsTrigger value="season"><Crown className="w-4 h-4 mr-2" />Season Pass</TabsTrigger>
           <TabsTrigger value="coins"><Coins className="w-4 h-4 mr-2" />Coins</TabsTrigger>
           <TabsTrigger value="cosmetics"><Palette className="w-4 h-4 mr-2" />Cosmetics</TabsTrigger>
@@ -264,7 +264,7 @@ export default function Shop() {
               >
                 {pack.bestValue && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <Badge className="bg-amber-500 text-[var(--text-primary)] px-3 py-0.5 text-xs font-bold">Best Value</Badge>
+                    <Badge className="bg-amber-500 text-[var(--text-primary)] px-3 py-0.5 text-sm md:text-xs font-bold">Best Value</Badge>
                   </div>
                 )}
                 <Card className={`border-2 overflow-hidden h-full ${pack.bestValue ? "border-amber-500/70" : "border-border"}`}>
@@ -294,7 +294,7 @@ export default function Shop() {
             ))}
           </div>
 
-          <p className="text-center text-xs text-muted-foreground mt-6">
+          <p className="text-center text-sm md:text-xs text-muted-foreground mt-6">
             Coins can be spent on cosmetics and extra mission claim slots.
             Coins earned through studying also qualify for Real Rewards (coming soon).
           </p>
@@ -308,7 +308,7 @@ export default function Shop() {
               <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <Palette className="w-5 h-5 text-orange-400" /> Profile Borders
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                 {BORDER_OPTIONS.map((item, i) => {
                   const owned   = ownedBorders.has(item.id);
                   const equipped = cosmetics.border === item.id;
@@ -331,19 +331,19 @@ export default function Shop() {
                           </div>
                         </div>
                         <CardContent className="p-3 space-y-2">
-                          <p className="text-xs font-medium text-center">{item.label}</p>
+                          <p className="text-sm md:text-xs font-medium text-center">{item.label}</p>
                           {item.price > 0 && (
-                            <p className="text-xs text-amber-500 text-center flex items-center justify-center gap-1">
+                            <p className="text-sm md:text-xs text-amber-500 text-center flex items-center justify-center gap-1">
                               <Coins className="w-3 h-3" /> {item.price}
                             </p>
                           )}
                           {equipped ? (
-                            <Button size="sm" className="w-full text-xs" disabled>Equipped</Button>
+                            <Button size="sm" className="w-full text-sm md:text-xs" disabled>Equipped</Button>
                           ) : owned ? (
                             <Button
                               size="sm"
                               variant="outline"
-                              className="w-full text-xs"
+                              className="w-full text-sm md:text-xs"
                               disabled={equipping === key}
                               onClick={() => handleEquipCosmetic("border", item.id)}
                             >
@@ -352,7 +352,7 @@ export default function Shop() {
                           ) : (
                             <Button
                               size="sm"
-                              className="w-full text-xs"
+                              className="w-full text-sm md:text-xs"
                               disabled={equipping === key || (user.coins ?? 0) < item.price}
                               onClick={() => handleBuyCosmetic("border", item)}
                             >
@@ -372,7 +372,7 @@ export default function Shop() {
               <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-pink-400" /> Card Backgrounds
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 {CARD_BG_OPTIONS.map((item, i) => {
                   const owned    = ownedCardBgs.has(item.id);
                   const equipped = cosmetics.card_bg === item.id;
@@ -391,19 +391,19 @@ export default function Shop() {
                           style={item.style || {}}
                         />
                         <CardContent className="p-3 space-y-2">
-                          <p className="text-xs font-medium text-center">{item.label}</p>
+                          <p className="text-sm md:text-xs font-medium text-center">{item.label}</p>
                           {item.price > 0 && (
-                            <p className="text-xs text-amber-500 text-center flex items-center justify-center gap-1">
+                            <p className="text-sm md:text-xs text-amber-500 text-center flex items-center justify-center gap-1">
                               <Coins className="w-3 h-3" /> {item.price}
                             </p>
                           )}
                           {equipped ? (
-                            <Button size="sm" className="w-full text-xs" disabled>Equipped</Button>
+                            <Button size="sm" className="w-full text-sm md:text-xs" disabled>Equipped</Button>
                           ) : owned ? (
                             <Button
                               size="sm"
                               variant="outline"
-                              className="w-full text-xs"
+                              className="w-full text-sm md:text-xs"
                               disabled={equipping === key}
                               onClick={() => handleEquipCosmetic("card_bg", item.id)}
                             >
@@ -412,7 +412,7 @@ export default function Shop() {
                           ) : (
                             <Button
                               size="sm"
-                              className="w-full text-xs"
+                              className="w-full text-sm md:text-xs"
                               disabled={equipping === key || (user.coins ?? 0) < item.price}
                               onClick={() => handleBuyCosmetic("card_bg", item)}
                             >
@@ -457,7 +457,7 @@ export default function Shop() {
                     <Coins className="w-4 h-4" />
                     1,000 coins = $1
                   </div>
-                  <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Minimum: 5,000 coins ($5)</span>
+                  <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Minimum: 5,000 coins ($5)</span>
                 </div>
               </div>
 
@@ -493,7 +493,7 @@ export default function Shop() {
                       <div className="flex items-center gap-1.5">
                         <CoinIcon animated={false} size={16} />
                         <span className="font-bold text-[var(--text-primary)]">{(user.coins ?? 0).toLocaleString()}</span>
-                        <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] text-xs">coins</span>
+                        <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] text-sm md:text-xs">coins</span>
                       </div>
                     </div>
 
@@ -502,7 +502,7 @@ export default function Shop() {
                         <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                         <div className="space-y-1">
                           <p className="text-sm font-medium text-amber-300">Not enough coins</p>
-                          <p className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+                          <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                             You need {(GIFT_CARD_MIN - (user.coins ?? 0)).toLocaleString()} more
                             coins to redeem. Earn coins by studying, completing missions, and
                             referring friends.
@@ -513,8 +513,8 @@ export default function Shop() {
                       <>
                         {/* Amount selector */}
                         <div className="space-y-2">
-                          <p className="text-xs uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Select amount</p>
-                          <div className="grid grid-cols-2 gap-2">
+                          <p className="text-sm md:text-xs uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Select amount</p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {GIFT_CARD_INCREMENTS.filter((a) => a <= (user.coins ?? 0)).map((amount) => (
                               <button
                                 key={amount}
@@ -526,7 +526,7 @@ export default function Shop() {
                                 }`}
                               >
                                 ${(amount / COIN_TO_DOLLAR).toFixed(0)}
-                                <span className="block text-[10px] opacity-60 mt-0.5 font-normal">
+                                <span className="block text-sm md:text-[10px] opacity-60 mt-0.5 font-normal">
                                   {amount.toLocaleString()} coins
                                 </span>
                               </button>
@@ -558,7 +558,7 @@ export default function Shop() {
                       </>
                     )}
 
-                    <p className="text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_25%,transparent)] text-center">
+                    <p className="text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_25%,transparent)] text-center">
                       Requests are reviewed manually and fulfilled within 48 hours.
                       Gift cards are sent to your account email.
                     </p>

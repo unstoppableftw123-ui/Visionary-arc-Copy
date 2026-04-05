@@ -65,7 +65,7 @@ export default function ModePopover({ open, onClose, value, onChange, anchorRef 
             <div>
               <p className="font-hub-sans text-sm font-medium leading-tight">{mode.label}</p>
               <p
-                className={`mt-0.5 font-hub-sans text-xs leading-tight ${
+                className={`mt-0.5 font-hub-sans text-sm md:text-xs leading-tight ${
                   isActive ? "text-hub-accent/70" : "text-hub-muted"
                 }`}
               >

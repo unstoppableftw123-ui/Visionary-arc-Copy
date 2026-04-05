@@ -21,7 +21,7 @@ const DIFFICULTIES = Object.keys(RANK_COLORS);
 
 function CardGrid({ children }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {children}
     </div>
   );
@@ -158,12 +158,12 @@ export default function MissionBoard() {
           >
             {tab}
             {tab === 'In Progress' && inProgress.length > 0 && (
-              <span className="ml-1.5 text-xs rounded-full px-1.5 py-0.5" style={{ background: "var(--rank-b)", color: "var(--bg-base)", fontWeight: 700 }}>
+              <span className="ml-1.5 text-sm md:text-xs rounded-full px-1.5 py-0.5" style={{ background: "var(--rank-b)", color: "var(--bg-base)", fontWeight: 700 }}>
                 {inProgress.length}
               </span>
             )}
             {tab === 'Under Review' && underReview.length > 0 && (
-              <span className="ml-1.5 text-xs rounded-full px-1.5 py-0.5" style={{ background: "var(--rank-c)", color: "var(--bg-base)", fontWeight: 700 }}>
+              <span className="ml-1.5 text-sm md:text-xs rounded-full px-1.5 py-0.5" style={{ background: "var(--rank-c)", color: "var(--bg-base)", fontWeight: 700 }}>
                 {underReview.length}
               </span>
             )}

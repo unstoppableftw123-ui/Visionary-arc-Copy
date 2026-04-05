@@ -108,7 +108,7 @@ export default function Store() {
                 <Card key={key} className="relative border-border hover:shadow-md transition-all overflow-hidden">
                   {p.popular && (
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-[var(--text-primary)] text-xs">Popular</Badge>
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-[var(--text-primary)] text-sm md:text-xs">Popular</Badge>
                     </div>
                   )}
                   <CardContent className="p-6 flex flex-col items-center text-center gap-3">
@@ -152,7 +152,7 @@ export default function Store() {
                 >
                   {p.popular && (
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-gradient-to-r from-orange-700 to-orange-600 text-[var(--text-primary)] text-xs">Best Value</Badge>
+                      <Badge className="bg-gradient-to-r from-orange-700 to-orange-600 text-[var(--text-primary)] text-sm md:text-xs">Best Value</Badge>
                     </div>
                   )}
                   <CardContent className="p-6 flex flex-col gap-4">

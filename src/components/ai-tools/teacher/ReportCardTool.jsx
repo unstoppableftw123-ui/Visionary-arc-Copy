@@ -50,7 +50,7 @@ function ChipSelect({ options, selected, onToggle }) {
           key={opt}
           type="button"
           onClick={() => onToggle(opt)}
-          className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
+          className={`rounded-full border px-2.5 py-1 text-sm md:text-xs transition-colors ${
             selected.includes(opt)
               ? "border-primary bg-primary/10 text-primary"
               : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -145,7 +145,7 @@ export default function ReportCardTool({ prefilled = {} }) {
             </Select>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="space-y-1.5 col-span-2">
               <Label>Student Name</Label>
               <Input

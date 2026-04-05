@@ -47,7 +47,7 @@ function StatRadarMini({ xp, missions }: { xp: number; missions: number }) {
   const xpPct = Math.min(100, Math.round((xp / maxXP) * 100));
   const missionPct = Math.min(100, Math.round((missions / maxMissions) * 100));
   return (
-    <div className="flex gap-3 text-xs text-muted-foreground">
+    <div className="flex gap-3 text-sm md:text-xs text-muted-foreground">
       <div className="flex-1">
         <div className="mb-0.5 flex justify-between">
           <span>XP</span>
@@ -99,7 +99,7 @@ function StudentCard({
               <div className="min-w-0">
                 <p className="truncate font-semibold text-foreground">{student.name}</p>
                 {student.track_primary && (
-                  <p className="text-xs text-muted-foreground capitalize">{student.track_primary} track</p>
+                  <p className="text-sm md:text-xs text-muted-foreground capitalize">{student.track_primary} track</p>
                 )}
               </div>
             </div>
@@ -120,21 +120,21 @@ function StudentCard({
                 ★
               </span>
             ))}
-            <span className="ml-1 text-xs text-muted-foreground">
+            <span className="ml-1 text-sm md:text-xs text-muted-foreground">
               {student.avg_star_rating > 0 ? student.avg_star_rating.toFixed(1) : 'No reviews'}
             </span>
           </div>
 
           {student.portfolio_entries.length > 0 && (
             <div className="space-y-1">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Portfolio</p>
+              <p className="text-sm md:text-xs font-medium text-muted-foreground uppercase tracking-wide">Portfolio</p>
               {student.portfolio_entries.slice(0, 3).map((entry, i) => (
                 <a
                   key={i}
                   href={entry.submission_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-primary hover:underline truncate"
+                  className="flex items-center gap-1.5 text-sm md:text-xs text-primary hover:underline truncate"
                 >
                   <Briefcase className="h-3 w-3 shrink-0" />
                   <span className="truncate">{entry.title}</span>

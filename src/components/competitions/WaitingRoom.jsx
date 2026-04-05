@@ -64,7 +64,7 @@ export default function WaitingRoom({
     >
       <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-base)] p-6 space-y-6">
         <div className="text-center">
-          <p className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-1">Join code</p>
+          <p className="text-sm md:text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-1">Join code</p>
           <p className="text-3xl font-mono font-bold text-[var(--text-primary)] tracking-widest">
             {displayCode}
           </p>
@@ -95,7 +95,7 @@ export default function WaitingRoom({
                 <PlayerAvatar name={p.name} avatar={p.avatar} size="sm" />
                 <span className="text-[var(--text-primary)] font-medium truncate">{p.name}</span>
                 {p.isHost && (
-                  <span className="text-xs text-[#6e5ff0] ml-auto">Host</span>
+                  <span className="text-sm md:text-xs text-[#6e5ff0] ml-auto">Host</span>
                 )}
               </motion.li>
             ))}

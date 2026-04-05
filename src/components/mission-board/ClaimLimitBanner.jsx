@@ -69,7 +69,7 @@ export default function ClaimLimitBanner({ dailyCount, userCoins, userId, onSlot
           variant="outline"
           disabled={!canAfford || loading}
           onClick={handleUnlock}
-          className="flex-shrink-0 border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:text-amber-200 text-xs font-semibold"
+          className="flex-shrink-0 border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:text-amber-200 text-sm md:text-xs font-semibold"
         >
           {loading ? 'Unlocking…' : `Unlock extra slot (${SLOT_COST} 🪙)`}
         </Button>

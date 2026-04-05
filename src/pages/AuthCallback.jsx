@@ -144,7 +144,7 @@ export default function AuthCallback() {
                 <CardDescription>How will you use Visionary Academy?</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {ROLE_OPTIONS.map(({ value, icon: Icon, label, description }) => (
                     <button
                       key={value}
@@ -157,8 +157,8 @@ export default function AuthCallback() {
                       }`}
                     >
                       <Icon className="h-5 w-5 shrink-0" />
-                      <span className="text-xs font-semibold leading-tight">{label}</span>
-                      <span className="text-[10px] text-muted-foreground leading-tight">{description}</span>
+                      <span className="text-sm md:text-xs font-semibold leading-tight">{label}</span>
+                      <span className="text-sm md:text-[10px] text-muted-foreground leading-tight">{description}</span>
                     </button>
                   ))}
                 </div>

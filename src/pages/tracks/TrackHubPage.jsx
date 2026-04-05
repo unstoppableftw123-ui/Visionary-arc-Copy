@@ -35,13 +35,13 @@ function TrackCard({ track, index }) {
 
       <div className="pl-3 flex flex-wrap gap-1.5">
         {track.skills.slice(0, 3).map((skill) => (
-          <span key={skill} className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${track.colors.badge}`}>
+          <span key={skill} className={`text-sm md:text-[11px] font-medium px-2 py-0.5 rounded-full ${track.colors.badge}`}>
             {skill}
           </span>
         ))}
       </div>
 
-      <p className="pl-3 text-xs text-muted-foreground leading-relaxed line-clamp-2">
+      <p className="pl-3 text-sm md:text-xs text-muted-foreground leading-relaxed line-clamp-2">
         {track.description}
       </p>
     </motion.button>

@@ -221,17 +221,17 @@ export default function AssignmentRadar({ tasks = [] }) {
                     <p className="font-medium text-sm truncate">{task.title}</p>
                     <div className="flex flex-wrap items-center gap-2 mt-1">
                       {task.category && (
-                        <Badge variant="secondary" className="text-xs font-normal">
+                        <Badge variant="secondary" className="text-sm md:text-xs font-normal">
                           {task.category}
                         </Badge>
                       )}
-                      <span className="text-xs opacity-90">
+                      <span className="text-sm md:text-xs opacity-90">
                         {formatDueLabel(task.due_date)}
                       </span>
                       {task.priority && task.priority !== "medium" && (
                         <Badge
                           variant="outline"
-                          className="text-xs font-normal capitalize"
+                          className="text-sm md:text-xs font-normal capitalize"
                         >
                           {task.priority}
                         </Badge>

@@ -101,7 +101,7 @@ function AIGeneratorModal({ open, onClose }) {
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Number of Questions</label>
               <Input type="number" min={1} max={20} value={numQ}
@@ -132,20 +132,20 @@ function AIGeneratorModal({ open, onClose }) {
               {MOCK_QUESTIONS.map((q, i) => (
                 <div key={i} className="rounded-lg border border-border bg-card p-3 space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground font-medium">Q{i + 1}</span>
-                    <span className="rounded border px-1.5 py-0 text-[10px]">{q.type}</span>
+                    <span className="text-sm md:text-xs text-muted-foreground font-medium">Q{i + 1}</span>
+                    <span className="rounded border px-1.5 py-0 text-sm md:text-[10px]">{q.type}</span>
                   </div>
                   <p className="text-sm font-medium">{q.question}</p>
                   {q.options && (
                     <div className="space-y-0.5 pl-2">
                       {q.options.map((opt) => (
-                        <p key={opt} className={`text-xs ${opt === q.answer ? "text-green-600 font-semibold" : "text-muted-foreground"}`}>
+                        <p key={opt} className={`text-sm md:text-xs ${opt === q.answer ? "text-green-600 font-semibold" : "text-muted-foreground"}`}>
                           {opt === q.answer ? "✓ " : ""}{opt}
                         </p>
                       ))}
                     </div>
                   )}
-                  {!q.options && <p className="text-xs text-muted-foreground italic">Open-ended response expected</p>}
+                  {!q.options && <p className="text-sm md:text-xs text-muted-foreground italic">Open-ended response expected</p>}
                 </div>
               ))}
               <div className="flex gap-2 pt-1">
@@ -211,7 +211,7 @@ export default function Assignments({ autoOpenAI = false }) {
             }`}
           >
             {f}
-            <span className="ml-1.5 rounded-full bg-muted px-1.5 py-0.5 text-[10px]">
+            <span className="ml-1.5 rounded-full bg-muted px-1.5 py-0.5 text-sm md:text-[10px]">
               {f === "All" ? mockAssignments.length : mockAssignments.filter((a) => a.status === f.toLowerCase()).length}
             </span>
           </button>
@@ -220,7 +220,7 @@ export default function Assignments({ autoOpenAI = false }) {
 
       {/* Assignment list */}
       <div className="rounded-lg border border-border overflow-hidden">
-        <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] gap-x-4 px-4 py-2.5 bg-muted/40 text-xs font-medium text-muted-foreground border-b border-border">
+        <div className="hidden gap-x-4 border-b border-border bg-muted/40 px-4 py-2.5 text-sm font-medium text-muted-foreground lg:grid lg:grid-cols-[1fr_auto_auto_auto_auto_auto_auto] lg:text-xs">
           <span>Title</span>
           <span>Class</span>
           <span>Type</span>
@@ -235,27 +235,27 @@ export default function Assignments({ autoOpenAI = false }) {
             return (
               <div
                 key={a.id}
-                className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] gap-x-4 items-center px-4 py-3 hover:bg-muted/30 transition-colors"
+                className="grid grid-cols-1 gap-2 px-4 py-3 transition-colors hover:bg-muted/30 lg:grid-cols-[1fr_auto_auto_auto_auto_auto_auto] lg:gap-x-4 lg:gap-y-0"
               >
                 <div>
                   <p className="text-sm font-medium">{a.title}</p>
                   {a.pendingReview > 0 && (
-                    <p className="text-[10px] text-red-500 font-medium">{a.pendingReview} pending review</p>
+                    <p className="text-sm md:text-[10px] text-red-500 font-medium">{a.pendingReview} pending review</p>
                   )}
                 </div>
-                <span className="text-xs text-muted-foreground whitespace-nowrap">{getClassName(a.classId)}</span>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize ${TYPE_CONFIG[a.type]}`}>
+                <span className="text-sm md:text-xs text-muted-foreground whitespace-nowrap">{getClassName(a.classId)}</span>
+                <span className={`rounded-full px-2 py-0.5 text-sm md:text-[10px] font-semibold capitalize ${TYPE_CONFIG[a.type]}`}>
                   {a.type}
                 </span>
-                <span className="text-xs text-muted-foreground whitespace-nowrap">{a.dueDate}</span>
-                <span className="text-xs text-center">
+                <span className="text-sm md:text-xs text-muted-foreground whitespace-nowrap">{a.dueDate}</span>
+                <span className="text-sm md:text-xs text-center">
                   {a.submissionsReceived}/{a.totalStudents}
                 </span>
-                <span className="text-xs text-center font-medium">
+                <span className="text-sm md:text-xs text-center font-medium">
                   {a.avgGrade !== null ? `${a.avgGrade}%` : "—"}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusCfg.className}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-sm md:text-[10px] font-semibold ${statusCfg.className}`}>
                     {statusCfg.label}
                   </span>
                   <button

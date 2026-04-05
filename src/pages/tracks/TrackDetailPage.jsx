@@ -73,7 +73,7 @@ export default function TrackDetailPage() {
         {/* Skills */}
         <div className="flex flex-wrap gap-2 mt-4">
           {track.skills.map((skill) => (
-            <span key={skill} className={`text-xs font-medium px-2.5 py-1 rounded-full ${track.colors.badge}`}>
+            <span key={skill} className={`text-sm md:text-xs font-medium px-2.5 py-1 rounded-full ${track.colors.badge}`}>
               {skill}
             </span>
           ))}
@@ -97,7 +97,7 @@ export default function TrackDetailPage() {
             <p className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm">
               AI generates a personalised brief — just for you
             </p>
-            <p className="text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] text-xs mt-1">{track.xpRange}</p>
+            <p className="text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] text-sm md:text-xs mt-1">{track.xpRange}</p>
           </div>
           <ArrowLeft className="w-5 h-5 rotate-180 opacity-70 group-hover:translate-x-1 transition-transform" />
         </div>
@@ -128,16 +128,16 @@ export default function TrackDetailPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">{project.title ?? 'Untitled Project'}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${status.className}`}>
+                    <span className={`text-sm md:text-[10px] font-semibold px-2 py-0.5 rounded-full ${status.className}`}>
                       {status.label}
                     </span>
                     {project.difficulty && (
-                      <span className="text-xs text-muted-foreground capitalize">{project.difficulty}</span>
+                      <span className="text-sm md:text-xs text-muted-foreground capitalize">{project.difficulty}</span>
                     )}
                   </div>
                 </div>
                 {project.xp_awarded > 0 && (
-                  <span className="text-xs text-yellow-400 font-semibold shrink-0">+{project.xp_awarded} XP</span>
+                  <span className="text-sm md:text-xs text-yellow-400 font-semibold shrink-0">+{project.xp_awarded} XP</span>
                 )}
               </div>
             );

@@ -72,7 +72,7 @@ export default function LibraryDrawer({ open, onToggle, addToCanvas }) {
                   if (items.length === 0) return null;
                   return (
                     <div key={type}>
-                      <div className={`flex items-center gap-2 px-2 py-1.5 text-xs font-medium text-muted-foreground uppercase ${config.color}`}>
+                      <div className={`flex items-center gap-2 px-2 py-1.5 text-sm md:text-xs font-medium text-muted-foreground uppercase ${config.color}`}>
                         <config.Icon className="w-3.5 h-3.5" />
                         {config.label}
                       </div>
@@ -115,12 +115,12 @@ function LibraryFileItem({ file, onAddToCanvas }) {
           </p>
           <div className="flex items-center gap-2 mt-0.5">
             {file.tag && (
-              <span className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+              <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
                 {file.tag}
               </span>
             )}
             {dateStr && (
-              <span className="text-xs text-muted-foreground">{dateStr}</span>
+              <span className="text-sm md:text-xs text-muted-foreground">{dateStr}</span>
             )}
           </div>
         </div>
@@ -128,7 +128,7 @@ function LibraryFileItem({ file, onAddToCanvas }) {
       <Button
         size="sm"
         variant="secondary"
-        className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity h-7 text-xs"
+        className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity h-7 text-sm md:text-xs"
         onClick={onAddToCanvas}
       >
         <Plus className="w-3 h-3 mr-1" />

@@ -25,7 +25,7 @@ export default function Layout() {
             <Outlet />
           </>
         ) : (
-          <div className="flex-1 p-4 md:p-8 overflow-auto">
+          <div className="flex-1 overflow-auto px-4 pb-24 pt-4 sm:px-4 sm:pb-24 sm:pt-4 md:p-8">
             {showBanner && <UpgradeBanner />}
             <Outlet />
           </div>

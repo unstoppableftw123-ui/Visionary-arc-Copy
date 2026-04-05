@@ -396,7 +396,7 @@ export default function Strengths() {
               A 12-question assessment to uncover your natural talents, ideal career paths, and personalized growth plan.
             </p>
             
-            <div className="grid grid-cols-3 gap-4 mb-8 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 text-sm">
               <Card>
                 <CardContent className="p-4 text-center">
                   <Clock className="w-6 h-6 mx-auto mb-2 text-primary" />
@@ -435,7 +435,7 @@ export default function Strengths() {
             <Button size="lg" onClick={startAssessment} className="px-8">
               Start Assessment <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <p className="text-xs text-muted-foreground mt-4">No wrong answers. Go with your gut.</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-4">No wrong answers. Go with your gut.</p>
           </div>
     );
   }
@@ -528,7 +528,7 @@ export default function Strengths() {
                         <span className="text-sm text-muted-foreground">{Math.round(s.score)}%</span>
                       </div>
                       <Progress value={s.score} className="h-3 mb-1" />
-                      <p className="text-xs text-muted-foreground">{s.description}</p>
+                      <p className="text-sm md:text-xs text-muted-foreground">{s.description}</p>
                     </div>
                   ))}
                 </div>
@@ -548,7 +548,7 @@ export default function Strengths() {
                         <span className="font-medium">{c.name}</span>
                         <Badge variant="outline">{c.match}%</Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground">{c.why}</p>
+                      <p className="text-sm md:text-xs text-muted-foreground">{c.why}</p>
                     </div>
                   ))}
                 </div>
@@ -569,7 +569,7 @@ export default function Strengths() {
                       </div>
                       <div className="flex-1">
                         <div className="font-medium">{s.name}</div>
-                        <div className="text-xs text-muted-foreground">{s.why}</div>
+                        <div className="text-sm md:text-xs text-muted-foreground">{s.why}</div>
                       </div>
                     </div>
                   ))}
@@ -589,7 +589,7 @@ export default function Strengths() {
                       <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                         <Zap className="w-4 h-4 text-red-500" />
                       </div>
-                      <span className="text-xs font-medium uppercase text-muted-foreground">Non-negotiable</span>
+                      <span className="text-sm md:text-xs font-medium uppercase text-muted-foreground">Non-negotiable</span>
                     </div>
                     <p className="text-sm font-medium">{profile?.lock_in_plan?.non_negotiable}</p>
                   </div>
@@ -598,7 +598,7 @@ export default function Strengths() {
                       <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                         <TrendingUp className="w-4 h-4 text-blue-500" />
                       </div>
-                      <span className="text-xs font-medium uppercase text-muted-foreground">Growth</span>
+                      <span className="text-sm md:text-xs font-medium uppercase text-muted-foreground">Growth</span>
                     </div>
                     <p className="text-sm font-medium">{profile?.lock_in_plan?.growth}</p>
                   </div>
@@ -607,7 +607,7 @@ export default function Strengths() {
                       <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-amber-500" />
                       </div>
-                      <span className="text-xs font-medium uppercase text-muted-foreground">Bonus</span>
+                      <span className="text-sm md:text-xs font-medium uppercase text-muted-foreground">Bonus</span>
                     </div>
                     <p className="text-sm font-medium">{profile?.lock_in_plan?.bonus}</p>
                   </div>
@@ -621,7 +621,7 @@ export default function Strengths() {
             <Button variant="outline" onClick={retakeAssessment}>
               <RotateCcw className="w-4 h-4 mr-2" /> Retake Assessment
             </Button>
-            <p className="text-xs text-muted-foreground mt-2">You can retake anytime to track your growth</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-2">You can retake anytime to track your growth</p>
           </div>
         </div>
   );

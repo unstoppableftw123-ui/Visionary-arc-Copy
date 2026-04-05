@@ -39,7 +39,7 @@ export default function ToolCard({
             {Icon && <Icon className="h-5 w-5" style={{ color: accentColor }} />}
           </div>
           {xpReward != null && (
-            <span className="shrink-0 flex items-center gap-0.5 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+            <span className="shrink-0 flex items-center gap-0.5 rounded-full bg-primary/10 px-2 py-0.5 text-sm md:text-[11px] font-semibold text-primary">
               ⚡ +{xpReward} XP
             </span>
           )}
@@ -48,14 +48,14 @@ export default function ToolCard({
         {/* Text */}
         <div className="flex-1">
           <h3 className="font-heading font-semibold text-sm leading-snug">{name}</h3>
-          <p className="mt-1 text-xs text-muted-foreground leading-relaxed line-clamp-2">
+          <p className="mt-1 text-sm md:text-xs text-muted-foreground leading-relaxed line-clamp-2">
             {description}
           </p>
         </div>
 
         {/* Category tag */}
         {category && (
-          <span className="self-start rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+          <span className="self-start rounded-full border border-border px-2 py-0.5 text-sm md:text-[10px] font-medium text-muted-foreground">
             {category}
           </span>
         )}
@@ -65,7 +65,7 @@ export default function ToolCard({
       <div className="px-4 pb-4">
         <Button
           size="sm"
-          className="w-full text-xs h-8"
+          className="w-full text-sm md:text-xs h-8"
           onClick={onOpen}
         >
           Open Tool

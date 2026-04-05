@@ -22,7 +22,7 @@ export default function StatsBar({ playerStats, className }) {
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>🏅</span>
         <span className="font-semibold text-[var(--text-primary)] tabular-nums">{xp ?? 0}</span>
-        <span className="text-xs text-[var(--text-secondary)]">XP</span>
+        <span className="text-sm md:text-xs text-[var(--text-secondary)]">XP</span>
       </div>
 
       <div className="flex items-center gap-2">
@@ -33,18 +33,18 @@ export default function StatsBar({ playerStats, className }) {
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>🪙</span>
         <span className="font-semibold text-[var(--text-primary)] tabular-nums">{coins ?? 0}</span>
-        <span className="text-xs text-[var(--text-secondary)]">Coins</span>
+        <span className="text-sm md:text-xs text-[var(--text-secondary)]">Coins</span>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>🔥</span>
         <span className="font-semibold text-[var(--text-primary)] tabular-nums">{streak ?? 0}</span>
-        <span className="text-xs text-[var(--text-secondary)]">Day Streak</span>
+        <span className="text-sm md:text-xs text-[var(--text-secondary)]">Day Streak</span>
       </div>
 
       <div className="w-full max-w-[200px] flex-shrink-0">
         <Progress value={progressPercent} className="h-2 bg-[var(--surface-2)]" />
-        <p className="text-[10px] text-[var(--text-secondary)] mt-0.5 text-center">
+        <p className="text-sm md:text-[10px] text-[var(--text-secondary)] mt-0.5 text-center">
           {xpInCurrentLevel ?? 0} / {xpToNextLevel} to next level
         </p>
       </div>

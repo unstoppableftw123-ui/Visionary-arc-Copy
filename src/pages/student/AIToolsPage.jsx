@@ -177,7 +177,7 @@ export default function StudentAIToolsPage() {
             <div className="flex items-center gap-2 rounded-xl bg-primary/10 border border-primary/20 px-4 py-2">
               <span className="text-lg">⚡</span>
               <div>
-                <p className="text-xs text-muted-foreground leading-none">Earn up to</p>
+                <p className="text-sm md:text-xs text-muted-foreground leading-none">Earn up to</p>
                 <p className="font-bold text-primary text-sm">{totalXP} XP</p>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function StudentAIToolsPage() {
               key={cat}
               variant={activeCategory === cat ? "default" : "outline"}
               size="sm"
-              className="shrink-0 text-xs"
+              className="shrink-0 text-sm md:text-xs"
               onClick={() => setActiveCategory(cat)}
             >
               {cat}

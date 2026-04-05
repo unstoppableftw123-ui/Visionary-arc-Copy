@@ -103,7 +103,7 @@ function MasteryBadge({ level, small = false }) {
   return (
     <span
       style={{ background: cfg.bg, color: cfg.text }}
-      className={`rounded-full font-semibold ${small ? "text-[10px] px-2 py-0.5" : "text-xs px-2.5 py-1"}`}
+      className={`rounded-full font-semibold ${small ? "text-sm md:text-[10px] px-2 py-0.5" : "text-sm md:text-xs px-2.5 py-1"}`}
     >
       {cfg.label}
     </span>
@@ -184,7 +184,7 @@ function SubjectSidebar({
       <div className="flex items-center justify-between px-4 py-3.5" style={{ borderBottom: `1px solid ${BORDER}` }}>
         <span className="text-base font-bold text-[var(--text-primary)]">Practice</span>
         <span
-          className="flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold"
+          className="flex items-center gap-1 rounded-full px-2.5 py-1 text-sm md:text-xs font-bold"
           style={{ background: "rgba(251,191,36,0.15)", color: GOLD }}
         >
           <Zap className="w-3 h-3" />
@@ -217,7 +217,7 @@ function SubjectSidebar({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)] truncate pr-1">
+                    <span className="text-sm md:text-xs font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)] truncate pr-1">
                       {subject.name}
                     </span>
                     {isExpanded ? (
@@ -226,7 +226,7 @@ function SubjectSidebar({
                       <ChevronRight className="w-3.5 h-3.5 text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] shrink-0" />
                     )}
                   </div>
-                  <div className="text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] mt-0.5">{subject.mastery}% mastery</div>
+                  <div className="text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] mt-0.5">{subject.mastery}% mastery</div>
                 </div>
               </button>
 
@@ -249,7 +249,7 @@ function SubjectSidebar({
                             key={topic.id}
                             disabled={isLocked}
                             onClick={() => !isLocked && onSelectTopic(subject.id, topic.id)}
-                            className={`w-full flex items-center gap-2 pl-12 pr-3 py-1.5 text-left text-xs transition-all relative ${
+                            className={`w-full flex items-center gap-2 pl-12 pr-3 py-1.5 text-left text-sm md:text-xs transition-all relative ${
                               isLocked
                                 ? "opacity-40 cursor-not-allowed"
                                 : isActive
@@ -280,7 +280,7 @@ function SubjectSidebar({
                               </span>
                             )}
                             {!isLocked && (
-                              <span className="text-[10px] relative z-10" style={{ color: isActive ? subject.color : "inherit" }}>
+                              <span className="text-sm md:text-[10px] relative z-10" style={{ color: isActive ? subject.color : "inherit" }}>
                                 {topic.progress}%
                               </span>
                             )}
@@ -301,10 +301,10 @@ function SubjectSidebar({
         {/* Daily goal */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] flex items-center gap-1">
+            <span className="text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] flex items-center gap-1">
               <Target className="w-3 h-3" /> Daily Goal
             </span>
-            <span className="text-[10px] font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">
+            <span className="text-sm md:text-[10px] font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">
               {userStats.todayQuestions}/{userStats.dailyGoal}
             </span>
           </div>
@@ -326,7 +326,7 @@ function SubjectSidebar({
           >
             <Flame className="w-4 h-4 text-orange-400" fill="#fb923c" />
           </motion.div>
-          <span className="text-xs font-semibold text-orange-300">{userStats.streak} day streak</span>
+          <span className="text-sm md:text-xs font-semibold text-orange-300">{userStats.streak} day streak</span>
         </div>
       </div>
     </div>
@@ -367,8 +367,8 @@ function SkillCard({ skill, subjectColor, onPractice, liveMastery }) {
       {/* XP + sparkline */}
       <div className="flex items-end justify-between gap-3">
         <div>
-          <div className="text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] mb-0.5">XP Progress</div>
-          <div className="text-xs font-bold" style={{ color: subjectColor }}>
+          <div className="text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] mb-0.5">XP Progress</div>
+          <div className="text-sm md:text-xs font-bold" style={{ color: subjectColor }}>
             {skill.xpEarned} <span className="text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)] font-normal">/ {skill.xpMax}</span>
           </div>
           {/* XP bar */}
@@ -386,7 +386,7 @@ function SkillCard({ skill, subjectColor, onPractice, liveMastery }) {
       <motion.button
         whileTap={{ scale: 0.96 }}
         onClick={onPractice}
-        className="w-full py-1.5 rounded-lg text-xs font-semibold text-[var(--text-primary)] transition-all"
+        className="w-full py-1.5 rounded-lg text-sm md:text-xs font-semibold text-[var(--text-primary)] transition-all"
         style={{
           background: hovered
             ? `linear-gradient(135deg, ${subjectColor}, ${subjectColor}cc)`
@@ -416,7 +416,7 @@ function TopicGrid({ topic, subject, onSelectSkill, masteryData, isFocusTopic })
           <h2 className="text-xl font-bold text-[var(--text-primary)]">{topic.name}</h2>
           {isFocusTopic && (
             <span
-              className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold"
+              className="flex items-center gap-1 rounded-full px-2.5 py-1 text-sm md:text-[11px] font-bold"
               style={{ background: "rgba(239,68,68,0.18)", color: "#f87171", border: "1px solid rgba(239,68,68,0.3)" }}
             >
               <AlertCircle className="w-3 h-3" /> Focus here
@@ -428,7 +428,7 @@ function TopicGrid({ topic, subject, onSelectSkill, masteryData, isFocusTopic })
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {topic.skills.map((skill, i) => (
           <motion.div
             key={skill.id}
@@ -587,12 +587,12 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
           <span className="text-sm font-semibold text-[var(--text-primary)]">{skill.name}</span>
           <StarRating rating={q.difficulty} color={subject.color} />
         </div>
-        <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+        <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
           Question {qIdx + 1} of {questions.length}
         </span>
         {/* Session XP */}
         <span
-          className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
+          className="flex items-center gap-1.5 rounded-full px-3 py-1 text-sm md:text-xs font-bold"
           style={{ background: "rgba(251,191,36,0.12)", color: GOLD }}
         >
           <Zap className="w-3 h-3" /> +{sessionXP} XP this session
@@ -647,12 +647,12 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
         {/* Difficulty badge */}
         <div className="flex items-center justify-between">
           <span
-            className="text-xs font-semibold px-2.5 py-1 rounded-full"
+            className="text-sm md:text-xs font-semibold px-2.5 py-1 rounded-full"
             style={{ background: `${subject.color}18`, color: subject.color }}
           >
             Level {q.difficulty} · {["", "Beginner", "Intermediate", "Advanced", "Expert", "Master"][q.difficulty]}
           </span>
-          <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">{q.type === "fill_in" ? "Fill in the blank" : "Multiple choice"}</span>
+          <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">{q.type === "fill_in" ? "Fill in the blank" : "Multiple choice"}</span>
         </div>
 
         {/* Question text */}
@@ -671,7 +671,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
                 style={{ ...getOptionStyle(opt), cursor: submitted ? "default" : "pointer" }}
               >
                 <span
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm md:text-[11px] font-bold"
                   style={{
                     background:
                       submitted && opt === q.correctAnswer
@@ -777,7 +777,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
                 className="rounded-xl px-4 py-3"
                 style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${BORDER}` }}
               >
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] mb-1">
+                <div className="flex items-center gap-1.5 text-sm md:text-xs font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] mb-1">
                   <Sparkles className="w-3 h-3" /> Explanation
                 </div>
                 <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_75%,transparent)] leading-relaxed">{q.explanation}</p>
@@ -789,7 +789,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
                 <div className="flex gap-2">
                   <button
                     disabled
-                    className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)] transition-colors cursor-not-allowed"
+                    className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm md:text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)] transition-colors cursor-not-allowed"
                     style={{ border: `1px solid ${BORDER}` }}
                     title="Adaptive difficulty coming soon"
                   >
@@ -798,7 +798,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
                   </button>
                   <button
                     disabled
-                    className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)] transition-colors cursor-not-allowed"
+                    className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm md:text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)] transition-colors cursor-not-allowed"
                     style={{ border: `1px solid ${BORDER}` }}
                     title="Adaptive difficulty coming soon"
                   >
@@ -840,7 +840,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
             <Trophy className="w-5 h-5 text-yellow-400" />
             <span className="text-sm font-bold text-[var(--text-primary)]">Session Complete!</span>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               { label: "Questions", value: questions.length },
               { label: "Correct", value: `${sessionCorrect}/${questions.length}` },
@@ -848,7 +848,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
             ].map((s) => (
               <div key={s.label} className="text-center rounded-xl py-3" style={{ background: "rgba(255,255,255,0.04)" }}>
                 <div className="text-lg font-bold" style={{ color: s.color || subject.color }}>{s.value}</div>
-                <div className="text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] mt-0.5">{s.label}</div>
+                <div className="text-sm md:text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] mt-0.5">{s.label}</div>
               </div>
             ))}
           </div>
@@ -874,11 +874,11 @@ function StatsPanel({ userStats }) {
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-2 mb-1">
           <Sparkles className="w-4 h-4 text-orange-400" />
-          <span className="text-xs font-bold text-orange-400">Level {userStats.level} {userStats.levelTitle}</span>
+          <span className="text-sm md:text-xs font-bold text-orange-400">Level {userStats.level} {userStats.levelTitle}</span>
         </div>
         <div className="flex items-end justify-between mb-1.5">
-          <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{userStats.xp} / {userStats.xpForNextLevel} XP</span>
-          <span className="text-xs font-semibold" style={{ color: GOLD }}>{xpPct}%</span>
+          <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{userStats.xp} / {userStats.xpForNextLevel} XP</span>
+          <span className="text-sm md:text-xs font-semibold" style={{ color: GOLD }}>{xpPct}%</span>
         </div>
         <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
           <motion.div
@@ -895,9 +895,9 @@ function StatsPanel({ userStats }) {
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-1.5 mb-3">
           <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">Today's Stats</span>
+          <span className="text-sm md:text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">Today's Stats</span>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {[
             { label: "Questions", value: userStats.todayQuestions, color: "#8b5cf6" },
             { label: "Accuracy", value: `${correctPct}%`, color: "#10b981" },
@@ -905,7 +905,7 @@ function StatsPanel({ userStats }) {
           ].map((s) => (
             <div key={s.label} className="text-center rounded-lg py-2" style={{ background: "rgba(255,255,255,0.04)" }}>
               <div className="text-sm font-bold" style={{ color: s.color }}>{s.value}</div>
-              <div className="text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_35%,transparent)] mt-0.5">{s.label}</div>
+              <div className="text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_35%,transparent)] mt-0.5">{s.label}</div>
             </div>
           ))}
         </div>
@@ -924,7 +924,7 @@ function StatsPanel({ userStats }) {
         </motion.div>
         <div>
           <div className="text-xl font-bold text-orange-300">{userStats.streak} Days</div>
-          <div className="text-[11px] text-orange-400/70">Current Streak</div>
+          <div className="text-sm md:text-[11px] text-orange-400/70">Current Streak</div>
         </div>
       </div>
 
@@ -932,11 +932,11 @@ function StatsPanel({ userStats }) {
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-1.5 mb-2.5">
           <AlertCircle className="w-3.5 h-3.5 text-red-400" />
-          <span className="text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">Weak Spots</span>
+          <span className="text-sm md:text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">Weak Spots</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {userStats.weakSpots.map((t) => (
-            <span key={t} className="rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: "rgba(239,68,68,0.15)", color: "#f87171" }}>
+            <span key={t} className="rounded-full px-2.5 py-1 text-sm md:text-[11px] font-semibold" style={{ background: "rgba(239,68,68,0.15)", color: "#f87171" }}>
               {t}
             </span>
           ))}
@@ -947,11 +947,11 @@ function StatsPanel({ userStats }) {
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-1.5 mb-2.5">
           <Star className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">Strong Subjects</span>
+          <span className="text-sm md:text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">Strong Subjects</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {userStats.strongSubjects.map((t) => (
-            <span key={t} className="rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: "rgba(34,197,94,0.15)", color: "#4ade80" }}>
+            <span key={t} className="rounded-full px-2.5 py-1 text-sm md:text-[11px] font-semibold" style={{ background: "rgba(34,197,94,0.15)", color: "#4ade80" }}>
               {t}
             </span>
           ))}
@@ -962,13 +962,13 @@ function StatsPanel({ userStats }) {
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-1.5 mb-3">
           <Trophy className="w-3.5 h-3.5 text-yellow-400" />
-          <span className="text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">This Week</span>
+          <span className="text-sm md:text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">This Week</span>
         </div>
         <div className="space-y-2">
           {LEADERBOARD.map((entry) => (
             <div key={entry.rank} className="flex items-center gap-2">
               <span
-                className="w-5 text-center text-[11px] font-bold shrink-0"
+                className="w-5 text-center text-sm md:text-[11px] font-bold shrink-0"
                 style={{
                   color:
                     entry.rank === 1 ? GOLD
@@ -985,8 +985,8 @@ function StatsPanel({ userStats }) {
               >
                 {entry.avatar}
               </div>
-              <span className="flex-1 text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] truncate">{entry.name}</span>
-              <span className="text-[11px] font-semibold shrink-0" style={{ color: GOLD }}>
+              <span className="flex-1 text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] truncate">{entry.name}</span>
+              <span className="text-sm md:text-[11px] font-semibold shrink-0" style={{ color: GOLD }}>
                 {entry.xp.toLocaleString()}
               </span>
             </div>
@@ -1001,13 +1001,13 @@ function StatsPanel({ userStats }) {
       >
         <div className="flex items-center gap-1.5 mb-2">
           <Target className="w-3.5 h-3.5 text-orange-400" />
-          <span className="text-xs font-bold text-orange-400">Daily Challenge</span>
+          <span className="text-sm md:text-xs font-bold text-orange-400">Daily Challenge</span>
         </div>
-        <p className="text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)] mb-3 leading-relaxed">
+        <p className="text-sm md:text-[11px] text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)] mb-3 leading-relaxed">
           Complete {userStats.dailyChallengeGoal} more {userStats.dailyChallengeSubject} questions for a bonus{" "}
           <span style={{ color: GOLD }}>+{userStats.dailyChallengeXPBonus} XP!</span>
         </p>
-        <div className="mb-1.5 flex justify-between text-[10px]">
+        <div className="mb-1.5 flex justify-between text-sm md:text-[10px]">
           <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{userStats.dailyChallengeProgress}/{userStats.dailyChallengeGoal} done</span>
           <span className="text-orange-400">{Math.round((userStats.dailyChallengeProgress / userStats.dailyChallengeGoal) * 100)}%</span>
         </div>
@@ -1113,7 +1113,7 @@ export default function PracticePage() {
           style={{ borderBottom: `1px solid ${BORDER}` }}
         >
           {/* Breadcrumb */}
-          <div className="flex items-center gap-1.5 text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] flex-1 min-w-0">
             <span className="hover:text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] cursor-pointer transition-colors" onClick={() => setActiveSkill(null)}>
               {selectedSubject?.name}
             </span>
@@ -1138,7 +1138,7 @@ export default function PracticePage() {
           <select
             value={gradeLevel}
             onChange={(e) => setGradeLevel(e.target.value)}
-            className="rounded-lg px-3 py-1.5 text-xs font-medium outline-none transition-colors cursor-pointer"
+            className="rounded-lg px-3 py-1.5 text-sm md:text-xs font-medium outline-none transition-colors cursor-pointer"
             style={{
               background: "rgba(255,255,255,0.06)",
               border: `1px solid ${BORDER}`,
@@ -1158,7 +1158,7 @@ export default function PracticePage() {
           {/* Body: { subject, topic, difficulty, count, grade_level } */}
           <button
             disabled
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold cursor-not-allowed opacity-40 transition-all"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm md:text-xs font-semibold cursor-not-allowed opacity-40 transition-all"
             style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${BORDER}`, color: "rgba(255,255,255,0.7)" }}
             title="AI question generation coming soon"
           >

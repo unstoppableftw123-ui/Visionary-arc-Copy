@@ -73,11 +73,11 @@ function SubmissionDetail({
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-semibold">{student.name}</p>
-          <p className="text-xs text-muted-foreground">{assignment.title}</p>
+          <p className="text-sm md:text-xs text-muted-foreground">{assignment.title}</p>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-xs text-muted-foreground">Submitted</p>
-          <p className="text-xs">
+          <p className="text-sm md:text-xs text-muted-foreground">Submitted</p>
+          <p className="text-sm md:text-xs">
             {new Date(submission.submittedAt).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
@@ -85,7 +85,7 @@ function SubmissionDetail({
             })}
           </p>
           {submission.isLate && (
-            <span className="text-[10px] font-semibold text-orange-500 uppercase tracking-wide">
+            <span className="text-sm md:text-[10px] font-semibold text-orange-500 uppercase tracking-wide">
               Late
             </span>
           )}
@@ -94,7 +94,7 @@ function SubmissionDetail({
 
       {/* Score override */}
       <div>
-        <p className="text-xs font-medium text-muted-foreground mb-1">Score Override</p>
+        <p className="text-sm md:text-xs font-medium text-muted-foreground mb-1">Score Override</p>
         <div className="flex items-center gap-2">
           <input
             type="number"
@@ -114,10 +114,10 @@ function SubmissionDetail({
       {/* Student answers */}
       {submission.answers?.length > 0 && (
         <div>
-          <p className="text-xs font-medium text-muted-foreground mb-2">Student Answers</p>
+          <p className="text-sm md:text-xs font-medium text-muted-foreground mb-2">Student Answers</p>
           <div className="space-y-2.5 max-h-48 overflow-y-auto rounded border border-border p-2.5 bg-muted/20">
             {submission.answers.map((ans, i) => (
-              <div key={i} className="text-xs space-y-0.5">
+              <div key={i} className="text-sm md:text-xs space-y-0.5">
                 <p className="font-medium text-foreground/80">
                   {i + 1}. {ans.question}
                 </p>
@@ -148,7 +148,7 @@ function SubmissionDetail({
 
       {/* Teacher comment */}
       <div>
-        <p className="text-xs font-medium text-muted-foreground mb-1">Teacher Comment</p>
+        <p className="text-sm md:text-xs font-medium text-muted-foreground mb-1">Teacher Comment</p>
         <textarea
           value={commentInput}
           onChange={(e) => setCommentInput(e.target.value)}
@@ -267,23 +267,23 @@ export default function Gradebook() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/40">
-                <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground min-w-[160px] sticky left-0 bg-muted/40 z-10">
+                <th className="text-left px-4 py-3 text-sm md:text-xs font-medium text-muted-foreground min-w-[160px] sticky left-0 bg-muted/40 z-10">
                   Student
                 </th>
                 {assignments.map((a) => (
                   <th
                     key={a.id}
-                    className="text-center px-3 py-3 text-xs font-medium text-muted-foreground min-w-[120px]"
+                    className="text-center px-3 py-3 text-sm md:text-xs font-medium text-muted-foreground min-w-[120px]"
                   >
                     <div className="truncate max-w-[110px] mx-auto" title={a.title}>
                       {a.title}
                     </div>
-                    <div className="text-[10px] text-muted-foreground/60 font-normal capitalize">
+                    <div className="text-sm md:text-[10px] text-muted-foreground/60 font-normal capitalize">
                       {a.type}
                     </div>
                   </th>
                 ))}
-                <th className="text-center px-3 py-3 text-xs font-medium text-muted-foreground min-w-[60px]">
+                <th className="text-center px-3 py-3 text-sm md:text-xs font-medium text-muted-foreground min-w-[60px]">
                   Avg
                 </th>
               </tr>
@@ -305,12 +305,12 @@ export default function Gradebook() {
                   <tr key={s.id} className="hover:bg-muted/20 transition-colors">
                     <td className="px-4 py-3 sticky left-0 bg-background z-10 border-r border-border">
                       <div className="flex items-center gap-2.5">
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-[11px] font-semibold text-muted-foreground">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-sm md:text-[11px] font-semibold text-muted-foreground">
                           {initials}
                         </div>
                         <div>
-                          <p className="font-medium text-xs leading-tight">{s.name}</p>
-                          <p className="text-[10px] text-muted-foreground">{s.grade} Grade</p>
+                          <p className="font-medium text-sm md:text-xs leading-tight">{s.name}</p>
+                          <p className="text-sm md:text-[10px] text-muted-foreground">{s.grade} Grade</p>
                         </div>
                       </div>
                     </td>
@@ -330,7 +330,7 @@ export default function Gradebook() {
                           {sub ? (
                             <div className="flex flex-col items-center gap-0.5">
                               <span
-                                className={`inline-flex h-7 min-w-[52px] px-1.5 items-center justify-center rounded-md text-xs ${
+                                className={`inline-flex h-7 min-w-[52px] px-1.5 items-center justify-center rounded-md text-sm md:text-xs ${
                                   GRADE_CELL[letter] ?? ""
                                 }`}
                               >
@@ -343,7 +343,7 @@ export default function Gradebook() {
                               )}
                             </div>
                           ) : (
-                            <span className="text-muted-foreground text-xs">—</span>
+                            <span className="text-muted-foreground text-sm md:text-xs">—</span>
                           )}
                         </td>
                       );
@@ -364,7 +364,7 @@ export default function Gradebook() {
           </table>
         </div>
 
-        <p className="text-xs text-muted-foreground">
+        <p className="text-sm md:text-xs text-muted-foreground">
           — indicates not submitted. Click any score to view details.{" "}
           <span className="text-orange-500 font-medium">Late</span> flags submitted-after-due-date
           work.

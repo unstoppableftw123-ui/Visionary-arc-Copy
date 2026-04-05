@@ -248,7 +248,7 @@ function RemoteCursors({ others, getColorForUserId, appState }) {
                 style={{ backgroundColor: color }}
               />
               <span
-                className="text-xs font-medium px-1.5 py-0.5 rounded mt-0.5 whitespace-nowrap bg-card border border-border shadow"
+                className="text-sm md:text-xs font-medium px-1.5 py-0.5 rounded mt-0.5 whitespace-nowrap bg-card border border-border shadow"
                 style={{ color }}
               >
                 {name}

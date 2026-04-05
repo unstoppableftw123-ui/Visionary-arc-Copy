@@ -157,7 +157,7 @@ export default function AccuracyDuelGame({
       {/* HP bars */}
       <div className="flex items-center justify-between gap-4 mb-8">
         <div className="flex-1">
-          <p className="text-xs text-[var(--text-secondary)] mb-1">You</p>
+          <p className="text-sm md:text-xs text-[var(--text-secondary)] mb-1">You</p>
           <div className="h-3 rounded-full bg-[var(--surface-2)] overflow-hidden">
             <motion.div
               className={cn(
@@ -169,11 +169,11 @@ export default function AccuracyDuelGame({
               transition={{ duration: 0.3 }}
             />
           </div>
-          <p className="text-xs text-[var(--text-secondary)] mt-0.5">{myHP} HP</p>
+          <p className="text-sm md:text-xs text-[var(--text-secondary)] mt-0.5">{myHP} HP</p>
         </div>
         <span className="text-[var(--text-secondary)] font-medium">vs</span>
         <div className="flex-1 text-right">
-          <p className="text-xs text-[var(--text-secondary)] mb-1">Opponent</p>
+          <p className="text-sm md:text-xs text-[var(--text-secondary)] mb-1">Opponent</p>
           <div className="h-3 rounded-full bg-[var(--surface-2)] overflow-hidden">
             <motion.div
               className={cn(
@@ -185,7 +185,7 @@ export default function AccuracyDuelGame({
               transition={{ duration: 0.3 }}
             />
           </div>
-          <p className="text-xs text-[var(--text-secondary)] mt-0.5">{opponentHP} HP</p>
+          <p className="text-sm md:text-xs text-[var(--text-secondary)] mt-0.5">{opponentHP} HP</p>
         </div>
       </div>
       <p className="text-center text-[var(--text-secondary)] text-sm mb-6">
@@ -193,9 +193,9 @@ export default function AccuracyDuelGame({
       </p>
 
       <p className="text-xl font-semibold text-[var(--text-primary)] text-center mb-6">{question.question}</p>
-      <p className="text-center text-xs text-[var(--text-secondary)] mb-4">First to answer correctly wins the round</p>
+      <p className="text-center text-sm md:text-xs text-[var(--text-secondary)] mb-4">First to answer correctly wins the round</p>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {options.map((opt, i) => (
           <motion.button
             key={i}

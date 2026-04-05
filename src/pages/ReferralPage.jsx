@@ -261,7 +261,7 @@ export default function ReferralPage() {
         </motion.div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: "Total referrals", value: stats.total,        color: "text-orange-400" },
             { label: "Signed up",       value: stats.signed_up,    color: "text-emerald-400" },
@@ -275,7 +275,7 @@ export default function ReferralPage() {
               transition={{ delay: i * 0.06 }}
               className="rounded-xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-4 space-y-1"
             >
-              <p className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{label}</p>
+              <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{label}</p>
               <motion.p
                 key={value}
                 initial={{ scale: 1.3, opacity: 0 }}
@@ -315,7 +315,7 @@ export default function ReferralPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]">Milestone Progress</h2>
             {nextMilestone && (
-              <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+              <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                 {nextMilestone.count - totalReferrals} more to next milestone
               </span>
             )}
@@ -332,7 +332,7 @@ export default function ReferralPage() {
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 />
               </div>
-              <div className="flex justify-between text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">
+              <div className="flex justify-between text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">
                 <span>{prevMilestoneCount}</span>
                 <span>{nextMilestone.count}</span>
               </div>
@@ -375,12 +375,12 @@ export default function ReferralPage() {
                         {milestone.label}
                       </span>
                       {achieved && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <span className="text-sm md:text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                           Achieved
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-3 mt-1.5 text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+                    <div className="flex flex-wrap gap-3 mt-1.5 text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                       <span className="text-amber-400/80">+{milestone.coins} coins</span>
                       <span className="text-orange-400/80">+{milestone.xp} XP</span>
                       {milestone.frame && (
@@ -397,7 +397,7 @@ export default function ReferralPage() {
 
                   {/* Count bubble */}
                   <div
-                    className={`text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${
+                    className={`text-sm md:text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${
                       achieved
                         ? "bg-amber-500/20 text-amber-400"
                         : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]"
@@ -424,7 +424,7 @@ export default function ReferralPage() {
               {badges.map((b) => (
                 <div
                   key={b.badge_key}
-                  className="flex items-center gap-1.5 rounded-lg border border-orange-500/30 bg-orange-600/10 px-3 py-1.5 text-xs text-orange-400"
+                  className="flex items-center gap-1.5 rounded-lg border border-orange-500/30 bg-orange-600/10 px-3 py-1.5 text-sm md:text-xs text-orange-400"
                 >
                   <Star className="w-3 h-3 text-amber-400" />
                   {b.badge_key.replace(/_/g, " ")}

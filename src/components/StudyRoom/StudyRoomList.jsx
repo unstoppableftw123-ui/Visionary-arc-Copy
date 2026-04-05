@@ -210,7 +210,7 @@ function LobbyContent({ currentUser }) {
       </div>
 
       {isMock && (
-        <p className="text-xs text-muted-foreground mb-2 italic">
+        <p className="text-sm md:text-xs text-muted-foreground mb-2 italic">
           Demo mode — rooms are local only (Liveblocks not connected)
         </p>
       )}
@@ -234,7 +234,7 @@ function LobbyContent({ currentUser }) {
                     <span className="font-medium text-foreground truncate">
                       {room.name}
                     </span>
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0">
+                    <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0">
                       {room.tag}
                     </span>
                     {room.isPrivate && (
@@ -244,11 +244,11 @@ function LobbyContent({ currentUser }) {
                   <div className="flex items-center gap-2 mt-1">
                     <Avatar className="h-5 w-5">
                       <AvatarImage src={room.createdBy?.avatar} />
-                      <AvatarFallback className="text-[10px]">
+                      <AvatarFallback className="text-sm md:text-[10px]">
                         {(room.createdBy?.name || "?")[0].toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-sm md:text-xs text-muted-foreground">
                       {room.memberCount}/{room.maxMembers}
                     </span>
                     <Users className="w-3.5 h-3.5 text-muted-foreground" />

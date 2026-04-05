@@ -12,7 +12,7 @@ const buttonVariants = cva(
   // on disabled buttons, so no extra disabled:transform-none needed.
   [
     "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md",
-    "text-sm font-medium",
+    "min-h-11 text-base font-medium md:text-sm",
     "transition-all duration-150 ease-out",
     "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
     "disabled:pointer-events-none disabled:opacity-50",
@@ -42,13 +42,13 @@ const buttonVariants = cva(
           "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm:      "h-8 rounded-md px-3 text-xs",
-        lg:      "h-10 rounded-md px-8",
+        default: "h-11 px-4 py-2",
+        sm:      "h-11 rounded-md px-3 text-sm md:h-11 md:text-xs",
+        lg:      "h-12 rounded-md px-8",
 
         // Icon-only: SVG children rotate + scale on hover; bounce on click
         icon: [
-          "h-9 w-9",
+          "h-11 w-11",
           // SVG base transition (spring easing from tailwind.config)
           "[&>svg]:transition-transform [&>svg]:duration-200 [&>svg]:ease-spring",
           // Hover: scale + slight rotation

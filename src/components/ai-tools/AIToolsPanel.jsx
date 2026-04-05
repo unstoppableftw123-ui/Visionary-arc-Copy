@@ -226,7 +226,7 @@ export default function AIToolsPanel({ gridCols = "grid-cols-1 sm:grid-cols-2" }
             key={cat}
             variant={activeCategory === cat ? "default" : "outline"}
             size="sm"
-            className="h-7 px-2.5 text-xs shrink-0"
+            className="h-7 px-2.5 text-sm md:text-xs shrink-0"
             onClick={() => setActiveCategory(cat)}
           >
             {cat}
@@ -240,7 +240,7 @@ export default function AIToolsPanel({ gridCols = "grid-cols-1 sm:grid-cols-2" }
           No tools match your search.
           <button
             type="button"
-            className="block mx-auto mt-2 text-xs text-primary hover:underline"
+            className="block mx-auto mt-2 text-sm md:text-xs text-primary hover:underline"
             onClick={() => { setSearch(""); setActiveCategory("All"); }}
           >
             Clear filters

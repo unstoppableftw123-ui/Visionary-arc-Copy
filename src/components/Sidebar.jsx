@@ -227,7 +227,7 @@ function ProfileCardWithPopover({
                   <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "var(--accent-dim)", color: "var(--accent)" }}>Investor</span>
                 )}
               </div>
-              <div className="flex items-center gap-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
+              <div className="flex items-center gap-1.5 text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
                 <span>Lvl {level}</span>
                 <span className="flex items-center gap-0.5">
                   <Coins className="h-3 w-3" /> {user?.coins ?? 0}
@@ -258,7 +258,7 @@ function ProfileCardWithPopover({
             <div className="w-56 rounded-xl border border-border bg-popover p-1 shadow-hover">
             <div className="px-2 py-2 border-b border-border mb-1">
               <p className="font-medium truncate">{user?.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+              <p className="text-sm md:text-xs text-muted-foreground truncate">{user?.email}</p>
             </div>
             <button
               type="button"
@@ -530,7 +530,7 @@ export default function Sidebar() {
         {item.icon}
         {!collapsed && <span className="label font-medium flex-1">{item.label}</span>}
         {item.badge != null && !collapsed && (
-          <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+          <span className="ml-auto flex min-h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-sm font-semibold text-primary-foreground md:text-[10px]">
             {item.badge}
           </span>
         )}
@@ -562,7 +562,7 @@ export default function Sidebar() {
       <Link
         to={item.href}
         onClick={() => setMobileOpen(false)}
-        className={`flex items-center justify-center h-9 w-9 rounded-lg transition-colors ${isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
+        className={`flex items-center justify-center h-11 w-11 rounded-lg transition-colors ${isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
         data-testid={`nav-${item.label.toLowerCase()}`}
         aria-label={item.label}
       >
@@ -585,7 +585,7 @@ export default function Sidebar() {
         onClick={onToggle}
         className="flex w-full items-center justify-between px-3 py-1 group"
       >
-        <span className="text-[10px] uppercase tracking-widest font-semibold opacity-40 select-none">{label}</span>
+        <span className="text-sm uppercase tracking-widest font-semibold opacity-40 select-none md:text-[10px]">{label}</span>
         <ChevronDown
           className={`h-3 w-3 opacity-40 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
@@ -613,7 +613,7 @@ export default function Sidebar() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 relative"
+              className="relative"
               onClick={() => setNotifOpen((o) => !o)}
               aria-label="Notifications"
             >
@@ -634,7 +634,7 @@ export default function Sidebar() {
                 </div>
                 <div className="max-h-80 overflow-y-auto divide-y divide-border">
                   {notifications.length === 0 ? (
-                    <p className="px-4 py-6 text-center text-xs text-muted-foreground">No notifications yet</p>
+                    <p className="px-4 py-6 text-center text-sm text-muted-foreground md:text-xs">No notifications yet</p>
                   ) : (
                     notifications.map((n) => (
                       <div
@@ -642,7 +642,7 @@ export default function Sidebar() {
                         className={`px-4 py-3 text-sm ${n.read ? 'text-muted-foreground' : 'text-foreground'}`}
                       >
                         <p className="leading-snug">{n.message}</p>
-                        <p className="text-[10px] text-muted-foreground mt-1">
+                        <p className="mt-1 text-sm text-muted-foreground md:text-[10px]">
                           {new Date(n.created_at).toLocaleString()}
                         </p>
                       </div>
@@ -655,7 +655,7 @@ export default function Sidebar() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 label"
+            className="label"
             onClick={() => setCollapsed((c) => !c)}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
@@ -674,7 +674,7 @@ export default function Sidebar() {
         {/* CORE — always visible, no collapse */}
         <div className="space-y-0.5">
           {!collapsed && (
-            <p className="px-3 py-1 text-[10px] uppercase tracking-widest font-semibold opacity-40 select-none">Core</p>
+            <p className="px-3 py-1 text-sm uppercase tracking-widest font-semibold opacity-40 select-none md:text-[10px]">Core</p>
           )}
           {coreItems.map(renderNavItem)}
         </div>
@@ -779,7 +779,7 @@ export default function Sidebar() {
                   <button
                     type="button"
                     onClick={() => setStorageOpen(true)}
-                    className={`h-9 w-9 rounded-lg flex items-center justify-center transition-colors hover:bg-secondary ${
+                    className={`h-11 w-11 rounded-lg flex items-center justify-center transition-colors hover:bg-secondary ${
                       pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"
                     }`}
                   >
@@ -801,9 +801,9 @@ export default function Sidebar() {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1.5">
                   <HardDrive className={`h-3.5 w-3.5 ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"}`} />
-                  <span className="text-[11px] font-medium text-foreground">{STORAGE_DATA.used} GB / {STORAGE_DATA.total} GB</span>
+                  <span className="text-sm font-medium text-foreground md:text-[11px]">{STORAGE_DATA.used} GB / {STORAGE_DATA.total} GB</span>
                 </div>
-                <span className={`text-[10px] font-semibold ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"}`}>{pct}%</span>
+                <span className={`text-sm font-semibold ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"} md:text-[10px]`}>{pct}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-border overflow-hidden mb-2">
                 <div className={`h-full rounded-full transition-all ${barColor}`} style={{ width: `${pct}%` }} />
@@ -818,7 +818,7 @@ export default function Sidebar() {
               </div>
               {showUpgrade && (
                 <div className="mt-2 pt-2 border-t border-border">
-                  <span className="text-[10px] font-semibold text-amber-500 flex items-center gap-1">
+                  <span className="flex items-center gap-1 text-sm font-semibold text-amber-500 md:text-[10px]">
                     <ArrowUpRight className="h-3 w-3" /> Upgrade Storage
                   </span>
                 </div>
@@ -860,7 +860,7 @@ export default function Sidebar() {
         </Link>
         <div className="flex items-center gap-1">
           <div className="relative">
-            <Button variant="ghost" size="icon" className="relative" onClick={() => setNotifOpen((o) => !o)}>
+          <Button variant="ghost" size="icon" className="relative" onClick={() => setNotifOpen((o) => !o)}>
               <Bell className="h-5 w-5" />
               {notifUnread > 0 && (
                 <span className="pointer-events-none absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-semibold text-destructive-foreground">
@@ -875,12 +875,12 @@ export default function Sidebar() {
                 </div>
                 <div className="max-h-72 overflow-y-auto divide-y divide-border">
                   {notifications.length === 0 ? (
-                    <p className="px-4 py-6 text-center text-xs text-muted-foreground">No notifications yet</p>
+                    <p className="px-4 py-6 text-center text-sm text-muted-foreground md:text-xs">No notifications yet</p>
                   ) : (
                     notifications.map((n) => (
                       <div key={n.id} className={`px-4 py-3 text-sm ${n.read ? 'text-muted-foreground' : 'text-foreground'}`}>
                         <p className="leading-snug">{n.message}</p>
-                        <p className="text-[10px] text-muted-foreground mt-1">{new Date(n.created_at).toLocaleString()}</p>
+                        <p className="mt-1 text-sm text-muted-foreground md:text-[10px]">{new Date(n.created_at).toLocaleString()}</p>
                       </div>
                     ))
                   )}
@@ -911,14 +911,14 @@ export default function Sidebar() {
               <Link
                 key={item.href}
                 to={item.href}
-                className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium transition-colors ${
+                className={`flex min-h-11 min-w-0 items-center justify-center rounded-xl px-2 py-2 transition-colors ${
                   active
                     ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
+                aria-label={item.label}
               >
                 {item.icon}
-                <span className="truncate">{item.label}</span>
               </Link>
             );
           })}
@@ -926,14 +926,14 @@ export default function Sidebar() {
             type="button"
             variant="ghost"
             onClick={() => setMobileOpen(true)}
-            className={`flex h-auto min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium ${
+            className={`flex min-h-11 min-w-0 items-center justify-center rounded-xl px-2 py-2 ${
               moreActive
                 ? "bg-primary/10 text-primary hover:bg-primary/10"
                 : "text-muted-foreground hover:bg-secondary hover:text-foreground"
             }`}
+            aria-label="More"
           >
             <MoreHorizontal className="h-5 w-5" />
-            <span className="truncate">More</span>
           </Button>
         </div>
       </nav>
@@ -953,21 +953,21 @@ export default function Sidebar() {
       {/* AI Tools Sheet */}
       {(isStudent || isTeacher) && (
         <Sheet open={aiToolsOpen} onOpenChange={setAiToolsOpen}>
-          <SheetContent side="left" className="w-[min(90vw,580px)] sm:max-w-[580px] flex flex-col gap-0 p-0">
-            <SheetHeader className="px-6 pt-6 pb-4 border-b border-border shrink-0">
+          <SheetContent side="left" className="flex w-[min(90vw,580px)] flex-col gap-0 p-0 sm:max-w-[580px]">
+            <SheetHeader className="border-b border-border px-4 pb-4 pt-6 shrink-0 sm:px-6">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
                   <Sparkles className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <SheetTitle className="font-heading text-lg">AI Toolkit</SheetTitle>
-                  <SheetDescription className="text-primary/60 font-medium text-xs mt-0.5">
+                  <SheetDescription className="mt-0.5 text-primary/60 font-medium text-sm md:text-xs">
                     {isTeacher ? "Generate, scaffold, and personalize." : "Study smarter. Learn faster. Earn XP."}
                   </SheetDescription>
                 </div>
               </div>
             </SheetHeader>
-            <div className="flex-1 overflow-y-auto px-6 py-5">
+            <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-6">
               <AIToolsPanel gridCols="grid-cols-1 sm:grid-cols-2" />
             </div>
           </SheetContent>
@@ -977,8 +977,8 @@ export default function Sidebar() {
       {/* Storage detail sheet */}
       {(isStudent || isTeacher) && (
         <Sheet open={storageOpen} onOpenChange={setStorageOpen}>
-          <SheetContent side="left" className="w-80 sm:max-w-80 flex flex-col gap-0 p-0">
-            <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
+          <SheetContent side="left" className="flex w-[min(100vw-2rem,20rem)] flex-col gap-0 p-0 sm:max-w-80">
+            <SheetHeader className="border-b border-border px-4 pb-4 pt-6 sm:px-6">
               <div className="flex items-center gap-2">
                 <HardDrive className="h-5 w-5 text-muted-foreground" />
                 <SheetTitle className="font-heading text-lg">Storage</SheetTitle>
@@ -988,7 +988,7 @@ export default function Sidebar() {
               </SheetDescription>
             </SheetHeader>
 
-            <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+            <div className="flex-1 overflow-y-auto space-y-6 px-4 py-5 sm:px-6">
               {/* Big usage meter */}
               {(() => {
                 const pct = Math.round((STORAGE_DATA.used / STORAGE_DATA.total) * 100);
@@ -1013,7 +1013,7 @@ export default function Sidebar() {
 
               {/* Breakdown */}
               <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Breakdown</p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground md:text-xs">Breakdown</p>
                 <div className="space-y-3">
                   {STORAGE_DATA.breakdown.map(({ label, gb, Icon, color }) => {
                     const itemPct = Math.round((gb / STORAGE_DATA.total) * 100);
@@ -1044,16 +1044,16 @@ export default function Sidebar() {
                   <span className="text-sm font-medium">Added this month</span>
                 </div>
                 <p className="text-2xl font-bold">{STORAGE_DATA.addedThisMonth} <span className="text-base font-normal text-muted-foreground">GB</span></p>
-                <p className="text-xs text-muted-foreground mt-0.5">At this rate, you'll fill your plan in ~2 months.</p>
+                <p className="mt-0.5 text-sm text-muted-foreground md:text-xs">At this rate, you'll fill your plan in ~2 months.</p>
               </div>
             </div>
 
             {/* Upgrade card pinned at bottom */}
-            <div className="px-6 py-5 border-t border-border">
+            <div className="border-t border-border px-4 py-5 sm:px-6">
               <div className="rounded-xl bg-primary/5 border border-primary/20 p-4 mb-3">
                 <p className="text-sm font-semibold mb-0.5">You're running out of room.</p>
-                <p className="text-xs text-muted-foreground">Upgrade to keep everything safe.</p>
-                <div className="mt-3 flex flex-col gap-1.5 text-xs text-muted-foreground">
+                <p className="text-sm text-muted-foreground md:text-xs">Upgrade to keep everything safe.</p>
+                <div className="mt-3 flex flex-col gap-1.5 text-sm text-muted-foreground md:text-xs">
                   <div className="flex justify-between"><span>Lite plan</span><span className="font-medium text-foreground">10 GB</span></div>
                   <div className="flex justify-between"><span>Pro plan</span><span className="font-medium text-foreground">50 GB</span></div>
                 </div>

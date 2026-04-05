@@ -661,7 +661,7 @@ export default function Community() {
       data-testid="community-page"
     >
         <Tabs value={communityTab} onValueChange={setCommunityTab} className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <TabsList className={`shrink-0 mx-4 mt-2 grid w-full max-w-2xl h-11 ${user?.role !== 'teacher' ? 'grid-cols-5' : 'grid-cols-4'}`}>
+          <TabsList className={`shrink-0 mx-4 mt-2 grid w-full max-w-2xl h-11 ${user?.role !== 'teacher' ? 'grid-cols-1 sm:grid-cols-5' : 'grid-cols-1 sm:grid-cols-4'}`}>
             {user?.role !== 'teacher' && (
               <TabsTrigger value="classes" className="flex items-center gap-2">
                 <GraduationCap className="w-4 h-4" /> Classes
@@ -755,7 +755,7 @@ export default function Community() {
                     className={serverErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}
                   />
                   {serverErrors.name && (
-                    <p className="text-xs text-destructive">{serverErrors.name}</p>
+                    <p className="text-sm md:text-xs text-destructive">{serverErrors.name}</p>
                   )}
                 </div>
                 
@@ -787,7 +787,7 @@ export default function Community() {
                     className={serverErrors.description ? "border-destructive focus-visible:ring-destructive" : ""}
                   />
                   {serverErrors.description && (
-                    <p className="text-xs text-destructive">{serverErrors.description}</p>
+                    <p className="text-sm md:text-xs text-destructive">{serverErrors.description}</p>
                   )}
                 </div>
                 <Button onClick={handleCreateServer} className="w-full" data-testid="create-server-submit">
@@ -855,7 +855,7 @@ export default function Community() {
               <div className="p-4 border-b border-border">
                 <h2 className="font-heading font-semibold truncate">{selectedServer.name}</h2>
                 {selectedServer.description && (
-                  <p className="text-xs text-muted-foreground truncate">{selectedServer.description}</p>
+                  <p className="text-sm md:text-xs text-muted-foreground truncate">{selectedServer.description}</p>
                 )}
               </div>
               
@@ -889,7 +889,7 @@ export default function Community() {
               
               <ScrollArea className="flex-1 p-2">
                 <div className="space-y-1">
-                  <div className="px-2 py-1 text-xs font-medium text-muted-foreground uppercase">
+                  <div className="px-2 py-1 text-sm md:text-xs font-medium text-muted-foreground uppercase">
                     Text Channels
                   </div>
                   {selectedServer.channels?.map((channel) => (
@@ -952,7 +952,7 @@ export default function Community() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-baseline gap-2">
                               <span className="font-medium">{message.user_name}</span>
-                              <span className="text-xs text-muted-foreground">
+                              <span className="text-sm md:text-xs text-muted-foreground">
                                 {new Date(message.created_at).toLocaleTimeString()}
                               </span>
                             </div>
@@ -976,7 +976,7 @@ export default function Community() {
                           data-testid="message-input"
                         />
                         {messageError && (
-                          <p className="text-xs text-destructive">{messageError}</p>
+                          <p className="text-sm md:text-xs text-destructive">{messageError}</p>
                         )}
                       </div>
                       <Button type="submit" size="icon" data-testid="send-message-btn">
@@ -994,7 +994,7 @@ export default function Community() {
 
             {/* Members List */}
             <div className="hidden xl:block w-60 bg-card border-l border-border p-4">
-              <h3 className="text-xs font-medium text-muted-foreground uppercase mb-4">
+              <h3 className="text-sm md:text-xs font-medium text-muted-foreground uppercase mb-4">
                 Members — {selectedServer.members?.length || 0}
               </h3>
               <div className="space-y-2">
@@ -1002,7 +1002,7 @@ export default function Community() {
                   <div key={member.user_id} className="flex items-center gap-2">
                     <Avatar className="w-8 h-8">
                       <AvatarImage src={member.avatar} />
-                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-sm md:text-xs">
                         {member.name?.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -1044,7 +1044,7 @@ export default function Community() {
                                 className={resourceErrors.title ? "border-destructive focus-visible:ring-destructive" : ""}
                               />
                               {resourceErrors.title && (
-                                <p className="text-xs text-destructive">{resourceErrors.title}</p>
+                                <p className="text-sm md:text-xs text-destructive">{resourceErrors.title}</p>
                               )}
                             </div>
                             <div className="space-y-2">
@@ -1069,7 +1069,7 @@ export default function Community() {
                                   className={resourceErrors.url ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
                                 {resourceErrors.url && (
-                                  <p className="text-xs text-destructive">{resourceErrors.url}</p>
+                                  <p className="text-sm md:text-xs text-destructive">{resourceErrors.url}</p>
                                 )}
                               </div>
                             )}
@@ -1083,7 +1083,7 @@ export default function Community() {
                                   className={resourceErrors.content ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
                                 {resourceErrors.content && (
-                                  <p className="text-xs text-destructive">{resourceErrors.content}</p>
+                                  <p className="text-sm md:text-xs text-destructive">{resourceErrors.content}</p>
                                 )}
                               </div>
                             )}
@@ -1101,13 +1101,13 @@ export default function Community() {
                             <LinkIcon className="w-4 h-4 mt-0.5 text-muted-foreground" />
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-sm">{resource.title}</p>
-                              <p className="text-xs text-muted-foreground">{resource.user_name}</p>
+                              <p className="text-sm md:text-xs text-muted-foreground">{resource.user_name}</p>
                               {resource.url && (
                                 <a 
                                   href={resource.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-xs text-primary flex items-center gap-1 mt-1"
+                                  className="text-sm md:text-xs text-primary flex items-center gap-1 mt-1"
                                 >
                                   <ExternalLink className="w-3 h-3" /> Open
                                 </a>
@@ -1155,7 +1155,7 @@ export default function Community() {
                                   className={goalErrors.title ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
                                 {goalErrors.title && (
-                                  <p className="text-xs text-destructive">{goalErrors.title}</p>
+                                  <p className="text-sm md:text-xs text-destructive">{goalErrors.title}</p>
                                 )}
                               </div>
                               <div className="space-y-2">
@@ -1167,7 +1167,7 @@ export default function Community() {
                                   className={goalErrors.description ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
                                 {goalErrors.description && (
-                                  <p className="text-xs text-destructive">{goalErrors.description}</p>
+                                  <p className="text-sm md:text-xs text-destructive">{goalErrors.description}</p>
                                 )}
                               </div>
                               <div className="space-y-2">
@@ -1180,7 +1180,7 @@ export default function Community() {
                                   className={goalErrors.target ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
                                 {goalErrors.target && (
-                                  <p className="text-xs text-destructive">{goalErrors.target}</p>
+                                  <p className="text-sm md:text-xs text-destructive">{goalErrors.target}</p>
                                 )}
                               </div>
                               <Button onClick={handleAddGoal} className="w-full">
@@ -1196,10 +1196,10 @@ export default function Community() {
                         <div key={goal.goal_id} className="p-3 rounded-lg bg-secondary/50">
                           <p className="font-medium text-sm mb-1">{goal.title}</p>
                           {goal.description && (
-                            <p className="text-xs text-muted-foreground mb-2">{goal.description}</p>
+                            <p className="text-sm md:text-xs text-muted-foreground mb-2">{goal.description}</p>
                           )}
                           <div className="mb-2">
-                            <div className="flex justify-between text-xs mb-1">
+                            <div className="flex justify-between text-sm md:text-xs mb-1">
                               <span>{goal.progress}</span>
                               <span>{goal.target}</span>
                             </div>
@@ -1250,7 +1250,7 @@ export default function Community() {
                                 className={noteErrors.title ? "border-destructive focus-visible:ring-destructive" : ""}
                               />
                               {noteErrors.title && (
-                                <p className="text-xs text-destructive">{noteErrors.title}</p>
+                                <p className="text-sm md:text-xs text-destructive">{noteErrors.title}</p>
                               )}
                             </div>
                             <div className="space-y-2">
@@ -1263,7 +1263,7 @@ export default function Community() {
                                 className={noteErrors.content ? "border-destructive focus-visible:ring-destructive" : ""}
                               />
                               {noteErrors.content && (
-                                <p className="text-xs text-destructive">{noteErrors.content}</p>
+                                <p className="text-sm md:text-xs text-destructive">{noteErrors.content}</p>
                               )}
                             </div>
                             <Button onClick={handleCreateNote} className="w-full">
@@ -1305,7 +1305,7 @@ export default function Community() {
                             onClick={() => setSelectedNote(note)}
                           >
                             <p className="font-medium text-sm">{note.title}</p>
-                            <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                            <p className="text-sm md:text-xs text-muted-foreground mt-1 line-clamp-2">
                               {note.content || "Empty note"}
                             </p>
                           </div>
@@ -1388,14 +1388,14 @@ export default function Community() {
                   </div>
 
                   {/* Stats Row */}
-                  <div className="grid grid-cols-3 gap-4 my-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
                     <div className="rounded-xl border bg-card p-4 flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <GraduationCap className="w-5 h-5 text-primary" />
                       </div>
                       <div>
                         <p className="text-2xl font-bold">{enrolledClasses.length}</p>
-                        <p className="text-xs text-muted-foreground">Classes Enrolled</p>
+                        <p className="text-sm md:text-xs text-muted-foreground">Classes Enrolled</p>
                       </div>
                     </div>
                     <div className="rounded-xl border bg-card p-4 flex items-center gap-3">
@@ -1404,7 +1404,7 @@ export default function Community() {
                       </div>
                       <div>
                         <p className="text-2xl font-bold">{enrolledClasses.reduce((s, c) => s + (c.pendingAssignments || 0), 0)}</p>
-                        <p className="text-xs text-muted-foreground">Due Soon</p>
+                        <p className="text-sm md:text-xs text-muted-foreground">Due Soon</p>
                       </div>
                     </div>
                     <div className="rounded-xl border bg-card p-4 flex items-center gap-3">
@@ -1413,7 +1413,7 @@ export default function Community() {
                       </div>
                       <div>
                         <p className="text-2xl font-bold">7</p>
-                        <p className="text-xs text-muted-foreground">Day Study Streak</p>
+                        <p className="text-sm md:text-xs text-muted-foreground">Day Study Streak</p>
                       </div>
                     </div>
                   </div>
@@ -1434,20 +1434,20 @@ export default function Community() {
                               <h3 className="font-semibold text-base">{cls.name}</h3>
                               <p className="text-sm text-muted-foreground">{cls.teacher}</p>
                             </div>
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">{cls.subject}</span>
+                            <span className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">{cls.subject}</span>
                           </div>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                          <div className="flex items-center gap-3 text-sm md:text-xs text-muted-foreground mb-3">
                             <span className="flex items-center gap-1"><Users className="w-3 h-3" />{cls.studentCount} students</span>
                             <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{cls.nextClass}</span>
                           </div>
                           <div className="flex items-center gap-2 flex-wrap">
                             {cls.channels.filter(ch => ch.unread > 0).map(ch => (
-                              <span key={ch.name} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                              <span key={ch.name} className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
                                 #{ch.name} {ch.unread}
                               </span>
                             ))}
                             {cls.pendingAssignments > 0 && (
-                              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-medium">
+                              <span className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-medium">
                                 {cls.pendingAssignments} pending
                               </span>
                             )}
@@ -1535,7 +1535,7 @@ export default function Community() {
                           <div>
                             <p className="font-semibold">{joinPreview.name}</p>
                             <p className="text-sm text-muted-foreground">{joinPreview.teacher} · {joinPreview.school}</p>
-                            <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                            <p className="text-sm md:text-xs text-muted-foreground mt-1 flex items-center gap-1">
                               <Users className="w-3 h-3" />{joinPreview.studentCount} students
                             </p>
                           </div>
@@ -1577,8 +1577,8 @@ export default function Community() {
                           <div className="p-4 flex items-center justify-between gap-3">
                             <div className="min-w-0">
                               <p className="font-medium text-sm truncate">{cls.name}</p>
-                              <p className="text-xs text-muted-foreground truncate">{cls.teacher} · {cls.school}</p>
-                              <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                              <p className="text-sm md:text-xs text-muted-foreground truncate">{cls.teacher} · {cls.school}</p>
+                              <p className="text-sm md:text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
                                 <Users className="w-3 h-3" />{cls.studentCount}
                               </p>
                             </div>
@@ -1635,11 +1635,11 @@ export default function Community() {
                     </div>
                     <div className="flex items-center gap-2 mt-3 flex-wrap">
                       {selectedClass.pendingAssignments > 0 && (
-                        <span className="text-xs px-2.5 py-1 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm font-medium">
+                        <span className="text-sm md:text-xs px-2.5 py-1 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm font-medium">
                           {selectedClass.pendingAssignments} due soon
                         </span>
                       )}
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm font-medium flex items-center gap-1">
+                      <span className="text-sm md:text-xs px-2.5 py-1 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm font-medium flex items-center gap-1">
                         <Clock className="w-3 h-3" /> Next: {selectedClass.nextClass}
                       </span>
                     </div>
@@ -1647,11 +1647,11 @@ export default function Community() {
 
                   {/* Inner Tabs */}
                   <Tabs value={classDetailTab} onValueChange={setClassDetailTab} className="flex-1 flex flex-col min-h-0">
-                    <TabsList className="shrink-0 mx-4 mt-3 grid w-full max-w-md grid-cols-4 h-9">
-                      <TabsTrigger value="feed" className="text-xs">Feed</TabsTrigger>
-                      <TabsTrigger value="assignments" className="text-xs">Assignments</TabsTrigger>
-                      <TabsTrigger value="resources" className="text-xs">Resources</TabsTrigger>
-                      <TabsTrigger value="chat" className="text-xs">Chat</TabsTrigger>
+                    <TabsList className="shrink-0 mx-4 mt-3 grid w-full max-w-md grid-cols-1 sm:grid-cols-4 h-9">
+                      <TabsTrigger value="feed" className="text-sm md:text-xs">Feed</TabsTrigger>
+                      <TabsTrigger value="assignments" className="text-sm md:text-xs">Assignments</TabsTrigger>
+                      <TabsTrigger value="resources" className="text-sm md:text-xs">Resources</TabsTrigger>
+                      <TabsTrigger value="chat" className="text-sm md:text-xs">Chat</TabsTrigger>
                     </TabsList>
 
                     {/* Feed */}
@@ -1660,22 +1660,22 @@ export default function Community() {
                         {selectedClass.announcements.map((post) => (
                           <div key={post.id} className="rounded-xl border bg-card p-4">
                             {post.pinned && (
-                              <div className="flex items-center gap-1 text-xs text-amber-600 font-medium mb-2">
+                              <div className="flex items-center gap-1 text-sm md:text-xs text-amber-600 font-medium mb-2">
                                 <Star className="w-3 h-3 fill-amber-500 text-amber-500" /> Pinned
                               </div>
                             )}
                             <div className="flex items-center gap-3 mb-2">
                               <Avatar className="w-8 h-8">
-                                <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                                <AvatarFallback className="bg-primary text-primary-foreground text-sm md:text-xs">
                                   {post.teacher.charAt(0)}
                                 </AvatarFallback>
                               </Avatar>
                               <div>
                                 <div className="flex items-center gap-2">
                                   <span className="font-medium text-sm">{post.teacher}</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
+                                  <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
                                 </div>
-                                <span className="text-xs text-muted-foreground">{post.time}</span>
+                                <span className="text-sm md:text-xs text-muted-foreground">{post.time}</span>
                               </div>
                             </div>
                             <p className="text-sm leading-relaxed">{post.text}</p>
@@ -1700,7 +1700,7 @@ export default function Community() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-sm">{asgn.title}</p>
-                              <p className={`text-xs mt-0.5 ${asgn.dueDate.startsWith('Tomorrow') ? 'text-amber-600 font-medium' : 'text-muted-foreground'}`}>
+                              <p className={`text-sm md:text-xs mt-0.5 ${asgn.dueDate.startsWith('Tomorrow') ? 'text-amber-600 font-medium' : 'text-muted-foreground'}`}>
                                 Due: {asgn.dueDate} · {asgn.points} pts
                               </p>
                             </div>
@@ -1725,9 +1725,9 @@ export default function Community() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-sm truncate">{res.title}</p>
-                              <p className="text-xs text-muted-foreground mt-0.5">{res.author}</p>
+                              <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{res.author}</p>
                             </div>
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground uppercase">{res.type}</span>
+                            <span className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground uppercase">{res.type}</span>
                             <Button size="sm" variant="outline" asChild>
                               <a href={res.url} target="_blank" rel="noopener noreferrer">
                                 <ExternalLink className="w-3.5 h-3.5" />
@@ -1745,7 +1745,7 @@ export default function Community() {
                           {(classChatMessages[selectedClass.id] || selectedClass.messages).map((msg) => (
                             <div key={msg.id} className="flex items-start gap-3">
                               <Avatar className="w-9 h-9 shrink-0">
-                                <AvatarFallback className={`text-xs ${msg.isTeacher ? 'bg-primary text-primary-foreground' : 'bg-secondary text-foreground'}`}>
+                                <AvatarFallback className={`text-sm md:text-xs ${msg.isTeacher ? 'bg-primary text-primary-foreground' : 'bg-secondary text-foreground'}`}>
                                   {msg.sender.charAt(0)}
                                 </AvatarFallback>
                               </Avatar>
@@ -1753,9 +1753,9 @@ export default function Community() {
                                 <div className="flex items-center gap-2 mb-0.5">
                                   <span className="font-medium text-sm">{msg.sender}</span>
                                   {msg.isTeacher && (
-                                    <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
+                                    <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
                                   )}
-                                  <span className="text-xs text-muted-foreground">{msg.time}</span>
+                                  <span className="text-sm md:text-xs text-muted-foreground">{msg.time}</span>
                                 </div>
                                 <p className="text-sm">{msg.text}</p>
                               </div>

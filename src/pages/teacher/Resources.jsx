@@ -162,7 +162,7 @@ function LibraryCard({ item, onStar }) {
       <div className="h-1.5 w-full" style={{ background: item.color }} />
       <div className="p-4 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-sm md:text-xs text-muted-foreground">
             <span style={{ color: item.color }}>{TYPE_ICON[item.type]}</span>
             <span className="capitalize">{item.type}</span>
           </div>
@@ -175,15 +175,15 @@ function LibraryCard({ item, onStar }) {
         </div>
 
         <h3 className="font-semibold text-sm leading-snug mb-1.5">{item.title}</h3>
-        <p className="text-xs text-muted-foreground leading-relaxed flex-1 mb-3">{item.description}</p>
+        <p className="text-sm md:text-xs text-muted-foreground leading-relaxed flex-1 mb-3">{item.description}</p>
 
         <div className="flex items-center gap-1.5 mb-3 flex-wrap">
-          <Badge variant="secondary" className="text-[10px] px-2 py-0.5">{item.subject}</Badge>
-          <Badge variant="outline" className="text-[10px] px-2 py-0.5">Gr {item.grade}</Badge>
+          <Badge variant="secondary" className="text-sm md:text-[10px] px-2 py-0.5">{item.subject}</Badge>
+          <Badge variant="outline" className="text-sm md:text-[10px] px-2 py-0.5">Gr {item.grade}</Badge>
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-3 text-sm md:text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Download className="w-3 h-3" /> {item.downloads.toLocaleString()}
             </span>
@@ -191,7 +191,7 @@ function LibraryCard({ item, onStar }) {
               <Star className="w-3 h-3 text-amber-400" fill="currentColor" /> {item.rating}
             </span>
           </div>
-          <Button size="sm" variant="ghost" className="h-7 px-2 text-xs gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Button size="sm" variant="ghost" className="h-7 px-2 text-sm md:text-xs gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <ExternalLink className="w-3 h-3" /> Open
           </Button>
         </div>
@@ -235,14 +235,14 @@ function ForumPost({ post, onUpvote, onBookmark }) {
         {/* Header */}
         <div className="flex items-center gap-2 mb-3">
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center text-[var(--text-primary)] text-xs font-bold shrink-0"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-[var(--text-primary)] text-sm md:text-xs font-bold shrink-0"
             style={{ background: post.avatarColor }}
           >
             {post.avatar}
           </div>
           <span className="text-sm font-medium">{post.author}</span>
-          <span className="text-xs text-muted-foreground">{post.time}</span>
-          <span className={`ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full ${tagColor}`}>
+          <span className="text-sm md:text-xs text-muted-foreground">{post.time}</span>
+          <span className={`ml-auto text-sm md:text-[10px] font-semibold px-2 py-0.5 rounded-full ${tagColor}`}>
             {post.tag}
           </span>
         </div>
@@ -260,7 +260,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
         <div className="flex items-center gap-1 mt-3">
           <button
             onClick={() => onUpvote(post.id)}
-            className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg transition-colors ${
+            className={`flex items-center gap-1.5 text-sm md:text-xs px-2.5 py-1.5 rounded-lg transition-colors ${
               post.upvoted
                 ? "bg-primary/10 text-primary"
                 : "hover:bg-secondary text-muted-foreground hover:text-foreground"
@@ -271,14 +271,14 @@ function ForumPost({ post, onUpvote, onBookmark }) {
           </button>
           <button
             onClick={() => setExpanded((e) => !e)}
-            className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-1.5 text-sm md:text-xs px-2.5 py-1.5 rounded-lg hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
           >
             <MessageSquare className="w-4 h-4" />
             {comments.length}
           </button>
           <button
             onClick={() => onBookmark(post.id)}
-            className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg transition-colors ml-auto ${
+            className={`flex items-center gap-1.5 text-sm md:text-xs px-2.5 py-1.5 rounded-lg transition-colors ml-auto ${
               post.bookmarked
                 ? "text-amber-400"
                 : "hover:bg-secondary text-muted-foreground hover:text-foreground"
@@ -286,7 +286,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
           >
             <Bookmark className="w-4 h-4" fill={post.bookmarked ? "currentColor" : "none"} />
           </button>
-          <button className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors">
+          <button className="flex items-center gap-1.5 text-sm md:text-xs px-2.5 py-1.5 rounded-lg hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors">
             <Share2 className="w-4 h-4" />
           </button>
         </div>
@@ -306,24 +306,24 @@ function ForumPost({ post, onUpvote, onBookmark }) {
               {comments.map((c, i) => (
                 <div key={i} className="flex gap-2.5">
                   <div
-                    className="w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-primary)] text-[10px] font-bold shrink-0 mt-0.5"
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-primary)] text-sm md:text-[10px] font-bold shrink-0 mt-0.5"
                     style={{ background: c.avatarColor }}
                   >
                     {c.avatar}
                   </div>
                   <div className="flex-1 bg-secondary/50 rounded-xl px-3 py-2">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-xs font-semibold">{c.author}</span>
-                      <span className="text-[10px] text-muted-foreground">{c.time}</span>
+                      <span className="text-sm md:text-xs font-semibold">{c.author}</span>
+                      <span className="text-sm md:text-[10px] text-muted-foreground">{c.time}</span>
                     </div>
-                    <p className="text-xs text-foreground leading-relaxed">{c.text}</p>
+                    <p className="text-sm md:text-xs text-foreground leading-relaxed">{c.text}</p>
                   </div>
                 </div>
               ))}
 
               {/* Comment input */}
               <div className="flex gap-2 pt-1">
-                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[var(--text-primary)] text-[10px] font-bold shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[var(--text-primary)] text-sm md:text-[10px] font-bold shrink-0 mt-0.5">
                   Y
                 </div>
                 <div className="flex-1 flex gap-2">
@@ -332,7 +332,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
                     onChange={(e) => setCommentText(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleComment()}
                     placeholder="Add a comment…"
-                    className="h-8 text-xs rounded-xl"
+                    className="h-8 text-sm md:text-xs rounded-xl"
                   />
                   <Button size="sm" className="h-8 w-8 p-0 rounded-xl shrink-0" onClick={handleComment}>
                     <Send className="w-3.5 h-3.5" />
@@ -405,7 +405,7 @@ export default function TeacherResources() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="font-heading font-semibold text-xl">Resources</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">Curated materials and community knowledge</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Curated materials and community knowledge</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -461,7 +461,7 @@ export default function TeacherResources() {
                 <button
                   key={key}
                   onClick={() => setActiveCategory(key)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                  className={`px-3.5 py-1.5 rounded-full text-sm md:text-xs font-semibold border transition-all ${
                     activeCategory === key
                       ? "text-[var(--text-primary)] border-transparent"
                       : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"
@@ -479,7 +479,7 @@ export default function TeacherResources() {
                 No resources match your search.
               </div>
             ) : (
-              <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              <motion.div layout className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <AnimatePresence mode="popLayout">
                   {filteredLibrary.map((item) => (
                     <LibraryCard key={item.id} item={item} onStar={handleStar} />
@@ -503,7 +503,7 @@ export default function TeacherResources() {
                   <button
                     key={key}
                     onClick={() => setForumSort(key)}
-                    className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                    className={`flex items-center gap-1 px-3 py-1 rounded-lg text-sm md:text-xs font-medium transition-all ${
                       forumSort === key ? "bg-card shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
@@ -516,7 +516,7 @@ export default function TeacherResources() {
                   <button
                     key={t}
                     onClick={() => setForumTag(t)}
-                    className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-sm md:text-[11px] font-semibold border transition-all ${
                       forumTag === t
                         ? "bg-primary text-primary-foreground border-primary"
                         : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"

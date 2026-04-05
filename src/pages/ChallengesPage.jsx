@@ -210,14 +210,14 @@ export default function ChallengesPage() {
                     </div>
 
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs text-muted-foreground">
+                      <div className="flex justify-between text-sm md:text-xs text-muted-foreground">
                         <span>{slotsLeft} spots left</span>
                         <span>{challenge.current_slots}/{challenge.max_slots}</span>
                       </div>
                       <Progress value={slotPct} className="h-1.5" />
                     </div>
 
-                    <p className="text-xs text-muted-foreground">{deadlineDays} days left</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">{deadlineDays} days left</p>
                   </CardContent>
                 </Card>
               );

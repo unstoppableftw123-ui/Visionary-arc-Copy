@@ -172,10 +172,10 @@ export default function BriefGeneratorPage() {
 
       {/* Difficulty selector */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+        <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
           Choose Difficulty
         </p>
-        <div className="grid grid-cols-1 min-[380px]:grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {DIFFICULTIES.map((d) => {
             const active = difficulty === d.id;
             return (
@@ -190,10 +190,10 @@ export default function BriefGeneratorPage() {
                 }`}
               >
                 <p className={`text-sm font-semibold ${active ? track.colors.text : ''}`}>{d.label}</p>
-                <p className="text-[11px] mt-0.5 opacity-70 flex items-center gap-1">
+                <p className="text-sm md:text-[11px] mt-0.5 opacity-70 flex items-center gap-1">
                   <Clock className="w-3 h-3" /> {d.time}
                 </p>
-                <p className="text-[11px] mt-0.5 opacity-70 flex items-center gap-1">
+                <p className="text-sm md:text-[11px] mt-0.5 opacity-70 flex items-center gap-1">
                   <Zap className="w-3 h-3" /> {d.xp}
                 </p>
               </button>
@@ -226,7 +226,7 @@ export default function BriefGeneratorPage() {
             <Sparkles className="w-5 h-5" />
             Generate My Brief
           </motion.button>
-          <p className="text-xs text-muted-foreground">AI creates a brief written just for you</p>
+          <p className="text-sm md:text-xs text-muted-foreground">AI creates a brief written just for you</p>
         </motion.div>
       )}
 
@@ -263,7 +263,7 @@ export default function BriefGeneratorPage() {
             <div className={`border-b border-border px-4 py-5 sm:px-6 ${track.colors.bg}`}>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                 <div className="min-w-0">
-                  <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide mb-1">
+                  <p className="text-muted-foreground text-sm md:text-xs font-medium uppercase tracking-wide mb-1">
                     You are a
                   </p>
                   <p className="text-foreground text-xl font-medium break-words sm:text-[1.35rem]">
@@ -271,7 +271,7 @@ export default function BriefGeneratorPage() {
                   </p>
                   <p className="mt-0.5 text-lg font-bold text-foreground break-words sm:text-xl">{brief.title}</p>
                 </div>
-                <span className={`self-start shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${track.colors.badge}`}>
+                <span className={`self-start shrink-0 rounded-full px-2.5 py-1 text-sm md:text-[11px] font-bold uppercase tracking-wide ${track.colors.badge}`}>
                   {brief.difficulty ?? difficulty}
                 </span>
               </div>
@@ -280,7 +280,7 @@ export default function BriefGeneratorPage() {
             <div className="space-y-5 px-4 py-5 sm:px-6">
               {/* Client box */}
               <div className="rounded-xl bg-secondary p-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
+                <p className="text-sm md:text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
                   Your Client
                 </p>
                 <p className="text-foreground font-semibold">{brief.client}</p>
@@ -292,7 +292,7 @@ export default function BriefGeneratorPage() {
 
               {/* Deliverables */}
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+                <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
                   Deliverables
                 </p>
                 <div className="space-y-2">
@@ -317,12 +317,12 @@ export default function BriefGeneratorPage() {
 
               {/* Skills */}
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                   Skills You'll Build
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {brief.skills.map((skill) => (
-                    <span key={skill} className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${track.colors.badge}`}>
+                    <span key={skill} className={`text-sm md:text-[11px] font-medium px-2.5 py-1 rounded-full ${track.colors.badge}`}>
                       {skill}
                     </span>
                   ))}
@@ -331,11 +331,11 @@ export default function BriefGeneratorPage() {
 
               {/* Timeline + XP */}
               <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-secondary rounded-full px-3 py-1.5">
+                <div className="flex items-center gap-1.5 text-sm md:text-xs text-muted-foreground bg-secondary rounded-full px-3 py-1.5">
                   <Clock className="w-3.5 h-3.5" />
                   {brief.timeline}
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-yellow-400 bg-yellow-400/10 rounded-full px-3 py-1.5">
+                <div className="flex items-center gap-1.5 text-sm md:text-xs text-yellow-400 bg-yellow-400/10 rounded-full px-3 py-1.5">
                   <Zap className="w-3.5 h-3.5" />
                   {DIFFICULTY_XP[difficulty]?.toLocaleString()} XP on completion
                 </div>

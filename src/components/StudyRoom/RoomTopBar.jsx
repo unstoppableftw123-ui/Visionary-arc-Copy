@@ -41,7 +41,7 @@ export default function RoomTopBar({ roomName, tag, onLeave }) {
         </span>
         {tag && (
           <span
-            className={`shrink-0 px-2 py-0.5 rounded-md text-xs font-medium border ${tagStyle}`}
+            className={`shrink-0 px-2 py-0.5 rounded-md text-sm md:text-xs font-medium border ${tagStyle}`}
           >
             {tag}
           </span>
@@ -60,7 +60,7 @@ export default function RoomTopBar({ roomName, tag, onLeave }) {
               >
                 <AvatarImage src={member.avatar} alt={member.name} />
                 <AvatarFallback
-                  className="text-xs"
+                  className="text-sm md:text-xs"
                   style={{
                     backgroundColor: member.color || myColor,
                     color: "#fff",
@@ -72,7 +72,7 @@ export default function RoomTopBar({ roomName, tag, onLeave }) {
             ))}
           </div>
           {allMembers.length > 5 && (
-            <span className="text-xs text-muted-foreground pl-1">
+            <span className="text-sm md:text-xs text-muted-foreground pl-1">
               +{allMembers.length - 5}
             </span>
           )}

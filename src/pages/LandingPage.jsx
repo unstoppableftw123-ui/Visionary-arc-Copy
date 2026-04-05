@@ -115,18 +115,18 @@ function HeroBriefCard() {
       {/* Header row */}
       <div className="flex items-center gap-2 mb-3">
         <span className="w-2 h-2 rounded-full bg-orange-600 animate-pulse" />
-        <span className="text-xs font-semibold text-orange-400 uppercase tracking-widest">AI Brief — Design & Branding</span>
+        <span className="text-sm md:text-xs font-semibold text-orange-400 uppercase tracking-widest">AI Brief — Design & Branding</span>
       </div>
 
-      <p className="text-xs text-zinc-400 font-medium mb-1">Role</p>
+      <p className="text-sm md:text-xs text-zinc-400 font-medium mb-1">Role</p>
       <p className="text-sm font-semibold text-[var(--text-primary)] mb-3">You are a Junior Brand Strategist</p>
 
-      <p className="text-xs text-zinc-400 font-medium mb-1">Client</p>
+      <p className="text-sm md:text-xs text-zinc-400 font-medium mb-1">Client</p>
       <p className="text-sm text-zinc-200 mb-3">
         Nour Foundation — a local women's shelter — needs a social media rebrand.
       </p>
 
-      <p className="text-xs text-zinc-400 font-medium mb-1">Brief</p>
+      <p className="text-sm md:text-xs text-zinc-400 font-medium mb-1">Brief</p>
       <p className="text-sm text-zinc-200 min-h-[3.5rem]">
         {displayed}
         {!done && <span className="inline-block w-0.5 h-4 bg-orange-600/10 ml-0.5 animate-pulse align-middle" />}
@@ -135,7 +135,7 @@ function HeroBriefCard() {
       {/* Skills */}
       <div className="flex flex-wrap gap-1.5 mt-4">
         {["Brand Strategy", "Visual Identity", "Social Media", "Copywriting"].map((s) => (
-          <span key={s} className="text-xs px-2 py-0.5 rounded-full bg-orange-600/15 text-orange-400 border border-orange-500/30">
+          <span key={s} className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-orange-600/15 text-orange-400 border border-orange-500/30">
             {s}
           </span>
         ))}
@@ -229,7 +229,7 @@ export default function LandingPage() {
 
       {/* ── 2. STATS BAR ─────────────────────────────────────────────────── */}
       <Section className="border-y border-zinc-800 bg-zinc-900/50 py-10 px-5">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
           {[
             { value: 12000, suffix: "+", label: "students" },
             { value: 5,     suffix: "",  label: "career tracks" },
@@ -245,7 +245,7 @@ export default function LandingPage() {
                   <CountUp target={stat.value} suffix={stat.suffix} />
                 )}
               </p>
-              <p className="text-xs sm:text-sm text-zinc-400">{stat.label}</p>
+              <p className="text-sm md:text-xs sm:text-sm text-zinc-400">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -279,11 +279,11 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>{track.name}</p>
-                    <p className="text-xs mt-0.5" style={{ color: `var(--track-${track.id})` }}>{track.tagline}</p>
+                    <p className="text-sm md:text-xs mt-0.5" style={{ color: `var(--track-${track.id})` }}>{track.tagline}</p>
                   </div>
                   <ul className="space-y-1 mt-auto">
                     {projects.map((p) => (
-                      <li key={p} className="text-xs leading-snug" style={{ color: "var(--text-muted)" }}>
+                      <li key={p} className="text-sm md:text-xs leading-snug" style={{ color: "var(--text-muted)" }}>
                         · {p}
                       </li>
                     ))}
@@ -340,29 +340,29 @@ export default function LandingPage() {
           <div className="card text-left mb-8" style={{ borderColor: "var(--track-content)" }}>
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full" style={{ background: "var(--track-content)" }} />
-              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--track-content)", fontFamily: "var(--font-display)" }}>Design & Branding · Standard</span>
+              <span className="text-sm md:text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--track-content)", fontFamily: "var(--font-display)" }}>Design & Branding · Standard</span>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <p className="text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Your Role</p>
+                <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Your Role</p>
                 <p className="font-semibold" style={{ color: "var(--text-primary)" }}>Junior Brand Strategist</p>
               </div>
               <div>
-                <p className="text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Timeline</p>
+                <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Timeline</p>
                 <p className="font-semibold" style={{ color: "var(--text-primary)" }}>2 weeks</p>
               </div>
             </div>
 
             <div className="mt-4">
-              <p className="text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Client</p>
+              <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Client</p>
               <p style={{ color: "var(--text-secondary)" }}>
                 Nour Foundation — a local women's shelter — needs a social media rebrand.
               </p>
             </div>
 
             <div className="mt-4">
-              <p className="text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Brief</p>
+              <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Brief</p>
               <p style={{ color: "var(--text-secondary)" }}>
                 You'll research the org, define their brand voice, and design a 3-post Instagram campaign.
               </p>
@@ -377,8 +377,8 @@ export default function LandingPage() {
             </div>
 
             <div className="mt-4 pt-4 flex items-center justify-between" style={{ borderTop: "1px solid var(--border)" }}>
-              <span className="text-xs" style={{ color: "var(--text-muted)" }}>+400 XP on completion</span>
-              <span className="text-xs font-medium" style={{ color: "var(--rank-d)" }}>Portfolio-ready</span>
+              <span className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>+400 XP on completion</span>
+              <span className="text-sm md:text-xs font-medium" style={{ color: "var(--rank-d)" }}>Portfolio-ready</span>
             </div>
           </div>
 
@@ -413,7 +413,7 @@ export default function LandingPage() {
                   </div>
                   <h3 className="font-bold text-lg mb-2" style={{ fontFamily: "var(--font-display)" }}>{card.title}</h3>
                   <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>{card.body}</p>
-                  <p className="text-xs font-semibold" style={{ color: `var(${card.rankVar})`, fontFamily: "var(--font-display)" }}>{card.detail}</p>
+                  <p className="text-sm md:text-xs font-semibold" style={{ color: `var(${card.rankVar})`, fontFamily: "var(--font-display)" }}>{card.detail}</p>
                 </div>
               );
             })}

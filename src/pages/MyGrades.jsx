@@ -56,17 +56,17 @@ export default function MyGrades() {
         <div className="flex items-center gap-6 rounded-lg border border-border bg-card px-5 py-4">
           <div className="text-center">
             <p className={`text-3xl ${LETTER_STYLE[overallLetter]}`}>{overallLetter}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Overall</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Overall</p>
           </div>
           <div className="h-10 w-px bg-border" />
           <div className="text-center">
             <p className="text-2xl font-semibold">{overallPct != null ? `${overallPct}%` : "—"}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Average</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Average</p>
           </div>
           <div className="h-10 w-px bg-border" />
           <div className="text-center">
             <p className="text-2xl font-semibold">{grades.length}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Submissions</p>
+            <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Submissions</p>
           </div>
           {grades.some((g) => g.isLate) && (
             <>
@@ -75,7 +75,7 @@ export default function MyGrades() {
                 <p className="text-2xl font-semibold text-orange-500">
                   {grades.filter((g) => g.isLate).length}
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5">Late</p>
+                <p className="text-sm md:text-xs text-muted-foreground mt-0.5">Late</p>
               </div>
             </>
           )}
@@ -110,14 +110,14 @@ export default function MyGrades() {
                       {g.isLate && (
                         <Badge
                           variant="outline"
-                          className="text-[10px] py-0 border-orange-400 text-orange-500"
+                          className="text-sm md:text-[10px] py-0 border-orange-400 text-orange-500"
                         >
                           Late
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">{g.className}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm md:text-xs text-muted-foreground mt-0.5">{g.className}</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">
                       Submitted{" "}
                       {new Date(g.submittedAt).toLocaleDateString("en-US", {
                         month: "short",
@@ -133,7 +133,7 @@ export default function MyGrades() {
                     <p className="text-sm text-muted-foreground">
                       {g.score}/{g.maxScore}
                       {p != null && (
-                        <span className="ml-1 text-xs">({p}%)</span>
+                        <span className="ml-1 text-sm md:text-xs">({p}%)</span>
                       )}
                     </p>
                   </div>
@@ -141,7 +141,7 @@ export default function MyGrades() {
 
                 {/* Teacher comment */}
                 {g.teacherComment && (
-                  <div className="mt-3 rounded-md bg-muted/40 px-3 py-2 text-xs text-muted-foreground border-l-2 border-primary/40">
+                  <div className="mt-3 rounded-md bg-muted/40 px-3 py-2 text-sm md:text-xs text-muted-foreground border-l-2 border-primary/40">
                     <span className="font-medium text-foreground/70">Teacher: </span>
                     {g.teacherComment}
                   </div>

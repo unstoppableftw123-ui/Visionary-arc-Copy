@@ -34,7 +34,7 @@ function ChipSelect({ options, selected, onToggle }) {
           key={opt}
           type="button"
           onClick={() => onToggle(opt)}
-          className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
+          className={`rounded-full border px-2.5 py-1 text-sm md:text-xs transition-colors ${
             selected.includes(opt)
               ? "border-primary bg-primary/10 text-primary"
               : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -113,7 +113,7 @@ export default function AccommodationsTool({ prefilled = {} }) {
             </Label>
             <ChipSelect options={NEEDS_OPTIONS} selected={areasOfNeed} onToggle={toggleNeed} />
             {areasOfNeed.length === 0 && (
-              <p className="text-xs text-muted-foreground">Select at least one area to continue</p>
+              <p className="text-sm md:text-xs text-muted-foreground">Select at least one area to continue</p>
             )}
           </div>
 

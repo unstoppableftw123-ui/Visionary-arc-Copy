@@ -202,7 +202,7 @@ export default function ProjectPage() {
 
       {/* Progress tracker */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+        <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
           Your progress
         </p>
         <div className="flex items-center">
@@ -216,7 +216,7 @@ export default function ProjectPage() {
                 }`}
               >
                 <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors ${
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-sm md:text-xs font-bold border-2 transition-colors ${
                     i < stage
                       ? `${colors.bg} ${colors.text} border-transparent`
                       : i === stage
@@ -245,14 +245,14 @@ export default function ProjectPage() {
         <div className={`px-6 py-5 border-b border-border ${colors.bg}`}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide mb-1">
+              <p className="text-muted-foreground text-sm md:text-xs font-medium uppercase tracking-wide mb-1">
                 You are a
               </p>
               <p className="text-foreground font-medium text-xl">{brief.role}</p>
               <p className="text-xl font-bold text-foreground mt-0.5">{brief.title}</p>
             </div>
             <span
-              className={`text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full shrink-0 ${colors.badge}`}
+              className={`text-sm md:text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full shrink-0 ${colors.badge}`}
             >
               {brief.difficulty ?? difficulty}
             </span>
@@ -262,7 +262,7 @@ export default function ProjectPage() {
         <div className="px-6 py-5 space-y-5">
           {/* Client */}
           <div className="rounded-xl bg-secondary p-4">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
+            <p className="text-sm md:text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
               Your Client
             </p>
             <p className="text-foreground font-semibold">{brief.client}</p>
@@ -274,7 +274,7 @@ export default function ProjectPage() {
 
           {/* Deliverables (checkable) */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+            <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
               Deliverables
             </p>
             <div className="space-y-2">
@@ -298,14 +298,14 @@ export default function ProjectPage() {
 
           {/* Skills */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+            <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
               Skills You'll Build
             </p>
             <div className="flex flex-wrap gap-1.5">
               {(brief.skills ?? []).map((skill) => (
                 <span
                   key={skill}
-                  className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${colors.badge}`}
+                  className={`text-sm md:text-[11px] font-medium px-2.5 py-1 rounded-full ${colors.badge}`}
                 >
                   {skill}
                 </span>
@@ -314,7 +314,7 @@ export default function ProjectPage() {
           </div>
 
           {/* Timeline */}
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-secondary rounded-full px-3 py-1.5 w-fit">
+          <div className="flex items-center gap-1.5 text-sm md:text-xs text-muted-foreground bg-secondary rounded-full px-3 py-1.5 w-fit">
             <Clock className="w-3.5 h-3.5" />
             {brief.timeline}
           </div>
@@ -339,7 +339,7 @@ export default function ProjectPage() {
               <ExternalLink className="w-3.5 h-3.5" />
               {tool.name}
               {tool.label && (
-                <span className="text-[10px] text-muted-foreground">({tool.label})</span>
+                <span className="text-sm md:text-[10px] text-muted-foreground">({tool.label})</span>
               )}
             </a>
           ))}
@@ -369,7 +369,7 @@ export default function ProjectPage() {
           <h2 className="font-semibold text-foreground">Submit Your Project</h2>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <label className="text-sm md:text-xs font-medium text-muted-foreground uppercase tracking-wide">
               Project link *
             </label>
             <input
@@ -380,14 +380,14 @@ export default function ProjectPage() {
               className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
             {urlError && (
-              <p className="flex items-center gap-1.5 text-xs text-red-400">
+              <p className="flex items-center gap-1.5 text-sm md:text-xs text-red-400">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {urlError}
               </p>
             )}
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <label className="text-sm md:text-xs font-medium text-muted-foreground uppercase tracking-wide">
               What did you build?{' '}
               <span className="normal-case font-normal">(optional, 2–3 sentences)</span>
             </label>
@@ -412,7 +412,7 @@ export default function ProjectPage() {
             {submitting ? 'Submitting…' : 'Submit Project'}
           </button>
 
-          <p className="text-xs text-center text-muted-foreground">
+          <p className="text-sm md:text-xs text-center text-muted-foreground">
             Earn +{(DIFFICULTY_XP[difficulty] ?? 200).toLocaleString()} XP
             &nbsp;+&nbsp;{DIFFICULTY_COINS[difficulty] ?? 50} coins on completion
           </p>

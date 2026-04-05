@@ -202,7 +202,7 @@ export default function VocabJamGame({
       </div>
 
       {/* Definition options */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {options.map((opt) => (
           <motion.button
             key={opt}
@@ -231,17 +231,17 @@ export default function VocabJamGame({
           <div className="rounded-xl bg-[var(--surface-2)] border border-[var(--border)] p-3">
             <div className="flex items-center gap-1.5 mb-3">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
-              <span className="text-xs font-semibold text-[var(--text-primary)]">Live Scores</span>
+              <span className="text-sm md:text-xs font-semibold text-[var(--text-primary)]">Live Scores</span>
             </div>
             {liveScores.length === 0 ? (
-              <p className="text-xs text-[var(--text-muted)]">Connecting...</p>
+              <p className="text-sm md:text-xs text-[var(--text-muted)]">Connecting...</p>
             ) : (
               <div className="space-y-1.5">
                 {liveScores.map((p, i) => (
                   <div
                     key={p.id}
                     className={cn(
-                      "flex items-center gap-2 text-xs rounded-lg px-2 py-1.5",
+                      "flex items-center gap-2 text-sm md:text-xs rounded-lg px-2 py-1.5",
                       p.id === 'me' ? "bg-[#6e5ff0]/20 text-[var(--text-primary)]" : "text-[var(--text-secondary)]"
                     )}
                   >

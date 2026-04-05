@@ -123,7 +123,7 @@ function ErrorView({ message, sessionId }) {
           {message}
         </p>
         {sessionId && (
-          <p className="text-xs text-muted-foreground mt-3 font-mono bg-muted rounded px-3 py-1 inline-block">
+          <p className="text-sm md:text-xs text-muted-foreground mt-3 font-mono bg-muted rounded px-3 py-1 inline-block">
             Session: {sessionId}
           </p>
         )}
@@ -140,7 +140,7 @@ function ErrorView({ message, sessionId }) {
           </a>
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-sm md:text-xs text-muted-foreground">
         If you were charged, your payment is safe.{" "}
         <a
           href="mailto:hello@visionaryacademy.com"
@@ -214,7 +214,7 @@ function SuccessView({ data, userName }) {
         transition={{ delay: 0.3 }}
         className={`w-full max-w-sm rounded-2xl border border-border ${meta.bgAccent} p-5 mb-6 text-left`}
       >
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+        <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
           Your new benefits
         </p>
         <ul className="space-y-2.5">
@@ -248,7 +248,7 @@ function SuccessView({ data, userName }) {
         transition={{ delay: 0.6 }}
         className="w-full max-w-sm rounded-xl bg-orange-600/10 border border-orange-500/30 px-4 py-3 mb-6 text-left"
       >
-        <p className="text-xs text-orange-400 font-medium flex items-start gap-1.5">
+        <p className="text-sm md:text-xs text-orange-400 font-medium flex items-start gap-1.5">
           <Sparkles className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
           <span>
             <span className="font-bold">Test mode:</span> Use card{" "}
@@ -284,7 +284,7 @@ function SuccessView({ data, userName }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.65 }}
-        className="text-xs text-muted-foreground mt-6"
+        className="text-sm md:text-xs text-muted-foreground mt-6"
       >
         A receipt was sent to your email by Stripe. Questions?{" "}
         <a

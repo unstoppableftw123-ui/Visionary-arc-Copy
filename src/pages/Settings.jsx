@@ -60,9 +60,9 @@ function UsageBar({ label, subtext, used, limit }) {
       <div className="flex items-center justify-between mb-1.5">
         <div>
           <span className="text-sm font-medium">{label}</span>
-          <span className="text-xs text-muted-foreground ml-2">{subtext}</span>
+          <span className="text-sm md:text-xs text-muted-foreground ml-2">{subtext}</span>
         </div>
-        <span className={`text-xs font-semibold tabular-nums ${pct > 80 ? "text-red-500" : pct >= 50 ? "text-amber-500" : "text-muted-foreground"}`}>
+        <span className={`text-sm md:text-xs font-semibold tabular-nums ${pct > 80 ? "text-red-500" : pct >= 50 ? "text-amber-500" : "text-muted-foreground"}`}>
           {used} / {limit} calls
         </span>
       </div>
@@ -151,18 +151,18 @@ export default function Settings() {
                           <p className={`font-semibold ${founderMeta.text}`}>{founderMeta.label}</p>
                           <FounderBadge user={user} size="xs" />
                         </div>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-sm md:text-xs text-muted-foreground">
                           {purchaseDate ? `Purchased on ${purchaseDate}` : "Lifetime access"} · Never expires
                         </p>
                       </div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-green-500 bg-green-500/10 border border-green-500/30 px-2 py-1 rounded-full">
+                      <span className="text-sm md:text-xs font-bold uppercase tracking-wider text-green-500 bg-green-500/10 border border-green-500/30 px-2 py-1 rounded-full">
                         Active
                       </span>
                     </div>
 
                     {/* Benefits list */}
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                      <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
                         Your benefits
                       </p>
                       <ul className="space-y-2">
@@ -267,7 +267,7 @@ export default function Settings() {
                 </div>
 
                 {/* Refresh */}
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5 text-sm md:text-xs text-muted-foreground">
                   <button
                     type="button"
                     onClick={() => {
@@ -295,14 +295,14 @@ export default function Settings() {
                   <button
                     type="button"
                     onClick={() => setShowPlanLimits((v) => !v)}
-                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center gap-1 text-sm md:text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showPlanLimits ? "rotate-180" : ""}`} />
                     View plan limits
                   </button>
                   {showPlanLimits && (
                     <div className="mt-2 rounded-xl border border-border overflow-hidden">
-                      <table className="w-full text-xs">
+                      <table className="w-full text-sm md:text-xs">
                         <thead>
                           <tr className="bg-secondary/50">
                             <th className="text-left px-3 py-2 font-semibold text-muted-foreground">Plan</th>
@@ -363,7 +363,7 @@ export default function Settings() {
                   <button
                     type="button"
                     onClick={() => setAiToolsExpanded((v) => !v)}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+                    className="flex items-center gap-1.5 text-sm md:text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
                   >
                     {aiToolsExpanded ? (
                       <>Hide tools <ChevronUp className="w-3.5 h-3.5" /></>
@@ -386,7 +386,7 @@ export default function Settings() {
                   >
                     <Sparkles className="w-6 h-6 text-primary/60 group-hover:text-primary transition-colors" />
                     <p className="text-sm font-semibold text-foreground">Open AI Toolkit</p>
-                    <p className="text-xs text-muted-foreground">Click to browse and launch all your AI tools</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">Click to browse and launch all your AI tools</p>
                   </button>
                 </CardContent>
               )}
@@ -421,7 +421,7 @@ export default function Settings() {
                   onChange={(e) => setThemeSearch(e.target.value)}
                   className="max-w-xs"
                 />
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-3">
                   {filteredThemes.map((t) => {
                     const isActive = activeTheme === t.id;
                     const h = t.hex;
@@ -445,7 +445,7 @@ export default function Settings() {
                             <div style={{ background: h.surface }} className="flex-1 rounded" />
                             <div style={{ background: h.surface2 }} className="flex-1 rounded" />
                           </div>
-                          <div className="px-2 py-0.5 text-[10px] font-medium truncate" style={{ color: h.text2 }}>
+                          <div className="px-2 py-0.5 text-sm md:text-[10px] font-medium truncate" style={{ color: h.text2 }}>
                             {t.name}
                           </div>
                         </div>
@@ -496,7 +496,7 @@ export default function Settings() {
                         style={{ fontFamily: `"${f.family}", sans-serif` }}
                       >
                         <span className="text-sm block truncate">{fontPreview || PREVIEW_PLACEHOLDER}</span>
-                        <span className="text-xs text-muted-foreground mt-1 block">{f.name}</span>
+                        <span className="text-sm md:text-xs text-muted-foreground mt-1 block">{f.name}</span>
                       </button>
                     );
                   })}

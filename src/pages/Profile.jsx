@@ -347,7 +347,7 @@ export default function Profile() {
                                 className={profileErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}
                               />
                               {profileErrors.name && (
-                                <p className="text-xs text-destructive">{profileErrors.name}</p>
+                                <p className="text-sm md:text-xs text-destructive">{profileErrors.name}</p>
                               )}
                             </div>
                             <div className="space-y-2">
@@ -363,7 +363,7 @@ export default function Profile() {
                                 className={profileErrors.bio ? "border-destructive focus-visible:ring-destructive" : ""}
                               />
                               {profileErrors.bio && (
-                                <p className="text-xs text-destructive">{profileErrors.bio}</p>
+                                <p className="text-sm md:text-xs text-destructive">{profileErrors.bio}</p>
                               )}
                             </div>
                             <Button onClick={handleUpdateProfile} className="w-full" data-testid="save-profile-btn">
@@ -418,7 +418,7 @@ export default function Profile() {
             </div>
             <div>
               <p className="text-2xl font-bold tabular-nums">{consistencyScore}%</p>
-              <p className="text-xs text-muted-foreground">Consistency</p>
+              <p className="text-sm md:text-xs text-muted-foreground">Consistency</p>
             </div>
           </motion.div>
           <motion.div
@@ -432,7 +432,7 @@ export default function Profile() {
             </div>
             <div>
               <p className="text-2xl font-bold tabular-nums">{totalStudyHours}h</p>
-              <p className="text-xs text-muted-foreground">Study hours</p>
+              <p className="text-sm md:text-xs text-muted-foreground">Study hours</p>
             </div>
           </motion.div>
           <motion.div
@@ -446,7 +446,7 @@ export default function Profile() {
             </div>
             <div>
               <p className="text-2xl font-bold tabular-nums">{streak}</p>
-              <p className="text-xs text-muted-foreground">Day streak</p>
+              <p className="text-sm md:text-xs text-muted-foreground">Day streak</p>
             </div>
           </motion.div>
         </div>
@@ -467,7 +467,7 @@ export default function Profile() {
                     <p className="text-sm text-muted-foreground">Recent completed projects</p>
                   </div>
                   <Link to="/portfolio">
-                    <Button variant="ghost" size="sm" className="gap-1 text-xs">
+                    <Button variant="ghost" size="sm" className="gap-1 text-sm md:text-xs">
                       View all <ArrowRight className="w-3 h-3" />
                     </Button>
                   </Link>
@@ -481,7 +481,7 @@ export default function Profile() {
                       transition={{ delay: 0.05 * i }}
                     >
                       <div className="rounded-xl border border-border bg-muted/30 p-3 h-full">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                        <p className="text-sm md:text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
                           {entry.role}
                         </p>
                         <h3 className="text-sm font-semibold text-foreground line-clamp-2 mb-2">
@@ -492,7 +492,7 @@ export default function Profile() {
                             href={entry.submission_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs text-primary hover:opacity-80 transition-opacity"
+                            className="inline-flex items-center gap-1 text-sm md:text-xs text-primary hover:opacity-80 transition-opacity"
                           >
                             View project <ExternalLink className="w-3 h-3" />
                           </a>
@@ -522,7 +522,7 @@ export default function Profile() {
                       Track every milestone badge on your profile.
                     </p>
                   </div>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="secondary" className="text-sm md:text-xs">
                     {Array.isArray(profile?.badges) ? profile.badges.filter((badgeId) => BADGES.some((badge) => badge.id === badgeId)).length : 0}/{BADGES.length} unlocked
                   </Badge>
                 </div>
@@ -572,7 +572,7 @@ export default function Profile() {
                                   </Badge>
                                 </div>
 
-                                <p className="mt-3 text-xs text-muted-foreground">
+                                <p className="mt-3 text-sm md:text-xs text-muted-foreground">
                                   {unlocked && earnedAt ? `Earned ${formatEarnedDate(earnedAt)}` : "Not earned yet"}
                                 </p>
                               </div>
@@ -626,7 +626,7 @@ export default function Profile() {
                   <div className="flex flex-col items-center justify-center py-12 rounded-xl bg-muted/50 border border-dashed border-border">
                     <EyeOff className="w-12 h-12 text-muted-foreground mb-2" />
                     <p className="text-sm font-medium text-muted-foreground">Profile score is private</p>
-                    <p className="text-xs text-muted-foreground mt-1">This user has hidden their behavioral scores.</p>
+                    <p className="text-sm md:text-xs text-muted-foreground mt-1">This user has hidden their behavioral scores.</p>
                   </div>
                 ) : (
                   <>
@@ -656,19 +656,19 @@ export default function Profile() {
                       </ResponsiveContainer>
                     </div>
                     <div className="flex flex-wrap gap-2 mt-4">
-                      <Badge variant="secondary" className="text-xs font-normal">
+                      <Badge variant="secondary" className="text-sm md:text-xs font-normal">
                         Consistency {behavioralProfile.consistencyScore}%
                       </Badge>
-                      <Badge variant="secondary" className="text-xs font-normal">
+                      <Badge variant="secondary" className="text-sm md:text-xs font-normal">
                         Resilience {behavioralProfile.resilienceScore}%
                       </Badge>
-                      <Badge variant="secondary" className="text-xs font-normal">
+                      <Badge variant="secondary" className="text-sm md:text-xs font-normal">
                         Follow-through {behavioralProfile.followThroughRate}%
                       </Badge>
-                      <Badge variant="secondary" className="text-xs font-normal">
+                      <Badge variant="secondary" className="text-sm md:text-xs font-normal">
                         Contribution {behavioralProfile.rawContributions} shared
                       </Badge>
-                      <Badge variant="secondary" className="text-xs font-normal">
+                      <Badge variant="secondary" className="text-sm md:text-xs font-normal">
                         Growth {behavioralProfile.growthPct >= 0 ? "+" : ""}{behavioralProfile.growthPct}%
                       </Badge>
                     </div>
@@ -734,7 +734,7 @@ export default function Profile() {
                             </p>
                           )}
                           <div className="flex flex-wrap items-center justify-between gap-2">
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-sm md:text-xs">
                               {template.category}
                             </Badge>
                             <Button
@@ -783,13 +783,13 @@ export default function Profile() {
                             <FileText className="w-8 h-8 text-muted-foreground/70 mb-2" />
                             <h3 className="font-semibold line-clamp-2">{note.title}</h3>
                             {note.content_preview && (
-                              <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                              <p className="text-sm md:text-xs text-muted-foreground mt-1 line-clamp-2">
                                 {note.content_preview}
                               </p>
                             )}
                           </div>
                           <CardContent className="p-3 flex flex-wrap items-center justify-between gap-2">
-                            <Badge className={`text-xs ${style.badge}`}>
+                            <Badge className={`text-sm md:text-xs ${style.badge}`}>
                               {note.folder || "Note"}
                             </Badge>
                             <Link to="/library">

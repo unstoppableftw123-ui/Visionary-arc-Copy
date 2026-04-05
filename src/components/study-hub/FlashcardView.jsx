@@ -85,7 +85,7 @@ export default function FlashcardView({
               <p className="font-hub-mono text-base leading-relaxed text-hub-text">
                 {card.front}
               </p>
-              <span className="mt-2 font-hub-sans text-xs text-hub-muted">Click to flip</span>
+              <span className="mt-2 font-hub-sans text-sm md:text-xs text-hub-muted">Click to flip</span>
             </div>
             <div
               className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-hub-accent/30 bg-hub-bg p-6 transition-transform duration-300 ease-out"

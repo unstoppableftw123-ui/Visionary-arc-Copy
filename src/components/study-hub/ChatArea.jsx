@@ -39,7 +39,7 @@ function EmptyState({ onModeChange }) {
               <Icon className="h-4 w-4 text-hub-accent" />
             </div>
             <p className="font-hub-sans text-sm font-semibold text-hub-text">{label}</p>
-            <p className="mt-1 font-hub-sans text-xs leading-relaxed text-hub-muted">{desc}</p>
+            <p className="mt-1 font-hub-sans text-sm md:text-xs leading-relaxed text-hub-muted">{desc}</p>
           </button>
         ))}
       </div>

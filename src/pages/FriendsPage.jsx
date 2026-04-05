@@ -91,15 +91,15 @@ function FriendsTab({ userId }) {
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-foreground text-sm truncate">{friend.name}</p>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className={`text-xs font-medium ${tierColor}`}>{tier}</span>
-                <span className="text-muted-foreground text-xs">·</span>
-                <span className="text-xs text-muted-foreground flex items-center gap-0.5">
+                <span className={`text-sm md:text-xs font-medium ${tierColor}`}>{tier}</span>
+                <span className="text-muted-foreground text-sm md:text-xs">·</span>
+                <span className="text-sm md:text-xs text-muted-foreground flex items-center gap-0.5">
                   <Zap className="w-3 h-3" /> {(friend.xp ?? 0).toLocaleString()} XP
                 </span>
                 {(friend.streak ?? 0) > 0 && (
                   <>
-                    <span className="text-muted-foreground text-xs">·</span>
-                    <span className="text-xs text-orange-400 flex items-center gap-0.5">
+                    <span className="text-muted-foreground text-sm md:text-xs">·</span>
+                    <span className="text-sm md:text-xs text-orange-400 flex items-center gap-0.5">
                       <Flame className="w-3 h-3" /> {friend.streak}d
                     </span>
                   </>
@@ -109,7 +109,7 @@ function FriendsTab({ userId }) {
 
             {/* Friend streak badge */}
             {hasFriendStreak && f.friend_streak > 0 && (
-              <span className="text-xs font-medium text-orange-400 bg-orange-500/10 rounded-full px-2.5 py-1 flex items-center gap-1 shrink-0">
+              <span className="text-sm md:text-xs font-medium text-orange-400 bg-orange-500/10 rounded-full px-2.5 py-1 flex items-center gap-1 shrink-0">
                 <Flame className="w-3 h-3" /> {f.friend_streak}d
               </span>
             )}
@@ -118,7 +118,7 @@ function FriendsTab({ userId }) {
             <button
               type="button"
               onClick={() => toast('Challenges coming in Phase 2!')}
-              className="shrink-0 text-xs border border-border rounded-lg px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              className="shrink-0 text-sm md:text-xs border border-border rounded-lg px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
             >
               Challenge
             </button>
@@ -215,7 +215,7 @@ function FindFriendsTab({ userId }) {
       {/* Search results */}
       {results.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Results</p>
+          <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground">Results</p>
           {results.map(profile => (
             <div
               key={profile.id}
@@ -225,14 +225,14 @@ function FindFriendsTab({ userId }) {
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm text-foreground truncate">{profile.name}</p>
                 {profile.school && (
-                  <p className="text-xs text-muted-foreground truncate">{profile.school}</p>
+                  <p className="text-sm md:text-xs text-muted-foreground truncate">{profile.school}</p>
                 )}
               </div>
               <button
                 type="button"
                 onClick={() => handleSendRequest(profile.id)}
                 disabled={sent.has(profile.id)}
-                className="shrink-0 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-border hover:bg-secondary transition-colors disabled:opacity-60"
+                className="shrink-0 flex items-center gap-1.5 text-sm md:text-xs font-medium px-3 py-1.5 rounded-lg border border-border hover:bg-secondary transition-colors disabled:opacity-60"
               >
                 {sent.has(profile.id)
                   ? <><Check className="w-3.5 h-3.5 text-green-400" /> Sent</>
@@ -246,7 +246,7 @@ function FindFriendsTab({ userId }) {
       {/* Pending requests received */}
       {!loadingReqs && pending.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="text-sm md:text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Friend Requests ({pending.length})
           </p>
           {pending.map(req => (
@@ -259,7 +259,7 @@ function FindFriendsTab({ userId }) {
                 <p className="font-semibold text-sm text-foreground truncate">
                   {req.requester?.name}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm md:text-xs text-muted-foreground">
                   {(req.requester?.xp ?? 0).toLocaleString()} XP
                 </p>
               </div>
@@ -267,14 +267,14 @@ function FindFriendsTab({ userId }) {
                 <button
                   type="button"
                   onClick={() => handleAccept(req)}
-                  className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-[var(--text-primary)] transition-colors"
+                  className="flex items-center gap-1 text-sm md:text-xs font-medium px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-[var(--text-primary)] transition-colors"
                 >
                   <Check className="w-3.5 h-3.5" /> Accept
                 </button>
                 <button
                   type="button"
                   onClick={() => handleDecline(req.id)}
-                  className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg border border-border hover:bg-secondary transition-colors text-muted-foreground"
+                  className="flex items-center gap-1 text-sm md:text-xs font-medium px-3 py-1.5 rounded-lg border border-border hover:bg-secondary transition-colors text-muted-foreground"
                 >
                   <X className="w-3.5 h-3.5" /> Decline
                 </button>
@@ -393,7 +393,7 @@ function LeaderboardTab({ userId }) {
                   <p className={`text-sm font-semibold truncate ${isSelf ? 'text-primary' : 'text-foreground'}`}>
                     {row.name ?? 'Unknown'}{isSelf ? ' (You)' : ''}
                   </p>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <p className="text-sm md:text-xs text-muted-foreground flex items-center gap-1">
                     <Zap className="w-3 h-3" />
                     {(row.xp ?? 0).toLocaleString()} XP
                     {(row.streak ?? 0) > 0 && (

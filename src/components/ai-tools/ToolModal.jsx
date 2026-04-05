@@ -52,12 +52,12 @@ export default function ToolModal({ isOpen, onClose, title, icon: Icon, descript
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ type: "spring", damping: 28, stiffness: 380 }}
-            className="fixed inset-x-0 bottom-0 z-50 mx-auto flex flex-col bg-card border border-border shadow-2xl rounded-t-2xl md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[620px] md:max-h-[88vh] md:rounded-2xl"
+            className="fixed inset-x-4 bottom-0 z-50 mx-auto flex max-w-[calc(100vw-2rem)] flex-col rounded-t-2xl border border-border bg-card shadow-2xl md:inset-auto md:top-1/2 md:left-1/2 md:w-[min(620px,calc(100vw-2rem))] md:max-h-[88vh] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl"
             style={{ maxHeight: "92vh" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center gap-4 px-5 py-4 border-b border-border shrink-0">
+            <div className="flex items-center gap-4 border-b border-border px-4 py-4 shrink-0 sm:px-5">
               {Icon && (
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 shadow-sm shadow-primary/10">
                   <Icon className="h-5 w-5 text-primary" />
@@ -66,7 +66,7 @@ export default function ToolModal({ isOpen, onClose, title, icon: Icon, descript
               <div className="min-w-0 flex-1">
                 <h2 className="font-heading font-bold text-lg truncate leading-tight">{title}</h2>
                 {(subtitle || description) && (
-                  <p className="text-xs text-primary/60 truncate mt-0.5 font-medium">
+                  <p className="mt-0.5 truncate text-sm font-medium text-primary/60 md:text-xs">
                     {subtitle || description}
                   </p>
                 )}
@@ -74,7 +74,7 @@ export default function ToolModal({ isOpen, onClose, title, icon: Icon, descript
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 shrink-0 rounded-lg"
+                className="shrink-0 rounded-lg"
                 onClick={onClose}
                 aria-label="Close"
               >
@@ -83,7 +83,7 @@ export default function ToolModal({ isOpen, onClose, title, icon: Icon, descript
             </div>
 
             {/* Body — scrollable */}
-            <div className="flex-1 overflow-y-auto p-5">
+            <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-5">
               {children}
             </div>
           </motion.div>

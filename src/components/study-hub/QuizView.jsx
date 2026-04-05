@@ -102,7 +102,7 @@ export default function QuizView({
                 `}
                 whileTap={!revealed ? { scale: 0.98 } : {}}
               >
-                <span className="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-hub-elevated/30 font-hub-mono text-xs">
+                <span className="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-hub-elevated/30 font-hub-mono text-sm md:text-xs">
                   {String.fromCharCode(65 + index)}
                 </span>
                 {option}

@@ -108,15 +108,15 @@ function DashboardSkeleton() {
       </div>
 
       {/* Bento grid — 4 card skeletons */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
         {/* Today's Progress — spans 2 cols */}
-        <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-4">
+        <div className="col-span-2 rounded-xl border border-border bg-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Skeleton className="h-5 w-5 rounded-md" delay={80} />
             <Skeleton className="h-4 w-36" delay={100} />
           </div>
           <Skeleton className="h-3 w-full rounded-full" delay={120} />
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {[0, 1, 2].map(i => (
               <div key={i} className="rounded-xl bg-secondary/50 p-3 space-y-2">
                 <Skeleton className="h-7 w-12 mx-auto" delay={140 + i * 30} />
@@ -133,7 +133,7 @@ function DashboardSkeleton() {
         <DashboardCardSkeleton index={2} />
 
         {/* Missions / Weekly Goals card — spans 2 cols */}
-        <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
+        <div className="col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
           <div className="flex items-center gap-2">
             <Skeleton className="h-5 w-5 rounded-md" delay={200} />
             <Skeleton className="h-4 w-32" delay={220} />
@@ -154,7 +154,7 @@ function DashboardSkeleton() {
         <DashboardCardSkeleton index={3} />
 
         {/* Brief Opportunity placeholder */}
-        <div className="md:col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
+        <div className="col-span-2 rounded-xl border border-border bg-card p-5 space-y-3">
           <Skeleton className="h-4 w-48" delay={340} />
           <Skeleton className="h-3 w-full" delay={360} />
           <Skeleton className="h-8 w-40 rounded-lg" delay={380} />
@@ -378,7 +378,7 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="text-lg">Couldn't load dashboard</CardTitle>
             <p className="text-sm text-muted-foreground">
-              Make sure the backend is running, or switch to mock mode in <code className="text-xs bg-muted px-1 rounded">apiService.js</code> (USE_REAL_API = false).
+              Make sure the backend is running, or switch to mock mode in <code className="text-sm md:text-xs bg-muted px-1 rounded">apiService.js</code> (USE_REAL_API = false).
             </p>
           </CardHeader>
           <CardContent>
@@ -413,7 +413,7 @@ export default function Dashboard() {
               <span className="text-xl">{founderMeta.emoji}</span>
               <div>
                 <p className={`text-sm font-semibold ${founderMeta.text}`}>{founderMeta.label} — Active</p>
-                <p className="text-xs text-muted-foreground">Lifetime access · All benefits unlocked</p>
+                <p className="text-sm md:text-xs text-muted-foreground">Lifetime access · All benefits unlocked</p>
               </div>
             </div>
             <FounderBadge user={user} size="sm" />
@@ -445,13 +445,13 @@ export default function Dashboard() {
         <AssignmentRadar tasks={tasks} />
 
         {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
           {/* Today's Progress - Spans 2 cols */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="md:col-span-2"
+            className="col-span-2"
           >
             <Card className="h-full border-border hover:shadow-medium transition-shadow">
               <CardHeader className="pb-2">
@@ -478,15 +478,15 @@ export default function Dashboard() {
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
                   <div className="text-center p-3 bg-secondary rounded-xl">
                     <p className="text-2xl font-semibold">{stats?.total_tasks || 0}</p>
-                    <p className="text-xs text-muted-foreground">Total Tasks</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">Total Tasks</p>
                   </div>
                   <div className="text-center p-3 bg-secondary rounded-xl">
                     <p className="text-2xl font-semibold">{todayCompleted}</p>
-                    <p className="text-xs text-muted-foreground">Completed Today</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">Completed Today</p>
                   </div>
                   <div className="text-center p-3 bg-secondary rounded-xl">
                     <p className="text-2xl font-semibold">{stats?.max_streak || 0}</p>
-                    <p className="text-xs text-muted-foreground">Best Streak</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">Best Streak</p>
                   </div>
                 </div>
               </CardContent>
@@ -525,12 +525,12 @@ export default function Dashboard() {
                         <p className="text-3xl font-bold leading-none">
                           {currentStreak >= 7 ? `🏆 ${currentStreak}` : currentStreak}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
+                        <p className="text-sm md:text-xs text-muted-foreground mt-0.5">
                           {currentStreak === 1 ? '1-day streak' : `${currentStreak}-day streak`}
                         </p>
                       </div>
                       {canRepair && (
-                        <Button size="sm" variant="outline" onClick={() => setRepairModalOpen(true)} className="ml-auto text-xs border-orange-300 text-orange-600 h-7 px-2">
+                        <Button size="sm" variant="outline" onClick={() => setRepairModalOpen(true)} className="ml-auto border-orange-300 px-2 text-orange-600">
                           Repair
                         </Button>
                       )}
@@ -562,7 +562,7 @@ export default function Dashboard() {
                     {atRisk && (
                       <div className="flex items-center gap-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5">
                         <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                        <p className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                        <p className="text-sm md:text-[11px] font-medium text-amber-600 dark:text-amber-400">
                           At risk — study today!
                         </p>
                       </div>
@@ -570,13 +570,13 @@ export default function Dashboard() {
 
                     {/* Next milestone */}
                     {milestoneAt && (
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-sm md:text-[11px] text-muted-foreground">
                         {daysToMilestone} day{daysToMilestone !== 1 ? 's' : ''} to {milestoneAt}-day bonus ({milestoneLabel})
                       </p>
                     )}
 
                     {!milestoneAt && (
-                      <p className="text-xs text-orange-600 dark:text-orange-400">Elite streak! 🔥 Keep it going!</p>
+                      <p className="text-sm md:text-xs text-orange-600 dark:text-orange-400">Elite streak! 🔥 Keep it going!</p>
                     )}
                   </CardContent>
                 </Card>
@@ -611,15 +611,15 @@ export default function Dashboard() {
                     />
                   </div>
                 </div>
-                <div className="flex justify-between text-xs" style={{ color: "var(--text-muted)" }}>
+                <div className="flex justify-between text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
                   <span>{gamificationStats?.xp_in_level || 0} XP</span>
                   <span>{gamificationStats?.xp_for_next_level || 100} XP</span>
                 </div>
                 <div className="flex items-center justify-between mt-3">
-                  <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+                  <p className="text-sm md:text-xs" style={{ color: "var(--text-secondary)" }}>
                     {currentXp.toLocaleString()} Total XP
                   </p>
-                  <span className={`badge-rank text-xs`} data-rank={xpTier.rank} style={{ width: "auto", height: "auto", padding: "2px 8px", borderRadius: "var(--radius-full)" }}>
+                  <span className={`badge-rank text-sm md:text-xs`} data-rank={xpTier.rank} style={{ width: "auto", height: "auto", padding: "2px 8px", borderRadius: "var(--radius-full)" }}>
                     {xpTier.label}
                   </span>
                 </div>
@@ -644,13 +644,13 @@ export default function Dashboard() {
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${founderMeta.gradient} flex items-center justify-center text-[var(--text-primary)] shadow-lg`}>
                       <span className="text-lg leading-none">{founderMeta.emoji}</span>
                     </div>
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${founderMeta.bg} ${founderMeta.text} border ${founderMeta.border}`}>
+                    <span className={`text-sm md:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${founderMeta.bg} ${founderMeta.text} border ${founderMeta.border}`}>
                       Active
                     </span>
                   </div>
 
                   <p className="font-semibold text-sm mb-0.5">{founderMeta.label}</p>
-                  <p className="text-xs text-muted-foreground mb-3">
+                  <p className="text-sm md:text-xs text-muted-foreground mb-3">
                     {formatPurchaseDate(user?.founder_paid_at)
                       ? `Purchased ${formatPurchaseDate(user.founder_paid_at)}`
                       : "Lifetime access"}
@@ -659,13 +659,13 @@ export default function Dashboard() {
                   {/* Perks preview */}
                   <ul className="space-y-1.5 mb-4">
                     {founderMeta.perks.slice(0, 3).map((perk, i) => (
-                      <li key={i} className="flex items-center gap-1.5 text-xs">
+                      <li key={i} className="flex items-center gap-1.5 text-sm md:text-xs">
                         <BadgeCheck className={`w-3.5 h-3.5 flex-shrink-0 ${founderMeta.text}`} />
                         <span className="text-muted-foreground">{perk}</span>
                       </li>
                     ))}
                     {founderMeta.perks.length > 3 && (
-                      <li className={`text-xs ${founderMeta.text} font-medium pl-5`}>
+                      <li className={`text-sm md:text-xs ${founderMeta.text} font-medium pl-5`}>
                         +{founderMeta.perks.length - 3} more benefits
                       </li>
                     )}
@@ -677,14 +677,14 @@ export default function Dashboard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className={`w-full text-xs h-7 ${founderMeta.border} ${founderMeta.text} hover:${founderMeta.bg}`}
+                        className={`w-full ${founderMeta.border} ${founderMeta.text} hover:${founderMeta.bg}`}
                       >
                         Upgrade to {TIER_META[nextTier(user)]?.label}
                         <ChevronRight className="w-3 h-3 ml-1" />
                       </Button>
                     </Link>
                   ) : (
-                    <div className={`text-center text-xs font-medium ${founderMeta.text} py-1`}>
+                    <div className={`text-center text-sm md:text-xs font-medium ${founderMeta.text} py-1`}>
                       👑 Top tier — thank you!
                     </div>
                   )}
@@ -739,7 +739,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="md:col-span-2"
+            className="col-span-2"
           >
             <Card className="border-border hover:shadow-medium transition-shadow">
               <CardHeader className="pb-2">
@@ -775,7 +775,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="md:col-span-2 lg:col-span-1"
+            className="col-span-2 lg:col-span-1"
           >
             <Card className="h-full border-border">
               <CardHeader className="pb-2">
@@ -813,10 +813,10 @@ export default function Dashboard() {
                               {mission.title}
                             </p>
                             {mission.description && (
-                              <p className="text-xs mt-0.5 truncate" style={{ color: "var(--text-secondary)" }}>{mission.description}</p>
+                              <p className="text-sm md:text-xs mt-0.5 truncate" style={{ color: "var(--text-secondary)" }}>{mission.description}</p>
                             )}
                             <div className="mt-1.5 space-y-1">
-                              <div className="flex items-center justify-between text-xs" style={{ color: "var(--text-muted)" }}>
+                              <div className="flex items-center justify-between text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
                                 <span>{progress} / {target}</span>
                                 <span className="flex items-center gap-2">
                                   <span className="flex items-center gap-1">
@@ -837,7 +837,7 @@ export default function Dashboard() {
                               <Button
                                 size="sm"
                                 onClick={() => handleClaimSupabaseMission(mission)}
-                                className="bg-green-500 hover:bg-green-600 h-7 text-xs"
+                                className="bg-green-500 hover:bg-green-600"
                               >
                                 Claim
                               </Button>
@@ -861,7 +861,7 @@ export default function Dashboard() {
                           <p className={`text-sm font-medium ${mission.completed ? 'text-green-700 dark:text-green-400' : ''}`}>
                             {mission.title}
                           </p>
-                          <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-3 mt-1 text-sm md:text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <Star className="w-3 h-3 text-orange-400" /> {mission.xp_reward} XP
                             </span>
@@ -900,7 +900,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="md:col-span-2 lg:col-span-1"
+            className="col-span-2 lg:col-span-1"
           >
             <Card className="h-full border-border">
               <CardHeader className="pb-2 flex flex-row items-center justify-between">
@@ -920,7 +920,7 @@ export default function Dashboard() {
                       {task.title}
                     </span>
                     {task.streak > 0 && (
-                      <span className="text-xs text-orange-500 flex items-center gap-1">
+                      <span className="text-sm md:text-xs text-orange-500 flex items-center gap-1">
                         <Flame className="w-3 h-3" /> {task.streak}
                       </span>
                     )}
@@ -944,7 +944,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.52 }}
-            className="md:col-span-2"
+            className="col-span-2"
           >
             <Card className="h-full border-border bg-gradient-to-br from-orange-700 to-sky-50 dark:from-orange-900/30 dark:to-sky-950/30">
               <CardContent className="pt-5 pb-4">
@@ -952,17 +952,17 @@ export default function Dashboard() {
                   <div className="w-10 h-10 rounded-xl bg-orange-600/10 dark:bg-orange-600/10 flex items-center justify-center shrink-0">
                     <Zap className="w-5 h-5 text-orange-400" />
                   </div>
-                  <Badge variant="secondary" className="text-[10px] bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400 border-orange-500/30 dark:border-orange-500/30 shrink-0">
+                  <Badge variant="secondary" className="text-sm md:text-[10px] bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400 border-orange-500/30 dark:border-orange-500/30 shrink-0">
                     Daily
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium mb-0.5">
+                <p className="text-sm md:text-xs text-muted-foreground uppercase tracking-wide font-medium mb-0.5">
                   Today's Track
                 </p>
                 <p className="text-base font-semibold text-orange-400 dark:text-orange-400 mb-1">
                   {todayTrack}
                 </p>
-                <p className="text-xs text-muted-foreground mb-4">
+                <p className="text-sm md:text-xs text-muted-foreground mb-4">
                   Get an AI-generated project brief tailored to this week's theme.
                 </p>
                 <Button
@@ -986,7 +986,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55 }}
-            className="md:col-span-2"
+            className="col-span-2"
           >
             <Card className="h-full border-border">
               <CardHeader className="pb-2 flex flex-row items-center justify-between">
@@ -995,7 +995,7 @@ export default function Dashboard() {
                   Rewards Track
                 </CardTitle>
                 <Link to="/rewards">
-                  <Button variant="ghost" size="sm" className="text-xs gap-1">
+                  <Button variant="ghost" size="sm" className="text-sm md:text-xs gap-1">
                     View all <ArrowRight className="w-3 h-3" />
                   </Button>
                 </Link>
@@ -1031,10 +1031,10 @@ export default function Dashboard() {
                             <p className="text-sm font-medium leading-tight">
                               {reward.emoji ? `${reward.emoji} ` : ""}Level {reward.level} — {reward.title}
                             </p>
-                            <p className="text-xs text-amber-500 font-medium mt-0.5">
+                            <p className="text-sm md:text-xs text-amber-500 font-medium mt-0.5">
                               +{reward.coins} coins
                             </p>
-                            <p className="text-xs text-muted-foreground truncate mt-0.5">
+                            <p className="text-sm md:text-xs text-muted-foreground truncate mt-0.5">
                               {reward.unlocks[0]}
                               {reward.badge ? ` · ${reward.badge}` : ""}
                             </p>
@@ -1042,7 +1042,7 @@ export default function Dashboard() {
                           {i === 0 && (
                             <Badge
                               variant="secondary"
-                              className="text-[10px] shrink-0 bg-primary/10 text-primary border-primary/20"
+                              className="text-sm md:text-[10px] shrink-0 bg-primary/10 text-primary border-primary/20"
                             >
                               Next
                             </Badge>
@@ -1051,7 +1051,7 @@ export default function Dashboard() {
                       ))}
                       <Link
                         to="/rewards"
-                        className="flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors pt-1"
+                        className="flex items-center justify-center gap-1 text-sm md:text-xs text-muted-foreground hover:text-foreground transition-colors pt-1"
                       >
                         View all rewards <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -1174,7 +1174,7 @@ export default function Dashboard() {
               <Card className="border-border h-full">
                 <CardHeader className="pb-2">
                   <CardTitle className="font-heading text-base">Activity heatmap</CardTitle>
-                  <p className="text-xs text-muted-foreground font-normal">Last 12 weeks · like GitHub contributions</p>
+                  <p className="text-sm md:text-xs text-muted-foreground font-normal">Last 12 weeks · like GitHub contributions</p>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
@@ -1206,7 +1206,7 @@ export default function Dashboard() {
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between mt-2 text-[10px] text-muted-foreground">
+                    <div className="flex justify-between mt-2 text-sm md:text-[10px] text-muted-foreground">
                       <span>Less</span>
                       <span>More</span>
                     </div>

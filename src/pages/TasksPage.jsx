@@ -269,7 +269,7 @@ export default function TasksPage() {
                     className={taskErrors.title ? "border-destructive focus-visible:ring-destructive" : ""}
                   />
                   {taskErrors.title && (
-                    <p className="text-xs text-destructive">{taskErrors.title}</p>
+                    <p className="text-sm md:text-xs text-destructive">{taskErrors.title}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -283,7 +283,7 @@ export default function TasksPage() {
                     className={taskErrors.description ? "border-destructive focus-visible:ring-destructive" : ""}
                   />
                   {taskErrors.description && (
-                    <p className="text-xs text-destructive">{taskErrors.description}</p>
+                    <p className="text-sm md:text-xs text-destructive">{taskErrors.description}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -401,11 +401,11 @@ export default function TasksPage() {
                               <span className={`font-medium ${progress === 100 ? 'line-through text-muted-foreground' : ''}`}>
                                 {task.title}
                               </span>
-                              <Badge variant="secondary" className={`text-xs ${categoryColors[task.category] || categoryColors.default}`}>
+                              <Badge variant="secondary" className={`text-sm md:text-xs ${categoryColors[task.category] || categoryColors.default}`}>
                                 {task.category}
                               </Badge>
                               {progress === 100 && (
-                                <Badge variant="secondary" className="text-xs tag-green">
+                                <Badge variant="secondary" className="text-sm md:text-xs tag-green">
                                   ✓ Complete
                                 </Badge>
                               )}
@@ -416,7 +416,7 @@ export default function TasksPage() {
                             
                             {/* Progress Slider */}
                             <div className="mb-3">
-                              <div className="flex items-center justify-between text-xs mb-1">
+                              <div className="flex items-center justify-between text-sm md:text-xs mb-1">
                                 <span className="text-muted-foreground">Progress</span>
                                 <span className={`font-medium ${progress === 100 ? 'text-green-500' : ''}`}>{progress}%</span>
                               </div>
@@ -430,7 +430,7 @@ export default function TasksPage() {
                               />
                             </div>
                             
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-4 text-sm md:text-xs text-muted-foreground">
                               {task.streak > 0 && (
                                 <span className="flex items-center gap-1 text-orange-500">
                                   <Flame className="w-3 h-3" /> {task.streak} day streak
@@ -512,7 +512,7 @@ export default function TasksPage() {
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm truncate">{template.title}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm md:text-xs text-muted-foreground">
                         {template.category}
                       </p>
                     </div>

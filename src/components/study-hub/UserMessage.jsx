@@ -35,7 +35,7 @@ export default function UserMessage({ message }) {
               return (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-hub-bg/80 px-2 py-1 font-hub-sans text-xs text-hub-muted"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-hub-bg/80 px-2 py-1 font-hub-sans text-sm md:text-xs text-hub-muted"
                 >
                   <Icon className="h-3 w-3" />
                   {label.length > 20 ? label.slice(0, 20) + "…" : label}

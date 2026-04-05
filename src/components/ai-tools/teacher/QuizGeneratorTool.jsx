@@ -92,7 +92,7 @@ function QuizSettingsPanel({ timeLimit, setTimeLimit, maxAttempts, setMaxAttempt
 
       {/* Time limit */}
       <div className="space-y-1.5">
-        <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+        <Label className="text-sm md:text-xs text-muted-foreground uppercase tracking-wide">
           Time Limit
         </Label>
         <div className="flex items-center gap-2">
@@ -110,18 +110,18 @@ function QuizSettingsPanel({ timeLimit, setTimeLimit, maxAttempts, setMaxAttempt
             <button
               type="button"
               onClick={() => setTimeLimit("")}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm md:text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Clear
             </button>
           )}
         </div>
-        <p className="text-[11px] text-muted-foreground">Leave blank for no time limit.</p>
+        <p className="text-sm md:text-[11px] text-muted-foreground">Leave blank for no time limit.</p>
       </div>
 
       {/* Max attempts */}
       <div className="space-y-1.5">
-        <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+        <Label className="text-sm md:text-xs text-muted-foreground uppercase tracking-wide">
           Max Attempts
         </Label>
         <div className="flex gap-2 flex-wrap">
@@ -130,7 +130,7 @@ function QuizSettingsPanel({ timeLimit, setTimeLimit, maxAttempts, setMaxAttempt
               key={opt.value}
               type="button"
               onClick={() => setMaxAttempts(opt.value)}
-              className={`rounded-lg border-2 px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`rounded-lg border-2 px-3 py-1.5 text-sm md:text-xs font-medium transition-all ${
                 maxAttempts === opt.value
                   ? "border-primary bg-primary/10 text-primary"
                   : "border-border bg-secondary/30 text-muted-foreground hover:border-primary/40"
@@ -173,7 +173,7 @@ function MultipleChoiceEditor({ question, onChange }) {
           />
         </div>
       ))}
-      <p className="text-[10px] text-muted-foreground pl-6">Select the radio button next to the correct answer.</p>
+      <p className="text-sm md:text-[10px] text-muted-foreground pl-6">Select the radio button next to the correct answer.</p>
     </div>
   );
 }
@@ -200,7 +200,7 @@ function TrueFalseEditor({ question, onChange }) {
 function ShortAnswerEditor({ question, onChange }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs text-muted-foreground">Correct Answer (exact match)</Label>
+      <Label className="text-sm md:text-xs text-muted-foreground">Correct Answer (exact match)</Label>
       <input
         type="text"
         value={question.correctAnswer}
@@ -228,12 +228,12 @@ function MatchingEditor({ question, onChange }) {
 
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-2 gap-2 mb-1">
-        <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide text-center">Term</span>
-        <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide text-center">Definition</span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-1">
+        <span className="text-sm md:text-[10px] font-semibold text-muted-foreground uppercase tracking-wide text-center">Term</span>
+        <span className="text-sm md:text-[10px] font-semibold text-muted-foreground uppercase tracking-wide text-center">Definition</span>
       </div>
       {question.pairs.map((pair, i) => (
-        <div key={i} className="grid grid-cols-2 gap-2 items-center">
+        <div key={i} className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
           <input
             type="text"
             value={pair.left}
@@ -264,7 +264,7 @@ function MatchingEditor({ question, onChange }) {
       <button
         type="button"
         onClick={addPair}
-        className="flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors"
+        className="flex items-center gap-1.5 text-sm md:text-xs text-primary hover:text-primary/80 transition-colors"
       >
         <Plus className="h-3.5 w-3.5" />
         Add pair
@@ -281,17 +281,17 @@ function QuestionCard({ question, index, onChange, onRemove }) {
       {/* Header */}
       <div className="flex items-center gap-2">
         <GripVertical className="h-4 w-4 text-muted-foreground/40 shrink-0" />
-        <span className="text-xs font-bold text-muted-foreground">Q{index + 1}</span>
+        <span className="text-sm md:text-xs font-bold text-muted-foreground">Q{index + 1}</span>
         <Select
           value={question.type}
           onValueChange={(val) => onChange(makeQuestion(val))}
         >
-          <SelectTrigger className="h-7 text-xs w-44">
+          <SelectTrigger className="h-7 text-sm md:text-xs w-44">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {QUESTION_TYPES.map((t) => (
-              <SelectItem key={t.value} value={t.value} className="text-xs">
+              <SelectItem key={t.value} value={t.value} className="text-sm md:text-xs">
                 {t.label}
               </SelectItem>
             ))}

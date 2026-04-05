@@ -85,10 +85,10 @@ function GuildCard({
                 <CardTitle className="text-base truncate">{guild.name}</CardTitle>
               </div>
               {guild.entry_track && (
-                <p className="text-xs text-muted-foreground capitalize mt-0.5">{guild.entry_track} track</p>
+                <p className="text-sm md:text-xs text-muted-foreground capitalize mt-0.5">{guild.entry_track} track</p>
               )}
             </div>
-            <Badge variant="secondary" className="shrink-0 text-xs">
+            <Badge variant="secondary" className="shrink-0 text-sm md:text-xs">
               Rank {guild.entry_min_rank}+
             </Badge>
           </div>
@@ -110,7 +110,7 @@ function GuildCard({
           </div>
 
           {!eligible && (
-            <p className="text-xs text-amber-500/80">
+            <p className="text-sm md:text-xs text-amber-500/80">
               Requires rank {guild.entry_min_rank} — keep earning XP to qualify.
             </p>
           )}

@@ -63,7 +63,7 @@ export default function ResearchAssistantTool({ prefilled = {} }) {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label>What I need to find</Label>
                 <Select value={researchNeeds} onValueChange={setResearchNeeds}>

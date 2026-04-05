@@ -91,7 +91,7 @@ function StatusBadge({ status }) {
     active: 'bg-green-500/20 text-green-400 border-green-500/30',
   };
   return (
-    <Badge className={`border text-xs capitalize ${styles[status] ?? styles.draft}`}>
+    <Badge className={`border text-sm md:text-xs capitalize ${styles[status] ?? styles.draft}`}>
       {status}
     </Badge>
   );
@@ -166,7 +166,7 @@ function GuildSetupTab({ guild, onGuildCreated }) {
             placeholder="What your company looks for in candidates..."
           />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1">
             <label className="text-sm font-medium">Tier</label>
             <select
@@ -178,7 +178,7 @@ function GuildSetupTab({ guild, onGuildCreated }) {
               <option value="basic">Basic (50 members)</option>
               <option value="elite">Elite (200 members)</option>
             </select>
-            {guild && <p className="text-xs text-muted-foreground">Tier cannot be changed after creation.</p>}
+            {guild && <p className="text-sm md:text-xs text-muted-foreground">Tier cannot be changed after creation.</p>}
           </div>
           <div className="space-y-1">
             <label className="text-sm font-medium">Accent Color</label>
@@ -201,7 +201,7 @@ function GuildSetupTab({ guild, onGuildCreated }) {
             placeholder="https://..."
           />
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="space-y-1">
             <label className="text-sm font-medium">Min Rank</label>
             <select
@@ -343,13 +343,13 @@ function MissionsTab({ guild }) {
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm truncate">{m.title}</span>
                     <StatusBadge status={m.status} />
-                    <Badge variant="outline" className="text-[10px]">{m.difficulty}</Badge>
-                    <Badge variant="outline" className="text-[10px] capitalize">{m.track}</Badge>
+                    <Badge variant="outline" className="text-sm md:text-[10px]">{m.difficulty}</Badge>
+                    <Badge variant="outline" className="text-sm md:text-[10px] capitalize">{m.track}</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5 truncate">{m.description}</p>
+                  <p className="text-sm md:text-xs text-muted-foreground mt-0.5 truncate">{m.description}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xs text-muted-foreground">{m.xp_reward} XP · {m.coin_reward} coins</span>
+                  <span className="text-sm md:text-xs text-muted-foreground">{m.xp_reward} XP · {m.coin_reward} coins</span>
                   {m.status === 'draft' ? (
                     <Button size="sm" variant="outline" onClick={() => handlePublish(m.id)}>Publish</Button>
                   ) : m.status === 'published' ? (
@@ -377,7 +377,7 @@ function MissionsTab({ guild }) {
               <label className="text-sm font-medium">Description</label>
               <Textarea value={form.description} onChange={e => set('description', e.target.value)} rows={3} />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="space-y-1">
                 <label className="text-sm font-medium">Difficulty</label>
                 <select value={form.difficulty} onChange={e => set('difficulty', e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
@@ -478,7 +478,7 @@ function SubmissionsTab({ guild }) {
               <CardContent className="p-4 flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium">{s.guild_missions?.title ?? 'Unknown mission'}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-sm md:text-xs text-muted-foreground">
                     by {s.profiles?.name ?? s.user_id} · submitted {new Date(s.submitted_at).toLocaleDateString()}
                   </p>
                   {s.submission_url && (
@@ -486,13 +486,13 @@ function SubmissionsTab({ guild }) {
                       href={s.submission_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-blue-400 flex items-center gap-1 mt-1 hover:underline"
+                      className="text-sm md:text-xs text-blue-400 flex items-center gap-1 mt-1 hover:underline"
                     >
                       <ExternalLink className="h-3 w-3" /> View submission
                     </a>
                   )}
                   {s.submission_note && (
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{s.submission_note}</p>
+                    <p className="text-sm md:text-xs text-muted-foreground mt-1 line-clamp-1">{s.submission_note}</p>
                   )}
                 </div>
                 <Button size="sm" onClick={() => { setReviewing(s); setReviewForm({ starRating: 3, feedback: '', approved: true }); }}>
@@ -619,7 +619,7 @@ function ApplicationsTab({ guild }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium">{name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm md:text-xs text-muted-foreground">
                       Rank {a.profiles?.rank ?? 'E'} · {a.profiles?.xp ?? 0} XP · {a.profiles?.school ?? ''}
                     </p>
                   </div>
@@ -720,7 +720,7 @@ function WalletTab({ guild }) {
         <CardContent className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground">Available Balance</p>
+              <p className="text-sm md:text-xs text-muted-foreground">Available Balance</p>
               <p className="text-3xl font-bold text-yellow-400">
                 {coinBalance} <span className="text-base text-muted-foreground">coins</span>
               </p>
@@ -730,7 +730,7 @@ function WalletTab({ guild }) {
 
           {/* Progress toward suggested 500-coin minimum */}
           <div className="space-y-1">
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-sm md:text-xs text-muted-foreground">
               <span>Balance</span>
               <span>{coinBalance} / 500 recommended</span>
             </div>
@@ -742,7 +742,7 @@ function WalletTab({ guild }) {
             </div>
           </div>
 
-          <div className="flex gap-4 text-xs text-muted-foreground">
+          <div className="flex gap-4 text-sm md:text-xs text-muted-foreground">
             <span>Total deposited: {wallet?.total_deposited ?? 0}</span>
             <span>Total spent: {wallet?.total_spent ?? 0}</span>
           </div>
@@ -777,7 +777,7 @@ function WalletTab({ guild }) {
               1 coin = $0.02. Minimum deposit is 500 coins ($10). Coins fund mission rewards for students.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-2 py-2">
+          <div className="grid grid-cols-1 gap-2 py-2 sm:grid-cols-2">
             {DEPOSIT_OPTIONS.map(amt => (
               <button
                 key={amt}
@@ -790,7 +790,7 @@ function WalletTab({ guild }) {
                 }`}
               >
                 {amt.toLocaleString()} coins
-                <span className="block text-xs opacity-60">${(amt * 0.02).toFixed(0)}</span>
+                <span className="block text-sm md:text-xs opacity-60">${(amt * 0.02).toFixed(0)}</span>
               </button>
             ))}
           </div>
@@ -813,14 +813,14 @@ function WalletTab({ guild }) {
             {transactions.map(tx => (
               <div key={tx.id} className="flex items-center justify-between text-sm py-1.5 border-b border-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)]">
                 <div>
-                  <span className="capitalize text-xs text-muted-foreground">{tx.type}</span>
-                  {tx.note && <p className="text-xs text-muted-foreground truncate max-w-xs">{tx.note}</p>}
+                  <span className="capitalize text-sm md:text-xs text-muted-foreground">{tx.type}</span>
+                  {tx.note && <p className="text-sm md:text-xs text-muted-foreground truncate max-w-xs">{tx.note}</p>}
                 </div>
                 <div className="text-right">
                   <span className={tx.to_id === user?.id ? 'text-green-400' : 'text-red-400'}>
                     {tx.to_id === user?.id ? '+' : '-'}{tx.amount}
                   </span>
-                  <p className="text-[10px] text-muted-foreground">{new Date(tx.created_at).toLocaleDateString()}</p>
+                  <p className="text-sm md:text-[10px] text-muted-foreground">{new Date(tx.created_at).toLocaleDateString()}</p>
                 </div>
               </div>
             ))}
@@ -908,7 +908,7 @@ function AnalyticsTab({ guild }) {
             <CardContent className="p-4 flex items-center gap-3">
               <Icon className="h-5 w-5 text-muted-foreground shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground">{label}</p>
+                <p className="text-sm md:text-xs text-muted-foreground">{label}</p>
                 <p className="text-xl font-bold">{value}</p>
               </div>
             </CardContent>
@@ -926,10 +926,10 @@ function AnalyticsTab({ guild }) {
           <div className="space-y-2">
             {topStudents.map((s, i) => (
               <div key={i} className="flex items-center gap-3 text-sm py-1.5">
-                <span className="w-5 text-muted-foreground font-mono text-xs">#{i + 1}</span>
+                <span className="w-5 text-muted-foreground font-mono text-sm md:text-xs">#{i + 1}</span>
                 <span className="flex-1 font-medium">{s.name}</span>
                 <span className="text-yellow-400">{s.avg}★</span>
-                <span className="text-muted-foreground text-xs">{s.count} approved</span>
+                <span className="text-muted-foreground text-sm md:text-xs">{s.count} approved</span>
               </div>
             ))}
           </div>

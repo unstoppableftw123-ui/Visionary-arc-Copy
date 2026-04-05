@@ -366,15 +366,15 @@ export default function StudyHub() {
                     className="flex w-full flex-col gap-1.5 px-3 py-2.5 text-left transition hover:bg-hub-elevated"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <p className="line-clamp-2 font-hub-sans text-xs font-medium leading-snug text-hub-text">
+                      <p className="line-clamp-2 font-hub-sans text-sm md:text-xs font-medium leading-snug text-hub-text">
                         {session.title}
                       </p>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className={`rounded-md px-1.5 py-0.5 font-hub-sans text-[10px] font-semibold uppercase tracking-wide ${badge.cls}`}>
+                      <span className={`rounded-md px-1.5 py-0.5 font-hub-sans text-sm md:text-[10px] font-semibold uppercase tracking-wide ${badge.cls}`}>
                         {badge.label}
                       </span>
-                      <span className="font-hub-sans text-[10px] text-hub-dimmed">{session.date}</span>
+                      <span className="font-hub-sans text-sm md:text-[10px] text-hub-dimmed">{session.date}</span>
                     </div>
                   </button>
                 );
@@ -408,7 +408,7 @@ export default function StudyHub() {
             </div>
 
             {useMock && (
-              <span className="rounded-full bg-hub-elevated px-2 py-0.5 font-hub-sans text-[10px] text-hub-muted">
+              <span className="rounded-full bg-hub-elevated px-2 py-0.5 font-hub-sans text-sm md:text-[10px] text-hub-muted">
                 demo
               </span>
             )}

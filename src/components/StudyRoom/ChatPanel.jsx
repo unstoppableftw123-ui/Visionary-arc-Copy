@@ -75,7 +75,7 @@ export default function ChatPanel({ open, unreadCount, onMarkRead, currentUser }
                 <div key={msg.id} className="flex gap-2">
                   <Avatar className="h-8 w-8 shrink-0">
                     <AvatarImage src={msg.avatar} />
-                    <AvatarFallback className="text-xs bg-primary text-primary-foreground">
+                    <AvatarFallback className="text-sm md:text-xs bg-primary text-primary-foreground">
                       {(msg.name || "?")[0].toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -84,7 +84,7 @@ export default function ChatPanel({ open, unreadCount, onMarkRead, currentUser }
                       <span className="font-medium text-sm text-foreground">
                         {msg.name || "User"}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-sm md:text-xs text-muted-foreground">
                         {msg.createdAt
                           ? new Date(msg.createdAt).toLocaleTimeString([], {
                               hour: "2-digit",
@@ -100,7 +100,7 @@ export default function ChatPanel({ open, unreadCount, onMarkRead, currentUser }
                 </div>
               ))}
               {typingOthers.length > 0 && (
-                <p className="text-xs text-muted-foreground italic">
+                <p className="text-sm md:text-xs text-muted-foreground italic">
                   {typingOthers.join(", ")} {typingOthers.length === 1 ? "is" : "are"} typing...
                 </p>
               )}

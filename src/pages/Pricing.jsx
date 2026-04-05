@@ -175,7 +175,7 @@ function SpotsBar({ spotsLeft, spotsTotal, textAccent }) {
   const urgency = pct <= 30;
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex items-center justify-between text-sm md:text-xs">
         <span className={`font-semibold ${urgency ? "text-red-400" : textAccent}`}>
           {urgency && <Flame className="inline w-3 h-3 mr-0.5 animate-pulse" />}
           {spotsLeft} spots left
@@ -254,12 +254,12 @@ function TierCard({ tier, index, loadingTier, onCheckout }) {
 
           {tier.recommended ? (
             <span
-              className={`inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r ${tier.gradient} text-[var(--text-primary)] shadow`}
+              className={`inline-flex items-center gap-1 text-sm md:text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r ${tier.gradient} text-[var(--text-primary)] shadow`}
             >
               <Star className="w-3 h-3" /> RECOMMENDED
             </span>
           ) : (
-            <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${tier.bgAccent} ${tier.textAccent}`}>
+            <span className={`text-sm md:text-xs font-medium px-2.5 py-1 rounded-full ${tier.bgAccent} ${tier.textAccent}`}>
               {tier.label}
             </span>
           )}
@@ -434,7 +434,7 @@ export default function Pricing() {
                 (c, i) => (
                   <div
                     key={i}
-                    className={`w-7 h-7 rounded-full ${c} border-2 border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] flex items-center justify-center text-[10px] font-bold text-[var(--text-primary)]`}
+                    className={`w-7 h-7 rounded-full ${c} border-2 border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] flex items-center justify-center text-sm md:text-[10px] font-bold text-[var(--text-primary)]`}
                   >
                     {String.fromCharCode(65 + i)}
                   </div>
@@ -491,7 +491,7 @@ export default function Pricing() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-center text-muted-foreground text-xs mt-8 flex items-center justify-center gap-1.5"
+          className="text-center text-muted-foreground text-sm md:text-xs mt-8 flex items-center justify-center gap-1.5"
         >
           <svg className="w-4 h-4" viewBox="0 0 28 28" fill="none">
             <rect width="28" height="28" rx="6" fill="#635BFF" />
@@ -592,7 +592,7 @@ export default function Pricing() {
               Drop us an email
             </a>
           </p>
-          <div className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted rounded-full px-4 py-2">
+          <div className="inline-flex items-center gap-2 text-sm md:text-xs text-muted-foreground bg-muted rounded-full px-4 py-2">
             <BadgeCheck className="w-3.5 h-3.5 text-green-500" />
             30-day money-back guarantee — no questions asked
           </div>

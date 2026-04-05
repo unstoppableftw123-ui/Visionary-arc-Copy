@@ -204,7 +204,7 @@ export default function SATACTPractice() {
             <p className="text-sm text-muted-foreground mb-2">
               {foundersRemaining.toLocaleString()} spots • {daysRemaining} days left
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm md:text-xs text-muted-foreground">
               Upgrade to Lite now and keep future Lite upgrades forever
             </p>
           </div>
@@ -227,7 +227,7 @@ export default function SATACTPractice() {
               <h1 className="text-2xl font-semibold mb-2">SAT / ACT Practice</h1>
               <p className="text-muted-foreground">Choose your test to begin</p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => { setTestType("SAT"); setStep("choose-section"); }}>
                 <CardContent className="p-6 text-center">
                   <div className="text-3xl font-bold mb-2">SAT</div>
@@ -365,26 +365,26 @@ export default function SATACTPractice() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               <Card>
                 <CardContent className="p-4 text-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mx-auto mb-2" />
                   <div className="text-2xl font-bold">{sessionStats.correct}</div>
-                  <div className="text-xs text-muted-foreground">Correct</div>
+                  <div className="text-sm md:text-xs text-muted-foreground">Correct</div>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-4 text-center">
                   <XCircle className="w-5 h-5 text-red-500 mx-auto mb-2" />
                   <div className="text-2xl font-bold">{sessionStats.incorrect}</div>
-                  <div className="text-xs text-muted-foreground">Incorrect</div>
+                  <div className="text-sm md:text-xs text-muted-foreground">Incorrect</div>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-4 text-center">
                   <Clock className="w-5 h-5 text-blue-500 mx-auto mb-2" />
                   <div className="text-2xl font-bold">{formatTime(sessionStats.timeSpent)}</div>
-                  <div className="text-xs text-muted-foreground">Time</div>
+                  <div className="text-sm md:text-xs text-muted-foreground">Time</div>
                 </CardContent>
               </Card>
             </div>

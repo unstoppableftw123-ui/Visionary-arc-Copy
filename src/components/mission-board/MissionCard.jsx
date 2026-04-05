@@ -114,13 +114,13 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
         <p className="font-bold text-sm leading-snug mb-1 line-clamp-2" style={{ color: "var(--text-primary)", fontFamily: "var(--font-display)" }}>
           {mission.title}
         </p>
-        <p className="text-xs line-clamp-2 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+        <p className="text-sm md:text-xs line-clamp-2 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
           {mission.description}
         </p>
       </div>
 
       {/* Rewards + time row */}
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex items-center justify-between text-sm md:text-xs">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1 font-semibold" style={{ color: "var(--rank-s)" }}>
             ⚡ {mission.xp_reward ?? 0} XP
@@ -146,7 +146,7 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
       {/* CTA button */}
       {isAvailable && (
         <button
-          className="btn btn-primary w-full mt-1 text-xs"
+          className="btn btn-primary w-full mt-1 text-sm md:text-xs"
           onClick={onClaim}
         >
           Claim Mission
@@ -155,7 +155,7 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
 
       {isInProgress && (
         <button
-          className="btn btn-ghost w-full mt-1 text-xs"
+          className="btn btn-ghost w-full mt-1 text-sm md:text-xs"
           onClick={() => onSubmit(assignment)}
         >
           Submit Work
@@ -164,13 +164,13 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
 
       {isSubmitted && (
         <div className="flex items-center justify-between mt-1">
-          <span className="text-xs font-medium" style={{ color: "var(--rank-c)" }}>Under Review</span>
+          <span className="text-sm md:text-xs font-medium" style={{ color: "var(--rank-c)" }}>Under Review</span>
           {assignment?.submission_url && (
             <a
               href={assignment.submission_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs"
+              className="flex items-center gap-1 text-sm md:text-xs"
               style={{ color: "var(--text-secondary)" }}
             >
               <ExternalLink className="w-3 h-3" />
@@ -182,7 +182,7 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
 
       {isCompleted && (
         <div className="flex items-center justify-between mt-1">
-          <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "var(--rank-d)" }}>
+          <span className="flex items-center gap-1 text-sm md:text-xs font-medium" style={{ color: "var(--rank-d)" }}>
             <QuestCheck isComplete={true} size={16} />
             Approved
           </span>
@@ -191,7 +191,7 @@ export default function MissionCard({ mission, assignment, userRank = 'E', onCla
               href={assignment.submission_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs"
+              className="flex items-center gap-1 text-sm md:text-xs"
               style={{ color: "var(--text-secondary)" }}
             >
               <ExternalLink className="w-3 h-3" />

@@ -42,16 +42,16 @@ function MissionCard({ mission, accent }) {
           <span className="font-semibold text-sm leading-tight">{mission.title}</span>
           <Badge
             style={{ borderColor: diffColor, color: diffColor }}
-            className="shrink-0 border bg-transparent text-xs"
+            className="shrink-0 border bg-transparent text-sm md:text-xs"
           >
             {mission.difficulty}
           </Badge>
         </div>
-        <p className="text-xs text-muted-foreground line-clamp-2">{mission.description}</p>
-        <div className="flex items-center gap-3 pt-1 text-xs text-muted-foreground">
+        <p className="text-sm md:text-xs text-muted-foreground line-clamp-2">{mission.description}</p>
+        <div className="flex items-center gap-3 pt-1 text-sm md:text-xs text-muted-foreground">
           <span style={{ color: accent }}>+{mission.xp_reward} XP</span>
           <span className="text-yellow-400">+{mission.coin_reward} coins</span>
-          <Badge variant="outline" className="text-[10px] capitalize">{mission.track}</Badge>
+          <Badge variant="outline" className="text-sm md:text-[10px] capitalize">{mission.track}</Badge>
         </div>
       </CardContent>
     </Card>
@@ -79,12 +79,12 @@ function MemberRow({ member, rank }) {
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{name}</p>
-        <p className="text-xs text-muted-foreground">{member.profiles?.school ?? ''}</p>
+        <p className="text-sm md:text-xs text-muted-foreground">{member.profiles?.school ?? ''}</p>
       </div>
-      <span className="text-xs font-semibold" style={{ color: rankColor }}>
+      <span className="text-sm md:text-xs font-semibold" style={{ color: rankColor }}>
         {rankLabel(member.profiles?.rank ?? 'E')}
       </span>
-      <span className="text-xs text-muted-foreground">{member.profiles?.xp ?? 0} XP</span>
+      <span className="text-sm md:text-xs text-muted-foreground">{member.profiles?.xp ?? 0} XP</span>
     </div>
   );
 }
@@ -196,7 +196,7 @@ export default function GuildHall() {
         <div className="max-w-4xl mx-auto space-y-4">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-4 w-full max-w-lg" />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[0, 1, 2].map(i => <Skeleton key={i} className="h-32 rounded-xl" />)}
           </div>
         </div>
@@ -251,15 +251,15 @@ export default function GuildHall() {
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
                   <Badge
-                    className="text-xs"
+                    className="text-sm md:text-xs"
                     style={{ backgroundColor: `${accent}33`, color: accent, borderColor: `${accent}66` }}
                   >
                     {guild.tier === 'elite' ? 'Elite Guild' : 'Company Guild'}
                   </Badge>
-                  <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-xs flex items-center gap-1">
+                  <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm md:text-xs flex items-center gap-1">
                     <Users className="h-3 w-3" /> {memberCount} members
                   </span>
-                  <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-xs flex items-center gap-1">
+                  <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm md:text-xs flex items-center gap-1">
                     <Swords className="h-3 w-3" /> {missions.length} active missions
                   </span>
                 </div>
@@ -285,7 +285,7 @@ export default function GuildHall() {
           ) : (
             <div className="relative">
               {!canApply && user && (
-                <p className="text-xs text-muted-foreground mb-1 text-right">
+                <p className="text-sm md:text-xs text-muted-foreground mb-1 text-right">
                   Requires {rankLabel(guild.entry_min_rank ?? 'E')} rank
                   {guild.entry_min_stars > 0 ? ` & ${guild.entry_min_stars}★ avg` : ''}
                 </p>
@@ -341,7 +341,7 @@ export default function GuildHall() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setMissionsExpanded(v => !v)}
-                className="text-muted-foreground text-xs"
+                className="text-muted-foreground text-sm md:text-xs"
               >
                 {missionsExpanded ? (
                   <><ChevronUp className="h-4 w-4 mr-1" />Show less</>

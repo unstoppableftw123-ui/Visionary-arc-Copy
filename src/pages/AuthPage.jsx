@@ -257,7 +257,7 @@ export default function AuthPage() {
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="login" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-6">
+                  <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 mb-6">
                     <TabsTrigger value="login" data-testid="login-tab">Sign In</TabsTrigger>
                     <TabsTrigger value="register" data-testid="register-tab">Sign Up</TabsTrigger>
                   </TabsList>
@@ -276,7 +276,7 @@ export default function AuthPage() {
                           className={loginErrors.email ? "border-destructive focus-visible:ring-destructive" : ""}
                         />
                         {loginErrors.email && (
-                          <p className="text-xs text-destructive">{loginErrors.email}</p>
+                          <p className="text-sm md:text-xs text-destructive">{loginErrors.email}</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -291,7 +291,7 @@ export default function AuthPage() {
                           className={loginErrors.password ? "border-destructive focus-visible:ring-destructive" : ""}
                         />
                         {loginErrors.password && (
-                          <p className="text-xs text-destructive">{loginErrors.password}</p>
+                          <p className="text-sm md:text-xs text-destructive">{loginErrors.password}</p>
                         )}
                       </div>
                       <Button type="submit" className="w-full" disabled={loading} data-testid="login-submit">
@@ -314,12 +314,12 @@ export default function AuthPage() {
                           className={registerErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}
                         />
                         {registerErrors.name && (
-                          <p className="text-xs text-destructive">{registerErrors.name}</p>
+                          <p className="text-sm md:text-xs text-destructive">{registerErrors.name}</p>
                         )}
                       </div>
                       <div className="space-y-2">
                         <Label>I am a…</Label>
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                           {ROLE_OPTIONS.map(({ value, icon: Icon, label, description }) => {
                             if (value === 'investor') {
                               return (
@@ -336,7 +336,7 @@ export default function AuthPage() {
                                     <Info className="h-3 w-3" />
                                   </button>
                                   <Icon className="h-5 w-5 shrink-0" />
-                                  <span className="text-xs font-semibold leading-tight">{label}</span>
+                                  <span className="text-sm md:text-xs font-semibold leading-tight">{label}</span>
                                   <span className="text-[9px] font-medium text-amber-500 leading-tight">Coming Soon</span>
                                 </div>
                               );
@@ -361,8 +361,8 @@ export default function AuthPage() {
                                   }`}
                                 >
                                   <Icon className="h-5 w-5 shrink-0" />
-                                  <span className="text-xs font-semibold leading-tight">{label}</span>
-                                  <span className="text-[10px] text-muted-foreground leading-tight">{description}</span>
+                                  <span className="text-sm md:text-xs font-semibold leading-tight">{label}</span>
+                                  <span className="text-sm md:text-[10px] text-muted-foreground leading-tight">{description}</span>
                                 </button>
                               </div>
                             );
@@ -381,7 +381,7 @@ export default function AuthPage() {
                           className={registerErrors.email ? "border-destructive focus-visible:ring-destructive" : ""}
                         />
                         {registerErrors.email && (
-                          <p className="text-xs text-destructive">{registerErrors.email}</p>
+                          <p className="text-sm md:text-xs text-destructive">{registerErrors.email}</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -396,7 +396,7 @@ export default function AuthPage() {
                           className={registerErrors.password ? "border-destructive focus-visible:ring-destructive" : ""}
                         />
                         {registerErrors.password && (
-                          <p className="text-xs text-destructive">{registerErrors.password}</p>
+                          <p className="text-sm md:text-xs text-destructive">{registerErrors.password}</p>
                         )}
                       </div>
                       <Button type="submit" className="w-full" disabled={loading} data-testid="register-submit">
@@ -410,7 +410,7 @@ export default function AuthPage() {
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t border-border" />
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
+                  <div className="relative flex justify-center text-sm md:text-xs uppercase">
                     <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                   </div>
                 </div>
@@ -541,7 +541,7 @@ export default function AuthPage() {
                     </div>
                   </div>
                   <CardTitle className="font-heading text-xl">Investor Hub</CardTitle>
-                  <span className="inline-block text-[11px] font-semibold text-amber-500 bg-amber-500/10 rounded-full px-2.5 py-0.5 mt-1">Coming Soon</span>
+                  <span className="inline-block text-sm md:text-[11px] font-semibold text-amber-500 bg-amber-500/10 rounded-full px-2.5 py-0.5 mt-1">Coming Soon</span>
                 </CardHeader>
                 <CardContent className="pt-2 pb-5">
                   <p className="text-sm text-muted-foreground text-center leading-relaxed">

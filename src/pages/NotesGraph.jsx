@@ -367,7 +367,7 @@ export default function NotesGraph() {
               {(node.tags || []).map((t) => (
                 <span
                   key={t}
-                  className="text-xs px-1.5 py-0.5 rounded bg-primary/20 text-primary"
+                  className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-primary/20 text-primary"
                 >
                   {t}
                 </span>
@@ -375,7 +375,7 @@ export default function NotesGraph() {
             </div>
           )}
           {node.lastEdited && (
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-sm md:text-xs text-muted-foreground mt-1">
               Edited {node.lastEdited}
             </div>
           )}
@@ -386,7 +386,7 @@ export default function NotesGraph() {
         <>
           <div className="font-medium text-foreground">{node.text}</div>
           {node.title && (
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-sm md:text-xs text-muted-foreground mt-1">
               in {node.title}
             </div>
           )}
@@ -503,7 +503,7 @@ export default function NotesGraph() {
                   {(selectedNote.tags || []).map((t) => (
                     <span
                       key={t}
-                      className="text-xs px-2 py-0.5 rounded-full"
+                      className="text-sm md:text-xs px-2 py-0.5 rounded-full"
                       style={{
                         backgroundColor: `${TAG_COLORS[t] || DEFAULT_NODE_COLOR}22`,
                         color: TAG_COLORS[t] || DEFAULT_NODE_COLOR,
@@ -541,13 +541,13 @@ export default function NotesGraph() {
             <button
               type="button"
               onClick={() => fgRef.current?.zoomToFit(400, 40)}
-              className="text-xs px-2 py-1 rounded bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm md:text-xs px-2 py-1 rounded bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-foreground transition-colors"
               title="Fit all nodes in view"
             >
               Fit
             </button>
           </div>
-          <label className="text-xs text-muted-foreground">
+          <label className="text-sm md:text-xs text-muted-foreground">
             Depth
             <select
               value={depth}
@@ -559,7 +559,7 @@ export default function NotesGraph() {
               <option value={3}>3 – Full</option>
             </select>
           </label>
-          <label className="text-xs text-muted-foreground">
+          <label className="text-sm md:text-xs text-muted-foreground">
             Tag
             <select
               value={selectedTag}
@@ -581,7 +581,7 @@ export default function NotesGraph() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded border border-input bg-background px-2 py-1.5 text-sm placeholder:text-muted-foreground"
           />
-          <label className="flex items-center gap-2 text-xs text-muted-foreground">
+          <label className="flex items-center gap-2 text-sm md:text-xs text-muted-foreground">
             <input
               type="checkbox"
               checked={showOrphans}
@@ -589,7 +589,7 @@ export default function NotesGraph() {
             />
             Show orphans
           </label>
-          <label className="flex items-center gap-2 text-xs text-muted-foreground">
+          <label className="flex items-center gap-2 text-sm md:text-xs text-muted-foreground">
             <input
               type="checkbox"
               checked={showBodyNodes}
@@ -601,13 +601,13 @@ export default function NotesGraph() {
 
         {/* Tag color legend */}
         <div className="absolute bottom-3 left-3 flex flex-wrap gap-2 max-w-[240px] rounded-lg border border-border bg-card/95 backdrop-blur p-2.5 shadow-lg">
-          <div className="text-xs font-medium text-muted-foreground w-full mb-1">
+          <div className="text-sm md:text-xs font-medium text-muted-foreground w-full mb-1">
             Tags
           </div>
           {allTags.map((tag) => (
             <div
               key={tag}
-              className="flex items-center gap-1.5 text-xs text-foreground"
+              className="flex items-center gap-1.5 text-sm md:text-xs text-foreground"
             >
               <span
                 className="w-2.5 h-2.5 rounded-full shrink-0"

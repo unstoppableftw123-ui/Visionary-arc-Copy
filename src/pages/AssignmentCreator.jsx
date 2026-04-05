@@ -305,7 +305,7 @@ function QuickBuildPreview({ questions, open, onOpenChange, showHints, showExpla
                 disabled={revealed}
                 className="w-full"
               />
-              <span className="text-xs text-muted-foreground">
+              <span className="text-sm md:text-xs text-muted-foreground">
                 {sliderValue ?? q.min} (min: {q.min}, max: {q.max})
               </span>
             </div>
@@ -653,7 +653,7 @@ export default function AssignmentCreator() {
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
-            <Label className="text-xs whitespace-nowrap">Subject</Label>
+            <Label className="text-sm md:text-xs whitespace-nowrap">Subject</Label>
             <Select value={subject} onValueChange={setSubject}>
               <SelectTrigger className="w-[130px] h-8">
                 <SelectValue placeholder="Subject" />
@@ -668,7 +668,7 @@ export default function AssignmentCreator() {
             </Select>
           </div>
           <div className="flex items-center gap-2">
-            <Label className="text-xs whitespace-nowrap">Class</Label>
+            <Label className="text-sm md:text-xs whitespace-nowrap">Class</Label>
             <Select value={classId} onValueChange={setClassId}>
               <SelectTrigger className="w-[180px] h-8">
                 <SelectValue placeholder="Class" />
@@ -683,7 +683,7 @@ export default function AssignmentCreator() {
             </Select>
           </div>
           <div className="flex items-center gap-2">
-            <Label className="text-xs whitespace-nowrap">Due date</Label>
+            <Label className="text-sm md:text-xs whitespace-nowrap">Due date</Label>
             <Input
               type="date"
               className="w-[140px] h-8"
@@ -768,8 +768,8 @@ export default function AssignmentCreator() {
                           <Icon className="h-4 w-4" />
                         </div>
                         <p className="font-medium text-sm">{t.name}</p>
-                        <p className="text-xs text-muted-foreground line-clamp-2">{t.description}</p>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-sm md:text-xs text-muted-foreground line-clamp-2">{t.description}</p>
+                        <p className="text-sm md:text-xs text-muted-foreground mt-1">
                           {t.defaultQuestions?.length || 0} questions
                         </p>
                       </button>
@@ -854,7 +854,7 @@ export default function AssignmentCreator() {
                         return (
                           <div className="rounded-xl border border-border bg-card px-4 py-3 shadow-lg flex items-center gap-3 cursor-grabbing opacity-95">
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[q.type] || "bg-[var(--va-border)]/30"}`}>
+                            <span className={`text-sm md:text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[q.type] || "bg-[var(--va-border)]/30"}`}>
                               {label}
                             </span>
                             <span className="text-sm truncate max-w-[300px]">{text}</span>
@@ -891,12 +891,12 @@ export default function AssignmentCreator() {
             <aside className="w-[260px] shrink-0 border-r border-border flex flex-col bg-muted/20">
               <div className="p-3 border-b border-border">
                 <h3 className="font-medium text-sm">Drag cards onto the canvas</h3>
-                <p className="text-xs text-muted-foreground">Build your own question flow</p>
+                <p className="text-sm md:text-xs text-muted-foreground">Build your own question flow</p>
               </div>
               <ScrollArea className="flex-1">
                 <div className="p-2 space-y-4">
                   <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                    <p className="text-sm md:text-xs font-semibold text-muted-foreground uppercase mb-2">
                       Question Types
                     </p>
                     <div className="grid grid-cols-1 gap-1">
@@ -917,7 +917,7 @@ export default function AssignmentCreator() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                    <p className="text-sm md:text-xs font-semibold text-muted-foreground uppercase mb-2">
                       Answer Cards
                     </p>
                     <div className="grid grid-cols-1 gap-1">
@@ -938,7 +938,7 @@ export default function AssignmentCreator() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                    <p className="text-sm md:text-xs font-semibold text-muted-foreground uppercase mb-2">
                       Support & Layout
                     </p>
                     <div className="grid grid-cols-1 gap-1">
@@ -961,13 +961,13 @@ export default function AssignmentCreator() {
               </ScrollArea>
               <Tabs defaultValue="library" className="border-t border-border">
                 <TabsList className="w-full rounded-none h-9">
-                  <TabsTrigger value="library" className="flex-1 text-xs">
+                  <TabsTrigger value="library" className="flex-1 text-sm md:text-xs">
                     Library
                   </TabsTrigger>
-                  <TabsTrigger value="upload" className="flex-1 text-xs">
+                  <TabsTrigger value="upload" className="flex-1 text-sm md:text-xs">
                     Upload
                   </TabsTrigger>
-                  <TabsTrigger value="link" className="flex-1 text-xs">
+                  <TabsTrigger value="link" className="flex-1 text-sm md:text-xs">
                     Link
                   </TabsTrigger>
                 </TabsList>
@@ -975,7 +975,7 @@ export default function AssignmentCreator() {
                   {MOCK_LIBRARY_ITEMS.map((item) => (
                     <div
                       key={item.id}
-                      className="rounded border border-border p-2 text-xs mb-2 flex items-center gap-2"
+                      className="rounded border border-border p-2 text-sm md:text-xs mb-2 flex items-center gap-2"
                     >
                       <FileText className="h-4 w-4 text-muted-foreground" />
                       {item.title}
@@ -1045,14 +1045,14 @@ export default function AssignmentCreator() {
                   <Sparkles className="h-4 w-4 text-primary" />
                   AI Socratic Builder
                 </h3>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-sm md:text-xs text-muted-foreground mt-1">
                   Describe what you want to teach. AI builds a step-by-step guided experience.
                 </p>
               </div>
               <ScrollArea className="flex-1">
                 <div className="p-3 space-y-4">
                   <div>
-                    <Label className="text-xs">What topic is this assignment on?</Label>
+                    <Label className="text-sm md:text-xs">What topic is this assignment on?</Label>
                     <Input
                       placeholder="e.g. Mitosis and cell division"
                       value={socraticConfig.topic}
@@ -1063,7 +1063,7 @@ export default function AssignmentCreator() {
                     />
                   </div>
                   <div>
-                    <Label className="text-xs">Subject</Label>
+                    <Label className="text-sm md:text-xs">Subject</Label>
                     <Select
                       value={socraticConfig.subject}
                       onValueChange={(v) =>
@@ -1083,7 +1083,7 @@ export default function AssignmentCreator() {
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-xs">Difficulty</Label>
+                    <Label className="text-sm md:text-xs">Difficulty</Label>
                     <div className="flex gap-1 mt-2">
                       {["easy", "medium", "hard"].map((d) => (
                         <Button
@@ -1101,7 +1101,7 @@ export default function AssignmentCreator() {
                     </div>
                   </div>
                   <div>
-                    <Label className="text-xs">Depth (1 = quick check, 5 = deep dive)</Label>
+                    <Label className="text-sm md:text-xs">Depth (1 = quick check, 5 = deep dive)</Label>
                     <Slider
                       value={[socraticConfig.depth]}
                       onValueChange={([v]) =>
@@ -1111,12 +1111,12 @@ export default function AssignmentCreator() {
                       max={5}
                       className="mt-2"
                     />
-                    <p className="text-[10px] text-muted-foreground mt-1">
+                    <p className="text-sm md:text-[10px] text-muted-foreground mt-1">
                       Quick Check — Deep Dive
                     </p>
                   </div>
                   <div>
-                    <Label className="text-xs">Style</Label>
+                    <Label className="text-sm md:text-xs">Style</Label>
                     <div className="space-y-2 mt-2">
                       {[
                         { key: "multipleChoice", label: "Multiple choice steps" },
@@ -1132,7 +1132,7 @@ export default function AssignmentCreator() {
                               setSocraticConfig((c) => ({ ...c, [key]: !!checked }))
                             }
                           />
-                          <Label htmlFor={key} className="text-xs font-normal">
+                          <Label htmlFor={key} className="text-sm md:text-xs font-normal">
                             {label}
                           </Label>
                         </div>
@@ -1140,7 +1140,7 @@ export default function AssignmentCreator() {
                     </div>
                   </div>
                   <div>
-                    <Label className="text-xs">Tone</Label>
+                    <Label className="text-sm md:text-xs">Tone</Label>
                     <div className="flex gap-1 mt-2">
                       {["encouraging", "neutral", "challenging"].map((t) => (
                         <Button
@@ -1171,7 +1171,7 @@ export default function AssignmentCreator() {
                       </>
                     )}
                   </Button>
-                  <p className="text-xs text-muted-foreground">Uses ~3 AI credits</p>
+                  <p className="text-sm md:text-xs text-muted-foreground">Uses ~3 AI credits</p>
                   {socraticPath && (
                     <div className="flex gap-2">
                       <Button
@@ -1326,17 +1326,17 @@ export default function AssignmentCreator() {
                 >
                   <p className="font-medium text-sm">{a.title}</p>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="secondary" className="text-sm md:text-[10px]">
                       {a.mode === "quick" ? "Quick" : a.mode === "canvas" ? "Canvas" : "Socratic"}
                     </Badge>
                     <Badge
                       variant={a.status === "published" ? "default" : "outline"}
-                      className="text-[10px]"
+                      className="text-sm md:text-[10px]"
                     >
                       {a.status === "published" ? "Published" : "Draft"}
                     </Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-sm md:text-xs text-muted-foreground mt-1">
                     {a.class || "—"} · Due {a.dueDate || "—"}
                     {a.completions != null && ` · ${a.completions} completions`}
                     {a.avgScore != null && ` · ${a.avgScore}% avg`}
@@ -1435,7 +1435,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
             </>
           )}
           {question.type === "vocab" && (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <Input
                 placeholder="Term"
                 value={question.term ?? ""}
@@ -1472,7 +1472,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
               ))}
               <button
                 type="button"
-                className="text-xs text-primary hover:underline"
+                className="text-sm md:text-xs text-primary hover:underline"
                 onClick={() =>
                   onUpdate({ options: [...(question.options || []), ""] })
                 }
@@ -1509,12 +1509,12 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
               />
               <div className="flex flex-wrap gap-1">
                 {(question.rubric || []).map((r, i) => (
-                  <Badge key={i} variant="secondary" className="text-xs">
+                  <Badge key={i} variant="secondary" className="text-sm md:text-xs">
                     {r}
                   </Badge>
                 ))}
                 <Input
-                  className="w-24 inline-block h-6 text-xs"
+                  className="w-24 inline-block h-6 text-sm md:text-xs"
                   placeholder="+ rubric"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -1531,9 +1531,9 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
             </div>
           )}
           {question.type === "slider" && (
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
               <div>
-                <Label className="text-xs">Min</Label>
+                <Label className="text-sm md:text-xs">Min</Label>
                 <Input
                   type="number"
                   value={question.min ?? 1}
@@ -1541,7 +1541,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
                 />
               </div>
               <div>
-                <Label className="text-xs">Max</Label>
+                <Label className="text-sm md:text-xs">Max</Label>
                 <Input
                   type="number"
                   value={question.max ?? 10}
@@ -1549,7 +1549,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
                 />
               </div>
               <div className="col-span-2">
-                <Label className="text-xs">Correct zone [min, max]</Label>
+                <Label className="text-sm md:text-xs">Correct zone [min, max]</Label>
                 <div className="flex gap-1">
                   <Input
                     type="number"
@@ -1578,7 +1578,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
                 </div>
               </div>
               <div className="col-span-2">
-                <Label className="text-xs">Label</Label>
+                <Label className="text-sm md:text-xs">Label</Label>
                 <Input
                   value={question.label ?? ""}
                   onChange={(e) => onUpdate({ label: e.target.value })}
@@ -1592,7 +1592,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 text-xs gap-1"
+                className="h-7 text-sm md:text-xs gap-1"
                 onClick={() => setShowHint((v) => !v)}
               >
                 💡 Add Hint
@@ -1602,7 +1602,7 @@ function QuickQuestionCard({ question, onUpdate, onRemove, showHints, showExplan
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 text-xs gap-1"
+                className="h-7 text-sm md:text-xs gap-1"
                 onClick={() => setShowExplanation((v) => !v)}
               >
                 📖 Add Explanation
@@ -1958,12 +1958,12 @@ function SocraticStepCard({ step, onUpdate, onAddAfter, onRemove }) {
             onChange={(e) => onUpdate({ sampleAnswer: e.target.value })}
             rows={2}
           />
-          <div className="text-xs text-muted-foreground">Rubric: {(step.rubric || []).join(", ")}</div>
+          <div className="text-sm md:text-xs text-muted-foreground">Rubric: {(step.rubric || []).join(", ")}</div>
         </div>
       )}
       {step.type === "ordering" && (
         <div className="space-y-2">
-          <Label className="text-xs">Items (one per line, correct order)</Label>
+          <Label className="text-sm md:text-xs">Items (one per line, correct order)</Label>
           <Textarea
             placeholder="Item 1\nItem 2\n..."
             value={(step.correctOrder || step.items || []).join("\n")}

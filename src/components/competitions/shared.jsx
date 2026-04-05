@@ -95,7 +95,7 @@ export function PlayerAvatar({ name, avatar, className, size = "default" }) {
     .join("")
     .toUpperCase()
     .slice(0, 2) || "?";
-  const sizeClass = size === "sm" ? "h-8 w-8 text-xs" : size === "lg" ? "h-12 w-12 text-base" : "h-10 w-10 text-sm";
+  const sizeClass = size === "sm" ? "h-8 w-8 text-sm md:text-xs" : size === "lg" ? "h-12 w-12 text-base" : "h-10 w-10 text-sm";
 
   return (
     <Avatar className={cn(sizeClass, className)}>

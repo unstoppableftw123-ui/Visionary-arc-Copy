@@ -90,13 +90,13 @@ function LeaderboardRow({ row, isCurrentUser }) {
             <p className="truncate text-sm font-semibold" style={{ color: isCurrentUser ? "var(--accent)" : "var(--text-primary)" }}>
               {row.name}
             </p>
-            {isCurrentUser ? <span className="text-xs" style={{ color: "var(--accent)" }}>(you)</span> : null}
+            {isCurrentUser ? <span className="text-sm md:text-xs" style={{ color: "var(--accent)" }}>(you)</span> : null}
           </div>
-          <p className="text-xs truncate" style={{ color: "var(--text-secondary)" }}>{row.school}</p>
+          <p className="text-sm md:text-xs truncate" style={{ color: "var(--text-secondary)" }}>{row.school}</p>
         </div>
         <div className="text-right shrink-0">
           <p className="text-sm font-bold" style={{ color: "var(--rank-s)" }}>{row.xp.toLocaleString()} XP</p>
-          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Lv {row.level}</p>
+          <p className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>Lv {row.level}</p>
         </div>
       </div>
       <div className="w-full mt-2">
@@ -308,7 +308,7 @@ export default function Leaderboard({ currentUser }) {
           )}
 
           {source === "mock" ? (
-            <p className="text-[11px] text-muted-foreground">Showing fallback demo data.</p>
+            <p className="text-sm md:text-[11px] text-muted-foreground">Showing fallback demo data.</p>
           ) : null}
         </CardContent>
       </Card>

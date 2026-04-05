@@ -15,7 +15,7 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
       type={type}
       className={cn(
         // Layout
-        "flex h-9 w-full rounded-md border bg-transparent px-3 py-1",
+        "flex min-h-11 w-full rounded-md border bg-transparent px-3 py-2",
         "text-base md:text-sm shadow-sm",
         // Colour tokens
         "border-input placeholder:text-muted-foreground",

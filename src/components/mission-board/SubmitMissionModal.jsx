@@ -69,7 +69,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
         <div className="flex flex-col gap-4 py-2">
           {/* URL input */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-foreground/80 uppercase tracking-wide">
+            <label className="text-sm md:text-xs font-semibold text-foreground/80 uppercase tracking-wide">
               Project URL <span className="text-red-400">*</span>
             </label>
             <Input
@@ -79,13 +79,13 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
               className="bg-[var(--va-surface)] border-[var(--va-border)] text-[var(--text-primary)] placeholder:text-muted-foreground focus:border-[var(--va-orange)]/50"
             />
             {urlError && (
-              <p className="text-xs text-red-400">{urlError}</p>
+              <p className="text-sm md:text-xs text-red-400">{urlError}</p>
             )}
           </div>
 
           {/* Note textarea */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-foreground/80 uppercase tracking-wide">
+            <label className="text-sm md:text-xs font-semibold text-foreground/80 uppercase tracking-wide">
               Note to reviewer{' '}
               <span className="text-muted-foreground font-normal normal-case">(optional)</span>
             </label>
@@ -97,7 +97,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
               onChange={(e) => setNote(e.target.value)}
               className="w-full rounded-md bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-muted-foreground text-sm px-3 py-2 resize-none focus:outline-none focus:border-[var(--va-orange)]/50 transition-colors"
             />
-            <p className="text-xs text-muted-foreground text-right">
+            <p className="text-sm md:text-xs text-muted-foreground text-right">
               {note.length}/{NOTE_MAX}
             </p>
           </div>

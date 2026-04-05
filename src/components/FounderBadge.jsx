@@ -22,9 +22,9 @@ const TIER_ICONS = {
 
 // ─── Size variants ────────────────────────────────────────────────────────────
 const SIZE = {
-  xs: { wrap: "h-4 px-1 gap-0.5 text-[10px] rounded",          icon: "w-2.5 h-2.5" },
-  sm: { wrap: "h-5 px-1.5 gap-1 text-[11px] rounded",          icon: "w-3 h-3" },
-  md: { wrap: "h-6 px-2 gap-1 text-xs rounded-md",             icon: "w-3.5 h-3.5" },
+  xs: { wrap: "h-4 px-1 gap-0.5 text-sm md:text-[10px] rounded",          icon: "w-2.5 h-2.5" },
+  sm: { wrap: "h-5 px-1.5 gap-1 text-sm md:text-[11px] rounded",          icon: "w-3 h-3" },
+  md: { wrap: "h-6 px-2 gap-1 text-sm md:text-xs rounded-md",             icon: "w-3.5 h-3.5" },
   lg: { wrap: "h-7 px-2.5 gap-1.5 text-sm rounded-lg",         icon: "w-4 h-4" },
 };
 
@@ -62,7 +62,7 @@ export default function FounderBadge({ user, size = "md", showLabel = false, cla
         <TooltipContent
           side="top"
           className={cn(
-            "text-xs font-medium px-2.5 py-1.5 rounded-lg border",
+            "text-sm md:text-xs font-medium px-2.5 py-1.5 rounded-lg border",
             meta.bg,
             meta.border,
             meta.text,

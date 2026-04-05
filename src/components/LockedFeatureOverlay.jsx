@@ -66,7 +66,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
 
           {/* Progress */}
           <div className="w-full space-y-2">
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center justify-between text-sm md:text-xs">
               <div className="flex items-center gap-1.5 text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                 <Users className="w-3.5 h-3.5" />
                 <span>{(currentUsers ?? 0).toLocaleString()} members now</span>

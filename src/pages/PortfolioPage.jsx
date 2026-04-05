@@ -24,7 +24,7 @@ function TierBadge({ xp }) {
   const tier   = getTierForXP(xp ?? 0);
   const config = TIER_CONFIG[tier] ?? TIER_CONFIG.Beginner;
   return (
-    <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${config.bg} ${config.text}`}>
+    <span className={`inline-flex items-center gap-1.5 text-sm md:text-xs font-bold px-2.5 py-1 rounded-full ${config.bg} ${config.text}`}>
       <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
       {tier}
     </span>
@@ -53,7 +53,7 @@ function PortfolioCard({ entry }) {
       <div className={`px-5 py-4 ${colors.bg}`}>
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className={`text-xs font-semibold uppercase tracking-wide mb-1 ${colors.text}`}>
+            <p className={`text-sm md:text-xs font-semibold uppercase tracking-wide mb-1 ${colors.text}`}>
               {track?.name ?? entry.track}
             </p>
             <h3 className="font-bold text-foreground leading-snug">{entry.title}</h3>
@@ -64,7 +64,7 @@ function PortfolioCard({ entry }) {
               href={entry.submission_url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`shrink-0 flex items-center gap-1 text-xs font-medium ${colors.text} hover:opacity-80 transition-opacity`}
+              className={`shrink-0 flex items-center gap-1 text-sm md:text-xs font-medium ${colors.text} hover:opacity-80 transition-opacity`}
             >
               View <ExternalLink className="w-3 h-3" />
             </a>
@@ -85,7 +85,7 @@ function PortfolioCard({ entry }) {
             {entry.skills.map((skill) => (
               <span
                 key={skill}
-                className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${colors.badge}`}
+                className={`text-sm md:text-[11px] font-medium px-2 py-0.5 rounded-full ${colors.badge}`}
               >
                 {skill}
               </span>
@@ -94,7 +94,7 @@ function PortfolioCard({ entry }) {
         )}
 
         {completedDate && (
-          <p className="text-[11px] text-muted-foreground">{completedDate}</p>
+          <p className="text-sm md:text-[11px] text-muted-foreground">{completedDate}</p>
         )}
       </div>
     </motion.div>
@@ -160,7 +160,7 @@ export default function PortfolioPage() {
     return (
       <div className="min-h-full p-6 max-w-4xl mx-auto space-y-6 animate-pulse">
         <div className="h-36 bg-muted rounded-2xl" />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="h-48 bg-muted rounded-2xl" />
           <div className="h-48 bg-muted rounded-2xl" />
         </div>
@@ -225,7 +225,7 @@ export default function PortfolioPage() {
             <button
               type="button"
               onClick={handleCopyUrl}
-              className="flex items-center gap-1.5 text-xs border border-border rounded-lg px-3 py-1.5 hover:bg-secondary transition-colors text-muted-foreground"
+              className="flex items-center gap-1.5 text-sm md:text-xs border border-border rounded-lg px-3 py-1.5 hover:bg-secondary transition-colors text-muted-foreground"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Globe className="w-3.5 h-3.5" />}
               {copied ? 'Copied!' : 'Copy public URL'}
@@ -233,7 +233,7 @@ export default function PortfolioPage() {
 
             {/* Available toggle (own profile only) */}
             {isOwnProfile && (
-              <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer">
+              <label className="flex items-center gap-2 text-sm md:text-xs text-muted-foreground cursor-pointer">
                 <span>Available for opportunities</span>
                 <Switch
                   checked={available}

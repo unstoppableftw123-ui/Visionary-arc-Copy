@@ -116,12 +116,12 @@ function ModelPopover({ open, onClose, value, onChange, anchorRef }) {
                   {opt.label}
                 </p>
                 {opt.badge && (
-                  <span className={`rounded-md px-1.5 py-0.5 font-hub-sans text-[10px] font-semibold uppercase tracking-wide ${opt.badgeColor}`}>
+                  <span className={`rounded-md px-1.5 py-0.5 font-hub-sans text-sm md:text-[10px] font-semibold uppercase tracking-wide ${opt.badgeColor}`}>
                     {opt.badge}
                   </span>
                 )}
               </div>
-              <p className="mt-0.5 font-hub-sans text-xs leading-tight text-hub-muted">{opt.subtitle}</p>
+              <p className="mt-0.5 font-hub-sans text-sm md:text-xs leading-tight text-hub-muted">{opt.subtitle}</p>
             </div>
           </button>
         );
@@ -291,7 +291,7 @@ export default function ChatInputBar({
     .join(" • ");
 
   const pillClass = (active) =>
-    `flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-hub-sans text-xs font-medium transition ${
+    `flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-hub-sans text-sm md:text-xs font-medium transition ${
       active
         ? "border-hub-accent/50 bg-hub-accent/10 text-hub-accent"
         : "border-hub-border bg-hub-elevated text-hub-muted hover:text-hub-text"
@@ -390,7 +390,7 @@ export default function ChatInputBar({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.85 }}
                     transition={{ duration: 0.15 }}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-hub-sans text-xs ${chipColor}`}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-hub-sans text-sm md:text-xs ${chipColor}`}
                   >
                     <Icon className="h-3 w-3 shrink-0" />
                     {label}
@@ -427,7 +427,7 @@ export default function ChatInputBar({
 
           {/* ── Zone 3: Status + Send ── */}
           <div className="mt-2 flex items-center justify-between border-t border-hub-border/40 pt-2.5">
-            <span className="font-hub-sans text-xs text-hub-dimmed">{statusLabel}</span>
+            <span className="font-hub-sans text-sm md:text-xs text-hub-dimmed">{statusLabel}</span>
             <button
               type="button"
               onClick={() => canSend && onSend()}

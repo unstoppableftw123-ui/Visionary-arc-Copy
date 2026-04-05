@@ -16,7 +16,7 @@ function DiffBadge({ diff }) {
   if (!cfg) return null;
   return (
     <span
-      className="text-[11px] font-bold px-2 py-0.5 rounded-full border"
+      className="text-sm md:text-[11px] font-bold px-2 py-0.5 rounded-full border"
       style={{ color: cfg.color, borderColor: cfg.color, background: cfg.glow }}
     >
       {diff} · {cfg.label}
@@ -75,7 +75,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
         <div className="flex items-start gap-2">
           <span className="text-lg mt-0.5">{trackIcon}</span>
           <div className="flex-1 min-w-0">
-            <p className={`text-[11px] font-semibold uppercase tracking-wide ${colors.text}`}>
+            <p className={`text-sm md:text-[11px] font-semibold uppercase tracking-wide ${colors.text}`}>
               {track?.name ?? entry.track}
             </p>
             <h3 className="font-bold text-foreground leading-snug line-clamp-1">{entry.title}</h3>
@@ -94,7 +94,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
         <div className="flex flex-wrap gap-1.5 items-center">
           {entry.difficulty && <DiffBadge diff={entry.difficulty} />}
           {entry.guild_name && (
-            <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+            <span className="text-sm md:text-[11px] font-medium px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
               {entry.guild_name}
             </span>
           )}
@@ -104,7 +104,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
 
         <div className="flex items-center justify-between pt-0.5">
           {completedDate && (
-            <span className="text-[11px] text-muted-foreground">{completedDate}</span>
+            <span className="text-sm md:text-[11px] text-muted-foreground">{completedDate}</span>
           )}
           <div className="flex items-center gap-2 ml-auto">
             {isOwn && (
@@ -112,7 +112,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
                 type="button"
                 onClick={() => onToggleFeatured(entry)}
                 title={entry.is_featured ? 'Unpin' : 'Pin to top (max 3)'}
-                className={`text-[11px] flex items-center gap-1 rounded-full px-2 py-0.5 transition-colors ${
+                className={`text-sm md:text-[11px] flex items-center gap-1 rounded-full px-2 py-0.5 transition-colors ${
                   entry.is_featured
                     ? 'bg-[color:color-mix(in_srgb,var(--accent)_20%,transparent)] text-[var(--accent)]'
                     : 'bg-secondary text-muted-foreground hover:text-foreground'
@@ -127,7 +127,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
                 href={entry.submission_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`text-[11px] font-medium flex items-center gap-1 ${colors.text} hover:opacity-80`}
+                className={`text-sm md:text-[11px] font-medium flex items-center gap-1 ${colors.text} hover:opacity-80`}
               >
                 View Work <ExternalLink className="w-3 h-3" />
               </a>
@@ -145,7 +145,7 @@ function Pill({ label, active, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
+      className={`text-sm md:text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
         active
           ? 'bg-primary text-primary-foreground border-primary'
           : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/30'
@@ -407,7 +407,7 @@ export default function Portfolio() {
               {[profile.school, profile.grade ? `Grade ${profile.grade}` : null].filter(Boolean).join(' · ')}
             </p>
           )}
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-sm md:text-xs text-muted-foreground mt-1">
             <span className="font-semibold text-foreground">{profile.xp?.toLocaleString() ?? 0}</span> XP
             {' · '}
             <span className="font-semibold text-foreground">{entries.length}</span> project{entries.length !== 1 ? 's' : ''}
@@ -417,7 +417,7 @@ export default function Portfolio() {
           type="button"
           onClick={handleExportPDF}
           disabled={exporting || entries.length === 0}
-          className="shrink-0 flex items-center gap-1.5 text-xs border border-border rounded-lg px-3 py-1.5 hover:bg-secondary transition-colors disabled:opacity-50"
+          className="shrink-0 flex items-center gap-1.5 text-sm md:text-xs border border-border rounded-lg px-3 py-1.5 hover:bg-secondary transition-colors disabled:opacity-50"
         >
           {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
           Export PDF

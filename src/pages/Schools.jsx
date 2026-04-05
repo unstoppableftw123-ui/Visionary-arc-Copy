@@ -261,7 +261,7 @@ export default function Schools() {
                               </p>
                               <div className="flex items-center gap-2">
                                 <Badge variant="secondary">{typeInfo.label}</Badge>
-                                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                <span className="text-sm md:text-xs text-muted-foreground flex items-center gap-1">
                                   <Users className="w-3 h-3" /> {school.member_count || 0}
                                 </span>
                               </div>
@@ -351,7 +351,7 @@ export default function Schools() {
                           <BookOpen className="w-4 h-4 text-muted-foreground" />
                           <span className="text-sm flex-1">{cls.name}</span>
                           {cls.subject && (
-                            <Badge variant="outline" className="text-xs">{cls.subject}</Badge>
+                            <Badge variant="outline" className="text-sm md:text-xs">{cls.subject}</Badge>
                           )}
                         </div>
                       ))}
@@ -376,14 +376,14 @@ export default function Schools() {
                             i === 0 ? 'bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)]' : i === 1 ? 'bg-[color:color-mix(in_srgb,var(--text-secondary)_10%,transparent)]' : i === 2 ? 'bg-orange-500/10' : 'bg-secondary/50'
                           }`}
                         >
-                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm md:text-xs font-bold ${
                             i === 0 ? 'bg-[var(--accent)] text-[var(--text-primary)]' : i === 1 ? 'bg-[var(--text-secondary)] text-[var(--text-primary)]' : i === 2 ? 'bg-orange-500 text-[var(--text-primary)]' : 'bg-secondary'
                           }`}>
                             {i + 1}
                           </span>
                           <Avatar className="w-6 h-6">
                             <AvatarImage src={member.avatar} />
-                            <AvatarFallback className="text-xs">{member.name?.charAt(0)}</AvatarFallback>
+                            <AvatarFallback className="text-sm md:text-xs">{member.name?.charAt(0)}</AvatarFallback>
                           </Avatar>
                           <span className="flex-1 text-sm truncate">{member.name}</span>
                           <span className="text-sm font-medium">{member.xp || 0} XP</span>

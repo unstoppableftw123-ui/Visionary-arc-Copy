@@ -273,7 +273,7 @@ export default function VisionaryChatbox() {
                 {showHistory ? "Chat History" : "Visionary AI"}
               </h3>
               {!showHistory && (
-                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-xs">Research & Study Assistant</p>
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm md:text-xs">Research & Study Assistant</p>
               )}
             </div>
           </div>
@@ -323,7 +323,7 @@ export default function VisionaryChatbox() {
               <div className="text-center text-muted-foreground py-8">
                 <HistoryIcon />
                 <p className="mt-2 text-sm">No chat history yet</p>
-                <p className="text-xs">Start a new conversation!</p>
+                <p className="text-sm md:text-xs">Start a new conversation!</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -340,7 +340,7 @@ export default function VisionaryChatbox() {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate">{session.title}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
+                        <p className="text-sm md:text-xs text-muted-foreground mt-0.5">
                           {new Date(session.updated_at).toLocaleDateString(undefined, {
                             month: 'short',
                             day: 'numeric',
@@ -368,7 +368,7 @@ export default function VisionaryChatbox() {
             {/* Session indicator */}
             {currentSession && (
               <div className="px-3 py-1.5 bg-muted/50 border-b border-border">
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-sm md:text-xs text-muted-foreground truncate">
                   💬 {currentSession.title}
                 </p>
               </div>
@@ -394,7 +394,7 @@ export default function VisionaryChatbox() {
                       <button
                         key={i}
                         onClick={() => setInput(suggestion)}
-                        className="text-xs px-3 py-2 rounded-lg bg-muted hover:bg-muted/80 text-left transition-colors"
+                        className="text-sm md:text-xs px-3 py-2 rounded-lg bg-muted hover:bg-muted/80 text-left transition-colors"
                       >
                         {suggestion}
                       </button>

@@ -180,7 +180,7 @@ export default function TeacherAIToolsPage() {
               key={cat}
               variant={activeCategory === cat ? "default" : "outline"}
               size="sm"
-              className="shrink-0 text-xs"
+              className="shrink-0 text-sm md:text-xs"
               onClick={() => setActiveCategory(cat)}
             >
               {cat}

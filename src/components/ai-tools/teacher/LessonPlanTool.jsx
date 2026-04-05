@@ -71,7 +71,7 @@ export default function LessonPlanTool({ prefilled = {} }) {
 
       {!isLoading && (
         <>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label>Class</Label>
               <Select value={String(classId)} onValueChange={handleClassChange}>

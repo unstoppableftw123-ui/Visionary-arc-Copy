@@ -73,7 +73,7 @@ export default function CommunityProgressBar() {
           >
             {currentUsers.toLocaleString()}
           </motion.span>
-          <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">members</span>
+          <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">members</span>
           <span className="relative flex h-2 w-2 ml-1">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-600/10 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-600" />
@@ -84,7 +84,7 @@ export default function CommunityProgressBar() {
       {/* Progress bar toward next unlock */}
       {nextThreshold ? (
         <div className="space-y-1.5">
-          <div className="flex justify-between text-xs">
+          <div className="flex justify-between text-sm md:text-xs">
             <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
               {currentUsers.toLocaleString()} / {nextThreshold.toLocaleString()} members
             </span>
@@ -102,7 +102,7 @@ export default function CommunityProgressBar() {
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-2 text-xs text-emerald-400">
+        <div className="flex items-center gap-2 text-sm md:text-xs text-emerald-400">
           <Unlock className="w-3.5 h-3.5" />
           <span>All current features unlocked!</span>
         </div>
@@ -111,7 +111,7 @@ export default function CommunityProgressBar() {
       {/* Next 3 upcoming unlocks */}
       {next3.length > 0 && (
         <div className="space-y-2">
-          <p className="text-[10px] uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Upcoming</p>
+          <p className="text-sm md:text-[10px] uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Upcoming</p>
           <div className="space-y-2">
             {next3.map((unlock, i) => {
               const isNext = i === 0;
@@ -137,12 +137,12 @@ export default function CommunityProgressBar() {
                     />
                   </div>
                   <span
-                    className={`text-xs flex-1 ${isNext ? 'text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)]' : 'text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]'}`}
+                    className={`text-sm md:text-xs flex-1 ${isNext ? 'text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)]' : 'text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]'}`}
                   >
                     {unlock.label}
                   </span>
                   <span
-                    className={`text-xs font-semibold ${
+                    className={`text-sm md:text-xs font-semibold ${
                       isNext ? 'text-amber-400' : 'text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'
                     }`}
                   >

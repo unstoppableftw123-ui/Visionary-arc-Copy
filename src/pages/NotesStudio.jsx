@@ -890,7 +890,7 @@ export default function NotesStudio() {
                   placeholder="Enter note title..."
                 />
                 {noteErrors.title && (
-                  <p className="text-xs text-destructive mt-0.5">{noteErrors.title}</p>
+                  <p className="text-sm md:text-xs text-destructive mt-0.5">{noteErrors.title}</p>
                 )}
               </div>
             </div>
@@ -952,12 +952,12 @@ export default function NotesStudio() {
                   </div>
                   {/* Validation error for content */}
                   {noteErrors.content && (
-                    <p className="px-3 py-1 text-xs text-destructive bg-destructive/5 border-t border-destructive/20">
+                    <p className="px-3 py-1 text-sm md:text-xs text-destructive bg-destructive/5 border-t border-destructive/20">
                       {noteErrors.content}
                     </p>
                   )}
                   {/* Character count and save status */}
-                  <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
+                  <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-muted/20 text-sm md:text-xs text-muted-foreground">
                     <span>{characterCount} characters</span>
                     <div className="flex items-center gap-2">
                       {isSaving && (
@@ -1002,7 +1002,7 @@ export default function NotesStudio() {
                       title={paperStyle ? "Switch to plain whiteboard" : "Switch to lined paper"}
                     >
                       <FileText className="w-4 h-4" />
-                      <span className="hidden sm:inline text-xs">Paper</span>
+                      <span className="hidden sm:inline text-sm md:text-xs">Paper</span>
                     </Button>
                     <Button 
                       variant="ghost" 
@@ -1114,7 +1114,7 @@ export default function NotesStudio() {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="gap-2 text-xs"
+              className="gap-2 text-sm md:text-xs"
               onClick={() => generateAIDiagram(true)}
               disabled={isGeneratingDiagram}
             >
@@ -1135,7 +1135,7 @@ export default function NotesStudio() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52" sideOffset={8}>
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border mb-1">
+              <div className="px-2 py-1.5 text-sm md:text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border mb-1">
                 Export As
               </div>
               <DropdownMenuItem
@@ -1145,7 +1145,7 @@ export default function NotesStudio() {
                 <FileDown className="w-4 h-4 text-red-500" />
                 <div>
                   <p className="text-sm font-medium">PDF</p>
-                  <p className="text-[11px] text-muted-foreground">Text + canvas combined</p>
+                  <p className="text-sm md:text-[11px] text-muted-foreground">Text + canvas combined</p>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -1155,7 +1155,7 @@ export default function NotesStudio() {
                 <Image className="w-4 h-4 text-blue-500" />
                 <div>
                   <p className="text-sm font-medium">PNG Image</p>
-                  <p className="text-[11px] text-muted-foreground">Canvas drawing only</p>
+                  <p className="text-sm md:text-[11px] text-muted-foreground">Canvas drawing only</p>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -1165,7 +1165,7 @@ export default function NotesStudio() {
                 <FileType className="w-4 h-4 text-green-600" />
                 <div>
                   <p className="text-sm font-medium">Markdown</p>
-                  <p className="text-[11px] text-muted-foreground">Text content only</p>
+                  <p className="text-sm md:text-[11px] text-muted-foreground">Text content only</p>
                 </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -1188,20 +1188,20 @@ export default function NotesStudio() {
           </DialogHeader>
           <Tabs defaultValue="all" className="flex-1 overflow-hidden flex flex-col min-h-0">
             <TabsList className="flex-wrap h-auto gap-1 p-1">
-              <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
-              <TabsTrigger value="Study Guide" className="text-xs">Study Guide</TabsTrigger>
-              <TabsTrigger value="Cornell Notes" className="text-xs">Cornell Notes</TabsTrigger>
-              <TabsTrigger value="Mind Map" className="text-xs">Mind Map</TabsTrigger>
-              <TabsTrigger value="Process" className="text-xs">Flowchart</TabsTrigger>
-              <TabsTrigger value="History" className="text-xs">Timeline</TabsTrigger>
-              <TabsTrigger value="Analysis" className="text-xs">Comparison</TabsTrigger>
-              <TabsTrigger value="Flashcard Set" className="text-xs">Flashcard Set</TabsTrigger>
-              <TabsTrigger value="General" className="text-xs">General</TabsTrigger>
+              <TabsTrigger value="all" className="text-sm md:text-xs">All</TabsTrigger>
+              <TabsTrigger value="Study Guide" className="text-sm md:text-xs">Study Guide</TabsTrigger>
+              <TabsTrigger value="Cornell Notes" className="text-sm md:text-xs">Cornell Notes</TabsTrigger>
+              <TabsTrigger value="Mind Map" className="text-sm md:text-xs">Mind Map</TabsTrigger>
+              <TabsTrigger value="Process" className="text-sm md:text-xs">Flowchart</TabsTrigger>
+              <TabsTrigger value="History" className="text-sm md:text-xs">Timeline</TabsTrigger>
+              <TabsTrigger value="Analysis" className="text-sm md:text-xs">Comparison</TabsTrigger>
+              <TabsTrigger value="Flashcard Set" className="text-sm md:text-xs">Flashcard Set</TabsTrigger>
+              <TabsTrigger value="General" className="text-sm md:text-xs">General</TabsTrigger>
             </TabsList>
             <div className="flex-1 overflow-y-auto min-h-0 py-2">
               {["all", "Study Guide", "Cornell Notes", "Mind Map", "Process", "History", "Analysis", "Flashcard Set", "General"].map((category) => (
                 <TabsContent key={category} value={category} className="mt-0 focus-visible:outline-none">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {getTemplateList()
                       .filter((t) => category === "all" || t.category === category)
                       .map((template) => {
@@ -1249,7 +1249,7 @@ export default function NotesStudio() {
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                               <span
-                                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium"
+                                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-sm md:text-xs font-medium"
                                 style={{
                                   backgroundColor: `${template.color}20`,
                                   color: template.color,
@@ -1265,7 +1265,7 @@ export default function NotesStudio() {
                             <p className="text-sm font-semibold leading-tight text-foreground">
                               {template.name}
                             </p>
-                            <p className="text-xs text-muted-foreground line-clamp-2">
+                            <p className="text-sm md:text-xs text-muted-foreground line-clamp-2">
                               {template.description}
                             </p>
                           </button>
