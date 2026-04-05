@@ -25,22 +25,22 @@ import {
   Sparkles,
 } from "lucide-react";
 
-// TODO: On level up, check REWARDS array for
-// matching milestone and trigger reward claim
-// POST /api/rewards/claim { level, userId }
-
-// TODO: Award coins via existing coin system
-// import { awardCoins } from '../lib/founder.js'
-
-// TODO: Unlock features via feature flags
-// Update user.unlockedFeatures array in backend
-
-// TODO: Show level up modal when user
-// crosses a milestone threshold —
-// pull from this REWARDS array to populate it
-
-// TODO: Founder multiplier applied server-side
-// when coins are awarded at level milestone
+// STATUS_TIER XP thresholds mapped to level card milestones
+// Beginner 0 → levels 1,3,5,8 | Builder 500 → 10,15
+// Creator 2000 → 20,25 | Pro 6000 → 30 | Elite 15000 → 40,50
+const LEVEL_XP_THRESHOLD = {
+  1: 0,
+  3: 0,
+  5: 0,
+  8: 0,
+  10: 500,
+  15: 500,
+  20: 2000,
+  25: 2000,
+  30: 6000,
+  40: 15000,
+  50: 15000,
+};
 
 export default function RewardsTrack() {
   const { user } = useContext(AuthContext);
@@ -66,6 +66,9 @@ export default function RewardsTrack() {
   const levelProgress = gamStats?.level_progress ?? 0;
   const xpInLevel = gamStats?.xp_in_level ?? 0;
   const xpForNext = gamStats?.xp_for_next_level ?? 100;
+
+  // Real XP from AuthContext — falls back to gamStats or 0 for mock
+  const userXP = user?.xp ?? gamStats?.xp ?? 0;
 
   const latestReached = getLatestReachedMilestone(currentLevel);
   const nextMilestone = getNextMilestone(currentLevel);
@@ -148,9 +151,26 @@ export default function RewardsTrack() {
             const isMilestone = reward.isMilestone;
             const isUltimateTease = reward.level >= 40;
 
+            // XP threshold for this reward tier (from STATUS_TIER mapping)
+            const xpThreshold = LEVEL_XP_THRESHOLD[reward.level] ?? 0;
+            const isXpUnlocked = userXP >= xpThreshold;
+            // Locked = future AND user hasn't reached the required XP tier
+            const isLocked = isFuture && !isXpUnlocked;
+
             // Coin preview for future levels considering founder tier
             const earnableCoins = founderCoins(reward.coins, founderTier);
             const showFounderBonus = isFuture && founder && founderTier !== "seed" && earnableCoins !== reward.coins;
+
+            // Card border + background styling
+            const cardClassName = (() => {
+              if (isPast) return "border-green-500/15 bg-green-500/5 opacity-65";
+              if (isCurrent)
+                return "border-yellow-500/60 bg-white/5 backdrop-blur-md shadow-[0_0_20px_rgba(234,179,8,0.3)]";
+              if (isLocked)
+                return "bg-white/5 backdrop-blur-md border-white/10";
+              if (isMilestone) return "border-yellow-500/20 bg-yellow-500/5";
+              return "border-border";
+            })();
 
             return (
               <div
@@ -164,7 +184,7 @@ export default function RewardsTrack() {
                     isPast
                       ? "bg-green-500/15 border-green-500/60 text-green-400"
                       : isCurrent
-                      ? "bg-primary/15 border-primary text-primary"
+                      ? "bg-yellow-500/15 border-yellow-500 text-yellow-400"
                       : isMilestone
                       ? "bg-yellow-500/10 border-yellow-500/50 text-yellow-500"
                       : "bg-muted border-border text-muted-foreground"
@@ -177,181 +197,212 @@ export default function RewardsTrack() {
                   )}
                 </div>
 
-                {/* Pulse animation on current level — framer-motion only here */}
+                {/* Pulse animation on current level */}
                 {isCurrent && (
                   <motion.div
-                    className="absolute left-0 w-12 h-12 rounded-full border-2 border-primary/40 pointer-events-none z-10"
+                    className="absolute left-0 w-12 h-12 rounded-full border-2 border-yellow-500/40 pointer-events-none z-10"
                     animate={{ scale: [1, 1.35, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                   />
                 )}
 
                 {/* Reward card */}
-                <Card
-                  className={`border transition-all ${
-                    isPast
-                      ? "border-green-500/15 bg-green-500/5 opacity-65"
-                      : isCurrent
-                      ? "border-primary/35 bg-primary/5 shadow-[0_0_24px_hsl(var(--primary)/0.12)]"
-                      : isMilestone
-                      ? "border-yellow-500/20 bg-yellow-500/5"
-                      : "border-border"
-                  }`}
-                >
-                  <CardContent className={`${isMilestone ? "pt-4 pb-4" : "pt-3 pb-3"}`}>
-                    {/* Title row */}
-                    <div className="flex items-start justify-between gap-2 mb-2.5">
-                      <p
-                        className={`font-semibold leading-tight ${
-                          isMilestone ? "text-base" : "text-sm"
-                        } ${
-                          isPast
-                            ? "text-muted-foreground"
-                            : isMilestone
-                            ? "text-foreground"
-                            : "text-foreground"
-                        }`}
-                      >
-                        {reward.emoji ? `${reward.emoji} ` : ""}Level {reward.level} —{" "}
-                        {reward.title}
-                      </p>
-
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {isCurrent && (
-                          <Badge className="text-[10px] px-1.5 py-0 bg-primary/15 text-primary border-primary/30">
-                            You are here
-                          </Badge>
-                        )}
-                        {isPast && (
-                          <Badge className="text-[10px] px-1.5 py-0 bg-green-500/15 text-green-400 border-green-500/25">
-                            Claimed
-                          </Badge>
-                        )}
+                <Card className={`border transition-all ${cardClassName}`}>
+                  <CardContent
+                    className={`relative ${isMilestone ? "pt-4 pb-4" : "pt-3 pb-3"}`}
+                  >
+                    {/* Padlock icon — top-right corner for locked cards */}
+                    {isLocked && (
+                      <div className="absolute top-2 right-2 z-20 pointer-events-none">
+                        <Lock className="w-4 h-4 text-yellow-500" />
                       </div>
-                    </div>
+                    )}
 
-                    {/* Rewards list */}
-                    <ul className="space-y-1.5">
-                      {/* Coins */}
-                      <li className="flex items-center gap-1.5 text-xs">
-                        <Coins
-                          className={`w-3.5 h-3.5 shrink-0 ${
-                            isFuture
-                              ? "text-yellow-500"
-                              : isPast
+                    {/* Card body — blurred + non-interactive when locked */}
+                    <div
+                      style={
+                        isLocked
+                          ? { filter: "blur(3px)", pointerEvents: "none", userSelect: "none" }
+                          : {}
+                      }
+                    >
+                      {/* Title row */}
+                      <div className="flex items-start justify-between gap-2 mb-2.5">
+                        <p
+                          className={`font-semibold leading-tight ${
+                            isMilestone ? "text-base" : "text-sm"
+                          } ${
+                            isPast
                               ? "text-muted-foreground"
-                              : "text-yellow-500"
-                          }`}
-                        />
-                        <span
-                          className={`${isPast ? "line-through text-muted-foreground" : ""} ${
-                            isFuture ? "text-yellow-400 font-medium" : ""
+                              : "text-foreground"
                           }`}
                         >
-                          +{reward.coins} coins
-                        </span>
-                        {showFounderBonus && (
-                          <span className="text-[10px] text-muted-foreground">
-                            ({founderMeta.label.split(" ")[0]} founders:{" "}
-                            {earnableCoins} coins)
-                          </span>
-                        )}
-                      </li>
+                          {reward.emoji ? `${reward.emoji} ` : ""}Level {reward.level} —{" "}
+                          {reward.title}
+                        </p>
 
-                      {/* Unlocks */}
-                      {reward.unlocks.map((u, i) => (
-                        <li key={i} className="flex items-center gap-1.5 text-xs">
-                          {isFuture ? (
-                            <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                          ) : (
-                            <Gift
-                              className={`w-3.5 h-3.5 shrink-0 ${
-                                isPast ? "text-muted-foreground" : "text-primary"
-                              }`}
-                            />
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {/* "You are here" badge — pulsing */}
+                          {isCurrent && (
+                            <motion.div
+                              animate={{ scale: [1, 1.05, 1] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              <Badge className="text-[10px] px-1.5 py-0 bg-yellow-500/15 text-yellow-400 border-yellow-500/30">
+                                You are here
+                              </Badge>
+                            </motion.div>
                           )}
-                          <span className={isPast ? "line-through text-muted-foreground" : ""}>{u}</span>
-                        </li>
-                      ))}
 
-                      {/* Badge */}
-                      {reward.badge && (
+                          {/* Claimed badge for past levels */}
+                          {isPast && (
+                            <Badge className="text-[10px] px-1.5 py-0 bg-green-500/15 text-green-400 border-green-500/25">
+                              Claimed
+                            </Badge>
+                          )}
+
+                          {/* XP-unlocked future levels get a subtle green check */}
+                          {isFuture && isXpUnlocked && (
+                            <Badge className="text-[10px] px-1.5 py-0 bg-green-500/10 text-green-400 border-green-500/20 flex items-center gap-0.5">
+                              <CheckCircle2 className="w-2.5 h-2.5" />
+                              Unlocked
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Rewards list */}
+                      <ul className="space-y-1.5">
+                        {/* Coins */}
                         <li className="flex items-center gap-1.5 text-xs">
-                          {isFuture ? (
-                            <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                          ) : (
-                            <Star
-                              className={`w-3.5 h-3.5 shrink-0 ${
-                                isPast ? "text-muted-foreground" : "text-amber-400"
-                              }`}
-                            />
-                          )}
-                          <span className={isPast ? "line-through text-muted-foreground" : ""}>
-                            {reward.badge}
+                          <Coins
+                            className={`w-3.5 h-3.5 shrink-0 ${
+                              isFuture
+                                ? "text-yellow-500"
+                                : isPast
+                                ? "text-muted-foreground"
+                                : "text-yellow-500"
+                            }`}
+                          />
+                          <span
+                            className={`${isPast ? "line-through text-muted-foreground" : ""} ${
+                              isFuture ? "text-yellow-400 font-medium" : ""
+                            }`}
+                          >
+                            +{reward.coins} coins
                           </span>
+                          {showFounderBonus && (
+                            <span className="text-[10px] text-muted-foreground">
+                              ({founderMeta.label.split(" ")[0]} founders:{" "}
+                              {earnableCoins} coins)
+                            </span>
+                          )}
                         </li>
+
+                        {/* Unlocks */}
+                        {reward.unlocks.map((u, i) => (
+                          <li key={i} className="flex items-center gap-1.5 text-xs">
+                            {isFuture ? (
+                              <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                            ) : (
+                              <Gift
+                                className={`w-3.5 h-3.5 shrink-0 ${
+                                  isPast ? "text-muted-foreground" : "text-primary"
+                                }`}
+                              />
+                            )}
+                            <span className={isPast ? "line-through text-muted-foreground" : ""}>{u}</span>
+                          </li>
+                        ))}
+
+                        {/* Badge */}
+                        {reward.badge && (
+                          <li className="flex items-center gap-1.5 text-xs">
+                            {isFuture ? (
+                              <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                            ) : (
+                              <Star
+                                className={`w-3.5 h-3.5 shrink-0 ${
+                                  isPast ? "text-muted-foreground" : "text-amber-400"
+                                }`}
+                              />
+                            )}
+                            <span className={isPast ? "line-through text-muted-foreground" : ""}>
+                              {reward.badge}
+                            </span>
+                          </li>
+                        )}
+
+                        {/* Bonuses */}
+                        {reward.bonuses.map((b, i) => (
+                          <li key={i} className="flex items-center gap-1.5 text-xs">
+                            {isFuture ? (
+                              <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                            ) : (
+                              <Zap
+                                className={`w-3.5 h-3.5 shrink-0 ${
+                                  isPast ? "text-muted-foreground" : "text-primary"
+                                }`}
+                              />
+                            )}
+                            <span className={isPast ? "line-through text-muted-foreground" : ""}>{b}</span>
+                          </li>
+                        ))}
+
+                        {/* Specials */}
+                        {reward.specials.map((s, i) => (
+                          <li key={i} className="flex items-center gap-1.5 text-xs">
+                            {isFuture ? (
+                              <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                            ) : (
+                              <Sparkles
+                                className={`w-3.5 h-3.5 shrink-0 ${
+                                  isPast ? "text-muted-foreground" : "text-orange-400"
+                                }`}
+                              />
+                            )}
+                            <span className={isPast ? "line-through text-muted-foreground" : ""}>{s}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* Note */}
+                      {reward.note && (
+                        <p className="text-[10px] text-muted-foreground mt-2 italic">{reward.note}</p>
                       )}
 
-                      {/* Bonuses */}
-                      {reward.bonuses.map((b, i) => (
-                        <li key={i} className="flex items-center gap-1.5 text-xs">
-                          {isFuture ? (
-                            <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                          ) : (
-                            <Zap
-                              className={`w-3.5 h-3.5 shrink-0 ${
-                                isPast ? "text-muted-foreground" : "text-primary"
-                              }`}
-                            />
-                          )}
-                          <span className={isPast ? "line-through text-muted-foreground" : ""}>{b}</span>
-                        </li>
-                      ))}
-
-                      {/* Specials */}
-                      {reward.specials.map((s, i) => (
-                        <li key={i} className="flex items-center gap-1.5 text-xs">
-                          {isFuture ? (
-                            <Lock className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                          ) : (
-                            <Sparkles
-                              className={`w-3.5 h-3.5 shrink-0 ${
-                                isPast ? "text-muted-foreground" : "text-orange-400"
-                              }`}
-                            />
-                          )}
-                          <span className={isPast ? "line-through text-muted-foreground" : ""}>{s}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Note */}
-                    {reward.note && (
-                      <p className="text-[10px] text-muted-foreground mt-2 italic">{reward.note}</p>
-                    )}
-
-                    {/* XP progress bar — only on current milestone */}
-                    {isCurrent && (
-                      <div className="mt-3 pt-3 border-t border-primary/15">
-                        <div className="flex justify-between text-[11px] text-muted-foreground mb-1.5">
-                          <span>Progress to next level</span>
-                          <span>{xpInLevel} / {xpForNext} XP</span>
+                      {/* XP progress bar — only on current milestone */}
+                      {isCurrent && (
+                        <div className="mt-3 pt-3 border-t border-yellow-500/15">
+                          <div className="flex justify-between text-[11px] text-muted-foreground mb-1.5">
+                            <span>Progress to next level</span>
+                            <span>{xpInLevel} / {xpForNext} XP</span>
+                          </div>
+                          <Progress value={levelProgress} className="h-1.5" />
                         </div>
-                        <Progress value={levelProgress} className="h-1.5" />
-                      </div>
-                    )}
+                      )}
 
-                    {/* Founder tease for levels 40 and 50 */}
-                    {isUltimateTease && isFuture && (
-                      <div className="mt-3 pt-2.5 border-t border-border">
-                        <Link
-                          to="/pricing"
-                          className="flex items-center gap-1 text-[11px] text-primary hover:text-primary/70 transition-colors"
-                        >
-                          <Sparkles className="w-3 h-3" />
-                          Reach this faster with a Founder Pass
-                          <ChevronRight className="w-3 h-3" />
-                        </Link>
+                      {/* Founder tease for levels 40 and 50 */}
+                      {isUltimateTease && isFuture && (
+                        <div className="mt-3 pt-2.5 border-t border-border">
+                          <Link
+                            to="/pricing"
+                            className="flex items-center gap-1 text-[11px] text-primary hover:text-primary/70 transition-colors"
+                          >
+                            <Sparkles className="w-3 h-3" />
+                            Reach this faster with a Founder Pass
+                            <ChevronRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Centered unlock overlay — sits above the blurred content */}
+                    {isLocked && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <span className="text-xs font-semibold text-yellow-400 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-yellow-500/20">
+                          Unlocks at {xpThreshold.toLocaleString()} XP
+                        </span>
                       </div>
                     )}
                   </CardContent>
