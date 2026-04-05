@@ -1,5 +1,35 @@
 import { supabase } from "./supabaseClient";
 
+export interface ProfileLeaderboardEntry {
+  id: string;
+  name: string;
+  avatar: string | null;
+  school: string | null;
+  xp: number;
+  coins: number;
+  streak_current: number;
+  rank: string | null;
+  level: number;
+}
+
+/** Top 100 profiles ordered by xp, coins, or streak_current. */
+export async function getProfilesLeaderboard(
+  orderBy: "xp" | "coins" | "streak_current"
+): Promise<ProfileLeaderboardEntry[]> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, name, avatar, school, xp, coins, streak_current, rank, level")
+    .order(orderBy, { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error("getProfilesLeaderboard error:", error);
+    return [];
+  }
+
+  return (data ?? []) as ProfileLeaderboardEntry[];
+}
+
 export interface LeaderboardEntry {
   user_id: string;
   season_score: number;

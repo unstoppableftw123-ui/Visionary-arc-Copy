@@ -54,6 +54,7 @@ const NotesGraph = lazy(() => import("./pages/NotesGraph"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Success = lazy(() => import("./pages/Success"));
 const RewardsTrack = lazy(() => import("./components/RewardsTrack"));
+const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 const LevelUpOverlay = lazy(() => import("./components/LevelUpOverlay"));
 const TrackHubPage = lazy(() => import("./pages/tracks/TrackHubPage"));
 const TrackDetailPage = lazy(() => import("./pages/tracks/TrackDetailPage"));
@@ -538,7 +539,7 @@ function AppRouter() {
         <Route index element={<InvestorDashboard />} />
       </Route> */}
       <Route path="/rewards" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route index element={<RewardsTrack />} />
+        <Route index element={<LeaderboardPage />} />
       </Route>
       <Route path="/grades" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<MyGrades />} />
