@@ -94,10 +94,10 @@ export default function TrackDetailPage() {
               <Sparkles className="w-5 h-5" />
               <span className="font-semibold text-lg">Start a New Project</span>
             </div>
-            <p className="text-white/70 text-sm">
+            <p className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm">
               AI generates a personalised brief — just for you
             </p>
-            <p className="text-white/50 text-xs mt-1">{track.xpRange}</p>
+            <p className="text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] text-xs mt-1">{track.xpRange}</p>
           </div>
           <ArrowLeft className="w-5 h-5 rotate-180 opacity-70 group-hover:translate-x-1 transition-transform" />
         </div>

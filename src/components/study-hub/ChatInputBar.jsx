@@ -187,7 +187,7 @@ function PasteTextModal({ open, onClose, onAdd }) {
             type="button"
             onClick={handleAdd}
             disabled={!text.trim()}
-            className="rounded-xl bg-hub-accent px-4 py-2 font-hub-sans text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-40"
+            className="rounded-xl bg-hub-accent px-4 py-2 font-hub-sans text-sm font-medium text-[var(--text-primary)] transition hover:opacity-90 disabled:opacity-40"
           >
             Add to Chat
           </button>
@@ -432,7 +432,7 @@ export default function ChatInputBar({
               type="button"
               onClick={() => canSend && onSend()}
               disabled={!canSend}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-hub-accent text-white transition hover:opacity-90 disabled:opacity-30 active:scale-95"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-hub-accent text-[var(--text-primary)] transition hover:opacity-90 disabled:opacity-30 active:scale-95"
               aria-label="Send"
             >
               <ArrowUp className="h-4 w-4" />

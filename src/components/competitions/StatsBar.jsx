@@ -14,37 +14,37 @@ export default function StatsBar({ playerStats, className }) {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className={cn(
-        "sticky bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-[#111111] px-4 py-3",
+        "sticky bottom-0 left-0 right-0 z-10 border-t border-[var(--border)] bg-[var(--bg-base)] px-4 py-3",
         "flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8",
         className
       )}
     >
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>🏅</span>
-        <span className="font-semibold text-[#efefef] tabular-nums">{xp ?? 0}</span>
-        <span className="text-xs text-[#888]">XP</span>
+        <span className="font-semibold text-[var(--text-primary)] tabular-nums">{xp ?? 0}</span>
+        <span className="text-xs text-[var(--text-secondary)]">XP</span>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>⭐</span>
-        <span className="font-semibold text-[#efefef]">Lvl {level ?? 1}</span>
+        <span className="font-semibold text-[var(--text-primary)]">Lvl {level ?? 1}</span>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>🪙</span>
-        <span className="font-semibold text-[#efefef] tabular-nums">{coins ?? 0}</span>
-        <span className="text-xs text-[#888]">Coins</span>
+        <span className="font-semibold text-[var(--text-primary)] tabular-nums">{coins ?? 0}</span>
+        <span className="text-xs text-[var(--text-secondary)]">Coins</span>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden>🔥</span>
-        <span className="font-semibold text-[#efefef] tabular-nums">{streak ?? 0}</span>
-        <span className="text-xs text-[#888]">Day Streak</span>
+        <span className="font-semibold text-[var(--text-primary)] tabular-nums">{streak ?? 0}</span>
+        <span className="text-xs text-[var(--text-secondary)]">Day Streak</span>
       </div>
 
       <div className="w-full max-w-[200px] flex-shrink-0">
-        <Progress value={progressPercent} className="h-2 bg-[#1a1a1a]" />
-        <p className="text-[10px] text-[#888] mt-0.5 text-center">
+        <Progress value={progressPercent} className="h-2 bg-[var(--surface-2)]" />
+        <p className="text-[10px] text-[var(--text-secondary)] mt-0.5 text-center">
           {xpInCurrentLevel ?? 0} / {xpToNextLevel} to next level
         </p>
       </div>

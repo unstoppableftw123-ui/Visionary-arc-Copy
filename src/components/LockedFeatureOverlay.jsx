@@ -55,8 +55,8 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
 
           {/* Feature name */}
           <div className="space-y-1">
-            <h3 className="text-lg font-bold text-white">{featureName}</h3>
-            <p className="text-sm text-white/50">
+            <h3 className="text-lg font-bold text-[var(--text-primary)]">{featureName}</h3>
+            <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">
               Unlocks when the community reaches{' '}
               <span className="text-amber-400 font-semibold">
                 {(threshold ?? 0).toLocaleString()} members
@@ -67,7 +67,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
           {/* Progress */}
           <div className="w-full space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 text-white/40">
+              <div className="flex items-center gap-1.5 text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                 <Users className="w-3.5 h-3.5" />
                 <span>{(currentUsers ?? 0).toLocaleString()} members now</span>
               </div>
@@ -75,7 +75,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
                 {usersNeeded.toLocaleString()} to go
               </span>
             </div>
-            <div className="h-1.5 w-full rounded-full bg-white/8 overflow-hidden">
+            <div className="h-1.5 w-full rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] overflow-hidden">
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
                 initial={{ width: 0 }}
@@ -88,7 +88,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
           {/* CTA */}
           <Link to="/referral" className="w-full">
             <Button
-              className="w-full bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600 text-white border-0"
+              className="w-full bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600 text-[var(--text-primary)] border-0"
             >
               Invite Friends to Unlock Faster
             </Button>

@@ -58,7 +58,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="bg-[#12121A] border border-white/10 text-white max-w-md">
+      <DialogContent className="bg-[var(--surface)] border border-[var(--border)] text-[var(--text-primary)] max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold">Submit Your Work</DialogTitle>
           <DialogDescription className="text-muted-foreground text-sm">
@@ -76,7 +76,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
               placeholder="https://github.com/your-project"
               value={url}
               onChange={handleUrlChange}
-              className="bg-[var(--va-surface)] border-[var(--va-border)] text-white placeholder:text-muted-foreground focus:border-[var(--va-orange)]/50"
+              className="bg-[var(--va-surface)] border-[var(--va-border)] text-[var(--text-primary)] placeholder:text-muted-foreground focus:border-[var(--va-orange)]/50"
             />
             {urlError && (
               <p className="text-xs text-red-400">{urlError}</p>
@@ -95,7 +95,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
               placeholder="Anything you want the reviewer to know..."
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="w-full rounded-md bg-white/5 border border-white/10 text-white placeholder:text-muted-foreground text-sm px-3 py-2 resize-none focus:outline-none focus:border-[var(--va-orange)]/50 transition-colors"
+              className="w-full rounded-md bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-muted-foreground text-sm px-3 py-2 resize-none focus:outline-none focus:border-[var(--va-orange)]/50 transition-colors"
             />
             <p className="text-xs text-muted-foreground text-right">
               {note.length}/{NOTE_MAX}
@@ -106,7 +106,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
         <DialogFooter className="gap-2">
           <Button
             variant="outline"
-            className="border-white/10 text-foreground/80 hover:bg-white/10 hover:text-white"
+            className="border-[var(--border)] text-foreground/80 hover:bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] hover:text-[var(--text-primary)]"
             onClick={onClose}
             disabled={loading}
           >
@@ -115,7 +115,7 @@ export default function SubmitMissionModal({ assignment, open, onClose, onSucces
           <Button
             onClick={handleSubmit}
             disabled={loading || !url.trim()}
-            className="bg-orange-600 hover:bg-orange-600 text-white"
+            className="bg-orange-600 hover:bg-orange-600 text-[var(--text-primary)]"
           >
             {loading ? 'Submitting…' : 'Submit Work'}
           </Button>

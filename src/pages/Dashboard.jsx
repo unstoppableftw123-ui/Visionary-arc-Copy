@@ -641,7 +641,7 @@ export default function Dashboard() {
                 <CardContent className="pt-5 pb-4 relative z-10">
                   {/* Header row */}
                   <div className="flex items-start justify-between mb-3">
-                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${founderMeta.gradient} flex items-center justify-center text-white shadow-lg`}>
+                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${founderMeta.gradient} flex items-center justify-center text-[var(--text-primary)] shadow-lg`}>
                       <span className="text-lg leading-none">{founderMeta.emoji}</span>
                     </div>
                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${founderMeta.bg} ${founderMeta.text} border ${founderMeta.border}`}>
@@ -967,7 +967,7 @@ export default function Dashboard() {
                 </p>
                 <Button
                   size="sm"
-                  className="bg-orange-600 hover:bg-orange-700 text-white gap-1.5"
+                  className="bg-orange-600 hover:bg-orange-700 text-[var(--text-primary)] gap-1.5"
                   onClick={() => {
                     toast.info("Tracks coming soon!", {
                       description: "Project briefs are on the roadmap. Stay tuned!",
@@ -1021,7 +1021,7 @@ export default function Dashboard() {
                           <div
                             className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 font-bold text-sm ${
                               reward.isMilestone
-                                ? "bg-yellow-500/15 text-yellow-500 border border-yellow-500/30"
+                                ? "bg-[color:color-mix(in_srgb,var(--accent)_15%,transparent)] text-[var(--accent)] border border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]"
                                 : "bg-primary/10 text-primary border border-primary/20"
                             }`}
                           >

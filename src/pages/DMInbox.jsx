@@ -143,7 +143,7 @@ export default function DMInbox() {
                     </AvatarFallback>
                   </Avatar>
                   {conv.unread_count > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white px-1">
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-[var(--text-primary)] px-1">
                       {conv.unread_count}
                     </span>
                   )}

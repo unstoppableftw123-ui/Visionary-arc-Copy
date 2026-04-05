@@ -157,7 +157,7 @@ export default function Schools() {
       <Sidebar />
       <main className="flex-1 p-4 md:p-8 overflow-auto" data-testid="schools-page">
         {/* Hero Header */}
-        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-500 to-orange-600">
+        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-orange-800 via-orange-700 to-orange-600">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zMCAxMEwyMCAyNWgyMHoiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-20"></div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -167,16 +167,16 @@ export default function Schools() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <GraduationCap className="w-8 h-8 text-white" />
-                  <h1 className="font-heading text-3xl md:text-4xl font-bold text-white">Schools & Classes</h1>
+                  <GraduationCap className="w-8 h-8 text-[var(--text-primary)]" />
+                  <h1 className="font-heading text-3xl md:text-4xl font-bold text-[var(--text-primary)]">Schools & Classes</h1>
                 </div>
-                <p className="text-white/80 max-w-lg">
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] max-w-lg">
                   Join your school community, create classes, and compete on school leaderboards!
                 </p>
               </div>
               <Dialog open={createOpen} onOpenChange={setCreateOpen}>
                 <DialogTrigger asChild>
-                  <Button size="lg" className="bg-white text-orange-400 hover:bg-white/90" data-testid="create-school-btn">
+                  <Button size="lg" className="bg-[var(--text-primary)] text-orange-400 hover:bg-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]" data-testid="create-school-btn">
                     <Plus className="w-5 h-5 mr-2" /> Create School
                   </Button>
                 </DialogTrigger>
@@ -251,7 +251,7 @@ export default function Schools() {
                       >
                         <CardContent className="p-4">
                           <div className="flex items-start gap-4">
-                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${typeInfo.color} flex items-center justify-center text-white`}>
+                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${typeInfo.color} flex items-center justify-center text-[var(--text-primary)]`}>
                               <School className="w-6 h-6" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -373,11 +373,11 @@ export default function Schools() {
                         <div 
                           key={member.user_id}
                           className={`flex items-center gap-3 p-2 rounded-lg ${
-                            i === 0 ? 'bg-yellow-500/10' : i === 1 ? 'bg-gray-500/10' : i === 2 ? 'bg-orange-500/10' : 'bg-secondary/50'
+                            i === 0 ? 'bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)]' : i === 1 ? 'bg-[color:color-mix(in_srgb,var(--text-secondary)_10%,transparent)]' : i === 2 ? 'bg-orange-500/10' : 'bg-secondary/50'
                           }`}
                         >
                           <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                            i === 0 ? 'bg-yellow-500 text-white' : i === 1 ? 'bg-gray-400 text-white' : i === 2 ? 'bg-orange-500 text-white' : 'bg-secondary'
+                            i === 0 ? 'bg-[var(--accent)] text-[var(--text-primary)]' : i === 1 ? 'bg-[var(--text-secondary)] text-[var(--text-primary)]' : i === 2 ? 'bg-orange-500 text-[var(--text-primary)]' : 'bg-secondary'
                           }`}>
                             {i + 1}
                           </span>

@@ -235,7 +235,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
         {/* Header */}
         <div className="flex items-center gap-2 mb-3">
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-[var(--text-primary)] text-xs font-bold shrink-0"
             style={{ background: post.avatarColor }}
           >
             {post.avatar}
@@ -306,7 +306,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
               {comments.map((c, i) => (
                 <div key={i} className="flex gap-2.5">
                   <div
-                    className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5"
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-primary)] text-[10px] font-bold shrink-0 mt-0.5"
                     style={{ background: c.avatarColor }}
                   >
                     {c.avatar}
@@ -323,7 +323,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
 
               {/* Comment input */}
               <div className="flex gap-2 pt-1">
-                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[var(--text-primary)] text-[10px] font-bold shrink-0 mt-0.5">
                   Y
                 </div>
                 <div className="flex-1 flex gap-2">
@@ -463,7 +463,7 @@ export default function TeacherResources() {
                   onClick={() => setActiveCategory(key)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all ${
                     activeCategory === key
-                      ? "text-white border-transparent"
+                      ? "text-[var(--text-primary)] border-transparent"
                       : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"
                   }`}
                   style={activeCategory === key ? { background: color, borderColor: color } : {}}

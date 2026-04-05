@@ -17,9 +17,9 @@ import { Search, Star, Eye, User, Briefcase } from 'lucide-react';
 const TRACKS = ['All', 'tech', 'design', 'content', 'business', 'impact'];
 const RANK_COLORS: Record<string, string> = {
   S: 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black',
-  A: 'bg-orange-600 text-white',
-  B: 'bg-blue-600 text-white',
-  C: 'bg-green-600 text-white',
+  A: 'bg-orange-600 text-[var(--text-primary)]',
+  B: 'bg-blue-600 text-[var(--text-primary)]',
+  C: 'bg-green-600 text-[var(--text-primary)]',
   D: 'bg-[var(--va-surface)] text-[var(--va-text)] border border-[var(--va-border)]',
   E: 'bg-[var(--va-border)] text-[var(--va-text-muted)]',
 };
@@ -115,7 +115,7 @@ function StudentCard({
             {[1, 2, 3, 4, 5].map((n) => (
               <span
                 key={n}
-                className={n <= Math.round(student.avg_star_rating) ? 'text-yellow-400' : 'text-white/20'}
+                className={n <= Math.round(student.avg_star_rating) ? 'text-[var(--accent)]' : 'text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]'}
               >
                 ★
               </span>

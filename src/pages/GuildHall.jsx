@@ -68,7 +68,7 @@ function MemberRow({ member, rank }) {
     <div className="flex items-center gap-3 py-2">
       <span className="w-6 text-center text-sm text-muted-foreground font-mono">#{rank}</span>
       <div
-        className="h-8 w-8 rounded-full flex items-center justify-center text-white text-sm font-semibold shrink-0"
+        className="h-8 w-8 rounded-full flex items-center justify-center text-[var(--text-primary)] text-sm font-semibold shrink-0"
         style={{ backgroundColor: `hsl(${hue}, 65%, 45%)` }}
       >
         {member.profiles?.avatar ? (
@@ -106,7 +106,7 @@ export default function GuildHall() {
 
   const userRank = user?.rank ?? 'E';
   const userStars = user?.stars ?? 0;
-  const accent = guild?.color_theme ?? '#EAB308';
+  const accent = guild?.color_theme ?? 'var(--accent)';
 
   useEffect(() => {
     async function load() {
@@ -246,7 +246,7 @@ export default function GuildHall() {
                 🏰
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight drop-shadow">
+                <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] leading-tight drop-shadow">
                   {guild.name}
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
@@ -256,10 +256,10 @@ export default function GuildHall() {
                   >
                     {guild.tier === 'elite' ? 'Elite Guild' : 'Company Guild'}
                   </Badge>
-                  <span className="text-white/70 text-xs flex items-center gap-1">
+                  <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-xs flex items-center gap-1">
                     <Users className="h-3 w-3" /> {memberCount} members
                   </span>
-                  <span className="text-white/70 text-xs flex items-center gap-1">
+                  <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-xs flex items-center gap-1">
                     <Swords className="h-3 w-3" /> {missions.length} active missions
                   </span>
                 </div>

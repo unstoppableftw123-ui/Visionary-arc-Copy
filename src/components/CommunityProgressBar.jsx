@@ -52,7 +52,7 @@ export default function CommunityProgressBar() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.4 }}
-      className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-4"
+      className="rounded-2xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-5 space-y-4"
     >
       {/* Header row */}
       <div className="flex items-center justify-between">
@@ -60,20 +60,20 @@ export default function CommunityProgressBar() {
           <div className="w-7 h-7 rounded-lg bg-orange-600/20 flex items-center justify-center">
             <Users className="w-3.5 h-3.5 text-orange-400" />
           </div>
-          <span className="text-sm font-semibold text-white/90">Community Unlocks</span>
+          <span className="text-sm font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]">Community Unlocks</span>
         </div>
 
         <div className="flex items-center gap-1.5">
           <motion.span
             key={currentUsers}
             initial={{ scale: 1.5, color: '#f59e0b' }}
-            animate={{ scale: 1, color: '#e2e8f0' }}
+            animate={{ scale: 1, color: 'var(--text-primary)' }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="text-sm font-bold"
           >
             {currentUsers.toLocaleString()}
           </motion.span>
-          <span className="text-xs text-white/40">members</span>
+          <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">members</span>
           <span className="relative flex h-2 w-2 ml-1">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-600/10 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-600" />
@@ -85,14 +85,14 @@ export default function CommunityProgressBar() {
       {nextThreshold ? (
         <div className="space-y-1.5">
           <div className="flex justify-between text-xs">
-            <span className="text-white/40">
+            <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
               {currentUsers.toLocaleString()} / {nextThreshold.toLocaleString()} members
             </span>
             <span className="text-amber-400 font-medium">
               {(nextThreshold - currentUsers).toLocaleString()} to next unlock
             </span>
           </div>
-          <div className="h-2 rounded-full bg-white/8 overflow-hidden">
+          <div className="h-2 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] overflow-hidden">
             <motion.div
               className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
               initial={{ width: 0 }}
@@ -111,7 +111,7 @@ export default function CommunityProgressBar() {
       {/* Next 3 upcoming unlocks */}
       {next3.length > 0 && (
         <div className="space-y-2">
-          <p className="text-[10px] uppercase tracking-widest text-white/30">Upcoming</p>
+          <p className="text-[10px] uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Upcoming</p>
           <div className="space-y-2">
             {next3.map((unlock, i) => {
               const isNext = i === 0;
@@ -124,26 +124,26 @@ export default function CommunityProgressBar() {
                   className={`flex items-center gap-2.5 rounded-lg px-3 py-2 ${
                     isNext
                       ? 'bg-orange-600/10 border border-orange-500/30'
-                      : 'bg-white/4 border border-white/6'
+                      : 'bg-[color:color-mix(in_srgb,var(--text-primary)_4%,transparent)] border border-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)]'
                   }`}
                 >
                   <div
                     className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
-                      isNext ? 'bg-orange-600/20' : 'bg-white/8'
+                      isNext ? 'bg-orange-600/20' : 'bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)]'
                     }`}
                   >
                     <Lock
-                      className={`w-3 h-3 ${isNext ? 'text-orange-400' : 'text-white/30'}`}
+                      className={`w-3 h-3 ${isNext ? 'text-orange-400' : 'text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'}`}
                     />
                   </div>
                   <span
-                    className={`text-xs flex-1 ${isNext ? 'text-white/80' : 'text-white/40'}`}
+                    className={`text-xs flex-1 ${isNext ? 'text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)]' : 'text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]'}`}
                   >
                     {unlock.label}
                   </span>
                   <span
                     className={`text-xs font-semibold ${
-                      isNext ? 'text-amber-400' : 'text-white/30'
+                      isNext ? 'text-amber-400' : 'text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'
                     }`}
                   >
                     {unlock.threshold.toLocaleString()}

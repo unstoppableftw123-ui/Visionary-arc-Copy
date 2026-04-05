@@ -80,7 +80,7 @@ export default function ProjectPage() {
   const difficulty = (project?.difficulty ?? 'starter').toLowerCase();
   const colors     = track?.colors ?? {
     bg: 'bg-primary/10', text: 'text-primary', border: 'border-primary',
-    badge: 'bg-primary/20 text-primary', button: 'bg-primary text-white',
+    badge: 'bg-primary/20 text-primary', button: 'bg-primary text-[var(--text-primary)]',
   };
 
   const toggleCheck = (i) => setChecked((prev) => ({ ...prev, [i]: !prev[i] }));

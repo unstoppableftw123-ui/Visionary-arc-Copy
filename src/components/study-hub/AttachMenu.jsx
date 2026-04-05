@@ -151,7 +151,7 @@ export default function AttachMenu({
               <button
                 type="button"
                 onClick={handleLinkSubmit}
-                className="rounded-xl bg-hub-accent px-3 py-2 font-hub-sans text-sm font-medium text-white hover:opacity-90"
+                className="rounded-xl bg-hub-accent px-3 py-2 font-hub-sans text-sm font-medium text-[var(--text-primary)] hover:opacity-90"
               >
                 Add
               </button>

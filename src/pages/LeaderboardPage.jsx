@@ -170,7 +170,7 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
         border: isCurrentUser
           ? "1px solid rgba(234,179,8,0.5)"
           : "1px solid var(--border)",
-        borderLeft: isCurrentUser ? "3px solid #EAB308" : undefined,
+        borderLeft: isCurrentUser ? "3px solid var(--accent)" : undefined,
       }}
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
@@ -187,12 +187,12 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
         <div className="flex items-center gap-1.5 flex-wrap">
           <p
             className="text-sm font-semibold truncate"
-            style={{ color: isCurrentUser ? "#EAB308" : "var(--text-primary)" }}
+            style={{ color: isCurrentUser ? "var(--accent)" : "var(--text-primary)" }}
           >
             {row.name}
           </p>
           {isCurrentUser && (
-            <span className="text-xs shrink-0" style={{ color: "#EAB308" }}>
+            <span className="text-xs shrink-0" style={{ color: "var(--accent)" }}>
               (you)
             </span>
           )}
@@ -310,7 +310,7 @@ export default function LeaderboardPage() {
             onClick={() => setTopTab(id)}
             className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all"
             style={{
-              background: topTab === id ? "#EAB308" : "transparent",
+              background: topTab === id ? "var(--accent)" : "transparent",
               color: topTab === id ? "#000" : "var(--text-secondary)",
             }}
           >
@@ -364,7 +364,7 @@ export default function LeaderboardPage() {
                   onClick={() => setSubTab(t.id)}
                   className="px-4 py-1.5 rounded-full text-sm font-semibold transition-all"
                   style={{
-                    background: subTab === t.id ? "#EAB308" : "var(--surface-2)",
+                    background: subTab === t.id ? "var(--accent)" : "var(--surface-2)",
                     color: subTab === t.id ? "#000" : "var(--text-secondary)",
                     border: subTab === t.id ? "none" : "1px solid var(--border)",
                   }}

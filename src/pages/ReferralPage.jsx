@@ -32,11 +32,11 @@ const DEFAULT_STATS = {
 };
 
 function MilestoneIcon({ milestone, achieved }) {
-  if (milestone.count === 1)  return <Star  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-white/20"}`} />;
-  if (milestone.count === 5)  return <Trophy className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-white/20"}`} />;
-  if (milestone.count === 10) return <Zap   className={`w-5 h-5 ${achieved ? "text-orange-400" : "text-white/20"}`} />;
-  if (milestone.count === 25) return <Gift  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-white/20"}`} />;
-  return <Lock className="w-5 h-5 text-white/20" />;
+  if (milestone.count === 1)  return <Star  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  if (milestone.count === 5)  return <Trophy className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  if (milestone.count === 10) return <Zap   className={`w-5 h-5 ${achieved ? "text-orange-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  if (milestone.count === 25) return <Gift  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  return <Lock className="w-5 h-5 text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]" />;
 }
 
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -202,27 +202,27 @@ export default function ReferralPage() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-white/10 bg-gradient-to-br from-orange-900/30 via-purple-900/20 to-amber-900/10 backdrop-blur-md p-6 space-y-4"
+          className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-orange-900/30 via-orange-900/20 to-amber-900/10 backdrop-blur-md p-6 space-y-4"
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
               <Users className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Invite Friends, Unlock Rewards</h1>
-              <p className="text-sm text-white/50">Share your link. Earn coins, XP, and exclusive badges.</p>
+              <h1 className="text-xl font-bold text-[var(--text-primary)]">Invite Friends, Unlock Rewards</h1>
+              <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">Share your link. Earn coins, XP, and exclusive badges.</p>
             </div>
           </div>
 
           {/* Referral link */}
-          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white/70 break-all">
+          <div className="rounded-xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] px-4 py-3 font-mono text-sm text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] break-all">
             {referralLink}
           </div>
 
           <div className="flex flex-wrap gap-2">
             <Button
               onClick={handleCopy}
-              className="gap-2 bg-orange-600 hover:bg-orange-700 text-white border-0"
+              className="gap-2 bg-orange-600 hover:bg-orange-700 text-[var(--text-primary)] border-0"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {copied ? (
@@ -252,7 +252,7 @@ export default function ReferralPage() {
               variant="outline"
               onClick={handleShareImage}
               disabled={sharing}
-              className="gap-2 border-white/10 text-white/70 hover:text-white hover:bg-white/8"
+              className="gap-2 border-[var(--border)] text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] hover:text-[var(--text-primary)] hover:bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)]"
             >
               <Share2 className="w-4 h-4" />
               {sharing ? "Generating…" : "Share as Image"}
@@ -273,9 +273,9 @@ export default function ReferralPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
-              className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4 space-y-1"
+              className="rounded-xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-4 space-y-1"
             >
-              <p className="text-xs text-white/40">{label}</p>
+              <p className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{label}</p>
               <motion.p
                 key={value}
                 initial={{ scale: 1.3, opacity: 0 }}
@@ -298,7 +298,7 @@ export default function ReferralPage() {
         >
           <div className="flex items-center gap-2">
             <Coins className="w-5 h-5 text-amber-400" />
-            <span className="text-sm text-white/60">Total coins earned from referrals</span>
+            <span className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)]">Total coins earned from referrals</span>
           </div>
           <span className="text-2xl font-black text-amber-400">
             {loading ? "—" : stats.coins_earned.toLocaleString()}
@@ -310,12 +310,12 @@ export default function ReferralPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-5"
+          className="rounded-2xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-5 space-y-5"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-white/90">Milestone Progress</h2>
+            <h2 className="text-sm font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]">Milestone Progress</h2>
             {nextMilestone && (
-              <span className="text-xs text-white/40">
+              <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                 {nextMilestone.count - totalReferrals} more to next milestone
               </span>
             )}
@@ -324,7 +324,7 @@ export default function ReferralPage() {
           {/* Progress bar */}
           {nextMilestone && (
             <div className="space-y-1.5">
-              <div className="h-2 rounded-full bg-white/8 overflow-hidden">
+              <div className="h-2 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] overflow-hidden">
                 <motion.div
                   className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
                   initial={{ width: 0 }}
@@ -332,7 +332,7 @@ export default function ReferralPage() {
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 />
               </div>
-              <div className="flex justify-between text-[10px] text-white/30">
+              <div className="flex justify-between text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">
                 <span>{prevMilestoneCount}</span>
                 <span>{nextMilestone.count}</span>
               </div>
@@ -352,13 +352,13 @@ export default function ReferralPage() {
                   className={`rounded-xl border p-4 flex items-start gap-3 ${
                     achieved
                       ? "border-amber-500/30 bg-amber-500/8"
-                      : "border-white/8 bg-white/3"
+                      : "border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_3%,transparent)]"
                   }`}
                 >
                   {/* Icon */}
                   <div
                     className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                      achieved ? "bg-amber-500/20" : "bg-white/6"
+                      achieved ? "bg-amber-500/20" : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)]"
                     }`}
                   >
                     <MilestoneIcon milestone={milestone} achieved={achieved} />
@@ -369,7 +369,7 @@ export default function ReferralPage() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span
                         className={`text-sm font-semibold ${
-                          achieved ? "text-amber-400" : "text-white/50"
+                          achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]"
                         }`}
                       >
                         {milestone.label}
@@ -380,7 +380,7 @@ export default function ReferralPage() {
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-3 mt-1.5 text-xs text-white/40">
+                    <div className="flex flex-wrap gap-3 mt-1.5 text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                       <span className="text-amber-400/80">+{milestone.coins} coins</span>
                       <span className="text-orange-400/80">+{milestone.xp} XP</span>
                       {milestone.frame && (
@@ -400,7 +400,7 @@ export default function ReferralPage() {
                     className={`text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${
                       achieved
                         ? "bg-amber-500/20 text-amber-400"
-                        : "bg-white/6 text-white/30"
+                        : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]"
                     }`}
                   >
                     {milestone.count}
@@ -417,9 +417,9 @@ export default function ReferralPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3"
+            className="rounded-2xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-5 space-y-3"
           >
-            <h2 className="text-sm font-semibold text-white/90">Earned Badges &amp; Frames</h2>
+            <h2 className="text-sm font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]">Earned Badges &amp; Frames</h2>
             <div className="flex flex-wrap gap-2">
               {badges.map((b) => (
                 <div
@@ -441,13 +441,13 @@ export default function ReferralPage() {
           transition={{ delay: 0.5 }}
           className="rounded-xl border border-orange-500/30 bg-orange-600/5 p-4 flex items-center justify-between gap-4"
         >
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)]">
             Invite more friends to unlock community features faster.
           </p>
           <Button
             size="sm"
             onClick={handleCopy}
-            className="bg-orange-600 hover:bg-orange-700 text-white border-0 shrink-0"
+            className="bg-orange-600 hover:bg-orange-700 text-[var(--text-primary)] border-0 shrink-0"
           >
             <Copy className="w-3.5 h-3.5 mr-1.5" />
             Copy Link

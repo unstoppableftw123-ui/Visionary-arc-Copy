@@ -764,7 +764,7 @@ export default function AssignmentCreator() {
                             : "border-border hover:border-primary/40"
                         }`}
                       >
-                        <div className={`inline-flex p-1.5 rounded-lg bg-gradient-to-br ${t.color} text-white mb-2`}>
+                        <div className={`inline-flex p-1.5 rounded-lg bg-gradient-to-br ${t.color} text-[var(--text-primary)] mb-2`}>
                           <Icon className="h-4 w-4" />
                         </div>
                         <p className="font-medium text-sm">{t.name}</p>
@@ -1721,7 +1721,7 @@ function CanvasCard({ card, onUpdate, onRemove }) {
     question_card: "bg-blue-500/10 border-blue-500/30 text-blue-700",
     correct_card: "bg-green-500/10 border-green-500/30 text-green-700",
     incorrect_card: "bg-red-500/10 border-red-500/30 text-red-700",
-    hint_card: "bg-yellow-500/10 border-yellow-500/30 text-yellow-700",
+    hint_card: "bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)] text-[var(--accent)]",
     explanation_card: "bg-orange-600/10 border-orange-500/30 text-orange-400",
     true_false_card: "bg-teal-500/10 border-teal-500/30 text-teal-700",
     text_block: "bg-[var(--va-border)]/20 border-[var(--va-border)]",

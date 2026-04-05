@@ -150,12 +150,12 @@ export default function VocabJamGame({
       <div className={jamId ? "flex-1 min-w-0" : ""}>
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
-        <span className="text-[#888] text-sm">
+        <span className="text-[var(--text-secondary)] text-sm">
           Round {currentIndex + 1} of {total}
         </span>
         <div className="flex items-center gap-4">
           <div
-            className="h-2 flex-1 min-w-[80px] max-w-[120px] rounded-full bg-[#1a1a1a] overflow-hidden"
+            className="h-2 flex-1 min-w-[80px] max-w-[120px] rounded-full bg-[var(--surface-2)] overflow-hidden"
             style={{ width: (remaining / ROUND_TIME_SEC) * 100 + "%" }}
           >
             <motion.div
@@ -165,7 +165,7 @@ export default function VocabJamGame({
               transition={{ duration: 0.3 }}
             />
           </div>
-          <span className="text-sm font-mono text-[#efefef] w-8">{remaining}s</span>
+          <span className="text-sm font-mono text-[var(--text-primary)] w-8">{remaining}s</span>
         </div>
         <div className="flex items-center gap-2">
           <StreakCounter count={streak} />
@@ -191,8 +191,8 @@ export default function VocabJamGame({
               : { duration: 0.2 }
           }
           className={cn(
-            "w-full max-w-md rounded-2xl border-2 p-6 text-center text-xl font-semibold text-[#efefef]",
-            "bg-[#1a1a1a] border-white/10",
+            "w-full max-w-md rounded-2xl border-2 p-6 text-center text-xl font-semibold text-[var(--text-primary)]",
+            "bg-[var(--surface-2)] border-[var(--border)]",
             feedback === "correct" && "border-[#3ecf8e] bg-[#3ecf8e]/10",
             feedback === "wrong" && "border-[#f87171] bg-[#f87171]/10"
           )}
@@ -213,7 +213,7 @@ export default function VocabJamGame({
             onClick={() => handleSelect(opt)}
             className={cn(
               "rounded-xl border-2 p-4 text-left text-sm font-medium transition-all min-h-[80px]",
-              "bg-[#1a1a1a] border-white/10 text-[#efefef]",
+              "bg-[var(--surface-2)] border-[var(--border)] text-[var(--text-primary)]",
               "hover:border-[#6e5ff0]/50 hover:bg-[#6e5ff0]/10 disabled:pointer-events-none",
               selected === opt && opt === card.definition && "border-[#3ecf8e] bg-[#3ecf8e]/10",
               selected === opt && opt !== card.definition && "border-[#f87171] bg-[#f87171]/10"
@@ -228,13 +228,13 @@ export default function VocabJamGame({
       {/* Live leaderboard sidebar — only in jam mode */}
       {jamId && (
         <div className="w-44 shrink-0 sticky top-4">
-          <div className="rounded-xl bg-[#1a1a1a] border border-white/10 p-3">
+          <div className="rounded-xl bg-[var(--surface-2)] border border-[var(--border)] p-3">
             <div className="flex items-center gap-1.5 mb-3">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
-              <span className="text-xs font-semibold text-[#efefef]">Live Scores</span>
+              <span className="text-xs font-semibold text-[var(--text-primary)]">Live Scores</span>
             </div>
             {liveScores.length === 0 ? (
-              <p className="text-xs text-[#666]">Connecting...</p>
+              <p className="text-xs text-[var(--text-muted)]">Connecting...</p>
             ) : (
               <div className="space-y-1.5">
                 {liveScores.map((p, i) => (
@@ -242,10 +242,10 @@ export default function VocabJamGame({
                     key={p.id}
                     className={cn(
                       "flex items-center gap-2 text-xs rounded-lg px-2 py-1.5",
-                      p.id === 'me' ? "bg-[#6e5ff0]/20 text-[#efefef]" : "text-[#aaa]"
+                      p.id === 'me' ? "bg-[#6e5ff0]/20 text-[var(--text-primary)]" : "text-[var(--text-secondary)]"
                     )}
                   >
-                    <span className="w-4 shrink-0 text-center font-bold text-[#888]">{i + 1}</span>
+                    <span className="w-4 shrink-0 text-center font-bold text-[var(--text-secondary)]">{i + 1}</span>
                     <span className="flex-1 truncate font-medium">
                       {p.id === 'me' ? (myName || 'You') : p.name}
                     </span>
@@ -268,8 +268,8 @@ export function VocabJamResults({ score, totalRounds, onBack }) {
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-md mx-auto px-4 py-12 text-center"
     >
-      <h2 className="text-2xl font-bold text-[#efefef] mb-2">Round complete</h2>
-      <p className="text-[#888] mb-6">You earned {score} XP this game.</p>
+      <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Round complete</h2>
+      <p className="text-[var(--text-secondary)] mb-6">You earned {score} XP this game.</p>
       <Button onClick={onBack} className="bg-[#6e5ff0] hover:bg-[#6e5ff0]/90">
         Back to Lobby
       </Button>

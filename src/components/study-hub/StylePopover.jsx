@@ -38,7 +38,7 @@ function Segment({ options, value, onChange }) {
             type="button"
             onClick={() => onChange(id)}
             className={`rounded-md px-2.5 py-1.5 font-hub-sans text-xs transition ${
-              isActive ? "bg-hub-accent text-white" : "text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
+              isActive ? "bg-hub-accent text-[var(--text-primary)]" : "text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
             }`}
           >
             {label}
@@ -138,7 +138,7 @@ export default function StylePopover({
                   type="button"
                   onClick={() => onChange("quiz", { ...quizOpts, numQuestions: n })}
                   className={`h-8 w-8 rounded-lg font-hub-sans text-xs font-medium transition ${
-                    (quizOpts.numQuestions ?? 5) === n ? "bg-hub-accent text-white" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
+                    (quizOpts.numQuestions ?? 5) === n ? "bg-hub-accent text-[var(--text-primary)]" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
                   }`}
                 >
                   {n}
@@ -167,7 +167,7 @@ export default function StylePopover({
                   type="button"
                   onClick={() => onChange("flashcards", { ...flashcardOpts, numCards: n })}
                   className={`h-8 w-10 rounded-lg font-hub-sans text-xs font-medium transition ${
-                    (flashcardOpts.numCards ?? 10) === n ? "bg-hub-accent text-white" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
+                    (flashcardOpts.numCards ?? 10) === n ? "bg-hub-accent text-[var(--text-primary)]" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
                   }`}
                 >
                   {n}
@@ -208,7 +208,7 @@ export default function StylePopover({
                   type="button"
                   onClick={() => onChange("slides", { ...slidesOpts, slideCount: n })}
                   className={`h-8 w-10 rounded-lg font-hub-sans text-xs font-medium transition ${
-                    (slidesOpts.slideCount ?? 5) === n ? "bg-hub-accent text-white" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
+                    (slidesOpts.slideCount ?? 5) === n ? "bg-hub-accent text-[var(--text-primary)]" : "bg-hub-bg text-hub-muted hover:bg-hub-elevated hover:text-hub-text"
                   }`}
                 >
                   {n}

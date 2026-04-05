@@ -69,7 +69,7 @@ function StarSelector({ value, onChange }) {
           key={n}
           type="button"
           onClick={() => onChange(n)}
-          className={`text-xl transition-colors ${n <= value ? 'text-yellow-400' : 'text-white/20'}`}
+          className={`text-xl transition-colors ${n <= value ? 'text-[var(--accent)]' : 'text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]'}`}
         >
           ★
         </button>
@@ -84,7 +84,7 @@ function StatusBadge({ status }) {
     published: 'bg-green-500/20 text-green-400 border-green-500/30',
     completed: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     expired: 'bg-red-500/20 text-red-400 border-red-500/30',
-    submitted: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    submitted: 'bg-[color:color-mix(in_srgb,var(--accent)_20%,transparent)] text-[var(--accent)] border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]',
     approved: 'bg-green-500/20 text-green-400 border-green-500/30',
     rejected: 'bg-red-500/20 text-red-400 border-red-500/30',
     pending: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
@@ -109,7 +109,7 @@ function GuildSetupTab({ guild, onGuildCreated }) {
     entryMinStars: guild?.entry_min_stars ?? 0,
     entryTrack: guild?.entry_track ?? '',
     bannerUrl: guild?.banner_url ?? '',
-    colorTheme: guild?.color_theme ?? '#EAB308',
+    colorTheme: guild?.color_theme ?? 'var(--accent)',
   });
 
   const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
@@ -609,7 +609,7 @@ function ApplicationsTab({ guild }) {
               <Card key={a.user_id} className="bg-[var(--va-surface)] border-[var(--va-border)]">
                 <CardContent className="p-4 flex items-center gap-4">
                   <div
-                    className="h-9 w-9 rounded-full flex items-center justify-center text-white font-semibold shrink-0"
+                    className="h-9 w-9 rounded-full flex items-center justify-center text-[var(--text-primary)] font-semibold shrink-0"
                     style={{ backgroundColor: `hsl(${hue}, 65%, 45%)` }}
                   >
                     {a.profiles?.avatar
@@ -770,7 +770,7 @@ function WalletTab({ guild }) {
 
       {/* Deposit dialog */}
       <Dialog open={depositOpen} onOpenChange={setDepositOpen}>
-        <DialogContent className="bg-background border-white/10 max-w-sm">
+        <DialogContent className="bg-background border-[var(--border)] max-w-sm">
           <DialogHeader>
             <DialogTitle>Deposit Coins</DialogTitle>
             <DialogDescription>
@@ -786,7 +786,7 @@ function WalletTab({ guild }) {
                 className={`rounded-lg border py-3 text-sm font-medium transition-colors ${
                   depositAmount === amt
                     ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
-                    : 'border-white/10 text-muted-foreground hover:border-white/30'
+                    : 'border-[var(--border)] text-muted-foreground hover:border-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'
                 }`}
               >
                 {amt.toLocaleString()} coins
@@ -811,7 +811,7 @@ function WalletTab({ guild }) {
         ) : (
           <div className="space-y-1">
             {transactions.map(tx => (
-              <div key={tx.id} className="flex items-center justify-between text-sm py-1.5 border-b border-white/5">
+              <div key={tx.id} className="flex items-center justify-between text-sm py-1.5 border-b border-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)]">
                 <div>
                   <span className="capitalize text-xs text-muted-foreground">{tx.type}</span>
                   {tx.note && <p className="text-xs text-muted-foreground truncate max-w-xs">{tx.note}</p>}
@@ -978,7 +978,7 @@ export default function CompanyDashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="border-b border-white/10 px-6 py-4">
+      <div className="border-b border-[var(--border)] px-6 py-4">
         <h1 className="text-xl font-bold">Company Dashboard</h1>
         {guild && (
           <p className="text-sm text-muted-foreground mt-0.5">
@@ -988,7 +988,7 @@ export default function CompanyDashboard() {
       </div>
 
       {/* Tab bar */}
-      <div className="border-b border-white/10 px-4 overflow-x-auto">
+      <div className="border-b border-[var(--border)] px-4 overflow-x-auto">
         <div className="flex gap-1 min-w-max">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button

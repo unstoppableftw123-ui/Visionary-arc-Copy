@@ -270,7 +270,7 @@ function StudentDrawer({ student, open, onClose }) {
           <SheetHeader>
             <SheetTitle className="flex items-center gap-3">
               <div
-                className="h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
+                className="h-10 w-10 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-sm shrink-0"
                 style={{ backgroundColor: cfg.color }}
               >
                 {getInitials(student.name)}
@@ -386,7 +386,7 @@ function StudentDrawer({ student, open, onClose }) {
               {student.recentScores.map((entry, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs">
                   <div
-                    className="h-6 w-6 rounded flex items-center justify-center text-white font-bold text-[10px] shrink-0"
+                    className="h-6 w-6 rounded flex items-center justify-center text-[var(--text-primary)] font-bold text-[10px] shrink-0"
                     style={{ backgroundColor: scoreColor(entry.score) }}
                   >
                     {entry.score}
@@ -480,7 +480,7 @@ function StudentCard({ student, onViewProfile }) {
           {/* LEFT — Avatar + name + status */}
           <div className="flex flex-col items-center gap-1.5 shrink-0 w-16 text-center">
             <div
-              className="h-11 w-11 rounded-full flex items-center justify-center text-white font-bold text-sm"
+              className="h-11 w-11 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-sm"
               style={{ backgroundColor: cfg.color }}
             >
               {getInitials(student.name)}
@@ -1075,7 +1075,7 @@ function StandardsGapsTab() {
                             isLow ? "bg-red-500/8 border border-red-500/20" : ""
                           }`}>
                           <div
-                            className="h-6 w-6 rounded-full flex items-center justify-center text-white font-bold text-[9px] shrink-0"
+                            className="h-6 w-6 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-[9px] shrink-0"
                             style={{ backgroundColor: sc.color }}
                           >
                             {getInitials(s.name)}
@@ -1379,7 +1379,7 @@ function MasteryHeatmapTab() {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center gap-2">
               <span
-                className="h-7 w-7 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0"
+                className="h-7 w-7 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-xs shrink-0"
                 style={{ backgroundColor: STATUS_CONFIG[selectedCell.student.status]?.color ?? "#7c3aed" }}
               >
                 {getInitials(selectedCell.student.name)}
@@ -1411,7 +1411,7 @@ function MasteryHeatmapTab() {
                         <div
                           key={i}
                           title={`Answer ${i + 1}: ${correct ? "Correct" : "Wrong"}`}
-                          className="h-6 w-6 rounded flex items-center justify-center text-[11px] font-bold text-white"
+                          className="h-6 w-6 rounded flex items-center justify-center text-[11px] font-bold text-[var(--text-primary)]"
                           style={{ backgroundColor: correct ? "#16a34a" : "#dc2626" }}
                         >
                           {correct ? "✓" : "✗"}

@@ -359,7 +359,7 @@ export default function NotesStudio() {
     body { font-family: 'Inter', system-ui, sans-serif; max-width: 780px; margin: 0 auto; padding: 48px 40px; color: #1F2937; line-height: 1.7; }
     .header { border-bottom: 2px solid #E5E7EB; padding-bottom: 16px; margin-bottom: 28px; }
     .note-title { font-size: 28px; font-weight: 700; color: #111827; margin-bottom: 4px; }
-    .note-meta { font-size: 12px; color: #9CA3AF; }
+    .note-meta { font-size: 12px; color: var(--text-secondary); }
     .note-content { margin-bottom: 40px; }
     .note-content h1 { font-size: 22px; font-weight: 700; margin: 20px 0 8px; }
     .note-content h2 { font-size: 18px; font-weight: 600; margin: 16px 0 6px; }
@@ -369,7 +369,7 @@ export default function NotesStudio() {
     .note-content li { margin-bottom: 4px; }
     .note-content strong { font-weight: 600; }
     .note-content code { background: #F3F4F6; padding: 2px 5px; border-radius: 3px; font-family: monospace; font-size: 13px; }
-    .note-content pre { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 6px; padding: 12px; margin-bottom: 12px; overflow: auto; }
+    .note-content pre { background: var(--text-primary); border: 1px solid #E5E7EB; border-radius: 6px; padding: 12px; margin-bottom: 12px; overflow: auto; }
     .canvas-section { border-top: 2px solid #E5E7EB; padding-top: 24px; }
     .canvas-label { font-size: 14px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
     .canvas-img { max-width: 100%; border-radius: 8px; border: 1px solid #E5E7EB; }

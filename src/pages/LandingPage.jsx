@@ -110,7 +110,7 @@ function HeroBriefCard() {
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
-      className="relative mt-10 rounded-2xl border border-orange-500/30 bg-zinc-900/80 backdrop-blur p-5 shadow-xl shadow-purple-900/20 text-left max-w-lg mx-auto"
+      className="relative mt-10 rounded-2xl border border-orange-500/30 bg-zinc-900/80 backdrop-blur p-5 shadow-xl shadow-orange-900/20 text-left max-w-lg mx-auto"
     >
       {/* Header row */}
       <div className="flex items-center gap-2 mb-3">
@@ -119,7 +119,7 @@ function HeroBriefCard() {
       </div>
 
       <p className="text-xs text-zinc-400 font-medium mb-1">Role</p>
-      <p className="text-sm font-semibold text-white mb-3">You are a Junior Brand Strategist</p>
+      <p className="text-sm font-semibold text-[var(--text-primary)] mb-3">You are a Junior Brand Strategist</p>
 
       <p className="text-xs text-zinc-400 font-medium mb-1">Client</p>
       <p className="text-sm text-zinc-200 mb-3">
@@ -238,7 +238,7 @@ export default function LandingPage() {
             { value: null,  label: "Free to start", static: true },
           ].map((stat, i) => (
             <div key={i}>
-              <p className="text-2xl sm:text-3xl font-extrabold text-white leading-none mb-1">
+              <p className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] leading-none mb-1">
                 {stat.static ? (
                   <span className="bg-gradient-to-r from-orange-700 to-pink-400 bg-clip-text text-transparent">✓</span>
                 ) : (

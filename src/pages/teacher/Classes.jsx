@@ -762,20 +762,20 @@ export default function Classes() {
         {selectedClass ? (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
             {/* Colored class header */}
-            <div className={`bg-gradient-to-r ${color.gradient} px-5 pt-4 pb-0 text-white shrink-0`}>
+            <div className={`bg-gradient-to-r ${color.gradient} px-5 pt-4 pb-0 text-[var(--text-primary)] shrink-0`}>
               <div className="flex items-center justify-between mb-1">
                 <div>
                   <h1 className="font-heading text-xl font-bold">{selectedClass.name}</h1>
-                  <p className="text-white/75 text-xs mt-0.5">{selectedClass.subject} · {selectedClass.grade} Grade · {selectedClass.students?.length ?? 0} students</p>
+                  <p className="text-[color:color-mix(in_srgb,var(--text-primary)_75%,transparent)] text-xs mt-0.5">{selectedClass.subject} · {selectedClass.grade} Grade · {selectedClass.students?.length ?? 0} students</p>
                 </div>
               </div>
-              <TabsList className="bg-white/10 border-0 mt-3 h-9 rounded-t-lg rounded-b-none gap-0 px-0">
-                <TabsTrigger value="overview"    className="text-xs text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20 rounded-none rounded-tl-lg h-9 px-4">Overview</TabsTrigger>
-                <TabsTrigger value="students"    className="text-xs text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20 rounded-none h-9 px-4">Students</TabsTrigger>
-                <TabsTrigger value="assignments" className="text-xs text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20 rounded-none h-9 px-4">Assignments</TabsTrigger>
-                <TabsTrigger value="resources"   className="text-xs text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20 rounded-none h-9 px-4">Resources</TabsTrigger>
-                <TabsTrigger value="skills"      className="text-xs text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20 rounded-none h-9 px-4">Skills</TabsTrigger>
-                <TabsTrigger value="chat"        className="text-xs text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20 rounded-none h-9 px-4">Chat</TabsTrigger>
+              <TabsList className="bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] border-0 mt-3 h-9 rounded-t-lg rounded-b-none gap-0 px-0">
+                <TabsTrigger value="overview"    className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none rounded-tl-lg h-9 px-4">Overview</TabsTrigger>
+                <TabsTrigger value="students"    className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Students</TabsTrigger>
+                <TabsTrigger value="assignments" className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Assignments</TabsTrigger>
+                <TabsTrigger value="resources"   className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Resources</TabsTrigger>
+                <TabsTrigger value="skills"      className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Skills</TabsTrigger>
+                <TabsTrigger value="chat"        className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] data-[state=active]:text-[var(--text-primary)] data-[state=active]:bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] rounded-none h-9 px-4">Chat</TabsTrigger>
               </TabsList>
             </div>
 

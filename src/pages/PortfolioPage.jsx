@@ -17,7 +17,7 @@ const TIER_CONFIG = {
   Builder:  { bg: 'bg-green-500/20',  text: 'text-green-400',  dot: 'bg-green-400' },
   Creator:  { bg: 'bg-blue-500/20',   text: 'text-blue-400',   dot: 'bg-blue-400' },
   Pro:      { bg: 'bg-orange-600/20', text: 'text-orange-400', dot: 'bg-orange-600/10' },
-  Elite:    { bg: 'bg-yellow-500/20', text: 'text-yellow-400', dot: 'bg-yellow-400' },
+  Elite:    { bg: 'bg-[color:color-mix(in_srgb,var(--accent)_20%,transparent)]', text: 'text-[var(--accent)]', dot: 'bg-[var(--accent)]' },
 };
 
 function TierBadge({ xp }) {

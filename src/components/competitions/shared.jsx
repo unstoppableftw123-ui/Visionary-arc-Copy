@@ -99,7 +99,7 @@ export function PlayerAvatar({ name, avatar, className, size = "default" }) {
 
   return (
     <Avatar className={cn(sizeClass, className)}>
-      <AvatarFallback className="bg-[#1a1a1a] text-[#efefef] border border-white/10">
+      <AvatarFallback className="bg-[var(--surface-2)] text-[var(--text-primary)] border border-[var(--border)]">
         {avatar || initials}
       </AvatarFallback>
     </Avatar>

@@ -140,7 +140,7 @@ export default function QuizView({
               type="button"
               onClick={goNext}
               disabled={!revealed}
-              className="flex items-center gap-2 rounded-xl bg-hub-accent px-4 py-2 font-hub-sans text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-hub-accent px-4 py-2 font-hub-sans text-sm font-medium text-[var(--text-primary)] transition hover:opacity-90 disabled:opacity-50"
             >
               Next <ChevronRight className="h-4 w-4" />
             </button>

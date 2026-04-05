@@ -62,16 +62,16 @@ export default function WaitingRoom({
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-md mx-auto px-4 py-8"
     >
-      <div className="rounded-2xl border border-white/10 bg-[#111111] p-6 space-y-6">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-base)] p-6 space-y-6">
         <div className="text-center">
-          <p className="text-xs text-[#888] uppercase tracking-wider mb-1">Join code</p>
-          <p className="text-3xl font-mono font-bold text-[#efefef] tracking-widest">
+          <p className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-1">Join code</p>
+          <p className="text-3xl font-mono font-bold text-[var(--text-primary)] tracking-widest">
             {displayCode}
           </p>
           <Button
             variant="outline"
             size="sm"
-            className="mt-3 border-white/10 text-[#888] hover:text-[#efefef]"
+            className="mt-3 border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             onClick={handleCopy}
           >
             <Copy className="w-4 h-4 mr-2" /> Copy link
@@ -79,7 +79,7 @@ export default function WaitingRoom({
         </div>
 
         <div>
-          <div className="flex items-center gap-2 text-[#888] text-sm mb-3">
+          <div className="flex items-center gap-2 text-[var(--text-secondary)] text-sm mb-3">
             <Users className="w-4 h-4" />
             <span>Players ({players?.length ?? 0})</span>
           </div>
@@ -90,10 +90,10 @@ export default function WaitingRoom({
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-3 p-2 rounded-lg bg-[#1a1a1a]"
+                className="flex items-center gap-3 p-2 rounded-lg bg-[var(--surface-2)]"
               >
                 <PlayerAvatar name={p.name} avatar={p.avatar} size="sm" />
-                <span className="text-[#efefef] font-medium truncate">{p.name}</span>
+                <span className="text-[var(--text-primary)] font-medium truncate">{p.name}</span>
                 {p.isHost && (
                   <span className="text-xs text-[#6e5ff0] ml-auto">Host</span>
                 )}
@@ -105,8 +105,8 @@ export default function WaitingRoom({
         {isHost && (
           <div className="pt-2">
             {countdown !== null && countdown > 0 ? (
-              <p className="text-center text-[#888] text-sm">
-                Game starts in <span className="font-mono font-semibold text-[#efefef]">{countdown}</span>s
+              <p className="text-center text-[var(--text-secondary)] text-sm">
+                Game starts in <span className="font-mono font-semibold text-[var(--text-primary)]">{countdown}</span>s
                 &nbsp;or when you click Start
               </p>
             ) : null}
@@ -124,7 +124,7 @@ export default function WaitingRoom({
         )}
 
         {!isHost && (
-          <p className="text-center text-sm text-[#888]">Waiting for host to start the game...</p>
+          <p className="text-center text-sm text-[var(--text-secondary)]">Waiting for host to start the game...</p>
         )}
       </div>
     </motion.div>

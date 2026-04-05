@@ -244,7 +244,7 @@ function RemoteCursors({ others, getColorForUserId, appState }) {
               transition={{ duration: 0.1 }}
             >
               <div
-                className="w-4 h-4 rounded-full border-2 border-white shadow-md"
+                className="w-4 h-4 rounded-full border-2 border-[var(--text-primary)] shadow-md"
                 style={{ backgroundColor: color }}
               />
               <span

@@ -212,7 +212,7 @@ export default function SATACTPractice() {
 
         {/* Founder Badge */}
         {user?.is_lite_founder && (
-          <Badge className="mb-4 bg-gradient-to-r from-orange-500 to-red-500 text-white">
+          <Badge className="mb-4 bg-gradient-to-r from-orange-500 to-red-500 text-[var(--text-primary)]">
             <Flame className="w-3 h-3 mr-1" /> Lite Founder
           </Badge>
         )}
@@ -354,7 +354,7 @@ export default function SATACTPractice() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className={`w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                sessionStats.accuracy >= 80 ? "bg-green-500/10" : sessionStats.accuracy >= 60 ? "bg-yellow-500/10" : "bg-red-500/10"
+                sessionStats.accuracy >= 80 ? "bg-green-500/10" : sessionStats.accuracy >= 60 ? "bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)]" : "bg-red-500/10"
               }`}>
                 <span className={`text-3xl font-bold ${
                   sessionStats.accuracy >= 80 ? "text-green-500" : sessionStats.accuracy >= 60 ? "text-yellow-500" : "text-red-500"

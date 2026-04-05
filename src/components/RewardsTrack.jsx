@@ -165,10 +165,10 @@ export default function RewardsTrack() {
             const cardClassName = (() => {
               if (isPast) return "border-green-500/15 bg-green-500/5 opacity-65";
               if (isCurrent)
-                return "border-yellow-500/60 bg-white/5 backdrop-blur-md shadow-[0_0_20px_rgba(234,179,8,0.3)]";
+                return "border-[color:color-mix(in_srgb,var(--accent)_60%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md shadow-[0_0_20px_var(--accent-glow)]";
               if (isLocked)
-                return "bg-white/5 backdrop-blur-md border-white/10";
-              if (isMilestone) return "border-yellow-500/20 bg-yellow-500/5";
+                return "bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md border-[var(--border)]";
+              if (isMilestone) return "border-[color:color-mix(in_srgb,var(--accent)_20%,transparent)] bg-[color:color-mix(in_srgb,var(--accent)_5%,transparent)]";
               return "border-border";
             })();
 
@@ -184,9 +184,9 @@ export default function RewardsTrack() {
                     isPast
                       ? "bg-green-500/15 border-green-500/60 text-green-400"
                       : isCurrent
-                      ? "bg-yellow-500/15 border-yellow-500 text-yellow-400"
+                      ? "bg-[color:color-mix(in_srgb,var(--accent)_15%,transparent)] border-[var(--accent)] text-[var(--accent)]"
                       : isMilestone
-                      ? "bg-yellow-500/10 border-yellow-500/50 text-yellow-500"
+                      ? "bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] border-[color:color-mix(in_srgb,var(--accent)_50%,transparent)] text-[var(--accent)]"
                       : "bg-muted border-border text-muted-foreground"
                   }`}
                 >
@@ -200,7 +200,7 @@ export default function RewardsTrack() {
                 {/* Pulse animation on current level */}
                 {isCurrent && (
                   <motion.div
-                    className="absolute left-0 w-12 h-12 rounded-full border-2 border-yellow-500/40 pointer-events-none z-10"
+                    className="absolute left-0 w-12 h-12 rounded-full border-2 border-[color:color-mix(in_srgb,var(--accent)_40%,transparent)] pointer-events-none z-10"
                     animate={{ scale: [1, 1.35, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                   />
@@ -214,7 +214,7 @@ export default function RewardsTrack() {
                     {/* Padlock icon — top-right corner for locked cards */}
                     {isLocked && (
                       <div className="absolute top-2 right-2 z-20 pointer-events-none">
-                        <Lock className="w-4 h-4 text-yellow-500" />
+                        <Lock className="w-4 h-4 text-[var(--accent)]" />
                       </div>
                     )}
 
@@ -248,7 +248,7 @@ export default function RewardsTrack() {
                               animate={{ scale: [1, 1.05, 1] }}
                               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             >
-                              <Badge className="text-[10px] px-1.5 py-0 bg-yellow-500/15 text-yellow-400 border-yellow-500/30">
+                              <Badge className="text-[10px] px-1.5 py-0 bg-[color:color-mix(in_srgb,var(--accent)_15%,transparent)] text-[var(--accent)] border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]">
                                 You are here
                               </Badge>
                             </motion.div>
@@ -278,15 +278,15 @@ export default function RewardsTrack() {
                           <Coins
                             className={`w-3.5 h-3.5 shrink-0 ${
                               isFuture
-                                ? "text-yellow-500"
+                                ? "text-[var(--accent)]"
                                 : isPast
                                 ? "text-muted-foreground"
-                                : "text-yellow-500"
+                                : "text-[var(--accent)]"
                             }`}
                           />
                           <span
                             className={`${isPast ? "line-through text-muted-foreground" : ""} ${
-                              isFuture ? "text-yellow-400 font-medium" : ""
+                              isFuture ? "text-[var(--accent)] font-medium" : ""
                             }`}
                           >
                             +{reward.coins} coins

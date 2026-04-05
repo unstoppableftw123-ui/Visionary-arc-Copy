@@ -235,7 +235,7 @@ export default function VisionaryChatbox() {
         className={cn(
           "fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg",
           "bg-gradient-to-br from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600",
-          "flex items-center justify-center text-white transition-all duration-300",
+          "flex items-center justify-center text-[var(--text-primary)] transition-all duration-300",
           "hover:scale-110 hover:shadow-xl",
           isOpen && "scale-0 opacity-0"
         )}
@@ -259,21 +259,21 @@ export default function VisionaryChatbox() {
             {showHistory ? (
               <button
                 onClick={() => setShowHistory(false)}
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] hover:text-[var(--text-primary)] transition-colors"
               >
                 <ChevronLeftIcon />
               </button>
             ) : (
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] flex items-center justify-center">
                 <SparklesIcon />
               </div>
             )}
             <div>
-              <h3 className="text-white font-semibold text-sm">
+              <h3 className="text-[var(--text-primary)] font-semibold text-sm">
                 {showHistory ? "Chat History" : "Visionary AI"}
               </h3>
               {!showHistory && (
-                <p className="text-white/70 text-xs">Research & Study Assistant</p>
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-xs">Research & Study Assistant</p>
               )}
             </div>
           </div>
@@ -285,14 +285,14 @@ export default function VisionaryChatbox() {
                     setShowHistory(true);
                     fetchSessions();
                   }}
-                  className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                  className="p-1.5 text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] hover:text-[var(--text-primary)] hover:bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] rounded-lg transition-colors"
                   title="Chat History"
                 >
                   <HistoryIcon />
                 </button>
                 <button
                   onClick={startNewChat}
-                  className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                  className="p-1.5 text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] hover:text-[var(--text-primary)] hover:bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] rounded-lg transition-colors"
                   title="New Chat"
                 >
                   <PlusIcon />
@@ -301,7 +301,7 @@ export default function VisionaryChatbox() {
             )}
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              className="p-1.5 text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] hover:text-[var(--text-primary)] hover:bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] rounded-lg transition-colors"
               title="Close"
             >
               <XIcon />
@@ -415,7 +415,7 @@ export default function VisionaryChatbox() {
                         className={cn(
                           "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm",
                           msg.role === "user"
-                            ? "bg-gradient-to-br from-orange-700 to-orange-600 text-white rounded-br-md"
+                            ? "bg-gradient-to-br from-orange-700 to-orange-600 text-[var(--text-primary)] rounded-br-md"
                             : msg.isError
                             ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-bl-md"
                             : "bg-muted text-foreground rounded-bl-md"

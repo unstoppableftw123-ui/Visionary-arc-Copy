@@ -53,7 +53,7 @@ export default function AssistantMessage({
             <button
               type="button"
               onClick={onRegenerate}
-              className="mt-3 rounded-xl bg-hub-accent px-4 py-2 font-hub-sans text-sm font-medium text-white hover:opacity-90"
+              className="mt-3 rounded-xl bg-hub-accent px-4 py-2 font-hub-sans text-sm font-medium text-[var(--text-primary)] hover:opacity-90"
             >
               Try again
             </button>

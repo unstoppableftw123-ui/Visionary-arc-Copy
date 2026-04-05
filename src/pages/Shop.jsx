@@ -171,22 +171,22 @@ export default function Shop() {
   return (
     <div className="flex-1 p-4 md:p-8 overflow-auto" data-testid="shop-page">
       {/* Hero */}
-      <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-orange-700 via-purple-600 to-orange-600">
+      <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-orange-700 via-orange-700 to-orange-600">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                <ShoppingBag className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur flex items-center justify-center">
+                <ShoppingBag className="w-6 h-6 text-[var(--text-primary)]" />
               </div>
               <div>
-                <h1 className="font-heading text-2xl md:text-3xl font-bold text-white">Shop</h1>
-                <p className="text-white/80 text-sm">Season Pass · Coins · Cosmetics</p>
+                <h1 className="font-heading text-2xl md:text-3xl font-bold text-[var(--text-primary)]">Shop</h1>
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] text-sm">Season Pass · Coins · Cosmetics</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 bg-white/20 backdrop-blur rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur rounded-lg px-4 py-2">
               <CoinIcon animated={true} size={20} />
-              <span className="text-white font-bold">{(user.coins ?? 0).toLocaleString()}</span>
-              <span className="text-white/70 text-sm">coins</span>
+              <span className="text-[var(--text-primary)] font-bold">{(user.coins ?? 0).toLocaleString()}</span>
+              <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm">coins</span>
             </div>
           </div>
         </motion.div>
@@ -205,12 +205,12 @@ export default function Shop() {
         <TabsContent value="season">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="max-w-lg mx-auto">
             <Card className="border-2 border-orange-500/30 overflow-hidden">
-              <div className="bg-gradient-to-br from-orange-700 to-orange-600 p-6 text-white">
+              <div className="bg-gradient-to-br from-orange-700 to-orange-600 p-6 text-[var(--text-primary)]">
                 <div className="flex items-center gap-3 mb-2">
                   <Crown className="w-8 h-8 text-yellow-300" />
                   <h2 className="text-2xl font-bold">Season Pass</h2>
                 </div>
-                <p className="text-white/80 text-sm">One-time purchase · Active for 90 days</p>
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] text-sm">One-time purchase · Active for 90 days</p>
                 <p className="text-3xl font-bold mt-4">$9.99</p>
               </div>
               <CardContent className="p-6 space-y-4">
@@ -236,7 +236,7 @@ export default function Shop() {
                 </ul>
 
                 <Button
-                  className="w-full bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600 text-white"
+                  className="w-full bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-700 hover:to-orange-600 text-[var(--text-primary)]"
                   disabled={!!user.season_pass_active || buying === "season_pass"}
                   onClick={handleSeasonPass}
                 >
@@ -264,16 +264,16 @@ export default function Shop() {
               >
                 {pack.bestValue && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <Badge className="bg-amber-500 text-white px-3 py-0.5 text-xs font-bold">Best Value</Badge>
+                    <Badge className="bg-amber-500 text-[var(--text-primary)] px-3 py-0.5 text-xs font-bold">Best Value</Badge>
                   </div>
                 )}
                 <Card className={`border-2 overflow-hidden h-full ${pack.bestValue ? "border-amber-500/70" : "border-border"}`}>
-                  <div className={`bg-gradient-to-br ${pack.color} p-6 text-white text-center`}>
+                  <div className={`bg-gradient-to-br ${pack.color} p-6 text-[var(--text-primary)] text-center`}>
                     <div className="flex justify-center mb-2">
                       <CoinIcon animated={true} size={40} variant="stack" />
                     </div>
                     <p className="text-3xl font-bold">{pack.coins.toLocaleString()}</p>
-                    <p className="text-white/70 text-sm">coins</p>
+                    <p className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm">coins</p>
                   </div>
                   <CardContent className="p-5 flex flex-col gap-4">
                     <div className="text-center">
@@ -449,15 +449,15 @@ export default function Shop() {
               <div className="bg-gradient-to-br from-amber-600/30 to-orange-700/20 border-b border-amber-500/20 p-6">
                 <div className="flex items-center gap-3 mb-1">
                   <Gift className="w-7 h-7 text-amber-400" />
-                  <h2 className="text-xl font-bold text-white">Gift Cards</h2>
+                  <h2 className="text-xl font-bold text-[var(--text-primary)]">Gift Cards</h2>
                 </div>
-                <p className="text-white/50 text-sm">Redeem your coins for real gift cards</p>
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] text-sm">Redeem your coins for real gift cards</p>
                 <div className="mt-3 flex items-center gap-2">
                   <div className="flex items-center gap-1.5 rounded-lg bg-amber-500/15 border border-amber-500/25 px-3 py-1.5 text-sm font-semibold text-amber-400">
                     <Coins className="w-4 h-4" />
                     1,000 coins = $1
                   </div>
-                  <span className="text-xs text-white/30">Minimum: 5,000 coins ($5)</span>
+                  <span className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Minimum: 5,000 coins ($5)</span>
                 </div>
               </div>
 
@@ -471,15 +471,15 @@ export default function Shop() {
                     <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto">
                       <Check className="w-7 h-7 text-emerald-400" />
                     </div>
-                    <p className="text-lg font-bold text-white">Request Submitted!</p>
-                    <p className="text-sm text-white/50">
+                    <p className="text-lg font-bold text-[var(--text-primary)]">Request Submitted!</p>
+                    <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">
                       Your ${(giftAmount / COIN_TO_DOLLAR).toFixed(0)} gift card request is processing.
                       <br />We'll send it within 48 hours.
                     </p>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-white/10 text-white/50 hover:text-white mt-2"
+                      className="border-[var(--border)] text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] hover:text-[var(--text-primary)] mt-2"
                       onClick={() => setGiftSubmitted(false)}
                     >
                       Request Another
@@ -488,12 +488,12 @@ export default function Shop() {
                 ) : (
                   <>
                     {/* Balance */}
-                    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/4 px-4 py-3">
-                      <span className="text-sm text-white/50">Your balance</span>
+                    <div className="flex items-center justify-between rounded-xl border border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_4%,transparent)] px-4 py-3">
+                      <span className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">Your balance</span>
                       <div className="flex items-center gap-1.5">
                         <CoinIcon animated={false} size={16} />
-                        <span className="font-bold text-white">{(user.coins ?? 0).toLocaleString()}</span>
-                        <span className="text-white/40 text-xs">coins</span>
+                        <span className="font-bold text-[var(--text-primary)]">{(user.coins ?? 0).toLocaleString()}</span>
+                        <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] text-xs">coins</span>
                       </div>
                     </div>
 
@@ -502,7 +502,7 @@ export default function Shop() {
                         <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                         <div className="space-y-1">
                           <p className="text-sm font-medium text-amber-300">Not enough coins</p>
-                          <p className="text-xs text-white/40">
+                          <p className="text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                             You need {(GIFT_CARD_MIN - (user.coins ?? 0)).toLocaleString()} more
                             coins to redeem. Earn coins by studying, completing missions, and
                             referring friends.
@@ -513,7 +513,7 @@ export default function Shop() {
                       <>
                         {/* Amount selector */}
                         <div className="space-y-2">
-                          <p className="text-xs uppercase tracking-widest text-white/30">Select amount</p>
+                          <p className="text-xs uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Select amount</p>
                           <div className="grid grid-cols-2 gap-2">
                             {GIFT_CARD_INCREMENTS.filter((a) => a <= (user.coins ?? 0)).map((amount) => (
                               <button
@@ -522,7 +522,7 @@ export default function Shop() {
                                 className={`rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
                                   giftAmount === amount
                                     ? "border-amber-500/60 bg-amber-500/15 text-amber-400"
-                                    : "border-white/8 bg-white/4 text-white/60 hover:border-white/20 hover:text-white"
+                                    : "border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_4%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)] hover:border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] hover:text-[var(--text-primary)]"
                                 }`}
                               >
                                 ${(amount / COIN_TO_DOLLAR).toFixed(0)}
@@ -558,7 +558,7 @@ export default function Shop() {
                       </>
                     )}
 
-                    <p className="text-[10px] text-white/25 text-center">
+                    <p className="text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_25%,transparent)] text-center">
                       Requests are reviewed manually and fulfilled within 48 hours.
                       Gift cards are sent to your account email.
                     </p>

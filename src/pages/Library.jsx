@@ -50,7 +50,7 @@ const TAG_PALETTE = [
   { bg: "bg-pink-100   dark:bg-pink-900/30",   text: "text-pink-700   dark:text-pink-300",   dot: "bg-pink-500"   },
   { bg: "bg-cyan-100   dark:bg-cyan-900/30",   text: "text-cyan-700   dark:text-cyan-300",   dot: "bg-cyan-500"   },
   { bg: "bg-red-100    dark:bg-red-900/30",    text: "text-red-700    dark:text-red-300",    dot: "bg-red-500"    },
-  { bg: "bg-yellow-100 dark:bg-yellow-900/30", text: "text-yellow-700 dark:text-yellow-300", dot: "bg-yellow-500" },
+  { bg: "bg-[color:color-mix(in_srgb,var(--accent)_12%,transparent)]", text: "text-[var(--accent)]", dot: "bg-[var(--accent)]" },
   { bg: "bg-teal-100   dark:bg-teal-900/30",   text: "text-teal-700   dark:text-teal-300",   dot: "bg-teal-500"   },
   { bg: "bg-orange-600/10 dark:bg-orange-600/10", text: "text-orange-400 dark:text-orange-400", dot: "bg-orange-600" },
 ];
@@ -891,7 +891,7 @@ function FullViewModal({ item, onClose }) {
         onClick={e => e.stopPropagation()}
         className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-xl max-h-[80vh] flex flex-col overflow-hidden">
         <div className="flex items-center gap-3 px-5 py-4 border-b border-border shrink-0">
-          <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${meta.grad} flex items-center justify-center shrink-0`}><Icon size={18} weight="duotone" className="text-white" /></div>
+          <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${meta.grad} flex items-center justify-center shrink-0`}><Icon size={18} weight="duotone" className="text-[var(--text-primary)]" /></div>
           <div className="flex-1 min-w-0"><p className="text-[14px] font-semibold truncate">{item.title}</p><p className="text-[11px] text-muted-foreground/60">{meta.label} · {itemCount(item)}</p></div>
           <button onClick={onClose} className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-muted text-muted-foreground transition-colors"><X size={13} weight="bold" /></button>
         </div>
@@ -1122,7 +1122,7 @@ function QuickLookPanel({ item, selectedCount, tags, registry, onClose, onDelete
               <p className="text-[11px] text-center text-muted-foreground/55">This action cannot be undone.</p>
               <div className="flex gap-2">
                 <button onClick={() => setConfirmDel(false)} className="flex-1 py-2 rounded-xl border border-border text-[12px] hover:bg-muted transition-colors font-medium">Cancel</button>
-                <button onClick={() => onDelete(item.item_id)} className="flex-1 py-2 rounded-xl bg-red-500 text-white text-[12px] font-semibold hover:bg-red-600 transition-colors">Delete</button>
+                <button onClick={() => onDelete(item.item_id)} className="flex-1 py-2 rounded-xl bg-red-500 text-[var(--text-primary)] text-[12px] font-semibold hover:bg-red-600 transition-colors">Delete</button>
               </div>
             </motion.div>
           ) : (

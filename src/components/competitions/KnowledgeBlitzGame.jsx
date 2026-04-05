@@ -148,10 +148,10 @@ export default function KnowledgeBlitzGame({
   return (
     <div className="max-w-lg mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
-        <span className="text-[#888] text-sm">
+        <span className="text-[var(--text-secondary)] text-sm">
           Q{currentIndex + 1} of {total}
         </span>
-        <span className="text-[#888] text-sm">Players: {players?.length ?? 0}</span>
+        <span className="text-[var(--text-secondary)] text-sm">Players: {players?.length ?? 0}</span>
         <div className="flex items-center gap-2">
           <CountdownTimer
             seconds={QUESTION_TIME_SEC}
@@ -159,7 +159,7 @@ export default function KnowledgeBlitzGame({
             size={48}
             strokeColor="#6e5ff0"
           />
-          <span className="font-mono text-[#efefef] w-10">{remaining}s</span>
+          <span className="font-mono text-[var(--text-primary)] w-10">{remaining}s</span>
         </div>
       </div>
 
@@ -167,7 +167,7 @@ export default function KnowledgeBlitzGame({
         key={question.question}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-xl font-semibold text-[#efefef] text-center mb-8 min-h-[3rem]"
+        className="text-xl font-semibold text-[var(--text-primary)] text-center mb-8 min-h-[3rem]"
       >
         {question.question}
       </motion.p>
@@ -189,7 +189,7 @@ export default function KnowledgeBlitzGame({
               disabled={answered}
               onClick={() => handleSelect(opt.index)}
               className={cn(
-                "rounded-xl border-2 p-4 text-left font-semibold text-white min-h-[88px]",
+                "rounded-xl border-2 p-4 text-left font-semibold text-[var(--text-primary)] min-h-[88px]",
                 "border-black/20 shadow-lg transition-all",
                 showCorrect && "ring-4 ring-[#3ecf8e]",
                 showWrong && "opacity-60 ring-4 ring-[#f87171]"
@@ -209,7 +209,7 @@ export default function KnowledgeBlitzGame({
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-6 text-center text-sm text-[#888]"
+          className="mt-6 text-center text-sm text-[var(--text-secondary)]"
         >
           {question.explanation}
         </motion.p>
@@ -225,8 +225,8 @@ function BetweenRoundsLeaderboard({ leaderboard, currentQuestion, totalQuestions
       animate={{ opacity: 1, x: 0 }}
       className="max-w-md mx-auto px-4 py-8"
     >
-      <h3 className="text-lg font-semibold text-[#efefef] mb-4">Leaderboard</h3>
-      <p className="text-[#888] text-sm mb-6">
+      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Leaderboard</h3>
+      <p className="text-[var(--text-secondary)] text-sm mb-6">
         Question {currentQuestion} of {totalQuestions} complete
       </p>
       <ul className="space-y-2 mb-8">
@@ -234,11 +234,11 @@ function BetweenRoundsLeaderboard({ leaderboard, currentQuestion, totalQuestions
           <motion.li
             key={p.id}
             layout
-            className="flex items-center gap-3 p-3 rounded-lg bg-[#1a1a1a]"
+            className="flex items-center gap-3 p-3 rounded-lg bg-[var(--surface-2)]"
           >
-            <span className="w-6 text-center font-bold text-[#888]">{i + 1}</span>
+            <span className="w-6 text-center font-bold text-[var(--text-secondary)]">{i + 1}</span>
             <PlayerAvatar name={p.name} size="sm" />
-            <span className="flex-1 truncate text-[#efefef]">{p.name}</span>
+            <span className="flex-1 truncate text-[var(--text-primary)]">{p.name}</span>
             <span className="font-mono font-semibold text-[#f59e0b]">{p.score || 0}</span>
           </motion.li>
         ))}
@@ -259,8 +259,8 @@ function FinalPodium({ leaderboard, onBack }) {
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-md mx-auto px-4 py-12 text-center"
     >
-      <h2 className="text-2xl font-bold text-[#efefef] mb-2">Game over</h2>
-      <p className="text-[#888] mb-8">Final standings</p>
+      <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Game over</h2>
+      <p className="text-[var(--text-secondary)] mb-8">Final standings</p>
       <div className="flex justify-center items-end gap-4 mb-8 min-h-[140px]">
         {top3.map((p, i) => (
           <motion.div
@@ -269,7 +269,7 @@ function FinalPodium({ leaderboard, onBack }) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: i * 0.15 }}
             className={cn(
-              "flex flex-col items-center rounded-t-xl px-4 pt-4 pb-2 border-2 border-white/10",
+              "flex flex-col items-center rounded-t-xl px-4 pt-4 pb-2 border-2 border-[var(--border)]",
               i === 0 && "bg-amber-500/20 order-2",
               i === 1 && "bg-slate-400/20 order-1",
               i === 2 && "bg-amber-700/20 order-3"
@@ -277,7 +277,7 @@ function FinalPodium({ leaderboard, onBack }) {
           >
             <span className="text-2xl mb-1">{medals[i]}</span>
             <PlayerAvatar name={p.name} size="sm" className="mb-2" />
-            <p className="font-semibold text-[#efefef] text-sm truncate max-w-[80px]">{p.name}</p>
+            <p className="font-semibold text-[var(--text-primary)] text-sm truncate max-w-[80px]">{p.name}</p>
             <p className="text-xs text-[#f59e0b] font-mono">{p.score || 0} pts</p>
           </motion.div>
         ))}

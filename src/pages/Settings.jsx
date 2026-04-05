@@ -143,7 +143,7 @@ export default function Settings() {
                   <>
                     {/* Active pass row */}
                     <div className={`flex items-center gap-4 p-4 rounded-xl ${founderMeta.bg} border ${founderMeta.border}`}>
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${founderMeta.gradient} flex items-center justify-center text-white shadow-lg flex-shrink-0`}>
+                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${founderMeta.gradient} flex items-center justify-center text-[var(--text-primary)] shadow-lg flex-shrink-0`}>
                         <span className="text-2xl leading-none">{founderMeta.emoji}</span>
                       </div>
                       <div className="flex-1 min-w-0">
@@ -214,7 +214,7 @@ export default function Settings() {
                   /* Non-founder CTA */
                   <div className="flex flex-col items-center gap-4 py-4 text-center">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-700 to-orange-600 flex items-center justify-center">
-                      <Sparkles className="w-7 h-7 text-white" />
+                      <Sparkles className="w-7 h-7 text-[var(--text-primary)]" />
                     </div>
                     <div>
                       <p className="font-semibold mb-1">No Founder Pass yet</p>
@@ -223,7 +223,7 @@ export default function Settings() {
                       </p>
                     </div>
                     <Link to="/pricing">
-                      <Button className="bg-gradient-to-r from-orange-700 to-orange-600 text-white gap-2 hover:from-orange-700 hover:to-orange-600">
+                      <Button className="bg-gradient-to-r from-orange-700 to-orange-600 text-[var(--text-primary)] gap-2 hover:from-orange-700 hover:to-orange-600">
                         View Founder Passes
                         <ChevronRight className="w-4 h-4" />
                       </Button>

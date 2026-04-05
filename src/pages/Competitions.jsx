@@ -408,9 +408,9 @@ export default function Competitions() {
 
         {phase === "loading" && (
           <div className="flex-1 flex flex-col items-center justify-center px-4">
-            <p className="text-[#efefef] font-medium mb-4">AI is preparing your challenge...</p>
+            <p className="text-[var(--text-primary)] font-medium mb-4">AI is preparing your challenge...</p>
             <motion.div
-              className="h-2 w-full max-w-xs rounded-full bg-[#1a1a1a] overflow-hidden"
+              className="h-2 w-full max-w-xs rounded-full bg-[var(--surface-2)] overflow-hidden"
               initial={{ width: "100%" }}
             >
               <motion.div
@@ -476,7 +476,7 @@ export default function Competitions() {
             <button
               type="button"
               onClick={goToLobby}
-              className="px-6 py-2 rounded-lg bg-[#6e5ff0] text-white font-medium hover:bg-[#6e5ff0]/90"
+              className="px-6 py-2 rounded-lg bg-[#6e5ff0] text-[var(--text-primary)] font-medium hover:bg-[#6e5ff0]/90"
             >
               Back to Lobby
             </button>
@@ -497,11 +497,11 @@ export default function Competitions() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 200 }}
-              className="text-center px-8 py-12 rounded-2xl bg-[#111111] border border-[#6e5ff0]/50"
+              className="text-center px-8 py-12 rounded-2xl bg-[var(--bg-base)] border border-[#6e5ff0]/50"
             >
               <p className="text-4xl font-bold text-[#f59e0b] mb-2">LEVEL UP!</p>
-              <p className="text-2xl text-[#efefef]">Level {showLevelUp}</p>
-              <p className="text-sm text-[#888] mt-4">Click to continue</p>
+              <p className="text-2xl text-[var(--text-primary)]">Level {showLevelUp}</p>
+              <p className="text-sm text-[var(--text-secondary)] mt-4">Click to continue</p>
             </motion.div>
           </motion.div>
         )}

@@ -110,7 +110,7 @@ export default function CheckoutSuccess() {
           className="flex justify-center mb-6"
         >
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-xl">
-            <CheckCircle2 className="w-12 h-12 text-white" />
+            <CheckCircle2 className="w-12 h-12 text-[var(--text-primary)]" />
           </div>
         </motion.div>
 
@@ -158,7 +158,7 @@ export default function CheckoutSuccess() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Button asChild className="bg-gradient-to-r from-orange-700 to-orange-600 hover:opacity-90 text-white w-full">
+            <Button asChild className="bg-gradient-to-r from-orange-700 to-orange-600 hover:opacity-90 text-[var(--text-primary)] w-full">
               <Link to="/dashboard">
                 Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
               </Link>

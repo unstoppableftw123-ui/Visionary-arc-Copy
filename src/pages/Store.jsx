@@ -79,17 +79,17 @@ export default function Store() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <StoreIcon className="w-8 h-8 text-white" />
-                  <h1 className="font-heading text-3xl md:text-4xl font-bold text-white">Store</h1>
+                  <StoreIcon className="w-8 h-8 text-[var(--text-primary)]" />
+                  <h1 className="font-heading text-3xl md:text-4xl font-bold text-[var(--text-primary)]">Store</h1>
                 </div>
-                <p className="text-white/80 max-w-lg">
+                <p className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] max-w-lg">
                   Buy coin packs to power your AI tools, or upgrade to a Founder tier for monthly coins + exclusive perks.
                 </p>
               </div>
-              <div className="flex items-center gap-3 bg-white/20 backdrop-blur-sm rounded-xl px-4 py-3">
+              <div className="flex items-center gap-3 bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm rounded-xl px-4 py-3">
                 <Coins className="w-6 h-6 text-yellow-300" />
-                <span className="text-2xl font-bold text-white">{user?.coins || 0}</span>
-                <span className="text-white/70">coins</span>
+                <span className="text-2xl font-bold text-[var(--text-primary)]">{user?.coins || 0}</span>
+                <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">coins</span>
               </div>
             </div>
           </motion.div>
@@ -108,19 +108,19 @@ export default function Store() {
                 <Card key={key} className="relative border-border hover:shadow-md transition-all overflow-hidden">
                   {p.popular && (
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs">Popular</Badge>
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-[var(--text-primary)] text-xs">Popular</Badge>
                     </div>
                   )}
                   <CardContent className="p-6 flex flex-col items-center text-center gap-3">
                     <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${p.color} flex items-center justify-center`}>
-                      <Coins className="w-8 h-8 text-white" />
+                      <Coins className="w-8 h-8 text-[var(--text-primary)]" />
                     </div>
                     <div>
                       <p className="font-bold text-lg">{p.coins.toLocaleString()} Coins</p>
                       <p className="text-2xl font-bold text-amber-500">{p.price}</p>
                     </div>
                     <Button
-                      className={`w-full bg-gradient-to-r ${p.color} text-white hover:opacity-90`}
+                      className={`w-full bg-gradient-to-r ${p.color} text-[var(--text-primary)] hover:opacity-90`}
                       onClick={() => handleBuyWithStripe(key)}
                       disabled={isLoading}
                     >
@@ -152,7 +152,7 @@ export default function Store() {
                 >
                   {p.popular && (
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-gradient-to-r from-orange-700 to-orange-600 text-white text-xs">Best Value</Badge>
+                      <Badge className="bg-gradient-to-r from-orange-700 to-orange-600 text-[var(--text-primary)] text-xs">Best Value</Badge>
                     </div>
                   )}
                   <CardContent className="p-6 flex flex-col gap-4">
@@ -175,7 +175,7 @@ export default function Store() {
                       <Badge className="w-fit bg-amber-500/20 text-amber-600 border-amber-500/30">Current Plan</Badge>
                     ) : (
                       <Button
-                        className={`w-full bg-gradient-to-r ${p.color} text-white hover:opacity-90`}
+                        className={`w-full bg-gradient-to-r ${p.color} text-[var(--text-primary)] hover:opacity-90`}
                         onClick={() => handleBuyWithStripe(key)}
                         disabled={isLoading}
                       >

@@ -267,7 +267,7 @@ function FindFriendsTab({ userId }) {
                 <button
                   type="button"
                   onClick={() => handleAccept(req)}
-                  className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-white transition-colors"
+                  className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-[var(--text-primary)] transition-colors"
                 >
                   <Check className="w-3.5 h-3.5" /> Accept
                 </button>

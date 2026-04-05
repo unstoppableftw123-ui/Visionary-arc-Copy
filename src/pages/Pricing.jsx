@@ -182,7 +182,7 @@ function SpotsBar({ spotsLeft, spotsTotal, textAccent }) {
         </span>
         <span className="text-muted-foreground">{spotsTotal} total</span>
       </div>
-      <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+      <div className="h-1.5 w-full bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] rounded-full overflow-hidden">
         <motion.div
           className={`h-full rounded-full bg-gradient-to-r ${
             urgency ? "from-red-500 to-orange-400" : "from-current to-current"
@@ -247,14 +247,14 @@ function TierCard({ tier, index, loadingTier, onCheckout }) {
       <div className="px-5 pt-5">
         <div className="flex items-start justify-between mb-4">
           <div
-            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tier.gradient} flex items-center justify-center text-white shadow-lg`}
+            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tier.gradient} flex items-center justify-center text-[var(--text-primary)] shadow-lg`}
           >
             <Icon className="w-6 h-6" />
           </div>
 
           {tier.recommended ? (
             <span
-              className={`inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r ${tier.gradient} text-white shadow`}
+              className={`inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r ${tier.gradient} text-[var(--text-primary)] shadow`}
             >
               <Star className="w-3 h-3" /> RECOMMENDED
             </span>
@@ -309,7 +309,7 @@ function TierCard({ tier, index, loadingTier, onCheckout }) {
       {/* CTA */}
       <div className="px-5 pb-5 pt-5">
         <Button
-          className={`w-full font-semibold text-white bg-gradient-to-r ${tier.gradient} hover:opacity-90 active:scale-95 transition-all border-0 shadow-lg`}
+          className={`w-full font-semibold text-[var(--text-primary)] bg-gradient-to-r ${tier.gradient} hover:opacity-90 active:scale-95 transition-all border-0 shadow-lg`}
           size="lg"
           onClick={() => onCheckout(tier.id)}
           disabled={isDisabled}
@@ -378,7 +378,7 @@ export default function Pricing() {
       {/* ── Hero ─────────────────────────────────────────────── */}
       <div className="relative overflow-hidden">
         {/* Background layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-700 via-purple-900 to-orange-600" />
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-700 via-orange-800 to-orange-600" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,40,200,0.4),transparent)]" />
         {/* Dot grid */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxLjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNikiLz48L3N2Zz4=')] opacity-60" />
@@ -389,7 +389,7 @@ export default function Pricing() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur rounded-full px-4 py-1.5 text-white/90 text-sm font-medium mb-8"
+            className="inline-flex items-center gap-2 bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] border border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur rounded-full px-4 py-1.5 text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)] text-sm font-medium mb-8"
           >
             <Flame className="w-4 h-4 text-orange-400 animate-pulse" />
             Limited-Time Founder Pass
@@ -400,7 +400,7 @@ export default function Pricing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6"
+            className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-6"
           >
             Lock in lifetime
             <br />
@@ -413,10 +413,10 @@ export default function Pricing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-white/70 text-lg md:text-xl max-w-xl mx-auto mb-10"
+            className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-lg md:text-xl max-w-xl mx-auto mb-10"
           >
             Prices{" "}
-            <span className="text-white font-semibold underline decoration-dotted">
+            <span className="text-[var(--text-primary)] font-semibold underline decoration-dotted">
               increase after launch.
             </span>{" "}
             Become a founding member and secure your perks before spots run out.
@@ -427,23 +427,23 @@ export default function Pricing() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35 }}
-            className="inline-flex items-center gap-3 bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl px-5 py-3"
+            className="inline-flex items-center gap-3 bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] border border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm rounded-2xl px-5 py-3"
           >
             <div className="flex -space-x-2">
               {["bg-orange-600", "bg-pink-500", "bg-amber-500", "bg-teal-500", "bg-orange-600"].map(
                 (c, i) => (
                   <div
                     key={i}
-                    className={`w-7 h-7 rounded-full ${c} border-2 border-white/20 flex items-center justify-center text-[10px] font-bold text-white`}
+                    className={`w-7 h-7 rounded-full ${c} border-2 border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] flex items-center justify-center text-[10px] font-bold text-[var(--text-primary)]`}
                   >
                     {String.fromCharCode(65 + i)}
                   </div>
                 )
               )}
             </div>
-            <p className="text-white/90 text-sm font-medium">
+            <p className="text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)] text-sm font-medium">
               Join{" "}
-              <span className="text-white font-bold text-base">
+              <span className="text-[var(--text-primary)] font-bold text-base">
                 <AnimatedNumber target={founderCount} />+
               </span>{" "}
               founders already in
@@ -522,7 +522,7 @@ export default function Pricing() {
             </div>
             <Button
               size="lg"
-              className="bg-gradient-to-r from-slate-400 to-slate-600 hover:opacity-90 text-white border-0 whitespace-nowrap"
+              className="bg-gradient-to-r from-slate-400 to-slate-600 hover:opacity-90 text-[var(--text-primary)] border-0 whitespace-nowrap"
               onClick={() => handleCheckout("silver")}
               disabled={loadingTier !== null}
             >

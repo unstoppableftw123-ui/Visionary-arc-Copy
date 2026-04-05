@@ -54,7 +54,7 @@ function SponsorAvatar({ name }) {
   const hue = ((name || "x").charCodeAt(0) * 19) % 360;
   return (
     <div
-      className="h-10 w-10 rounded-full text-white font-semibold flex items-center justify-center shrink-0"
+      className="h-10 w-10 rounded-full text-[var(--text-primary)] font-semibold flex items-center justify-center shrink-0"
       style={{ backgroundColor: `hsl(${hue}, 70%, 45%)` }}
       aria-hidden
     >

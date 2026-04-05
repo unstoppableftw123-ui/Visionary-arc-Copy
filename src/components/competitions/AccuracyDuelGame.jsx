@@ -128,7 +128,7 @@ export default function AccuracyDuelGame({
           >
             {roundWinner === "me" ? "YOU WIN THIS ROUND" : "OPPONENT WINS THIS ROUND"}
           </motion.p>
-          <p className="text-[#888] mt-2">Best of {ROUNDS_TO_WIN}</p>
+          <p className="text-[var(--text-secondary)] mt-2">Best of {ROUNDS_TO_WIN}</p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -157,8 +157,8 @@ export default function AccuracyDuelGame({
       {/* HP bars */}
       <div className="flex items-center justify-between gap-4 mb-8">
         <div className="flex-1">
-          <p className="text-xs text-[#888] mb-1">You</p>
-          <div className="h-3 rounded-full bg-[#1a1a1a] overflow-hidden">
+          <p className="text-xs text-[var(--text-secondary)] mb-1">You</p>
+          <div className="h-3 rounded-full bg-[var(--surface-2)] overflow-hidden">
             <motion.div
               className={cn(
                 "h-full rounded-full",
@@ -169,12 +169,12 @@ export default function AccuracyDuelGame({
               transition={{ duration: 0.3 }}
             />
           </div>
-          <p className="text-xs text-[#888] mt-0.5">{myHP} HP</p>
+          <p className="text-xs text-[var(--text-secondary)] mt-0.5">{myHP} HP</p>
         </div>
-        <span className="text-[#888] font-medium">vs</span>
+        <span className="text-[var(--text-secondary)] font-medium">vs</span>
         <div className="flex-1 text-right">
-          <p className="text-xs text-[#888] mb-1">Opponent</p>
-          <div className="h-3 rounded-full bg-[#1a1a1a] overflow-hidden">
+          <p className="text-xs text-[var(--text-secondary)] mb-1">Opponent</p>
+          <div className="h-3 rounded-full bg-[var(--surface-2)] overflow-hidden">
             <motion.div
               className={cn(
                 "h-full rounded-full ml-auto",
@@ -185,15 +185,15 @@ export default function AccuracyDuelGame({
               transition={{ duration: 0.3 }}
             />
           </div>
-          <p className="text-xs text-[#888] mt-0.5">{opponentHP} HP</p>
+          <p className="text-xs text-[var(--text-secondary)] mt-0.5">{opponentHP} HP</p>
         </div>
       </div>
-      <p className="text-center text-[#888] text-sm mb-6">
+      <p className="text-center text-[var(--text-secondary)] text-sm mb-6">
         Round {currentIndex + 1} — Best of {ROUNDS_TO_WIN}
       </p>
 
-      <p className="text-xl font-semibold text-[#efefef] text-center mb-6">{question.question}</p>
-      <p className="text-center text-xs text-[#888] mb-4">First to answer correctly wins the round</p>
+      <p className="text-xl font-semibold text-[var(--text-primary)] text-center mb-6">{question.question}</p>
+      <p className="text-center text-xs text-[var(--text-secondary)] mb-4">First to answer correctly wins the round</p>
 
       <div className="grid grid-cols-2 gap-3">
         {options.map((opt, i) => (
@@ -204,7 +204,7 @@ export default function AccuracyDuelGame({
             onClick={() => handleSelect(i)}
             className={cn(
               "rounded-xl border-2 p-4 text-left text-sm font-medium transition-all",
-              "bg-[#1a1a1a] border-white/10 text-[#efefef]",
+              "bg-[var(--surface-2)] border-[var(--border)] text-[var(--text-primary)]",
               "hover:border-[#6e5ff0]/50 disabled:pointer-events-none",
               selected === i && i === correctIndex && "border-[#3ecf8e] bg-[#3ecf8e]/10",
               selected === i && i !== correctIndex && "border-[#f87171] bg-[#f87171]/10"
@@ -241,22 +241,22 @@ function DuelFinalScreen({
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-md mx-auto px-4 py-12 text-center"
     >
-      <h2 className="text-2xl font-bold text-[#efefef] mb-2">
+      <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
         {won ? "You win the duel!" : "Duel over"}
       </h2>
-      <p className="text-[#888] mb-6">
+      <p className="text-[var(--text-secondary)] mb-6">
         {myWins} — {opponentWins}
       </p>
       {opponent && (
         <div className="flex justify-center gap-3 mb-6">
           <PlayerAvatar name="You" size="lg" />
-          <span className="text-[#888] self-center">vs</span>
+          <span className="text-[var(--text-secondary)] self-center">vs</span>
           <PlayerAvatar name={opponent.name} size="lg" />
         </div>
       )}
       {won && <p className="text-[#f59e0b] font-semibold mb-4">+50 XP · Duel Win</p>}
       <div className="flex gap-3 justify-center">
-        <Button variant="outline" onClick={onBack} className="border-white/10">
+        <Button variant="outline" onClick={onBack} className="border-[var(--border)]">
           Back to Lobby
         </Button>
         <Button onClick={onRematch} className="bg-[#6e5ff0]">

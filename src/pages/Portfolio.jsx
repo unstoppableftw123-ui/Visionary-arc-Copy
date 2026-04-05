@@ -32,8 +32,8 @@ function Stars({ rating }) {
         <Star
           key={i}
           className="w-3.5 h-3.5"
-          fill={i < (rating ?? 0) ? '#EAB308' : 'none'}
-          color={i < (rating ?? 0) ? '#EAB308' : '#6B7280'}
+          fill={i < (rating ?? 0) ? 'var(--accent)' : 'none'}
+          color={i < (rating ?? 0) ? 'var(--accent)' : '#6B7280'}
         />
       ))}
     </div>
@@ -114,7 +114,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
                 title={entry.is_featured ? 'Unpin' : 'Pin to top (max 3)'}
                 className={`text-[11px] flex items-center gap-1 rounded-full px-2 py-0.5 transition-colors ${
                   entry.is_featured
-                    ? 'bg-yellow-500/20 text-yellow-400'
+                    ? 'bg-[color:color-mix(in_srgb,var(--accent)_20%,transparent)] text-[var(--accent)]'
                     : 'bg-secondary text-muted-foreground hover:text-foreground'
                 }`}
               >

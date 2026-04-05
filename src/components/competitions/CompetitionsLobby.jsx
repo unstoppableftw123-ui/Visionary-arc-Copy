@@ -111,23 +111,23 @@ function GameModeCard({ mode, onPlay, onCreateRoom }) {
   };
 
   return (
-    <Card className="border-white/10 bg-[#111111] overflow-hidden hover:border-[#6e5ff0]/40 transition-colors">
+    <Card className="border-[var(--border)] bg-[var(--bg-base)] overflow-hidden hover:border-[#6e5ff0]/40 transition-colors">
       <CardHeader className="pb-2">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-[#6e5ff0]/20 flex items-center justify-center text-[#6e5ff0]">
             {mode.icon}
           </div>
           <div>
-            <CardTitle className="text-[#efefef] text-lg">{mode.name}</CardTitle>
-            <p className="text-sm text-[#888] mt-0.5">{mode.description}</p>
+            <CardTitle className="text-[var(--text-primary)] text-lg">{mode.name}</CardTitle>
+            <p className="text-sm text-[var(--text-secondary)] mt-0.5">{mode.description}</p>
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4 pt-0">
         <div className="grid gap-2">
-          <Label className="text-xs text-[#888]">Difficulty</Label>
+          <Label className="text-xs text-[var(--text-secondary)]">Difficulty</Label>
           <Select value={difficulty} onValueChange={setDifficulty}>
-            <SelectTrigger className="bg-[#1a1a1a] border-white/10">
+            <SelectTrigger className="bg-[var(--surface-2)] border-[var(--border)]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -140,9 +140,9 @@ function GameModeCard({ mode, onPlay, onCreateRoom }) {
           </Select>
         </div>
         <div className="grid gap-2">
-          <Label className="text-xs text-[#888]">Topic</Label>
+          <Label className="text-xs text-[var(--text-secondary)]">Topic</Label>
           <Select value={topicType} onValueChange={setTopicType}>
-            <SelectTrigger className="bg-[#1a1a1a] border-white/10">
+            <SelectTrigger className="bg-[var(--surface-2)] border-[var(--border)]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -161,7 +161,7 @@ function GameModeCard({ mode, onPlay, onCreateRoom }) {
               placeholder="e.g. World War II"
               value={customTopic}
               onChange={(e) => setCustomTopic(e.target.value)}
-              className="bg-[#1a1a1a] border-white/10 mt-1"
+              className="bg-[var(--surface-2)] border-[var(--border)] mt-1"
             />
           )}
         </div>
@@ -233,7 +233,7 @@ export default function CompetitionsLobby({
       />
 
       <Tabs defaultValue="solo" className="w-full">
-        <TabsList className="bg-[#1a1a1a] border border-white/10 mb-6 grid grid-cols-3">
+        <TabsList className="bg-[var(--surface-2)] border border-[var(--border)] mb-6 grid grid-cols-3">
           <TabsTrigger value="solo" className="data-[state=active]:bg-[#6e5ff0]">
             Solo
           </TabsTrigger>
@@ -262,17 +262,17 @@ export default function CompetitionsLobby({
         </TabsContent>
 
         <TabsContent value="upcoming" className="mt-0 space-y-6">
-          <p className="text-sm text-[#888]">
+          <p className="text-sm text-[var(--text-secondary)]">
             Join a scheduled competition to play that game mode with AI-generated questions.
           </p>
           {upcomingLoading ? (
-            <div className="flex items-center justify-center py-12 text-[#888]">
+            <div className="flex items-center justify-center py-12 text-[var(--text-secondary)]">
               <Loader2 className="w-8 h-8 animate-spin mr-2" />
               Loading competitions…
             </div>
           ) : upcomingCompetitions.length === 0 ? (
-            <Card className="border-white/10 bg-[#111111]">
-              <CardContent className="py-8 px-6 text-center text-[#888]">
+            <Card className="border-[var(--border)] bg-[var(--bg-base)]">
+              <CardContent className="py-8 px-6 text-center text-[var(--text-secondary)]">
                 No upcoming competitions right now. Check back later or play Solo / Multiplayer.
               </CardContent>
             </Card>
@@ -281,13 +281,13 @@ export default function CompetitionsLobby({
               {upcomingCompetitions.map((comp) => (
                 <Card
                   key={comp.competition_id}
-                  className="border-white/10 bg-[#111111] overflow-hidden hover:border-[#6e5ff0]/40 transition-colors"
+                  className="border-[var(--border)] bg-[var(--bg-base)] overflow-hidden hover:border-[#6e5ff0]/40 transition-colors"
                 >
                   <CardHeader className="pb-2">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <CardTitle className="text-[#efefef] text-base">{comp.title}</CardTitle>
-                        <p className="text-sm text-[#888] mt-1 line-clamp-2">{comp.description}</p>
+                        <CardTitle className="text-[var(--text-primary)] text-base">{comp.title}</CardTitle>
+                        <p className="text-sm text-[var(--text-secondary)] mt-1 line-clamp-2">{comp.description}</p>
                       </div>
                       <span
                         className={cn(
@@ -303,7 +303,7 @@ export default function CompetitionsLobby({
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0 space-y-3">
-                    <div className="flex flex-wrap gap-2 text-xs text-[#888]">
+                    <div className="flex flex-wrap gap-2 text-xs text-[var(--text-secondary)]">
                       <span>{comp.current_participants ?? 0}/{comp.max_participants ?? 0} joined</span>
                       <span className="capitalize">{comp.difficulty}</span>
                     </div>
@@ -324,7 +324,7 @@ export default function CompetitionsLobby({
         </TabsContent>
 
         <TabsContent value="multiplayer" className="mt-0 space-y-6">
-          <p className="text-sm text-[#888]">
+          <p className="text-sm text-[var(--text-secondary)]">
             👾 Playing with AI opponents — invite friends to play for real!
           </p>
 
@@ -335,15 +335,15 @@ export default function CompetitionsLobby({
                   <Users className="w-4 h-4 mr-2" /> Create Room
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-[#111111] border-white/10 max-w-sm">
+              <DialogContent className="bg-[var(--bg-base)] border-[var(--border)] max-w-sm">
                 <DialogHeader>
-                  <DialogTitle className="text-[#efefef]">Create game room</DialogTitle>
+                  <DialogTitle className="text-[var(--text-primary)]">Create game room</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label className="text-[#888] text-xs">Game mode</Label>
+                    <Label className="text-[var(--text-secondary)] text-xs">Game mode</Label>
                     <Select value={createMode} onValueChange={setCreateMode}>
-                      <SelectTrigger className="mt-1 bg-[#1a1a1a] border-white/10">
+                      <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -354,9 +354,9 @@ export default function CompetitionsLobby({
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-[#888] text-xs">Topic</Label>
+                    <Label className="text-[var(--text-secondary)] text-xs">Topic</Label>
                     <Select value={createTopic} onValueChange={setCreateTopic}>
-                      <SelectTrigger className="mt-1 bg-[#1a1a1a] border-white/10">
+                      <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -366,9 +366,9 @@ export default function CompetitionsLobby({
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-[#888] text-xs">Difficulty</Label>
+                    <Label className="text-[var(--text-secondary)] text-xs">Difficulty</Label>
                     <Select value={createDifficulty} onValueChange={setCreateDifficulty}>
-                      <SelectTrigger className="mt-1 bg-[#1a1a1a] border-white/10">
+                      <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -381,9 +381,9 @@ export default function CompetitionsLobby({
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-[#888] text-xs">Max players</Label>
+                    <Label className="text-[var(--text-secondary)] text-xs">Max players</Label>
                     <Select value={createMaxPlayers} onValueChange={setCreateMaxPlayers}>
-                      <SelectTrigger className="mt-1 bg-[#1a1a1a] border-white/10">
+                      <SelectTrigger className="mt-1 bg-[var(--surface-2)] border-[var(--border)]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -407,10 +407,10 @@ export default function CompetitionsLobby({
                 placeholder="Enter 6-digit code"
                 value={joinCode}
                 onChange={(e) => setJoinCode(e.target.value.slice(0, 8))}
-                className="bg-[#1a1a1a] border-white/10 flex-1"
+                className="bg-[var(--surface-2)] border-[var(--border)] flex-1"
                 maxLength={8}
               />
-              <Button variant="secondary" onClick={handleJoin} className="border-white/10">
+              <Button variant="secondary" onClick={handleJoin} className="border-[var(--border)]">
                 Join Room
               </Button>
             </div>
@@ -424,21 +424,21 @@ export default function CompetitionsLobby({
             </Button>
           </div>
 
-          <Card className="border-[#6e5ff0]/30 bg-[#111111] overflow-hidden">
+          <Card className="border-[#6e5ff0]/30 bg-[var(--bg-base)] overflow-hidden">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-[#6e5ff0]/20 flex items-center justify-center shrink-0">
                   <Waves className="w-4 h-4 text-[#6e5ff0]" />
                 </div>
-                <p className="font-medium text-[#efefef]">Join a Vocab Jam</p>
+                <p className="font-medium text-[var(--text-primary)]">Join a Vocab Jam</p>
               </div>
-              <p className="text-sm text-[#888] mb-3">Enter the code your teacher shared to join a class Vocab Jam.</p>
+              <p className="text-sm text-[var(--text-secondary)] mb-3">Enter the code your teacher shared to join a class Vocab Jam.</p>
               <div className="flex gap-2">
                 <Input
                   placeholder="6-char code"
                   value={jamCode}
                   onChange={e => setJamCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))}
-                  className="bg-[#1a1a1a] border-white/10 font-mono tracking-widest uppercase flex-1"
+                  className="bg-[var(--surface-2)] border-[var(--border)] font-mono tracking-widest uppercase flex-1"
                   maxLength={6}
                   onKeyDown={e => { if (e.key === 'Enter' && jamCode.length >= 4) onJoinJam?.(jamCode); }}
                 />
@@ -455,16 +455,16 @@ export default function CompetitionsLobby({
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-full border-white/10 text-[#efefef]">
+              <Button variant="outline" className="w-full border-[var(--border)] text-[var(--text-primary)]">
                 <Trophy className="w-4 h-4 mr-2" /> District Leaderboard
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#111111] border-white/10 max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+            <DialogContent className="bg-[var(--bg-base)] border-[var(--border)] max-w-md max-h-[80vh] overflow-hidden flex flex-col">
               <DialogHeader>
-                <DialogTitle className="text-[#efefef]">District Leaderboard</DialogTitle>
+                <DialogTitle className="text-[var(--text-primary)]">District Leaderboard</DialogTitle>
               </DialogHeader>
               <Tabs defaultValue="all" className="flex-1 min-h-0 flex flex-col">
-                <TabsList className="bg-[#1a1a1a] border border-white/10 w-full grid grid-cols-4">
+                <TabsList className="bg-[var(--surface-2)] border border-[var(--border)] w-full grid grid-cols-4">
                   <TabsTrigger value="week" className="text-xs">This Week</TabsTrigger>
                   <TabsTrigger value="all" className="text-xs">All Time</TabsTrigger>
                   <TabsTrigger value="school" className="text-xs">My School</TabsTrigger>
@@ -500,10 +500,10 @@ function LeaderboardList({ list, currentName }) {
           layout
           className={cn(
             "flex items-center gap-3 p-3 rounded-lg transition-colors",
-            row.isCurrentUser ? "bg-[#6e5ff0]/20 border border-[#6e5ff0]/40" : "bg-[#1a1a1a]"
+            row.isCurrentUser ? "bg-[#6e5ff0]/20 border border-[#6e5ff0]/40" : "bg-[var(--surface-2)]"
           )}
         >
-          <span className="w-6 text-center font-bold text-[#888]">
+          <span className="w-6 text-center font-bold text-[var(--text-secondary)]">
             {row.rank === 1 && "🥇"}
             {row.rank === 2 && "🥈"}
             {row.rank === 3 && "🥉"}
@@ -511,8 +511,8 @@ function LeaderboardList({ list, currentName }) {
           </span>
           <PlayerAvatar name={row.name} size="sm" />
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-[#efefef] truncate">{row.name}</p>
-            <p className="text-xs text-[#888]">Lvl {row.level} · {row.xp} XP · {row.winRate} wins</p>
+            <p className="font-medium text-[var(--text-primary)] truncate">{row.name}</p>
+            <p className="text-xs text-[var(--text-secondary)]">Lvl {row.level} · {row.xp} XP · {row.winRate} wins</p>
           </div>
         </motion.li>
       ))}

@@ -70,18 +70,18 @@ function GuildCard({
       <Card
         className={`relative border transition-colors ${
           guild.is_featured
-            ? 'border-yellow-500/60 bg-gradient-to-b from-yellow-500/5 to-card shadow-[0_0_20px_rgba(234,179,8,0.08)]'
+            ? 'border-[color:color-mix(in_srgb,var(--accent)_60%,transparent)] bg-gradient-to-b from-[color:color-mix(in_srgb,var(--accent)_5%,transparent)] to-card shadow-[0_0_20px_color-mix(in_srgb,var(--accent)_8%,transparent)]'
             : 'border-border bg-card hover:border-primary/30'
         }`}
       >
         {guild.is_featured && (
-          <div className="absolute -top-px left-4 right-4 h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
+          <div className="absolute -top-px left-4 right-4 h-px bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent" />
         )}
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                {guild.is_featured && <Star className="h-4 w-4 text-yellow-500 shrink-0" />}
+                {guild.is_featured && <Star className="h-4 w-4 text-[var(--accent)] shrink-0" />}
                 <CardTitle className="text-base truncate">{guild.name}</CardTitle>
               </div>
               {guild.entry_track && (

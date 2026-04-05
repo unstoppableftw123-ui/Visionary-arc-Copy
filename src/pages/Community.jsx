@@ -706,7 +706,7 @@ export default function Community() {
           <Dialog open={createServerOpen} onOpenChange={setCreateServerOpen}>
             <DialogTrigger asChild>
               <button 
-                className="w-12 h-12 rounded-2xl bg-muted hover:bg-green-500 hover:text-white transition-all hover:rounded-xl flex items-center justify-center"
+                className="w-12 h-12 rounded-2xl bg-muted hover:bg-green-500 hover:text-[var(--text-primary)] transition-all hover:rounded-xl flex items-center justify-center"
                 data-testid="create-server-btn"
               >
                 <Plus className="w-5 h-5" />
@@ -1617,29 +1617,29 @@ export default function Community() {
               {classesView === 'detail' && selectedClass && (
                 <div className="flex flex-col flex-1 min-h-0">
                   {/* Gradient Header */}
-                  <div className={`bg-gradient-to-r ${selectedClass.color} p-5 text-white shrink-0`}>
+                  <div className={`bg-gradient-to-r ${selectedClass.color} p-5 text-[var(--text-primary)] shrink-0`}>
                     <button
                       onClick={() => { setClassesView('overview'); setSelectedClass(null); }}
-                      className="flex items-center gap-1 text-white/80 hover:text-white text-sm mb-3 transition-colors"
+                      className="flex items-center gap-1 text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] hover:text-[var(--text-primary)] text-sm mb-3 transition-colors"
                     >
                       <ChevronLeft className="w-4 h-4" /> Back to My Classes
                     </button>
                     <div className="flex items-start justify-between">
                       <div>
                         <h2 className="text-2xl font-bold font-heading">{selectedClass.name}</h2>
-                        <p className="text-white/80 text-sm mt-0.5">{selectedClass.teacher} · {selectedClass.grade}</p>
+                        <p className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] text-sm mt-0.5">{selectedClass.teacher} · {selectedClass.grade}</p>
                       </div>
-                      <span className="flex items-center gap-1 text-white/80 text-sm">
+                      <span className="flex items-center gap-1 text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] text-sm">
                         <Users className="w-4 h-4" />{selectedClass.studentCount}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 mt-3 flex-wrap">
                       {selectedClass.pendingAssignments > 0 && (
-                        <span className="text-xs px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm font-medium">
+                        <span className="text-xs px-2.5 py-1 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm font-medium">
                           {selectedClass.pendingAssignments} due soon
                         </span>
                       )}
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm font-medium flex items-center gap-1">
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm font-medium flex items-center gap-1">
                         <Clock className="w-3 h-3" /> Next: {selectedClass.nextClass}
                       </span>
                     </div>

@@ -45,7 +45,7 @@ export default function FounderBadge({ user, size = "md", showLabel = false, cla
             className={cn(
               "inline-flex items-center font-semibold select-none cursor-default",
               "border transition-all duration-200",
-              `bg-gradient-to-r ${meta.gradient} text-white`,
+              `bg-gradient-to-r ${meta.gradient} text-[var(--text-primary)]`,
               `border-transparent`,
               // Subtle glow on hover
               `hover:shadow-hover hover:${meta.glow}`,
@@ -126,7 +126,7 @@ export function FounderDot({ user, className }) {
       )}
       title={meta.label}
     >
-      <Icon className="w-2.5 h-2.5 text-white" />
+      <Icon className="w-2.5 h-2.5 text-[var(--text-primary)]" />
     </span>
   );
 }

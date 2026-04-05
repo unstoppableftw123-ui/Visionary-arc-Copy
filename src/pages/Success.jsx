@@ -95,7 +95,7 @@ function VerifyingView() {
   return (
     <div className="flex flex-col items-center gap-5 py-16">
       <div className="relative">
-        <div className="w-20 h-20 rounded-full border-4 border-orange-500/30 border-t-violet-500 animate-spin" />
+        <div className="w-20 h-20 rounded-full border-4 border-orange-500/30 border-t-orange-500 animate-spin" />
         <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-orange-400" />
       </div>
       <div className="text-center">
@@ -173,7 +173,7 @@ function SuccessView({ data, userName }) {
         className="relative mb-6"
       >
         <div
-          className={`w-24 h-24 rounded-full bg-gradient-to-br ${meta.gradient} flex items-center justify-center text-white shadow-2xl ${meta.glow}`}
+          className={`w-24 h-24 rounded-full bg-gradient-to-br ${meta.gradient} flex items-center justify-center text-[var(--text-primary)] shadow-2xl ${meta.glow}`}
         >
           <TierIcon className="w-12 h-12" />
         </div>
@@ -183,7 +183,7 @@ function SuccessView({ data, userName }) {
           transition={{ delay: 0.35, type: "spring", stiffness: 260 }}
           className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-green-500 border-4 border-background flex items-center justify-center"
         >
-          <CheckCircle2 className="w-5 h-5 text-white" />
+          <CheckCircle2 className="w-5 h-5 text-[var(--text-primary)]" />
         </motion.div>
       </motion.div>
 
@@ -267,7 +267,7 @@ function SuccessView({ data, userName }) {
       >
         <Button
           asChild
-          className={`flex-1 bg-gradient-to-r ${meta.gradient} hover:opacity-90 text-white border-0 font-semibold`}
+          className={`flex-1 bg-gradient-to-r ${meta.gradient} hover:opacity-90 text-[var(--text-primary)] border-0 font-semibold`}
           size="lg"
         >
           <Link to="/dashboard">
