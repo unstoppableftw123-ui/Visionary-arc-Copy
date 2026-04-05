@@ -464,7 +464,8 @@ export default function Sidebar() {
   ];
   const learnItems = [
     { icon: <Brain className="w-5 h-5 shrink-0" />, label: "Study Hub", href: "/study" },
-    { icon: <Target className="w-5 h-5 shrink-0" />, label: "Practice", href: "/practice" },
+    // SAT/ACT Practice hidden from nav — community-gated at 1,000 members (direct URL /practice still works)
+    // { icon: <Target className="w-5 h-5 shrink-0" />, label: "Practice", href: "/practice" },
     { icon: <FileText className="w-5 h-5 shrink-0" />, label: "Notes", href: "/notes-studio" },
   ];
   const competeItems = [

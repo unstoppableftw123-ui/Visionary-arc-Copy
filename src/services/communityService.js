@@ -10,6 +10,7 @@ const _mockUnlocks = [
   { threshold: 250,  feature_key: 'challenge_board',      label: 'Company Challenge Board',  unlocked_at: null },
   { threshold: 500,  feature_key: 'competitions',         label: 'Guild Competitions',       unlocked_at: null },
   { threshold: 1000, feature_key: 'gift_card_redemption', label: 'Gift Card Redemptions',    unlocked_at: null },
+  { threshold: 1000, feature_key: 'sat_act_practice',     label: 'SAT / ACT Practice',        unlocked_at: null },
   { threshold: 2500, feature_key: 'live_study_rooms',     label: 'Live Study Rooms',         unlocked_at: null },
   { threshold: 5000, feature_key: 'hiring_pipeline',      label: 'Company Hiring Pipeline',  unlocked_at: null },
 ];

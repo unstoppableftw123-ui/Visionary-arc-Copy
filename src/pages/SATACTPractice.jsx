@@ -6,10 +6,16 @@ import { Badge } from "../components/ui/badge";
 import { Progress } from "../components/ui/progress";
 import { AuthContext, API } from "../App";
 import { toast } from "sonner";
-import { 
-  GraduationCap, Clock, CheckCircle, XCircle, ArrowRight, 
+import {
+  GraduationCap, Clock, CheckCircle, XCircle, ArrowRight,
   RotateCcw, ChevronRight, Flame, Zap
 } from "lucide-react";
+import { useFeatureGate } from "../hooks/useFeatureGate";
+import LockedFeatureOverlay from "../components/LockedFeatureOverlay";
+
+// SQL migration required in Supabase:
+// INSERT INTO feature_unlocks VALUES (1000, 'sat_act_practice', 'SAT / ACT Practice', null)
+// ON CONFLICT (threshold) DO NOTHING;  -- use a unique feature_key column if needed
 
 // Mock Question Bank
 const QUESTION_BANK = {
@@ -75,6 +81,8 @@ const FOUNDERS_LIMIT = 5000;
 export default function SATACTPractice() {
   const { user, token, setUser } = useContext(AuthContext);
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+  const { unlocked, threshold, currentUsers, loading: gateLoading } = useFeatureGate('sat_act_practice');
 
   // Practice State
   const [step, setStep] = useState("choose-test"); // choose-test, choose-section, practice, review
@@ -184,18 +192,8 @@ export default function SATACTPractice() {
   const isLite = user?.plan === "lite";
 
   return (
+    <div className="relative min-h-screen">
     <div className="p-4 md:p-8 overflow-auto">
-        {/* Lite Upgrade Banner */}
-        {!isLite && (
-          <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-orange-900/30 to-orange-950/20 border border-orange-500/30 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-orange-400" />
-              <span className="text-sm">Upgrade to Lite — Faster AI, Saving, More Refinements</span>
-            </div>
-            <Button size="sm" variant="outline" onClick={handleUpgradeToLite}>Upgrade</Button>
-          </div>
-        )}
-
         {/* Founders Rush Banner */}
         {!user?.is_lite_founder && daysRemaining > 0 && foundersRemaining > 0 && (
           <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20">
@@ -444,5 +442,13 @@ export default function SATACTPractice() {
           </div>
         )}
       </div>
+      {!gateLoading && !unlocked && (
+        <LockedFeatureOverlay
+          featureName="SAT / ACT Practice"
+          threshold={threshold ?? 1000}
+          currentUsers={currentUsers}
+        />
+      )}
+    </div>
   );
 }
