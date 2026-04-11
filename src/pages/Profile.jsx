@@ -65,7 +65,7 @@ function getTemplatePreviewUrl(category) {
 // Subject/folder → color for shared notes cards (aligned with Library styling)
 const SUBJECT_COLORS = {
   math: { border: "border-l-blue-500", bg: "bg-blue-50 dark:bg-blue-950/30", badge: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300" },
-  sat_prep: { border: "border-l-amber-500", bg: "bg-amber-50 dark:bg-amber-950/30", badge: "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300" },
+  sat_prep: { border: "border-l-brand-orange", bg: "bg-amber-50 dark:bg-amber-950/30", badge: "bg-amber-100 dark:bg-amber-900/40 text-brand-deep dark:text-brand-tan" },
   english: { border: "border-l-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30", badge: "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300" },
   science: { border: "border-l-green-500", bg: "bg-green-50 dark:bg-green-950/30", badge: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300" },
   history: { border: "border-l-orange-500", bg: "bg-orange-600/10 dark:bg-orange-600/10", badge: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
@@ -305,7 +305,7 @@ export default function Profile() {
                       {profile?.founder_tier ? (
                         <FounderBadge user={profile} size="md" showLabel />
                       ) : profile?.is_premium ? (
-                        <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-[var(--text-primary)]">
+                        <Badge className="bg-gradient-to-r from-brand-orange to-orange-500 text-[var(--text-primary)]">
                           <Crown className="w-3 h-3 mr-1" /> Premium
                         </Badge>
                       ) : null}
@@ -387,7 +387,7 @@ export default function Profile() {
                     <span className="text-sm font-medium">{profile?.xp ?? 0} XP</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Coins className="w-4 h-4 text-amber-500" />
+                    <Coins className="w-4 h-4 text-brand-orange" />
                     <span className="text-sm font-medium">{profile?.coins ?? 0} coins</span>
                   </div>
                 </div>

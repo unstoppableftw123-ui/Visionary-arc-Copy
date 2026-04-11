@@ -535,7 +535,7 @@ function RecentActivity({ assignments, loading }) {
               </div>
             </div>
             <div className="text-right shrink-0">
-              <p className="text-sm font-bold text-yellow-400">+{xp} XP</p>
+              <p className="text-sm font-bold text-brand-orange">+{xp} XP</p>
               <p className="text-sm md:text-[11px] text-muted-foreground">{timeAgo(date)}</p>
             </div>
           </motion.div>

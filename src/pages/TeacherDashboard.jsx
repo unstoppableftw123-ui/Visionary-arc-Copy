@@ -30,7 +30,7 @@ function averageGrade() {
 
 const STATUS_CONFIG = {
   on_track: { label: "On Track", className: "bg-green-500/15 text-green-600 border-green-500/20" },
-  struggling: { label: "Struggling", className: "bg-amber-500/15 text-amber-600 border-amber-500/20" },
+  struggling: { label: "Struggling", className: "bg-brand-orange/15 text-brand-deep border-brand-orange/20" },
   at_risk: { label: "At Risk", className: "bg-red-500/15 text-red-600 border-red-500/20" },
 };
 
@@ -251,7 +251,7 @@ function SubmissionCard({ sub, onApprove }) {
             <div className={`rounded-full px-2.5 py-0.5 text-sm md:text-xs font-bold ${
               sub.aiGradeSuggestion.score >= 85 ? "bg-green-500/15 text-green-600" :
               sub.aiGradeSuggestion.score >= 70 ? "bg-blue-500/15 text-blue-600" :
-              sub.aiGradeSuggestion.score >= 60 ? "bg-amber-500/15 text-amber-600" :
+              sub.aiGradeSuggestion.score >= 60 ? "bg-brand-orange/15 text-brand-deep" :
               "bg-red-500/15 text-red-600"
             }`}>
               AI: {sub.aiGradeSuggestion.score}
@@ -326,7 +326,7 @@ export default function TeacherDashboard() {
       label: "Students At Risk",
       value: atRiskCount,
       icon: AlertTriangle,
-      badge: atRiskCount > 0 ? { text: "Needs attention", className: "bg-amber-500/15 text-amber-600" } : null,
+      badge: atRiskCount > 0 ? { text: "Needs attention", className: "bg-brand-orange/15 text-brand-deep" } : null,
     },
     {
       label: "Active Assignments",
@@ -407,9 +407,9 @@ export default function TeacherDashboard() {
       {/* At-Risk Students */}
       <div>
         <h2 className="font-heading text-lg font-semibold mb-3 flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-amber-500" />
+          <AlertTriangle className="h-5 w-5 text-brand-orange" />
           Students Needing Attention
-          <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-sm md:text-xs font-semibold text-amber-600">
+          <span className="rounded-full bg-brand-orange/15 px-2 py-0.5 text-sm md:text-xs font-semibold text-brand-deep">
             {alertStudents.length}
           </span>
         </h2>

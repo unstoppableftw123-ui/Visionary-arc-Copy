@@ -366,7 +366,7 @@ export default function Schools() {
                   {/* Leaderboard */}
                   <div>
                     <h4 className="font-medium mb-3 flex items-center gap-2">
-                      <Trophy className="w-4 h-4 text-yellow-500" /> School Leaderboard
+                      <Trophy className="w-4 h-4 text-brand-orange" /> School Leaderboard
                     </h4>
                     <div className="space-y-2">
                       {leaderboard.slice(0, 5).map((member, i) => (

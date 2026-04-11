@@ -122,7 +122,7 @@ const MOCK_CLASSES = [
     subject: 'Social Studies',
     grade: '11th Grade',
     studentCount: 30,
-    color: 'from-amber-500 to-orange-600',
+    color: 'from-brand-orange to-orange-600',
     nextClass: 'Thu, 10:30 AM',
     channels: [{ name: 'general', unread: 1 }, { name: 'discussions', unread: 0 }],
     pendingAssignments: 0,
@@ -1008,7 +1008,7 @@ export default function Community() {
                     </Avatar>
                     <span className="text-sm truncate flex-1">{member.name}</span>
                     {selectedServer.owner_id === member.user_id && (
-                      <Crown className="w-4 h-4 text-yellow-500" />
+                      <Crown className="w-4 h-4 text-brand-orange" />
                     )}
                   </div>
                 ))}
@@ -1399,8 +1399,8 @@ export default function Community() {
                       </div>
                     </div>
                     <div className="rounded-xl border bg-card p-4 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-amber-500" />
+                      <div className="w-10 h-10 rounded-lg bg-brand-orange/10 flex items-center justify-center">
+                        <Clock className="w-5 h-5 text-brand-orange" />
                       </div>
                       <div>
                         <p className="text-2xl font-bold">{enrolledClasses.reduce((s, c) => s + (c.pendingAssignments || 0), 0)}</p>
@@ -1447,7 +1447,7 @@ export default function Community() {
                               </span>
                             ))}
                             {cls.pendingAssignments > 0 && (
-                              <span className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-medium">
+                              <span className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-brand-orange/10 text-brand-deep font-medium">
                                 {cls.pendingAssignments} pending
                               </span>
                             )}
@@ -1660,8 +1660,8 @@ export default function Community() {
                         {selectedClass.announcements.map((post) => (
                           <div key={post.id} className="rounded-xl border bg-card p-4">
                             {post.pinned && (
-                              <div className="flex items-center gap-1 text-sm md:text-xs text-amber-600 font-medium mb-2">
-                                <Star className="w-3 h-3 fill-amber-500 text-amber-500" /> Pinned
+                              <div className="flex items-center gap-1 text-sm md:text-xs text-brand-deep font-medium mb-2">
+                                <Star className="w-3 h-3 fill-brand-orange text-brand-orange" /> Pinned
                               </div>
                             )}
                             <div className="flex items-center gap-3 mb-2">
@@ -1692,15 +1692,15 @@ export default function Community() {
                             key={asgn.id}
                             className={`rounded-xl border bg-card p-4 flex items-center gap-4 ${asgn.status === 'submitted' ? 'opacity-60' : ''}`}
                           >
-                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${asgn.status === 'submitted' ? 'bg-green-500/10' : 'bg-amber-500/10'}`}>
+                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${asgn.status === 'submitted' ? 'bg-green-500/10' : 'bg-brand-orange/10'}`}>
                               {asgn.status === 'submitted'
                                 ? <CheckCircle className="w-5 h-5 text-green-500" />
-                                : <Clock className="w-5 h-5 text-amber-500" />
+                                : <Clock className="w-5 h-5 text-brand-orange" />
                               }
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-sm">{asgn.title}</p>
-                              <p className={`text-sm md:text-xs mt-0.5 ${asgn.dueDate.startsWith('Tomorrow') ? 'text-amber-600 font-medium' : 'text-muted-foreground'}`}>
+                              <p className={`text-sm md:text-xs mt-0.5 ${asgn.dueDate.startsWith('Tomorrow') ? 'text-brand-deep font-medium' : 'text-muted-foreground'}`}>
                                 Due: {asgn.dueDate} · {asgn.points} pts
                               </p>
                             </div>

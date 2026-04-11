@@ -27,7 +27,7 @@ import {
 const STATUS_CONFIG = {
   thriving:      { color: "#22c55e", label: "Thriving",      badgeCls: "bg-green-500/15 text-green-600 border-green-500/30" },
   on_track:      { color: "#3b82f6", label: "On Track",      badgeCls: "bg-blue-500/15  text-blue-600  border-blue-500/30"  },
-  needs_support: { color: "#f59e0b", label: "Needs Support", badgeCls: "bg-amber-500/15 text-amber-600 border-amber-500/30" },
+  needs_support: { color: "#e8722a", label: "Needs Support", badgeCls: "bg-brand-orange/15 text-brand-deep border-brand-orange/30" },
   at_risk:       { color: "#ef4444", label: "At Risk",       badgeCls: "bg-red-500/15   text-red-600   border-red-500/30"   },
 };
 
@@ -47,7 +47,7 @@ const STYLE_LABELS = {
   reading_writing:"Reading/Writing",
 };
 
-const STYLE_COLORS = ["#7c3aed", "#0ea5e9", "#f59e0b", "#22c55e"];
+const STYLE_COLORS = ["#e8722a", "#0ea5e9", "#e8722a", "#22c55e"];
 
 const BIO_STANDARDS = SUBJECT_STANDARDS.Biology;
 
@@ -56,7 +56,7 @@ const BIO_STANDARDS = SUBJECT_STANDARDS.Biology;
 function scoreColor(s) {
   if (s > 85) return "#16a34a";
   if (s >= 70) return "#22c55e";
-  if (s >= 55) return "#f59e0b";
+  if (s >= 55) return "#e8722a";
   if (s >= 40) return "#f97316";
   return "#ef4444";
 }
@@ -64,7 +64,7 @@ function scoreColor(s) {
 function scoreBgClass(s) {
   if (s > 85) return "bg-green-700";
   if (s >= 70) return "bg-green-500";
-  if (s >= 55) return "bg-amber-500";
+  if (s >= 55) return "bg-brand-orange";
   if (s >= 40) return "bg-orange-500";
   return "bg-red-600";
 }
@@ -182,10 +182,10 @@ function InterventionCard({ type, studentName, onAssign, onMessage, onLog }) {
   const [logNote, setLogNote] = useState("");
 
   return (
-    <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 space-y-3">
+    <div className="rounded-lg border border-brand-orange/30 bg-brand-orange/5 p-4 space-y-3">
       <div className="flex items-start gap-3">
-        <div className="rounded-md bg-amber-500/20 p-2 shrink-0">
-          <IconComp className="h-4 w-4 text-amber-500" />
+        <div className="rounded-md bg-brand-orange/20 p-2 shrink-0">
+          <IconComp className="h-4 w-4 text-brand-orange" />
         </div>
         <div>
           <p className="font-semibold text-sm">{suggestion.label}</p>
@@ -197,7 +197,7 @@ function InterventionCard({ type, studentName, onAssign, onMessage, onLog }) {
             <span className={`text-sm md:text-xs px-1.5 py-0.5 rounded-full border font-medium ${
               suggestion.difficulty === "easy"
                 ? "bg-green-500/10 text-green-600 border-green-500/30"
-                : "bg-amber-500/10 text-amber-600 border-amber-500/30"
+                : "bg-brand-orange/10 text-brand-deep border-brand-orange/30"
             }`}>{suggestion.difficulty}</span>
           </div>
         </div>
@@ -354,7 +354,7 @@ function StudentDrawer({ student, open, onClose }) {
             </h3>
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                <span className="text-sm md:text-xs px-2 py-1 rounded-full bg-violet-500/15 text-violet-600 border border-violet-500/30 font-medium">
+                <span className="text-sm md:text-xs px-2 py-1 rounded-full bg-brand-deep/15 text-brand-deep border border-brand-deep/30 font-medium">
                   {STYLE_LABELS[student.learningStyle] ?? student.learningStyle}
                 </span>
                 <span className="text-sm md:text-xs px-2 py-1 rounded-full bg-blue-500/15 text-blue-600 border border-blue-500/30 font-medium capitalize">
@@ -560,10 +560,10 @@ function StudentCard({ student, onViewProfile }) {
 
         {/* Intervention banner */}
         {student.interventionSuggested && interventionSugg && (
-          <div className="rounded-md border border-amber-500/30 bg-amber-500/8 px-3 py-2 flex items-start gap-2">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+          <div className="rounded-md border border-brand-orange/30 bg-brand-orange/8 px-3 py-2 flex items-start gap-2">
+            <AlertTriangle className="h-3.5 w-3.5 text-brand-orange mt-0.5 shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm md:text-[10px] font-semibold text-amber-600">Intervention Suggested</p>
+              <p className="text-sm md:text-[10px] font-semibold text-brand-deep">Intervention Suggested</p>
               <p className="text-sm md:text-[10px] text-muted-foreground truncate">{interventionSugg.description}</p>
             </div>
           </div>
@@ -648,8 +648,8 @@ function ClassOverviewTab({ onStudentBarClick }) {
           icon={AlertTriangle} title="Needing Support"
           value={needingSupportCount}
           sub={`${ca.statusBreakdown.needs_support} needs support · ${ca.statusBreakdown.at_risk} at risk`}
-          color="text-amber-500"
-          iconBg="bg-amber-500/15"
+          color="text-brand-orange"
+          iconBg="bg-brand-orange/15"
         />
         <StatCard
           icon={CheckCircle} title="Assignment Completion"
@@ -662,8 +662,8 @@ function ClassOverviewTab({ onStudentBarClick }) {
           icon={Users} title="Active Today"
           value={ca.activeStudentsToday}
           sub={`out of 20 students`}
-          color="text-violet-500"
-          iconBg="bg-violet-500/15"
+          color="text-brand-deep"
+          iconBg="bg-brand-deep/15"
         />
       </div>
 
@@ -748,8 +748,8 @@ function ClassOverviewTab({ onStudentBarClick }) {
           </table>
 
           {/* Callout */}
-          <div className="mt-5 rounded-lg border border-amber-500/30 bg-amber-500/8 p-3 flex items-start gap-3">
-            <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5 shrink-0" />
+          <div className="mt-5 rounded-lg border border-brand-orange/30 bg-brand-orange/8 p-3 flex items-start gap-3">
+            <AlertTriangle className="h-4 w-4 text-brand-orange mt-0.5 shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold">
                 ⚠️ Biggest class gap: {biggestGapStd?.label ?? ca.biggestClassGap} — {ca.standardsClassAvg[ca.biggestClassGap]?.below65Count} students below 65%
@@ -799,8 +799,8 @@ function ClassOverviewTab({ onStudentBarClick }) {
                 contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid var(--border)", background: "var(--popover)" }}
                 formatter={(v) => [`${v}h`, "Avg study hours"]}
               />
-              <Line type="monotone" dataKey="hours" stroke="#7c3aed" strokeWidth={2.5}
-                dot={{ fill: "#7c3aed", r: 4 }} activeDot={{ r: 6 }} />
+              <Line type="monotone" dataKey="hours" stroke="#e8722a" strokeWidth={2.5}
+                dot={{ fill: "#e8722a", r: 4 }} activeDot={{ r: 6 }} />
             </LineChart>
           </ResponsiveContainer>
         </CardContent>
@@ -1108,9 +1108,9 @@ function StandardsGapsTab() {
                   <div className="rounded-lg border border-border bg-secondary/50 p-3">
                     {pctBelow >= 30 ? (
                       <div className="flex items-start gap-2">
-                        <AlertTriangle className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+                        <AlertTriangle className="h-3.5 w-3.5 text-brand-orange mt-0.5 shrink-0" />
                         <div>
-                          <p className="text-sm md:text-xs font-semibold text-amber-600">
+                          <p className="text-sm md:text-xs font-semibold text-brand-deep">
                             Consider reteaching — {pctBelow}% of class struggling
                           </p>
                           <p className="text-sm md:text-xs text-muted-foreground mt-0.5">
@@ -1380,7 +1380,7 @@ function MasteryHeatmapTab() {
             <CardTitle className="text-sm flex items-center gap-2">
               <span
                 className="h-7 w-7 rounded-full flex items-center justify-center text-[var(--text-primary)] font-bold text-sm md:text-xs shrink-0"
-                style={{ backgroundColor: STATUS_CONFIG[selectedCell.student.status]?.color ?? "#7c3aed" }}
+                style={{ backgroundColor: STATUS_CONFIG[selectedCell.student.status]?.color ?? "#e8722a" }}
               >
                 {getInitials(selectedCell.student.name)}
               </span>
@@ -1453,7 +1453,7 @@ export default function StudentIntelligence() {
       {/* Page header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Brain className="h-6 w-6 text-violet-500" />
+          <Brain className="h-6 w-6 text-brand-deep" />
           <h1 className="text-2xl font-bold">Student Intelligence</h1>
         </div>
         <p className="text-sm text-muted-foreground">

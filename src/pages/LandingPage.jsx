@@ -197,7 +197,7 @@ export default function LandingPage() {
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight mb-5 break-words" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
             Turn your skills into{" "}
-            <span className="bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-orange via-brand-tan to-orange-400 bg-clip-text text-transparent">
               a career
             </span>
             <br />

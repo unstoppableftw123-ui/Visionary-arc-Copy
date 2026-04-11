@@ -110,7 +110,7 @@ function GuildCard({
           </div>
 
           {!eligible && (
-            <p className="text-sm md:text-xs text-amber-500/80">
+            <p className="text-sm md:text-xs text-brand-orange/80">
               Requires rank {guild.entry_min_rank} — keep earning XP to qualify.
             </p>
           )}
@@ -288,7 +288,7 @@ export default function GuildDiscover() {
         <div className="space-y-6">
           {featured.length > 0 && (
             <div className="space-y-3">
-              <h2 className="text-sm font-semibold text-yellow-500 uppercase tracking-wide flex items-center gap-1.5">
+              <h2 className="text-sm font-semibold text-brand-orange uppercase tracking-wide flex items-center gap-1.5">
                 <Star className="h-4 w-4" /> Featured Guilds
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

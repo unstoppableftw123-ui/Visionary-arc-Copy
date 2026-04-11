@@ -93,7 +93,7 @@ function StudyRoomInner() {
       <RoomTopBar roomName={roomName} tag={tag} />
 
       {showInactivityWarning && (
-        <div className="bg-amber-500/15 border-b border-amber-500/30 px-4 py-2 text-center text-sm text-amber-200">
+        <div className="bg-brand-orange/15 border-b border-brand-orange/30 px-4 py-2 text-center text-sm text-brand-tan">
           This room will close after 30 minutes of inactivity.
         </div>
       )}

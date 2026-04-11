@@ -55,7 +55,7 @@ const urgencyStyles = {
 const urgencyDot = {
   overdue: "bg-red-500",
   red: "bg-red-500",
-  amber: "bg-amber-500",
+  amber: "bg-brand-orange",
   green: "bg-emerald-500",
   muted: "bg-muted-foreground",
 };
@@ -156,7 +156,7 @@ export default function AssignmentRadar({ tasks = [] }) {
       <Card className="border-border overflow-hidden">
         <CardHeader className="pb-2">
           <CardTitle className="font-heading text-lg flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-amber-500" />
+            <Sparkles className="w-5 h-5 text-brand-orange" />
             Weekly Brief
           </CardTitle>
         </CardHeader>

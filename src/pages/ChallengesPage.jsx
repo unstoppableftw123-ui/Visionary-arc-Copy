@@ -249,7 +249,7 @@ export default function ChallengesPage() {
                 </div>
 
                 {!selectedEligibility.eligible ? (
-                  <Card className="border-amber-500/40 bg-amber-500/5">
+                  <Card className="border-brand-orange/40 bg-brand-orange/5">
                     <CardContent className="pt-4 text-sm">
                       Unlock at <span className="font-semibold">{selected.required_tier}</span> - you need{" "}
                       <span className="font-semibold">{selectedEligibility.neededXP.toLocaleString()} more XP</span>.

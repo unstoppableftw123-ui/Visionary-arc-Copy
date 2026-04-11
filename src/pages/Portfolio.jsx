@@ -66,7 +66,7 @@ function PortfolioCard({ entry, isOwn, onToggleFeatured }) {
       {/* Featured pin */}
       {entry.is_featured && (
         <div className="absolute top-2.5 right-2.5 z-10">
-          <Pin className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+          <Pin className="w-4 h-4 text-brand-orange fill-brand-orange" />
         </div>
       )}
 

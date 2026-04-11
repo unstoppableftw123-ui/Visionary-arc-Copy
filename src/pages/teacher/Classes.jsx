@@ -41,7 +41,7 @@ import { createClass } from "../../services/classService";
 // ── Color palette ──────────────────────────────────────────────────────────
 const CLASS_COLORS = [
   { dot: "bg-blue-500",    gradient: "from-blue-500 to-blue-600",    text: "text-blue-600",    light: "bg-blue-500/10" },
-  { dot: "bg-violet-500",  gradient: "from-violet-500 to-violet-600",  text: "text-violet-600",  light: "bg-violet-500/10" },
+  { dot: "bg-brand-deep",  gradient: "from-brand-deep to-brand-orange",  text: "text-brand-deep",  light: "bg-brand-deep/10" },
   { dot: "bg-emerald-500", gradient: "from-emerald-500 to-emerald-600", text: "text-emerald-600", light: "bg-emerald-500/10" },
 ];
 
@@ -191,7 +191,7 @@ function StatusBadge({ status }) {
     graded:    "bg-green-500/10 text-green-600",
     draft:     "bg-secondary text-muted-foreground",
     on_track:  "bg-green-500/10 text-green-600",
-    struggling:"bg-amber-500/10 text-amber-600",
+    struggling:"bg-brand-orange/10 text-brand-deep",
     at_risk:   "bg-red-500/10 text-red-600",
   };
   return (
@@ -594,7 +594,7 @@ export default function Classes() {
       skillId: skill.id,
       skillName: skill.name,
       subjectName: subject.name,
-      subjectColor: subject.color ?? "#8b5cf6",
+      subjectColor: subject.color ?? "#e8722a",
       topicName: topic.name,
       assignedTo,
       dueDate: skillAssignForm.dueDate || null,
@@ -785,8 +785,8 @@ export default function Classes() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 {[
                   { label: "Total Students", value: selectedClass.students?.length ?? 0, icon: Users, light: "bg-blue-500/10", iconColor: "text-blue-500" },
-                  { label: "Avg Grade",      value: selectedClass.avgGrade ? `${selectedClass.avgGrade}%` : "N/A", icon: Award,  light: "bg-violet-500/10", iconColor: "text-violet-500" },
-                  { label: "Assignments",    value: selectedClass.assignments?.length ?? 0, icon: ClipboardList, light: "bg-amber-500/10", iconColor: "text-amber-500" },
+                  { label: "Avg Grade",      value: selectedClass.avgGrade ? `${selectedClass.avgGrade}%` : "N/A", icon: Award,  light: "bg-brand-deep/10", iconColor: "text-brand-deep" },
+                  { label: "Assignments",    value: selectedClass.assignments?.length ?? 0, icon: ClipboardList, light: "bg-brand-orange/10", iconColor: "text-brand-orange" },
                   { label: "Completion Rate", value: `${selectedClass.completionRate}%`, icon: TrendingUp, light: "bg-green-500/10", iconColor: "text-green-500" },
                 ].map(stat => (
                   <Card key={stat.label} className="border-border">
@@ -873,8 +873,8 @@ export default function Classes() {
                         setTimeout(() => setNewMessage("📢 Announcement: "), 100);
                       }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0">
-                        <Megaphone className="w-4 h-4 text-amber-500" />
+                      <div className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center shrink-0">
+                        <Megaphone className="w-4 h-4 text-brand-orange" />
                       </div>
                       Post Announcement
                     </Button>
@@ -883,8 +883,8 @@ export default function Classes() {
                       className="w-full justify-start gap-3 h-11"
                       onClick={() => { setActiveTab("assignments"); setNewAssignmentOpen(true); }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0">
-                        <ClipboardList className="w-4 h-4 text-violet-500" />
+                      <div className="w-7 h-7 rounded-lg bg-brand-deep/10 flex items-center justify-center shrink-0">
+                        <ClipboardList className="w-4 h-4 text-brand-deep" />
                       </div>
                       Create Assignment
                     </Button>
@@ -903,8 +903,8 @@ export default function Classes() {
                       className="w-full justify-start gap-3 h-11"
                       onClick={() => { setActiveTab("skills"); setAssignSkillOpen(true); }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0">
-                        <Zap className="w-4 h-4 text-amber-500" />
+                      <div className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center shrink-0">
+                        <Zap className="w-4 h-4 text-brand-orange" />
                       </div>
                       Assign Practice Skill
                     </Button>
@@ -913,8 +913,8 @@ export default function Classes() {
                       className="w-full justify-start gap-3 h-11"
                       onClick={() => { setJamCreated(null); setJamWordSetId(VOCAB_JAM_WORD_SETS[0].id); setCreateJamOpen(true); }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0">
-                        <Radio className="w-4 h-4 text-purple-500" />
+                      <div className="w-7 h-7 rounded-lg bg-brand-deep/10 flex items-center justify-center shrink-0">
+                        <Radio className="w-4 h-4 text-brand-deep" />
                       </div>
                       Create Vocab Jam
                     </Button>
@@ -1016,8 +1016,8 @@ export default function Classes() {
                   <div className="space-y-2">
                     {pastJams.filter(j => j.classId === selectedId).map(jam => (
                       <div key={jam.jamId} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
-                        <div className="w-7 h-7 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-                          <Radio className="w-3.5 h-3.5 text-purple-500" />
+                        <div className="w-7 h-7 rounded-full bg-brand-deep/10 flex items-center justify-center shrink-0">
+                          <Radio className="w-3.5 h-3.5 text-brand-deep" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{jam.wordSetName}</p>
@@ -1096,7 +1096,7 @@ export default function Classes() {
                                   <p className="font-medium text-sm">{student.name}</p>
                                   <p className="text-sm md:text-xs text-muted-foreground hidden sm:block">{student.grade} grade</p>
                                   {student.mutedUntil && (
-                                    <p className="text-sm md:text-[11px] text-amber-600 hidden sm:block">
+                                    <p className="text-sm md:text-[11px] text-brand-deep hidden sm:block">
                                       Muted until {formatMuteUntil(student.mutedUntil)}
                                     </p>
                                   )}
@@ -1384,8 +1384,8 @@ export default function Classes() {
 
               {(selectedClass.assignedSkills?.length ?? 0) === 0 ? (
                 <div className="text-center py-12">
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mx-auto mb-3">
-                    <Zap className="w-6 h-6 text-amber-500" />
+                  <div className="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-3">
+                    <Zap className="w-6 h-6 text-brand-orange" />
                   </div>
                   <p className="font-medium mb-1">No practice skills assigned yet</p>
                   <p className="text-sm text-muted-foreground mb-4">Assign skills from the Practice hub so students know what to work on</p>
@@ -1437,10 +1437,10 @@ export default function Classes() {
               <ScrollArea className="flex-1 p-4">
                 <div className="max-w-3xl mx-auto space-y-4">
                   {classPosts.map(msg => (
-                    <div key={msg.id} className={`group rounded-lg ${msg.pinned ? "bg-amber-500/5 border border-amber-500/20 p-2" : ""}`}>
+                    <div key={msg.id} className={`group rounded-lg ${msg.pinned ? "bg-brand-orange/5 border border-brand-orange/20 p-2" : ""}`}>
                       {msg.pinned && (
                         <div className="absolute">
-                          <Pin className="w-3 h-3 text-amber-500 rotate-45 -mt-1 ml-1" />
+                          <Pin className="w-3 h-3 text-brand-orange rotate-45 -mt-1 ml-1" />
                         </div>
                       )}
                       <div className="flex items-start gap-3">
@@ -1456,7 +1456,7 @@ export default function Classes() {
                               <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Teacher</span>
                             )}
                             {msg.pinned && (
-                              <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-medium">Pinned</span>
+                              <span className="text-sm md:text-xs px-1.5 py-0.5 rounded bg-brand-orange/10 text-brand-deep font-medium">Pinned</span>
                             )}
                             <span className="text-sm md:text-xs text-muted-foreground">{msg.time}</span>
                           </div>
@@ -1570,7 +1570,7 @@ export default function Classes() {
                           className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-secondary"
                           title={msg.pinned ? "Unpin" : "Pin"}
                         >
-                          <Pin className={`w-3.5 h-3.5 ${msg.pinned ? "text-amber-500" : "text-muted-foreground"}`} />
+                          <Pin className={`w-3.5 h-3.5 ${msg.pinned ? "text-brand-orange" : "text-muted-foreground"}`} />
                         </button>
                       </div>
                     </div>
@@ -1748,7 +1748,7 @@ export default function Classes() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Pending review</span>
-                <span className="font-semibold text-amber-600">
+                <span className="font-semibold text-brand-deep">
                   {selectedClass.assignments?.reduce((sum, a) => sum + (a.pendingReview ?? 0), 0) ?? 0}
                 </span>
               </div>

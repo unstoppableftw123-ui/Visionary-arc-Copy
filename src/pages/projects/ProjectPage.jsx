@@ -175,12 +175,12 @@ export default function ProjectPage() {
         animate={{ opacity: 1, scale: 1 }}
         className="min-h-full flex flex-col items-center justify-center gap-6 text-center px-6"
       >
-        <PartyPopper className="w-20 h-20 text-yellow-400" />
+        <PartyPopper className="w-20 h-20 text-brand-orange" />
         <h1 className="text-3xl font-bold">Project Submitted!</h1>
         <p className="text-muted-foreground max-w-sm">
           Your portfolio is being updated. Redirecting to your portfolio in a moment…
         </p>
-        <div className="flex items-center gap-2 text-yellow-400 font-semibold text-lg">
+        <div className="flex items-center gap-2 text-brand-orange font-semibold text-lg">
           <Zap className="w-5 h-5" />
           +{(DIFFICULTY_XP[difficulty] ?? 200).toLocaleString()} XP earned
         </div>

@@ -34,7 +34,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
       {/* Gradient border wrapper */}
       <div className="relative p-px rounded-2xl"
         style={{
-          background: 'linear-gradient(135deg, var(--accent) 0%, #F59E0B 100%)',
+          background: 'linear-gradient(135deg, var(--accent) 0%, #e8722a 100%)',
         }}
       >
         <motion.div
@@ -58,7 +58,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
             <h3 className="text-lg font-bold text-[var(--text-primary)]">{featureName}</h3>
             <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">
               Unlocks when the community reaches{' '}
-              <span className="text-amber-400 font-semibold">
+              <span className="text-brand-orange font-semibold">
                 {(threshold ?? 0).toLocaleString()} members
               </span>
             </p>
@@ -71,7 +71,7 @@ export default function LockedFeatureOverlay({ featureName, threshold, currentUs
                 <Users className="w-3.5 h-3.5" />
                 <span>{(currentUsers ?? 0).toLocaleString()} members now</span>
               </div>
-              <span className="text-amber-400 font-medium">
+              <span className="text-brand-orange font-medium">
                 {usersNeeded.toLocaleString()} to go
               </span>
             </div>

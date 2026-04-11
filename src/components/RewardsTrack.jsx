@@ -116,7 +116,7 @@ export default function RewardsTrack() {
                   {nextMilestone.emoji ? `${nextMilestone.emoji} ` : ""}
                   {nextMilestone.title}
                 </p>
-                <p className="text-sm md:text-xs text-amber-500 font-medium mt-0.5">
+                <p className="text-sm md:text-xs text-brand-orange font-medium mt-0.5">
                   +{nextMilestone.coins} coins
                 </p>
               </div>
@@ -323,7 +323,7 @@ export default function RewardsTrack() {
                             ) : (
                               <Star
                                 className={`w-3.5 h-3.5 shrink-0 ${
-                                  isPast ? "text-muted-foreground" : "text-amber-400"
+                                  isPast ? "text-muted-foreground" : "text-brand-orange"
                                 }`}
                               />
                             )}
@@ -373,7 +373,7 @@ export default function RewardsTrack() {
 
                       {/* XP progress bar — only on current milestone */}
                       {isCurrent && (
-                        <div className="mt-3 pt-3 border-t border-yellow-500/15">
+                        <div className="mt-3 pt-3 border-t border-brand-orange/15">
                           <div className="flex justify-between text-sm md:text-[11px] text-muted-foreground mb-1.5">
                             <span>Progress to next level</span>
                             <span>{xpInLevel} / {xpForNext} XP</span>
@@ -400,7 +400,7 @@ export default function RewardsTrack() {
                     {/* Centered unlock overlay — sits above the blurred content */}
                     {isLocked && (
                       <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                        <span className="text-sm md:text-xs font-semibold text-yellow-400 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-yellow-500/20">
+                        <span className="text-sm md:text-xs font-semibold text-brand-orange bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-brand-orange/20">
                           Unlocks at {xpThreshold.toLocaleString()} XP
                         </span>
                       </div>

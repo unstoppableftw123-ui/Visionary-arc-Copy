@@ -17,8 +17,8 @@ const STATUS_CONFIG = {
 };
 
 const TYPE_CONFIG = {
-  assignment: "bg-violet-500/15 text-violet-600",
-  quiz: "bg-amber-500/15 text-amber-600",
+  assignment: "bg-brand-deep/15 text-brand-deep",
+  quiz: "bg-brand-orange/15 text-brand-deep",
   test: "bg-red-500/15 text-red-600",
 };
 

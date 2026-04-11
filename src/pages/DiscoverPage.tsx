@@ -16,7 +16,7 @@ import { Search, Star, Eye, User, Briefcase } from 'lucide-react';
 
 const TRACKS = ['All', 'tech', 'design', 'content', 'business', 'impact'];
 const RANK_COLORS: Record<string, string> = {
-  S: 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black',
+  S: 'bg-gradient-to-r from-brand-orange to-orange-500 text-black',
   A: 'bg-orange-600 text-[var(--text-primary)]',
   B: 'bg-blue-600 text-[var(--text-primary)]',
   C: 'bg-green-600 text-[var(--text-primary)]',
@@ -63,7 +63,7 @@ function StatRadarMini({ xp, missions }: { xp: number; missions: number }) {
           <span>{missions}</span>
         </div>
         <div className="h-1.5 rounded-full bg-[var(--va-border)]">
-          <div className="h-full rounded-full bg-amber-400" style={{ width: `${missionPct}%` }} />
+          <div className="h-full rounded-full bg-brand-orange" style={{ width: `${missionPct}%` }} />
         </div>
       </div>
     </div>

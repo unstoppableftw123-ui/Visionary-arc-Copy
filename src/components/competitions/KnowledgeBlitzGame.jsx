@@ -239,7 +239,7 @@ function BetweenRoundsLeaderboard({ leaderboard, currentQuestion, totalQuestions
             <span className="w-6 text-center font-bold text-[var(--text-secondary)]">{i + 1}</span>
             <PlayerAvatar name={p.name} size="sm" />
             <span className="flex-1 truncate text-[var(--text-primary)]">{p.name}</span>
-            <span className="font-mono font-semibold text-[#f59e0b]">{p.score || 0}</span>
+            <span className="font-mono font-semibold text-brand-orange">{p.score || 0}</span>
           </motion.li>
         ))}
       </ul>
@@ -270,7 +270,7 @@ function FinalPodium({ leaderboard, onBack }) {
             transition={{ delay: i * 0.15 }}
             className={cn(
               "flex w-full flex-col items-center rounded-t-xl border-2 border-[var(--border)] px-4 pb-2 pt-4 sm:w-auto",
-              i === 0 && "bg-amber-500/20 sm:order-2",
+              i === 0 && "bg-brand-orange/20 sm:order-2",
               i === 1 && "bg-slate-400/20 sm:order-1",
               i === 2 && "bg-amber-700/20 sm:order-3"
             )}
@@ -278,7 +278,7 @@ function FinalPodium({ leaderboard, onBack }) {
             <span className="text-2xl mb-1">{medals[i]}</span>
             <PlayerAvatar name={p.name} size="sm" className="mb-2" />
             <p className="font-semibold text-[var(--text-primary)] text-sm truncate max-w-[80px]">{p.name}</p>
-            <p className="text-sm text-[#f59e0b] font-mono md:text-xs">{p.score || 0} pts</p>
+            <p className="text-sm text-brand-orange font-mono md:text-xs">{p.score || 0} pts</p>
           </motion.div>
         ))}
       </div>

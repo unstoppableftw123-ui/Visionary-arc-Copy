@@ -29,7 +29,7 @@ export function XPFloatAnimation({ xpGain, onComplete, className }) {
           transition={{ duration: 1, ease: "easeOut" }}
           className={cn(
             "absolute pointer-events-none text-lg font-bold whitespace-nowrap",
-            "text-[#f59e0b] drop-shadow-sm",
+            "text-brand-orange drop-shadow-sm",
             className
           )}
         >
@@ -116,7 +116,7 @@ export function StreakCounter({ count, className }) {
       initial={{ scale: 1.2 }}
       animate={{ scale: 1 }}
       transition={{ type: "spring", stiffness: 400, damping: 15 }}
-      className={cn("inline-flex items-center gap-1 font-semibold text-amber-500", className)}
+      className={cn("inline-flex items-center gap-1 font-semibold text-brand-orange", className)}
     >
       <span aria-hidden>🔥</span>
       <span>{count} in a row</span>

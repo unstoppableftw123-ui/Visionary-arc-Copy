@@ -52,7 +52,7 @@ export default function CheckoutSuccess() {
         spread: 70,
         angle,
         origin,
-        colors: ["#a855f7", "#ec4899", "#f59e0b", "#10b981"],
+        colors: ["#e8722a", "#ec4899", "#e8722a", "#10b981"],
       });
     const t = setTimeout(() => {
       fire(60, { x: 0, y: 0.6 });
@@ -131,7 +131,7 @@ export default function CheckoutSuccess() {
           <div className="bg-card border border-border rounded-2xl p-5 mb-8 space-y-3 text-left">
             <p className="text-sm font-semibold text-foreground mb-1">What you unlocked:</p>
             <div className="flex items-center gap-3 text-sm">
-              <Coins className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <Coins className="w-4 h-4 text-brand-orange flex-shrink-0" />
               <span><span className="font-semibold">{meta.launchCoins.toLocaleString()} coins</span> credited on launch day</span>
             </div>
             <div className="flex items-center gap-3 text-sm">

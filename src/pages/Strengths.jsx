@@ -406,7 +406,7 @@ export default function Strengths() {
               </Card>
               <Card>
                 <CardContent className="p-4 text-center">
-                  <Lightbulb className="w-6 h-6 mx-auto mb-2 text-amber-500" />
+                  <Lightbulb className="w-6 h-6 mx-auto mb-2 text-brand-orange" />
                   <div className="font-medium">Science-based</div>
                   <div className="text-muted-foreground">Proven methods</div>
                 </CardContent>
@@ -605,7 +605,7 @@ export default function Strengths() {
                   <div className="p-4 bg-background rounded-lg border">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-amber-500" />
+                        <Sparkles className="w-4 h-4 text-brand-orange" />
                       </div>
                       <span className="text-sm md:text-xs font-medium uppercase text-muted-foreground">Bonus</span>
                     </div>

@@ -466,7 +466,7 @@ export default function NotesStudio() {
 
   // Palette for nodes when AI doesn't provide color (by diagram type)
   const DIAGRAM_COLORS = [
-    "#4F46E5", "#10B981", "#F59E0B", "#EF4444", "#3B82F6", "#7C3AED", "#EC4899", "#06B6D4"
+    "#4F46E5", "#10B981", "#e8722a", "#EF4444", "#3B82F6", "#e8722a", "#EC4899", "#06B6D4"
   ];
   const lightenHex = (hex, amount = 0.85) => {
     const num = parseInt(hex.slice(1), 16);

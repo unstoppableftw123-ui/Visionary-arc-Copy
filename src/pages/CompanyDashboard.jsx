@@ -721,7 +721,7 @@ function WalletTab({ guild }) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm md:text-xs text-muted-foreground">Available Balance</p>
-              <p className="text-3xl font-bold text-yellow-400">
+              <p className="text-3xl font-bold text-brand-orange">
                 {coinBalance} <span className="text-base text-muted-foreground">coins</span>
               </p>
             </div>
@@ -736,7 +736,7 @@ function WalletTab({ guild }) {
             </div>
             <div className="h-2 rounded-full bg-[var(--va-border)] overflow-hidden">
               <div
-                className="h-full rounded-full bg-yellow-400 transition-all duration-500"
+                className="h-full rounded-full bg-brand-orange transition-all duration-500"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -758,7 +758,7 @@ function WalletTab({ guild }) {
         {guild?.tier === 'basic' && (
           <Button
             variant="outline"
-            className="w-full border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/10"
+            className="w-full border-brand-orange/30 text-brand-orange hover:bg-brand-orange/10"
             onClick={handleUpgradeToElite}
             disabled={upgrading}
           >
@@ -785,7 +785,7 @@ function WalletTab({ guild }) {
                 onClick={() => setDepositAmount(amt)}
                 className={`rounded-lg border py-3 text-sm font-medium transition-colors ${
                   depositAmount === amt
-                    ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
+                    ? 'border-brand-orange bg-brand-orange/10 text-brand-orange'
                     : 'border-[var(--border)] text-muted-foreground hover:border-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'
                 }`}
               >
@@ -918,7 +918,7 @@ function AnalyticsTab({ guild }) {
 
       <div>
         <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-          <Award className="h-4 w-4 text-yellow-400" /> Top Performing Students
+          <Award className="h-4 w-4 text-brand-orange" /> Top Performing Students
         </h4>
         {topStudents.length === 0 ? (
           <p className="text-muted-foreground text-sm">No approved submissions yet.</p>
@@ -928,7 +928,7 @@ function AnalyticsTab({ guild }) {
               <div key={i} className="flex items-center gap-3 text-sm py-1.5">
                 <span className="w-5 text-muted-foreground font-mono text-sm md:text-xs">#{i + 1}</span>
                 <span className="flex-1 font-medium">{s.name}</span>
-                <span className="text-yellow-400">{s.avg}★</span>
+                <span className="text-brand-orange">{s.avg}★</span>
                 <span className="text-muted-foreground text-sm md:text-xs">{s.count} approved</span>
               </div>
             ))}

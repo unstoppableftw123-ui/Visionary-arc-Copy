@@ -50,7 +50,7 @@ function MissionCard({ mission, accent }) {
         <p className="text-sm md:text-xs text-muted-foreground line-clamp-2">{mission.description}</p>
         <div className="flex items-center gap-3 pt-1 text-sm md:text-xs text-muted-foreground">
           <span style={{ color: accent }}>+{mission.xp_reward} XP</span>
-          <span className="text-yellow-400">+{mission.coin_reward} coins</span>
+          <span className="text-brand-orange">+{mission.coin_reward} coins</span>
           <Badge variant="outline" className="text-sm md:text-[10px] capitalize">{mission.track}</Badge>
         </div>
       </CardContent>
@@ -318,7 +318,7 @@ export default function GuildHall() {
                 )}
                 {guild.entry_min_stars > 0 && (
                   <span className="flex items-center gap-1">
-                    <Star className="h-3.5 w-3.5 text-yellow-400" /> {guild.entry_min_stars}★ avg rating
+                    <Star className="h-3.5 w-3.5 text-brand-orange" /> {guild.entry_min_stars}★ avg rating
                   </span>
                 )}
                 {guild.entry_track && (

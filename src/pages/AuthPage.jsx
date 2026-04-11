@@ -337,7 +337,7 @@ export default function AuthPage() {
                                   </button>
                                   <Icon className="h-5 w-5 shrink-0" />
                                   <span className="text-sm md:text-xs font-semibold leading-tight">{label}</span>
-                                  <span className="text-[9px] font-medium text-amber-500 leading-tight">Coming Soon</span>
+                                  <span className="text-[9px] font-medium text-brand-orange leading-tight">Coming Soon</span>
                                 </div>
                               );
                             }
@@ -523,12 +523,12 @@ export default function AuthPage() {
               className="w-full max-w-sm"
               onClick={(e) => e.stopPropagation()}
             >
-              <Card className="border-amber-500/40 shadow-xl">
+              <Card className="border-brand-orange/40 shadow-xl">
                 <CardHeader className="text-center pb-2">
                   <div className="flex justify-between items-start">
                     <div className="flex-1" />
                     <div className="flex justify-center mb-3 flex-1">
-                      <Briefcase className="w-10 h-10 text-amber-500" />
+                      <Briefcase className="w-10 h-10 text-brand-orange" />
                     </div>
                     <div className="flex-1 flex justify-end">
                       <button
@@ -541,7 +541,7 @@ export default function AuthPage() {
                     </div>
                   </div>
                   <CardTitle className="font-heading text-xl">Investor Hub</CardTitle>
-                  <span className="inline-block text-sm md:text-[11px] font-semibold text-amber-500 bg-amber-500/10 rounded-full px-2.5 py-0.5 mt-1">Coming Soon</span>
+                  <span className="inline-block text-sm md:text-[11px] font-semibold text-brand-orange bg-brand-orange/10 rounded-full px-2.5 py-0.5 mt-1">Coming Soon</span>
                 </CardHeader>
                 <CardContent className="pt-2 pb-5">
                   <p className="text-sm text-muted-foreground text-center leading-relaxed">

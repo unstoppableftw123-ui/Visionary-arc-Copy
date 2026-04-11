@@ -19,12 +19,12 @@ import {
 
 // REPLACE with real Stripe Price IDs from dashboard
 const PRODUCTS = {
-  coins_100: { priceId: "price_coins_100", label: "100 Coins", coins: 100, price: "$0.99", color: "from-yellow-400 to-amber-500" },
-  coins_500: { priceId: "price_coins_500", label: "500 Coins", coins: 500, price: "$3.99", color: "from-amber-400 to-orange-500", popular: true },
+  coins_100: { priceId: "price_coins_100", label: "100 Coins", coins: 100, price: "$0.99", color: "from-brand-orange to-brand-deep" },
+  coins_500: { priceId: "price_coins_500", label: "500 Coins", coins: 500, price: "$3.99", color: "from-brand-orange to-orange-500", popular: true },
   coins_2000: { priceId: "price_coins_2000", label: "2000 Coins", coins: 2000, price: "$12.99", color: "from-orange-400 to-red-500" },
-  founder_bronze: { priceId: "price_founder_bronze", label: "Bronze Founder", tier: "bronze", price: "$9/mo", color: "from-amber-600 to-yellow-700", icon: "🥉" },
+  founder_bronze: { priceId: "price_founder_bronze", label: "Bronze Founder", tier: "bronze", price: "$9/mo", color: "from-brand-deep to-brand-orange", icon: "🥉" },
   founder_silver: { priceId: "price_founder_silver", label: "Silver Founder", tier: "silver", price: "$19/mo", color: "from-slate-400 to-slate-600", icon: "🥈", popular: true },
-  founder_gold: { priceId: "price_founder_gold", label: "Gold Founder", tier: "gold", price: "$39/mo", color: "from-yellow-400 to-yellow-600", icon: "🥇" },
+  founder_gold: { priceId: "price_founder_gold", label: "Gold Founder", tier: "gold", price: "$39/mo", color: "from-brand-orange to-brand-deep", icon: "🥇" },
 };
 
 const COIN_PACKS = ["coins_100", "coins_500", "coins_2000"];
@@ -74,7 +74,7 @@ export default function Store() {
       <main className="flex-1 p-4 md:p-8 overflow-auto" data-testid="store-page">
 
         {/* Hero Header */}
-        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-500 via-orange-500 to-red-500">
+        <div className="relative mb-8 p-6 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-brand-orange via-orange-500 to-red-500">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
@@ -87,7 +87,7 @@ export default function Store() {
                 </p>
               </div>
               <div className="flex items-center gap-3 bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm rounded-xl px-4 py-3">
-                <Coins className="w-6 h-6 text-yellow-300" />
+                <Coins className="w-6 h-6 text-brand-tan" />
                 <span className="text-2xl font-bold text-[var(--text-primary)]">{user?.coins || 0}</span>
                 <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">coins</span>
               </div>
@@ -98,7 +98,7 @@ export default function Store() {
         {/* Coin Packs */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
           <h2 className="font-heading text-xl font-bold mb-4 flex items-center gap-2">
-            <Coins className="w-5 h-5 text-amber-500" /> Coin Packs
+            <Coins className="w-5 h-5 text-brand-orange" /> Coin Packs
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {COIN_PACKS.map((key) => {
@@ -108,7 +108,7 @@ export default function Store() {
                 <Card key={key} className="relative border-border hover:shadow-md transition-all overflow-hidden">
                   {p.popular && (
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-[var(--text-primary)] text-sm md:text-xs">Popular</Badge>
+                      <Badge className="bg-gradient-to-r from-brand-orange to-orange-500 text-[var(--text-primary)] text-sm md:text-xs">Popular</Badge>
                     </div>
                   )}
                   <CardContent className="p-6 flex flex-col items-center text-center gap-3">
@@ -117,7 +117,7 @@ export default function Store() {
                     </div>
                     <div>
                       <p className="font-bold text-lg">{p.coins.toLocaleString()} Coins</p>
-                      <p className="text-2xl font-bold text-amber-500">{p.price}</p>
+                      <p className="text-2xl font-bold text-brand-orange">{p.price}</p>
                     </div>
                     <Button
                       className={`w-full bg-gradient-to-r ${p.color} text-[var(--text-primary)] hover:opacity-90`}
@@ -137,7 +137,7 @@ export default function Store() {
         {/* Founder Tiers */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <h2 className="font-heading text-xl font-bold mb-4 flex items-center gap-2">
-            <Crown className="w-5 h-5 text-amber-500" /> Founder Passes
+            <Crown className="w-5 h-5 text-brand-orange" /> Founder Passes
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {FOUNDER_TIERS.map((key) => {
@@ -148,7 +148,7 @@ export default function Store() {
               return (
                 <Card
                   key={key}
-                  className={`relative border-2 hover:shadow-md transition-all overflow-hidden ${isCurrentTier ? "border-amber-500" : "border-border"}`}
+                  className={`relative border-2 hover:shadow-md transition-all overflow-hidden ${isCurrentTier ? "border-brand-orange" : "border-border"}`}
                 >
                   {p.popular && (
                     <div className="absolute top-3 right-3">
@@ -161,18 +161,18 @@ export default function Store() {
                     </div>
                     <div>
                       <p className="font-bold text-lg capitalize">{p.tier} Founder</p>
-                      <p className="text-2xl font-bold text-amber-500">{p.price}</p>
+                      <p className="text-2xl font-bold text-brand-orange">{p.price}</p>
                     </div>
                     <ul className="space-y-1.5">
                       {benefits.map((b, i) => (
                         <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Star className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                          <Star className="w-3.5 h-3.5 text-brand-orange shrink-0" />
                           {b}
                         </li>
                       ))}
                     </ul>
                     {isCurrentTier ? (
-                      <Badge className="w-fit bg-amber-500/20 text-amber-600 border-amber-500/30">Current Plan</Badge>
+                      <Badge className="w-fit bg-brand-orange/20 text-brand-deep border-brand-orange/30">Current Plan</Badge>
                     ) : (
                       <Button
                         className={`w-full bg-gradient-to-r ${p.color} text-[var(--text-primary)] hover:opacity-90`}

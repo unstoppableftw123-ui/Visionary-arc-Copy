@@ -66,7 +66,7 @@ export default function CommunityProgressBar() {
         <div className="flex items-center gap-1.5">
           <motion.span
             key={currentUsers}
-            initial={{ scale: 1.5, color: '#f59e0b' }}
+            initial={{ scale: 1.5, color: '#e8722a' }}
             animate={{ scale: 1, color: 'var(--text-primary)' }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="text-sm font-bold"
@@ -88,7 +88,7 @@ export default function CommunityProgressBar() {
             <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
               {currentUsers.toLocaleString()} / {nextThreshold.toLocaleString()} members
             </span>
-            <span className="text-amber-400 font-medium">
+            <span className="text-brand-orange font-medium">
               {(nextThreshold - currentUsers).toLocaleString()} to next unlock
             </span>
           </div>
@@ -143,7 +143,7 @@ export default function CommunityProgressBar() {
                   </span>
                   <span
                     className={`text-sm md:text-xs font-semibold ${
-                      isNext ? 'text-amber-400' : 'text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'
+                      isNext ? 'text-brand-orange' : 'text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]'
                     }`}
                   >
                     {unlock.threshold.toLocaleString()}

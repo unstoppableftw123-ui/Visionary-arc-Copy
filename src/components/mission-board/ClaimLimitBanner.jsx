@@ -52,13 +52,13 @@ export default function ClaimLimitBanner({ dailyCount, userCoins, userId, onSlot
         exit={{ opacity: 0, y: -8 }}
         className="flex items-center justify-between gap-4 rounded-xl px-4 py-3 mb-4"
         style={{
-          background: 'linear-gradient(90deg, rgba(234,179,8,0.12) 0%, rgba(234,179,8,0.04) 100%)',
-          border: '1px solid rgba(234,179,8,0.3)',
+          background: 'linear-gradient(90deg, rgba(232,114,42,0.12) 0%, rgba(232,114,42,0.04) 100%)',
+          border: '1px solid rgba(232,114,42,0.3)',
         }}
       >
         <div className="flex items-center gap-2.5 text-sm">
           <span className="text-xl">🪙</span>
-          <span className="text-amber-300 font-medium">
+          <span className="text-brand-tan font-medium">
             You've claimed 3 missions today.{' '}
             <span className="text-muted-foreground font-normal">Resets at midnight UTC.</span>
           </span>
@@ -69,7 +69,7 @@ export default function ClaimLimitBanner({ dailyCount, userCoins, userId, onSlot
           variant="outline"
           disabled={!canAfford || loading}
           onClick={handleUnlock}
-          className="flex-shrink-0 border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:text-amber-200 text-sm md:text-xs font-semibold"
+          className="flex-shrink-0 border-brand-orange/40 text-brand-tan hover:bg-brand-orange/10 hover:text-brand-tan text-sm md:text-xs font-semibold"
         >
           {loading ? 'Unlocking…' : `Unlock extra slot (${SLOT_COST} 🪙)`}
         </Button>

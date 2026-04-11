@@ -32,10 +32,10 @@ const DEFAULT_STATS = {
 };
 
 function MilestoneIcon({ milestone, achieved }) {
-  if (milestone.count === 1)  return <Star  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
-  if (milestone.count === 5)  return <Trophy className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  if (milestone.count === 1)  return <Star  className={`w-5 h-5 ${achieved ? "text-brand-orange" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  if (milestone.count === 5)  return <Trophy className={`w-5 h-5 ${achieved ? "text-brand-orange" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
   if (milestone.count === 10) return <Zap   className={`w-5 h-5 ${achieved ? "text-orange-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
-  if (milestone.count === 25) return <Gift  className={`w-5 h-5 ${achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
+  if (milestone.count === 25) return <Gift  className={`w-5 h-5 ${achieved ? "text-brand-orange" : "text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]"}`} />;
   return <Lock className="w-5 h-5 text-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)]" />;
 }
 
@@ -141,7 +141,7 @@ export default function ReferralPage() {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#f59e0b";
+      ctx.fillStyle = "#e8722a";
       ctx.font = "bold 64px sans-serif";
       ctx.fillText("Visionary Arc", 80, 130);
 
@@ -205,8 +205,8 @@ export default function ReferralPage() {
           className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-orange-900/30 via-orange-900/20 to-amber-900/10 backdrop-blur-md p-6 space-y-4"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
-              <Users className="w-5 h-5 text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-brand-orange/20 flex items-center justify-center">
+              <Users className="w-5 h-5 text-brand-orange" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-[var(--text-primary)]">Invite Friends, Unlock Rewards</h1>
@@ -265,7 +265,7 @@ export default function ReferralPage() {
           {[
             { label: "Total referrals", value: stats.total,        color: "text-orange-400" },
             { label: "Signed up",       value: stats.signed_up,    color: "text-emerald-400" },
-            { label: "Hit 7-day streak",value: stats.streak_7,     color: "text-amber-400" },
+            { label: "Hit 7-day streak",value: stats.streak_7,     color: "text-brand-orange" },
             { label: "Upgraded",        value: stats.upgraded,      color: "text-pink-400" },
           ].map(({ label, value, color }, i) => (
             <motion.div
@@ -294,13 +294,13 @@ export default function ReferralPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="rounded-xl border border-amber-500/20 bg-amber-500/5 backdrop-blur-md p-4 flex items-center justify-between"
+          className="rounded-xl border border-brand-orange/20 bg-brand-orange/5 backdrop-blur-md p-4 flex items-center justify-between"
         >
           <div className="flex items-center gap-2">
-            <Coins className="w-5 h-5 text-amber-400" />
+            <Coins className="w-5 h-5 text-brand-orange" />
             <span className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)]">Total coins earned from referrals</span>
           </div>
-          <span className="text-2xl font-black text-amber-400">
+          <span className="text-2xl font-black text-brand-orange">
             {loading ? "—" : stats.coins_earned.toLocaleString()}
           </span>
         </motion.div>
@@ -326,7 +326,7 @@ export default function ReferralPage() {
             <div className="space-y-1.5">
               <div className="h-2 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-orange-700 to-amber-400"
+                  className="h-full rounded-full bg-gradient-to-r from-orange-700 to-brand-orange"
                   initial={{ width: 0 }}
                   animate={{ width: `${milestoneProgress}%` }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
@@ -351,14 +351,14 @@ export default function ReferralPage() {
                   transition={{ delay: 0.35 + i * 0.07 }}
                   className={`rounded-xl border p-4 flex items-start gap-3 ${
                     achieved
-                      ? "border-amber-500/30 bg-amber-500/8"
+                      ? "border-brand-orange/30 bg-brand-orange/8"
                       : "border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_3%,transparent)]"
                   }`}
                 >
                   {/* Icon */}
                   <div
                     className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                      achieved ? "bg-amber-500/20" : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)]"
+                      achieved ? "bg-brand-orange/20" : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)]"
                     }`}
                   >
                     <MilestoneIcon milestone={milestone} achieved={achieved} />
@@ -369,7 +369,7 @@ export default function ReferralPage() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span
                         className={`text-sm font-semibold ${
-                          achieved ? "text-amber-400" : "text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]"
+                          achieved ? "text-brand-orange" : "text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]"
                         }`}
                       >
                         {milestone.label}
@@ -381,7 +381,7 @@ export default function ReferralPage() {
                       )}
                     </div>
                     <div className="flex flex-wrap gap-3 mt-1.5 text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
-                      <span className="text-amber-400/80">+{milestone.coins} coins</span>
+                      <span className="text-brand-orange/80">+{milestone.coins} coins</span>
                       <span className="text-orange-400/80">+{milestone.xp} XP</span>
                       {milestone.frame && (
                         <span className="text-pink-400/80">Avatar frame: {milestone.frame}</span>
@@ -390,7 +390,7 @@ export default function ReferralPage() {
                         <span className="text-cyan-400/80">Unlock: bonus AI tool</span>
                       )}
                       {milestone.badge && (
-                        <span className="text-amber-400/80">Badge: {milestone.badge}</span>
+                        <span className="text-brand-orange/80">Badge: {milestone.badge}</span>
                       )}
                     </div>
                   </div>
@@ -399,7 +399,7 @@ export default function ReferralPage() {
                   <div
                     className={`text-sm md:text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${
                       achieved
-                        ? "bg-amber-500/20 text-amber-400"
+                        ? "bg-brand-orange/20 text-brand-orange"
                         : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]"
                     }`}
                   >
@@ -426,7 +426,7 @@ export default function ReferralPage() {
                   key={b.badge_key}
                   className="flex items-center gap-1.5 rounded-lg border border-orange-500/30 bg-orange-600/10 px-3 py-1.5 text-sm md:text-xs text-orange-400"
                 >
-                  <Star className="w-3 h-3 text-amber-400" />
+                  <Star className="w-3 h-3 text-brand-orange" />
                   {b.badge_key.replace(/_/g, " ")}
                 </div>
               ))}

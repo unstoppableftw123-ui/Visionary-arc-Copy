@@ -7,14 +7,14 @@ import { mockStudents } from "../../data/mockTeacherData";
 
 const STATUS_CONFIG = {
   on_track: { label: "On Track", className: "bg-green-500/15 text-green-600 border-green-500/20" },
-  struggling: { label: "Struggling", className: "bg-amber-500/15 text-amber-600 border-amber-500/20" },
+  struggling: { label: "Struggling", className: "bg-brand-orange/15 text-brand-deep border-brand-orange/20" },
   at_risk: { label: "At Risk", className: "bg-red-500/15 text-red-600 border-red-500/20" },
 };
 
 const GRADE_COLORS = {
   A: "text-green-600",
   B: "text-blue-600",
-  C: "text-amber-600",
+  C: "text-brand-deep",
   D: "text-red-500",
   F: "text-red-600 font-bold",
 };

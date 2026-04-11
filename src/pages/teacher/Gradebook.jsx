@@ -22,7 +22,7 @@ function pctToLetter(p) {
 const GRADE_CELL = {
   A: "bg-green-500/15 text-green-700 font-semibold",
   B: "bg-blue-500/15 text-blue-700 font-semibold",
-  C: "bg-amber-500/15 text-amber-700 font-semibold",
+  C: "bg-brand-orange/15 text-brand-deep font-semibold",
   D: "bg-red-500/15 text-red-600 font-semibold",
   F: "bg-red-600/15 text-red-700 font-bold",
 };

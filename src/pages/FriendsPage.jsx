@@ -17,7 +17,7 @@ const TIER_COLOR = {
   Builder:  'text-green-400',
   Creator:  'text-blue-400',
   Pro:      'text-orange-400',
-  Elite:    'text-yellow-400',
+  Elite:    'text-brand-orange',
 };
 
 function Avatar({ name, avatar, size = 10 }) {
@@ -382,7 +382,7 @@ function LeaderboardTab({ userId }) {
               >
                 {/* Rank */}
                 <span className={`w-7 text-center text-sm font-bold shrink-0 ${
-                  i === 0 ? 'text-yellow-400' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-amber-600' : 'text-muted-foreground'
+                  i === 0 ? 'text-brand-orange' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-brand-deep' : 'text-muted-foreground'
                 }`}>
                   {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
                 </span>
@@ -405,7 +405,7 @@ function LeaderboardTab({ userId }) {
                 </div>
 
                 <Trophy className={`w-4 h-4 shrink-0 ${
-                  i === 0 ? 'text-yellow-400' : 'text-muted-foreground/40'
+                  i === 0 ? 'text-brand-orange' : 'text-muted-foreground/40'
                 }`} />
               </motion.div>
             );

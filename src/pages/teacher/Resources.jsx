@@ -168,7 +168,7 @@ function LibraryCard({ item, onStar }) {
           </div>
           <button
             onClick={() => onStar(item.id)}
-            className={`transition-colors ${item.starred ? "text-amber-400" : "text-muted-foreground hover:text-amber-400"}`}
+            className={`transition-colors ${item.starred ? "text-brand-orange" : "text-muted-foreground hover:text-brand-orange"}`}
           >
             <Star className="w-4 h-4" fill={item.starred ? "currentColor" : "none"} />
           </button>
@@ -188,7 +188,7 @@ function LibraryCard({ item, onStar }) {
               <Download className="w-3 h-3" /> {item.downloads.toLocaleString()}
             </span>
             <span className="flex items-center gap-1">
-              <Star className="w-3 h-3 text-amber-400" fill="currentColor" /> {item.rating}
+              <Star className="w-3 h-3 text-brand-orange" fill="currentColor" /> {item.rating}
             </span>
           </div>
           <Button size="sm" variant="ghost" className="h-7 px-2 text-sm md:text-xs gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -218,7 +218,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
     Tips: "text-blue-500 bg-blue-500/10",
     Strategies: "text-green-500 bg-green-500/10",
     Tools: "text-orange-500 bg-orange-500/10",
-    Curriculum: "text-purple-500 bg-purple-500/10",
+    Curriculum: "text-brand-deep bg-brand-deep/10",
     Assessment: "text-pink-500 bg-pink-500/10",
     "Classroom Mgmt": "text-red-500 bg-red-500/10",
     Differentiation: "text-cyan-500 bg-cyan-500/10",
@@ -280,7 +280,7 @@ function ForumPost({ post, onUpvote, onBookmark }) {
             onClick={() => onBookmark(post.id)}
             className={`flex items-center gap-1.5 text-sm md:text-xs px-2.5 py-1.5 rounded-lg transition-colors ml-auto ${
               post.bookmarked
-                ? "text-amber-400"
+                ? "text-brand-orange"
                 : "hover:bg-secondary text-muted-foreground hover:text-foreground"
             }`}
           >

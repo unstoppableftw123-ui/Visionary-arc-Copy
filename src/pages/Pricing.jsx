@@ -84,10 +84,10 @@ const TIERS = [
     tagline: "More power, more study.",
     gradient: "from-amber-600 to-orange-500",
     glow: "shadow-orange-500/30",
-    border: "border-amber-500/30",
-    hoverBorder: "hover:border-amber-500/70",
-    textAccent: "text-amber-500",
-    bgAccent: "bg-amber-500/10",
+    border: "border-brand-orange/30",
+    hoverBorder: "hover:border-brand-orange/70",
+    textAccent: "text-brand-orange",
+    bgAccent: "bg-brand-orange/10",
     features: [
       { icon: BadgeCheck, text: "Everything in Seed" },
       { icon: Zap, text: "20 free AI calls/day — forever" },
@@ -128,12 +128,12 @@ const TIERS = [
     spotsTotal: 50,
     spotsLeft: 23,
     tagline: "For those who believe in this.",
-    gradient: "from-yellow-400 to-amber-500",
-    glow: "shadow-yellow-500/40",
-    border: "border-yellow-400/40",
-    hoverBorder: "hover:border-yellow-400/80",
-    textAccent: "text-yellow-400",
-    bgAccent: "bg-yellow-400/10",
+    gradient: "from-brand-orange to-brand-deep",
+    glow: "shadow-[0_0_20px_rgba(232,114,42,0.3)]",
+    border: "border-brand-orange/40",
+    hoverBorder: "hover:border-brand-orange/80",
+    textAccent: "text-brand-orange",
+    bgAccent: "bg-brand-orange/10",
     features: [
       { icon: BadgeCheck, text: "Everything in Silver" },
       { icon: Zap, text: "60 free AI calls/day — forever" },
@@ -430,7 +430,7 @@ export default function Pricing() {
             className="inline-flex items-center gap-3 bg-[color:color-mix(in_srgb,var(--text-primary)_10%,transparent)] border border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur-sm rounded-2xl px-5 py-3"
           >
             <div className="flex -space-x-2">
-              {["bg-orange-600", "bg-pink-500", "bg-amber-500", "bg-teal-500", "bg-orange-600"].map(
+              {["bg-orange-600", "bg-pink-500", "bg-brand-orange", "bg-teal-500", "bg-orange-600"].map(
                 (c, i) => (
                   <div
                     key={i}

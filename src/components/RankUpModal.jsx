@@ -131,7 +131,7 @@ export default function RankUpModal({ userId }) {
 }
 
 function fireConfetti() {
-  const colors = ['#EAB308', '#F97316', '#A855F7', '#3B82F6', '#22C55E'];
+  const colors = ['#e8722a', '#F97316', '#e8722a', '#3B82F6', '#22C55E'];
   confetti({
     particleCount: 120,
     spread: 80,

@@ -15,8 +15,8 @@ import MOCK_CHAT_HISTORY from "../components/study-hub/mockChatHistory";
 
 // ─── Mode badge colors ────────────────────────────────────────────────────────
 const MODE_BADGE = {
-  summarize: { label: "Summary",    cls: "bg-amber-500/15 text-amber-400" },
-  summary:   { label: "Summary",    cls: "bg-amber-500/15 text-amber-400" },
+  summarize: { label: "Summary",    cls: "bg-brand-orange/15 text-brand-orange" },
+  summary:   { label: "Summary",    cls: "bg-brand-orange/15 text-brand-orange" },
   notes:     { label: "Notes",      cls: "bg-sky-500/15 text-sky-400" },
   slides:    { label: "Slides",     cls: "bg-orange-600/15 text-orange-400" },
   quiz:      { label: "Quiz",       cls: "bg-rose-500/15 text-rose-400" },

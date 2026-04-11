@@ -38,7 +38,7 @@ import { Icons } from "../assets/icons";
 const BORDER_OPTIONS = [
   { id: "default",      label: "Default",       price: 0,   preview: "border-border",                       style: {} },
   { id: "neon-purple",  label: "Neon Purple",   price: 150, preview: "border-orange-500/30",                   style: { borderColor: "#a855f7", boxShadow: "0 0 8px #a855f788" } },
-  { id: "gold",         label: "Gold",          price: 200, preview: "border-yellow-400",                   style: { borderColor: "#facc15", boxShadow: "0 0 8px #facc1588" } },
+  { id: "gold",         label: "Gold",          price: 200, preview: "border-brand-orange",                   style: { borderColor: "#e8722a", boxShadow: "0 0 8px #e8722a88" } },
   { id: "fire",         label: "Fire",          price: 300, preview: "border-orange-500",                   style: { borderColor: "#f97316", boxShadow: "0 0 8px #f9731688" } },
   { id: "frost",        label: "Frost",         price: 300, preview: "border-cyan-400",                     style: { borderColor: "#22d3ee", boxShadow: "0 0 8px #22d3ee88" } },
   { id: "galaxy",       label: "Galaxy",        price: 500, preview: "border-orange-500/30",                   style: { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px #a855f744" } },
@@ -57,7 +57,7 @@ const CARD_BG_OPTIONS = [
 const COIN_PACKS = [
   { id: "starter",  coins: 200,  price: "$3.99",  label: "Starter",  color: "from-slate-600 to-slate-800" },
   { id: "standard", coins: 600,  price: "$9.99",  label: "Standard", color: "from-orange-700 to-orange-600", bestValue: true },
-  { id: "pro",      coins: 1500, price: "$19.99", label: "Pro",       color: "from-amber-500 to-orange-700" },
+  { id: "pro",      coins: 1500, price: "$19.99", label: "Pro",       color: "from-brand-orange to-orange-700" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -207,7 +207,7 @@ export default function Shop() {
             <Card className="border-2 border-orange-500/30 overflow-hidden">
               <div className="bg-gradient-to-br from-orange-700 to-orange-600 p-6 text-[var(--text-primary)]">
                 <div className="flex items-center gap-3 mb-2">
-                  <Crown className="w-8 h-8 text-yellow-300" />
+                  <Crown className="w-8 h-8 text-brand-tan" />
                   <h2 className="text-2xl font-bold">Season Pass</h2>
                 </div>
                 <p className="text-[color:color-mix(in_srgb,var(--text-primary)_80%,transparent)] text-sm">One-time purchase · Active for 90 days</p>
@@ -223,8 +223,8 @@ export default function Shop() {
 
                 <ul className="space-y-3">
                   {[
-                    { icon: <Zap className="w-5 h-5 text-yellow-400" />, text: "25% XP boost on all activities" },
-                    { icon: <Star className="w-5 h-5 text-amber-400" />, text: "Exclusive season badge on your profile" },
+                    { icon: <Zap className="w-5 h-5 text-brand-orange" />, text: "25% XP boost on all activities" },
+                    { icon: <Star className="w-5 h-5 text-brand-orange" />, text: "Exclusive season badge on your profile" },
                     { icon: <Crown className="w-5 h-5 text-orange-400" />, text: "Priority display on the weekly leaderboard" },
                     { icon: <Sparkles className="w-5 h-5 text-pink-400" />, text: "Early access to new career tracks" },
                   ].map(({ icon, text }) => (
@@ -264,10 +264,10 @@ export default function Shop() {
               >
                 {pack.bestValue && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <Badge className="bg-amber-500 text-[var(--text-primary)] px-3 py-0.5 text-sm md:text-xs font-bold">Best Value</Badge>
+                    <Badge className="bg-brand-orange text-[var(--text-primary)] px-3 py-0.5 text-sm md:text-xs font-bold">Best Value</Badge>
                   </div>
                 )}
-                <Card className={`border-2 overflow-hidden h-full ${pack.bestValue ? "border-amber-500/70" : "border-border"}`}>
+                <Card className={`border-2 overflow-hidden h-full ${pack.bestValue ? "border-brand-orange/70" : "border-border"}`}>
                   <div className={`bg-gradient-to-br ${pack.color} p-6 text-[var(--text-primary)] text-center`}>
                     <div className="flex justify-center mb-2">
                       <CoinIcon animated={true} size={40} variant="stack" />
@@ -333,7 +333,7 @@ export default function Shop() {
                         <CardContent className="p-3 space-y-2">
                           <p className="text-sm md:text-xs font-medium text-center">{item.label}</p>
                           {item.price > 0 && (
-                            <p className="text-sm md:text-xs text-amber-500 text-center flex items-center justify-center gap-1">
+                            <p className="text-sm md:text-xs text-brand-orange text-center flex items-center justify-center gap-1">
                               <Coins className="w-3 h-3" /> {item.price}
                             </p>
                           )}
@@ -393,7 +393,7 @@ export default function Shop() {
                         <CardContent className="p-3 space-y-2">
                           <p className="text-sm md:text-xs font-medium text-center">{item.label}</p>
                           {item.price > 0 && (
-                            <p className="text-sm md:text-xs text-amber-500 text-center flex items-center justify-center gap-1">
+                            <p className="text-sm md:text-xs text-brand-orange text-center flex items-center justify-center gap-1">
                               <Coins className="w-3 h-3" /> {item.price}
                             </p>
                           )}
@@ -445,15 +445,15 @@ export default function Shop() {
               />
             )}
 
-            <Card className="border-2 border-amber-500/30 overflow-hidden bg-zinc-950">
-              <div className="bg-gradient-to-br from-amber-600/30 to-orange-700/20 border-b border-amber-500/20 p-6">
+            <Card className="border-2 border-brand-orange/30 overflow-hidden bg-zinc-950">
+              <div className="bg-gradient-to-br from-brand-orange/30 to-orange-700/20 border-b border-brand-orange/20 p-6">
                 <div className="flex items-center gap-3 mb-1">
-                  <Gift className="w-7 h-7 text-amber-400" />
+                  <Gift className="w-7 h-7 text-brand-orange" />
                   <h2 className="text-xl font-bold text-[var(--text-primary)]">Gift Cards</h2>
                 </div>
                 <p className="text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)] text-sm">Redeem your coins for real gift cards</p>
                 <div className="mt-3 flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 rounded-lg bg-amber-500/15 border border-amber-500/25 px-3 py-1.5 text-sm font-semibold text-amber-400">
+                  <div className="flex items-center gap-1.5 rounded-lg bg-brand-orange/15 border border-brand-orange/25 px-3 py-1.5 text-sm font-semibold text-brand-orange">
                     <Coins className="w-4 h-4" />
                     1,000 coins = $1
                   </div>
@@ -498,10 +498,10 @@ export default function Shop() {
                     </div>
 
                     {(user.coins ?? 0) < GIFT_CARD_MIN ? (
-                      <div className="rounded-xl border border-amber-500/20 bg-amber-500/8 p-4 flex gap-3">
-                        <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                      <div className="rounded-xl border border-brand-orange/20 bg-brand-orange/8 p-4 flex gap-3">
+                        <AlertCircle className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                         <div className="space-y-1">
-                          <p className="text-sm font-medium text-amber-300">Not enough coins</p>
+                          <p className="text-sm font-medium text-brand-tan">Not enough coins</p>
                           <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
                             You need {(GIFT_CARD_MIN - (user.coins ?? 0)).toLocaleString()} more
                             coins to redeem. Earn coins by studying, completing missions, and
@@ -521,7 +521,7 @@ export default function Shop() {
                                 onClick={() => setGiftAmount(amount)}
                                 className={`rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
                                   giftAmount === amount
-                                    ? "border-amber-500/60 bg-amber-500/15 text-amber-400"
+                                    ? "border-brand-orange/60 bg-brand-orange/15 text-brand-orange"
                                     : "border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_4%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)] hover:border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] hover:text-[var(--text-primary)]"
                                 }`}
                               >
@@ -535,7 +535,7 @@ export default function Shop() {
                         </div>
 
                         <Button
-                          className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 font-bold border-0"
+                          className="w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-brand-deep hover:to-orange-400 text-zinc-950 font-bold border-0"
                           disabled={giftLoading}
                           onClick={async () => {
                             if (!user?.id) return;

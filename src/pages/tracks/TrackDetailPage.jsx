@@ -10,7 +10,7 @@ const ICON_MAP = { Cpu, Palette, TrendingUp, Mic2, Heart };
 
 const STATUS_LABELS = {
   active:    { label: 'In Progress', className: 'bg-blue-500/20 text-blue-300' },
-  submitted: { label: 'Submitted',   className: 'bg-amber-500/20 text-amber-300' },
+  submitted: { label: 'Submitted',   className: 'bg-brand-orange/20 text-brand-tan' },
   completed: { label: 'Completed',   className: 'bg-green-500/20 text-green-300' },
   abandoned: { label: 'Abandoned',   className: 'bg-neutral-500/20 text-neutral-400' },
 };
@@ -137,7 +137,7 @@ export default function TrackDetailPage() {
                   </div>
                 </div>
                 {project.xp_awarded > 0 && (
-                  <span className="text-sm md:text-xs text-yellow-400 font-semibold shrink-0">+{project.xp_awarded} XP</span>
+                  <span className="text-sm md:text-xs text-brand-orange font-semibold shrink-0">+{project.xp_awarded} XP</span>
                 )}
               </div>
             );

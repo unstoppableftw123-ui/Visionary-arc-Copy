@@ -48,7 +48,7 @@ const PLAN_TABLE = [
 
 function usageBarColor(pct) {
   if (pct > 80) return "bg-red-500";
-  if (pct >= 50) return "bg-amber-500";
+  if (pct >= 50) return "bg-brand-orange";
   return "bg-green-500";
 }
 
@@ -62,7 +62,7 @@ function UsageBar({ label, subtext, used, limit }) {
           <span className="text-sm font-medium">{label}</span>
           <span className="text-sm md:text-xs text-muted-foreground ml-2">{subtext}</span>
         </div>
-        <span className={`text-sm md:text-xs font-semibold tabular-nums ${pct > 80 ? "text-red-500" : pct >= 50 ? "text-amber-500" : "text-muted-foreground"}`}>
+        <span className={`text-sm md:text-xs font-semibold tabular-nums ${pct > 80 ? "text-red-500" : pct >= 50 ? "text-brand-orange" : "text-muted-foreground"}`}>
           {used} / {limit} calls
         </span>
       </div>
@@ -282,8 +282,8 @@ export default function Settings() {
                 </div>
 
                 {/* Coin cost info */}
-                <div className="flex items-center gap-2 rounded-xl bg-amber-400/8 border border-amber-400/20 px-4 py-3 text-sm">
-                  <Coins className="w-4 h-4 text-amber-400 shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl bg-brand-orange/8 border border-brand-orange/20 px-4 py-3 text-sm">
+                  <Coins className="w-4 h-4 text-brand-orange shrink-0" />
                   <span className="text-muted-foreground">
                     Extra calls cost <span className="font-semibold text-foreground">50 coins</span> each.
                     You have <span className="font-semibold text-foreground">{userCoins} coins</span>.

@@ -9,7 +9,7 @@ const SUBJECT_TAG_COLORS = {
   Math: "bg-orange-600/20 text-orange-400 border-orange-500/30",
   Science: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
   English: "bg-blue-500/20 text-blue-300 border-blue-500/40",
-  "SAT/ACT": "bg-amber-500/20 text-amber-300 border-amber-500/40",
+  "SAT/ACT": "bg-brand-orange/20 text-brand-tan border-brand-orange/40",
   Other: "bg-zinc-500/20 text-zinc-300 border-zinc-500/40",
 };
 

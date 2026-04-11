@@ -125,7 +125,7 @@ function StarRating({ rating, max = 5, color }) {
 }
 
 // Confetti burst on correct answer
-const CONFETTI_COLORS = ["#fbbf24", "#8b5cf6", "#10b981", "#f43f5e", "#3b82f6", "#f97316"];
+const CONFETTI_COLORS = ["#e8722a", "#e8722a", "#10b981", "#f43f5e", "#3b82f6", "#f97316"];
 function Confetti() {
   const particles = useMemo(
     () =>
@@ -837,7 +837,7 @@ function QuestionView({ skill, subject, onBack, masteryLevel, onAnswerRecorded }
           style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}
         >
           <div className="flex items-center gap-2 mb-3">
-            <Trophy className="w-5 h-5 text-yellow-400" />
+            <Trophy className="w-5 h-5 text-brand-orange" />
             <span className="text-sm font-bold text-[var(--text-primary)]">Session Complete!</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -899,7 +899,7 @@ function StatsPanel({ userStats }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {[
-            { label: "Questions", value: userStats.todayQuestions, color: "#8b5cf6" },
+            { label: "Questions", value: userStats.todayQuestions, color: "#e8722a" },
             { label: "Accuracy", value: `${correctPct}%`, color: "#10b981" },
             { label: "XP", value: `+${userStats.todayXP}`, color: GOLD },
           ].map((s) => (
@@ -961,7 +961,7 @@ function StatsPanel({ userStats }) {
       {/* Leaderboard */}
       <div className="rounded-xl p-4" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
         <div className="flex items-center gap-1.5 mb-3">
-          <Trophy className="w-3.5 h-3.5 text-yellow-400" />
+          <Trophy className="w-3.5 h-3.5 text-brand-orange" />
           <span className="text-sm md:text-xs font-bold text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)]">This Week</span>
         </div>
         <div className="space-y-2">

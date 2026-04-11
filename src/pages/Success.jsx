@@ -33,8 +33,8 @@ const TIER_META = {
     icon: Shield,
     gradient: "from-amber-600 to-orange-500",
     glow: "shadow-orange-500/30",
-    textAccent: "text-amber-500",
-    bgAccent: "bg-amber-500/10",
+    textAccent: "text-brand-orange",
+    bgAccent: "bg-brand-orange/10",
     label: "Bronze Founder",
   },
   silver: {
@@ -47,10 +47,10 @@ const TIER_META = {
   },
   gold: {
     icon: Crown,
-    gradient: "from-yellow-400 to-amber-500",
-    glow: "shadow-yellow-500/40",
-    textAccent: "text-yellow-400",
-    bgAccent: "bg-yellow-400/10",
+    gradient: "from-brand-orange to-brand-deep",
+    glow: "shadow-[0_0_20px_rgba(232,114,42,0.3)]",
+    textAccent: "text-brand-orange",
+    bgAccent: "bg-brand-orange/10",
     label: "Gold Founder",
   },
 };
@@ -58,7 +58,7 @@ const TIER_META = {
 // ─── Confetti burst (CSS-only, no dependency) ────────────────────────────────
 function Confetti() {
   const colors = [
-    "bg-orange-600", "bg-pink-500", "bg-amber-400",
+    "bg-orange-600", "bg-pink-500", "bg-brand-orange",
     "bg-teal-400", "bg-orange-600", "bg-rose-400", "bg-emerald-400",
   ];
   const pieces = Array.from({ length: 28 });

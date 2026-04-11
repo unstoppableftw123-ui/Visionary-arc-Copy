@@ -122,7 +122,7 @@ const STORAGE_DATA = {
 
 function storageBarColor(pct) {
   if (pct >= 80) return "bg-red-500";
-  if (pct >= 60) return "bg-amber-500";
+  if (pct >= 60) return "bg-brand-orange";
   return "bg-green-500";
 }
 
@@ -780,7 +780,7 @@ export default function Sidebar() {
                     type="button"
                     onClick={() => setStorageOpen(true)}
                     className={`h-11 w-11 rounded-lg flex items-center justify-center transition-colors hover:bg-secondary ${
-                      pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"
+                      pct >= 80 ? "text-red-500" : pct >= 60 ? "text-brand-orange" : "text-muted-foreground"
                     }`}
                   >
                     <HardDrive className="h-5 w-5" />
@@ -800,10 +800,10 @@ export default function Sidebar() {
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1.5">
-                  <HardDrive className={`h-3.5 w-3.5 ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"}`} />
+                  <HardDrive className={`h-3.5 w-3.5 ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-brand-orange" : "text-muted-foreground"}`} />
                   <span className="text-sm font-medium text-foreground md:text-[11px]">{STORAGE_DATA.used} GB / {STORAGE_DATA.total} GB</span>
                 </div>
-                <span className={`text-sm font-semibold ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-muted-foreground"} md:text-[10px]`}>{pct}%</span>
+                <span className={`text-sm font-semibold ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-brand-orange" : "text-muted-foreground"} md:text-[10px]`}>{pct}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-border overflow-hidden mb-2">
                 <div className={`h-full rounded-full transition-all ${barColor}`} style={{ width: `${pct}%` }} />
@@ -818,7 +818,7 @@ export default function Sidebar() {
               </div>
               {showUpgrade && (
                 <div className="mt-2 pt-2 border-t border-border">
-                  <span className="flex items-center gap-1 text-sm font-semibold text-amber-500 md:text-[10px]">
+                  <span className="flex items-center gap-1 text-sm font-semibold text-brand-orange md:text-[10px]">
                     <ArrowUpRight className="h-3 w-3" /> Upgrade Storage
                   </span>
                 </div>
@@ -1000,7 +1000,7 @@ export default function Sidebar() {
                         <span className="text-3xl font-bold">{STORAGE_DATA.used}</span>
                         <span className="text-muted-foreground ml-1 text-sm">/ {STORAGE_DATA.total} GB</span>
                       </div>
-                      <span className={`text-sm font-semibold ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-amber-500" : "text-green-500"}`}>
+                      <span className={`text-sm font-semibold ${pct >= 80 ? "text-red-500" : pct >= 60 ? "text-brand-orange" : "text-green-500"}`}>
                         {pct}% used
                       </span>
                     </div>

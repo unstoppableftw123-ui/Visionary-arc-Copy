@@ -76,7 +76,7 @@ import {
 } from "../utils/dashboardAnalytics";
 
 const XP_TIERS = [
-  { min: 15000, label: "Elite",    color: "text-yellow-500",  rank: "S" },
+  { min: 15000, label: "Elite",    color: "text-brand-orange",  rank: "S" },
   { min: 6000,  label: "Pro",      color: "text-orange-400",  rank: "A" },
   { min: 2000,  label: "Creator",  color: "text-blue-500",    rank: "B" },
   { min: 500,   label: "Builder",  color: "text-green-500",   rank: "C" },
@@ -560,9 +560,9 @@ export default function Dashboard() {
 
                     {/* At-risk warning */}
                     {atRisk && (
-                      <div className="flex items-center gap-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5">
-                        <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                        <p className="text-sm md:text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                      <div className="flex items-center gap-1.5 rounded-lg bg-brand-orange/10 border border-brand-orange/30 px-2.5 py-1.5">
+                        <Flame className="w-3.5 h-3.5 text-brand-orange shrink-0" />
+                        <p className="text-sm md:text-[11px] font-medium text-brand-deep dark:text-brand-orange">
                           At risk — study today!
                         </p>
                       </div>
@@ -597,7 +597,7 @@ export default function Dashboard() {
                     <Star className="w-5 h-5 text-orange-400" />
                     <span className="font-medium">Level {supabaseData?.profile?.level ?? gamificationStats?.level ?? 1}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-amber-500">
+                  <div className="flex items-center gap-1 text-brand-orange">
                     <Coins className="w-4 h-4" />
                     <span className="font-bold">{supabaseData?.profile?.coins ?? gamificationStats?.coins ?? 0}</span>
                   </div>
@@ -723,7 +723,7 @@ export default function Dashboard() {
                     onClick={() => setJoinClassOpen(true)}
                     className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-secondary transition-colors group w-full text-left"
                   >
-                    <div className="w-9 h-9 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-lg bg-brand-orange/10 dark:bg-brand-orange/20 text-brand-deep dark:text-brand-orange flex items-center justify-center">
                       <GraduationCap className="w-5 h-5" />
                     </div>
                     <span className="flex-1 font-medium text-sm">Join Class</span>
@@ -866,7 +866,7 @@ export default function Dashboard() {
                               <Star className="w-3 h-3 text-orange-400" /> {mission.xp_reward} XP
                             </span>
                             <span className="flex items-center gap-1">
-                              <Coins className="w-3 h-3 text-amber-500" /> {mission.coin_reward}
+                              <Coins className="w-3 h-3 text-brand-orange" /> {mission.coin_reward}
                             </span>
                           </div>
                         </div>
@@ -1031,7 +1031,7 @@ export default function Dashboard() {
                             <p className="text-sm font-medium leading-tight">
                               {reward.emoji ? `${reward.emoji} ` : ""}Level {reward.level} — {reward.title}
                             </p>
-                            <p className="text-sm md:text-xs text-amber-500 font-medium mt-0.5">
+                            <p className="text-sm md:text-xs text-brand-orange font-medium mt-0.5">
                               +{reward.coins} coins
                             </p>
                             <p className="text-sm md:text-xs text-muted-foreground truncate mt-0.5">

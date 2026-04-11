@@ -357,7 +357,7 @@ export default function SATACTPractice() {
                 sessionStats.accuracy >= 80 ? "bg-green-500/10" : sessionStats.accuracy >= 60 ? "bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)]" : "bg-red-500/10"
               }`}>
                 <span className={`text-3xl font-bold ${
-                  sessionStats.accuracy >= 80 ? "text-green-500" : sessionStats.accuracy >= 60 ? "text-yellow-500" : "text-red-500"
+                  sessionStats.accuracy >= 80 ? "text-green-500" : sessionStats.accuracy >= 60 ? "text-brand-orange" : "text-red-500"
                 }`}>{sessionStats.accuracy}%</span>
               </div>
               <h2 className="text-xl font-semibold mb-2">Session Complete</h2>

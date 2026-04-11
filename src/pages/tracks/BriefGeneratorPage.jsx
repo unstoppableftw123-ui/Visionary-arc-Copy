@@ -335,7 +335,7 @@ export default function BriefGeneratorPage() {
                   <Clock className="w-3.5 h-3.5" />
                   {brief.timeline}
                 </div>
-                <div className="flex items-center gap-1.5 text-sm md:text-xs text-yellow-400 bg-yellow-400/10 rounded-full px-3 py-1.5">
+                <div className="flex items-center gap-1.5 text-sm md:text-xs text-brand-orange bg-brand-orange/10 rounded-full px-3 py-1.5">
                   <Zap className="w-3.5 h-3.5" />
                   {DIFFICULTY_XP[difficulty]?.toLocaleString()} XP on completion
                 </div>

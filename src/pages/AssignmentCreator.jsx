@@ -335,7 +335,7 @@ function QuickBuildPreview({ questions, open, onOpenChange, showHints, showExpla
                 {q.explanation && showExplanations ? q.explanation : "Answer submitted."}
               </div>
               {showHints && q.hint && (
-                <p className="text-sm text-amber-700 dark:text-amber-300">💡 Hint: {q.hint}</p>
+                <p className="text-sm text-brand-deep dark:text-brand-tan">💡 Hint: {q.hint}</p>
               )}
             </>
           )}
@@ -446,7 +446,7 @@ function SocraticPreview({ steps, open, onOpenChange }) {
               </Button>
             )}
             {showHint && step.hint && (
-              <p className="text-sm text-amber-700 dark:text-amber-300">💡 {step.hint}</p>
+              <p className="text-sm text-brand-deep dark:text-brand-tan">💡 {step.hint}</p>
             )}
           </>
         )}
@@ -2023,7 +2023,7 @@ function SocraticStepCard({ step, onUpdate, onAddAfter, onRemove }) {
             value={step.hint ?? ""}
             onChange={(e) => onUpdate({ hint: e.target.value })}
             placeholder="Hint text"
-            className="mt-1 border-amber-500/30"
+            className="mt-1 border-brand-orange/30"
           />
         </CollapsibleContent>
       </Collapsible>
