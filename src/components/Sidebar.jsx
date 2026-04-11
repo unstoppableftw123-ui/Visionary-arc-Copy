@@ -178,7 +178,7 @@ function ProfileCardWithPopover({
 
   return (
     <div
-      className={`shrink-0 border-t border-border p-3 transition-opacity duration-200 ${
+      className={`shrink-0 border-t border-brand-border p-3 transition-opacity duration-200 ${
         collapsed ? "flex justify-center py-3" : ""
       }`}
     >
@@ -186,7 +186,7 @@ function ProfileCardWithPopover({
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
-          className={`w-full flex items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-secondary/80 ${
+          className={`w-full flex items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-[rgba(200,130,60,0.05)] ${
             collapsed ? "justify-center p-2" : ""
           }`}
           aria-expanded={open}
@@ -199,7 +199,7 @@ function ProfileCardWithPopover({
                 aria-hidden
               />
             )}
-            <Avatar className={`relative ${collapsed ? "h-9 w-9" : "h-9 w-9"}`}>
+            <Avatar className={`relative ring-1 ring-brand-orange/50 ${collapsed ? "h-9 w-9" : "h-9 w-9"}`}>
               <AvatarImage src={user?.avatar} alt={user?.name} />
               <AvatarFallback className="bg-primary text-primary-foreground text-sm">
                 {user?.name?.charAt(0)?.toUpperCase()}
@@ -227,14 +227,14 @@ function ProfileCardWithPopover({
                   <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "var(--accent-dim)", color: "var(--accent)" }}>Investor</span>
                 )}
               </div>
-              <div className="flex items-center gap-1.5 text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
+              <div className="flex items-center gap-1.5 font-mono text-xs" style={{ color: "var(--text-muted)" }}>
                 <span>Lvl {level}</span>
-                <span className="flex items-center gap-0.5">
+                <span className="flex items-center gap-0.5 text-brand-orange">
                   <Coins className="h-3 w-3" /> {user?.coins ?? 0}
                 </span>
               </div>
               <div className="xp-bar-track mt-1" style={{ height: 4 }}>
-                <div className="xp-bar-fill" data-rank="C" style={{ width: `${levelProgress}%` }} />
+                <div className="xp-bar-fill" style={{ width: `${levelProgress}%`, background: 'linear-gradient(90deg, #6b4226, #e8722a)' }} />
               </div>
             </div>
           )}
@@ -263,7 +263,7 @@ function ProfileCardWithPopover({
             <button
               type="button"
               onClick={() => handleAction(() => onNavigate("/profile"))}
-              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-secondary"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
               data-testid="profile-menu-item"
             >
               <User className="h-4 w-4 shrink-0" />
@@ -272,7 +272,7 @@ function ProfileCardWithPopover({
             <button
               type="button"
               onClick={() => handleAction(() => onNavigate("/community?tab=shop"))}
-              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-secondary"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
               data-testid="store-menu-item"
             >
               <PhosphorIcon icon={Storefront} className="h-4 w-4 shrink-0" />
@@ -281,7 +281,7 @@ function ProfileCardWithPopover({
             <button
               type="button"
               onClick={() => handleAction(() => onNavigate("/referrals"))}
-              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-secondary"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
               data-testid="referrals-menu-item"
             >
               <Gift className="h-4 w-4 shrink-0" />
@@ -290,7 +290,7 @@ function ProfileCardWithPopover({
             <button
               type="button"
               onClick={() => handleAction(() => onNavigate("/settings"))}
-              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-secondary"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
               data-testid="settings-menu-item"
             >
               <Settings className="h-4 w-4 shrink-0" />
@@ -299,7 +299,7 @@ function ProfileCardWithPopover({
             <button
               type="button"
               onClick={() => handleAction(onOpenAITools)}
-              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-secondary"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
               data-testid="ai-tools-menu-item"
             >
               <Sparkles className="h-4 w-4 shrink-0 text-primary" />
@@ -309,7 +309,7 @@ function ProfileCardWithPopover({
             <button
               type="button"
               onClick={() => handleAction(toggleTheme)}
-              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-secondary"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
             >
               {theme === "dark" ? (
                 <Sun className="h-4 w-4 shrink-0" />
@@ -500,15 +500,15 @@ export default function Sidebar() {
   const navLinkClass = (isActive) =>
     `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors border-l-2 ${
       isActive
-        ? "bg-primary/10 border-primary text-primary"
-        : "border-transparent hover:bg-secondary text-foreground"
+        ? "bg-[rgba(232,114,42,0.12)] border-brand-orange text-brand-cream"
+        : "border-transparent hover:bg-[rgba(200,130,60,0.05)] text-foreground"
     }`;
 
   const subLinkClass = (isActive) =>
-    `flex items-center gap-2.5 pl-8 pr-3 py-2 rounded-r-lg text-sm border-l-2 ml-3 transition-colors ${
+    `flex items-center gap-2.5 pl-8 pr-3 py-2 rounded-r-lg font-sans text-sm border-l-2 ml-3 transition-colors ${
       isActive
-        ? "border-primary bg-primary/10 text-primary"
-        : "border-border hover:bg-secondary/80 text-muted-foreground hover:text-foreground"
+        ? "border-brand-orange bg-[rgba(232,114,42,0.12)] text-brand-cream"
+        : "border-brand-border hover:bg-[rgba(200,130,60,0.05)] text-muted-foreground hover:text-brand-cream"
     }`;
 
   const groupMotion = {
@@ -528,7 +528,7 @@ export default function Sidebar() {
         data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
       >
         {item.icon}
-        {!collapsed && <span className="label font-medium flex-1">{item.label}</span>}
+        {!collapsed && <span className="font-sans text-sm flex-1">{item.label}</span>}
         {item.badge != null && !collapsed && (
           <span className="ml-auto flex min-h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-sm font-semibold text-primary-foreground md:text-[10px]">
             {item.badge}
@@ -549,7 +549,7 @@ export default function Sidebar() {
               )}
             </div>
           </TooltipTrigger>
-          <TooltipContent side="right">{item.label}</TooltipContent>
+          <TooltipContent side="right" className="bg-brand-card border-brand-border text-brand-cream">{item.label}</TooltipContent>
         </Tooltip>
       );
     }
@@ -562,7 +562,7 @@ export default function Sidebar() {
       <Link
         to={item.href}
         onClick={() => setMobileOpen(false)}
-        className={`flex items-center justify-center h-11 w-11 rounded-lg transition-colors ${isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
+        className={`flex items-center justify-center h-11 w-11 rounded-lg transition-colors ${isActive ? "bg-[rgba(232,114,42,0.12)] text-brand-orange" : "text-muted-foreground hover:bg-[rgba(200,130,60,0.05)] hover:text-foreground"}`}
         data-testid={`nav-${item.label.toLowerCase()}`}
         aria-label={item.label}
       >
@@ -585,7 +585,7 @@ export default function Sidebar() {
         onClick={onToggle}
         className="flex w-full items-center justify-between px-3 py-1 group"
       >
-        <span className="text-sm uppercase tracking-widest font-semibold opacity-40 select-none md:text-[10px]">{label}</span>
+        <span className="font-display tracking-widest text-xs text-brand-dim uppercase select-none">{label}</span>
         <ChevronDown
           className={`h-3 w-3 opacity-40 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
@@ -596,16 +596,16 @@ export default function Sidebar() {
   const SidebarContent = () => (
     <>
       {/* Logo + collapse */}
-      <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border p-3">
+      <div className="flex shrink-0 items-center justify-between gap-2 border-b border-brand-border p-3">
         <Link
           to="/dashboard"
           className="flex min-w-0 flex-1 items-center gap-2"
           onClick={() => setMobileOpen(false)}
         >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-            <Sparkles className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-orange shadow-[0_0_18px_rgba(232,114,42,0.35)]">
+            <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <span className="label font-heading text-lg font-semibold truncate">TaskFlow</span>
+          <span className="font-display text-lg font-semibold truncate text-brand-cream">Visionary Arc</span>
         </Link>
         <div className="flex items-center gap-1 shrink-0">
           {/* Notification Bell */}
@@ -674,12 +674,12 @@ export default function Sidebar() {
         {/* CORE — always visible, no collapse */}
         <div className="space-y-0.5">
           {!collapsed && (
-            <p className="px-3 py-1 text-sm uppercase tracking-widest font-semibold opacity-40 select-none md:text-[10px]">Core</p>
+            <p className="px-3 py-1 font-display tracking-widest text-xs text-brand-dim uppercase select-none">Core</p>
           )}
           {coreItems.map(renderNavItem)}
         </div>
 
-        <div className="border-t border-border/20 my-2" />
+        <div className="border-t border-brand-border/40 my-2" />
 
         {/* LEARN — collapsible */}
         <div className="space-y-0.5">
@@ -705,7 +705,7 @@ export default function Sidebar() {
           )}
         </div>
 
-        <div className="border-t border-border/20 my-2" />
+        <div className="border-t border-brand-border/40 my-2" />
 
         {/* COMPETE — collapsible */}
         <div className="space-y-0.5">
@@ -731,7 +731,7 @@ export default function Sidebar() {
           )}
         </div>
 
-        <div className="border-t border-border/20 my-2" />
+        <div className="border-t border-brand-border/40 my-2" />
 
         {/* YOU — collapsible, default collapsed */}
         <div className="space-y-0.5">
@@ -761,7 +761,7 @@ export default function Sidebar() {
         <div className="flex-1" />
 
         {/* BOTTOM — icon-only, always visible */}
-        <div className="border-t border-border/20 mt-2 pt-2 flex gap-1 justify-center">
+        <div className="border-t border-brand-border/40 mt-2 pt-2 flex gap-1 justify-center">
           {bottomItems.map(renderBottomNavItem)}
         </div>
       </nav>
@@ -796,7 +796,7 @@ export default function Sidebar() {
             <button
               type="button"
               onClick={() => setStorageOpen(true)}
-              className="w-full rounded-xl border border-border bg-secondary/40 hover:bg-secondary/80 transition-colors p-3 text-left"
+              className="w-full rounded-xl border border-brand-border bg-brand-card/40 hover:bg-brand-card/80 transition-colors p-3 text-left"
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1.5">
@@ -851,12 +851,12 @@ export default function Sidebar() {
   return (
     <TooltipProvider delayDuration={300}>
       {/* Mobile Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-border bg-background/95 p-4 backdrop-blur md:hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-brand-border bg-brand-surface/95 p-4 backdrop-blur md:hidden">
         <Link to="/dashboard" className="flex min-w-0 items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Sparkles className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-orange shadow-[0_0_18px_rgba(232,114,42,0.35)]">
+            <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <span className="truncate font-heading font-semibold">TaskFlow</span>
+          <span className="truncate font-display font-semibold text-brand-cream">Visionary Arc</span>
         </Link>
         <div className="flex items-center gap-1">
           <div className="relative">
@@ -896,14 +896,14 @@ export default function Sidebar() {
 
       {/* Mobile More Drawer */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="w-[min(85vw,320px)] p-0 md:hidden">
+        <SheetContent side="left" className="w-[min(85vw,320px)] p-0 md:hidden bg-brand-surface border-brand-border">
           <div className="flex h-full flex-col pt-16">
             <SidebarContent />
           </div>
         </SheetContent>
       </Sheet>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 px-2 pb-[calc(env(safe-area-inset-bottom,0px)+0.4rem)] pt-2 backdrop-blur md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-brand-border bg-brand-surface/95 px-2 pb-[calc(env(safe-area-inset-bottom,0px)+0.4rem)] pt-2 backdrop-blur md:hidden">
         <div className="grid grid-cols-5 gap-1">
           {mobileBottomItems.map((item) => {
             const active = isNavItemActive(item, location.pathname, location.search);
@@ -913,8 +913,8 @@ export default function Sidebar() {
                 to={item.href}
                 className={`flex min-h-11 min-w-0 items-center justify-center rounded-xl px-2 py-2 transition-colors ${
                   active
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    ? "bg-[rgba(232,114,42,0.12)] text-brand-orange"
+                    : "text-muted-foreground hover:bg-[rgba(200,130,60,0.05)] hover:text-foreground"
                 }`}
                 aria-label={item.label}
               >
@@ -928,8 +928,8 @@ export default function Sidebar() {
             onClick={() => setMobileOpen(true)}
             className={`flex min-h-11 min-w-0 items-center justify-center rounded-xl px-2 py-2 ${
               moreActive
-                ? "bg-primary/10 text-primary hover:bg-primary/10"
-                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                ? "bg-[rgba(232,114,42,0.12)] text-brand-orange hover:bg-[rgba(232,114,42,0.12)]"
+                : "text-muted-foreground hover:bg-[rgba(200,130,60,0.05)] hover:text-foreground"
             }`}
             aria-label="More"
           >
@@ -940,7 +940,7 @@ export default function Sidebar() {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`sidebar hidden md:flex h-screen sticky top-0 flex-col border-r border-border bg-card transition-[width] duration-200 ease-out ${collapsed ? "w-16 collapsed" : "w-[220px]"}`}
+        className={`sidebar hidden md:flex h-screen sticky top-0 flex-col border-r border-brand-border bg-brand-surface transition-[width] duration-200 ease-out ${collapsed ? "w-16 collapsed" : "w-[220px]"}`}
       >
         <div className="flex h-full flex-col overflow-hidden">
           <SidebarContent />
