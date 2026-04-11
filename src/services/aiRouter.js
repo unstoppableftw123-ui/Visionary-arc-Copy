@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 const TIER_MAP = {
   fast: { tier: 1, cost: 1, model: 'meta-llama/llama-3.3-70b-instruct:free', provider: 'groq' },
+  ai_tutor: { tier: 1, cost: 1, model: 'meta-llama/llama-3.3-70b-instruct:free', provider: 'groq' },
   flashcards: { tier: 1, cost: 1, model: 'meta-llama/llama-3.3-70b-instruct:free', provider: 'groq' },
   grammar: { tier: 1, cost: 1, model: 'meta-llama/llama-3.3-70b-instruct:free', provider: 'groq' },
   short_summary: { tier: 1, cost: 1, model: 'meta-llama/llama-3.3-70b-instruct:free', provider: 'groq' },
@@ -37,6 +38,7 @@ const FEATURE_LABELS = {
   essay_feedback:  'essay feedback',
   document:        'document',
   fast:            'AI',
+  ai_tutor:        'AI mentor',
 };
 
 export async function callAI({ feature, prompt, systemPrompt, userId, imageBase64, onCoinsUpdated }) {

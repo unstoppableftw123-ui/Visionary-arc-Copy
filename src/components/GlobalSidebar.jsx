@@ -418,6 +418,15 @@ export default function GlobalSidebar() {
     };
   }, [expanded]);
 
+  // Open sidebar + chat when FloatingAIChat docks
+  useEffect(() => {
+    function onDockChat() {
+      setExpanded(true);
+    }
+    window.addEventListener("open-sidebar-chat", onDockChat);
+    return () => window.removeEventListener("open-sidebar-chat", onDockChat);
+  }, []);
+
   function toggleSection(key) {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   }
