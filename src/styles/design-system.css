@@ -5,7 +5,7 @@
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
-@import url('https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
 /* ── RESET ─────────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -23,47 +23,47 @@ html {
 /* ── CSS VARIABLES ─────────────────────────────────────────── */
 :root {
   /* Rank colors */
-  --rank-e: #9CA3AF;
-  --rank-d: #22C55E;
-  --rank-c: #3B82F6;
-  --rank-b: #A855F7;
-  --rank-a: #F97316;
-  --rank-s: #EAB308;
+  --rank-e: #7a6450;
+  --rank-d: #a0783a;
+  --rank-c: #c97d3a;
+  --rank-b: #e8722a;
+  --rank-a: #d45a1a;
+  --rank-s: #ff9a3c;
 
   /* Rank glows */
-  --glow-e: rgba(156, 163, 175, 0.25);
-  --glow-d: rgba(34, 197, 94, 0.25);
-  --glow-c: rgba(59, 130, 246, 0.25);
-  --glow-b: rgba(168, 85, 247, 0.25);
-  --glow-a: rgba(249, 115, 22, 0.25);
-  --glow-s: rgba(234, 179, 8, 0.35);
+  --glow-e: rgba(122, 100, 80, 0.25);
+  --glow-d: rgba(160, 120, 58, 0.28);
+  --glow-c: rgba(201, 125, 58, 0.30);
+  --glow-b: rgba(232, 114, 42, 0.32);
+  --glow-a: rgba(212, 90, 26, 0.35);
+  --glow-s: rgba(255, 154, 60, 0.40);
 
   /* Surfaces */
-  --bg-base:    #0A0A0F;
-  --surface:    #12121A;
-  --surface-2:  #1A1A26;
-  --surface-3:  #22223A;
+  --bg-base:    #0e0a07;
+  --surface:    #150f09;
+  --surface-2:  #1e1510;
+  --surface-3:  #2a1c10;
 
   /* Borders */
-  --border:       rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.14);
+  --border:       rgba(200, 130, 60, 0.1);
+  --border-hover: rgba(200, 130, 60, 0.22);
 
   /* Text */
-  --text-primary:   #F9FAFB;
-  --text-secondary: #9CA3AF;
-  --text-muted:     #4B5563;
+  --text-primary:   #ede0cc;
+  --text-secondary: #a08060;
+  --text-muted:     #5a3e28;
 
   /* Accent */
-  --accent:       #EAB308;
-  --accent-glow:  rgba(234, 179, 8, 0.3);
-  --accent-dim:   rgba(234, 179, 8, 0.12);
+  --accent:       #e8722a;
+  --accent-glow:  rgba(232, 114, 42, 0.32);
+  --accent-dim:   rgba(232, 114, 42, 0.12);
 
   /* Track colors */
-  --track-tech:    #3B82F6;
-  --track-design:  #EC4899;
-  --track-content: var(--accent);
-  --track-biz:     #10B981;
-  --track-impact:  #F59E0B;
+  --track-tech:    #c97d3a;
+  --track-design:  #e8722a;
+  --track-content: #a0783a;
+  --track-biz:     #8c5a35;
+  --track-impact:  #d45a1a;
 
   /* Spacing scale */
   --space-1: 4px;
@@ -93,9 +93,9 @@ html {
   --duration-slow: 400ms;
 
   /* Typography */
-  --font-display: 'Clash Display', sans-serif;
-  --font-body:    'Satoshi', sans-serif;
-  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
 }
 
 /* ── BASE ───────────────────────────────────────────────────── */
@@ -117,7 +117,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.032;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
 }
@@ -670,8 +670,8 @@ label {
 /* ── SCROLLBAR ─────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: var(--radius-full); }
-::-webkit-scrollbar-thumb:hover { background: #2D2D40; }
+::-webkit-scrollbar-thumb { background: #2a1c10; border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: #3d2518; }
 
 /* ── UTILITY CLASSES ────────────────────────────────────────── */
 .text-display { font-family: var(--font-display); }
