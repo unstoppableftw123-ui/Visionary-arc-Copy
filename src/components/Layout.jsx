@@ -1,6 +1,7 @@
 import { useLocation, Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import UpgradeBanner from "./UpgradeBanner";
+import GlobalSidebar from "./GlobalSidebar";
 
 const HIDE_BANNER_ROUTES = ["/settings"];
 // Routes that manage their own layout/scrolling and need no padding wrapper
@@ -31,6 +32,7 @@ export default function Layout() {
           </div>
         )}
       </main>
+      <GlobalSidebar />
     </div>
   );
 }
