@@ -474,9 +474,10 @@ export default function Sidebar() {
     { icon: <UserCheck className="w-5 h-5 shrink-0" />, label: "Friends", href: "/friends", badge: pendingFriends > 0 ? pendingFriends : null },
   ];
   const youItems = [
-    { icon: <ShoppingBag className="w-5 h-5 shrink-0" />, label: "Shop", href: "/shop" },
-    { icon: <PhosphorIcon icon={Users} className="w-5 h-5 shrink-0" />, label: "Referrals", href: "/referrals" },
-    { icon: <TrendingUp className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/analytics" },
+    // Shop, Referrals, and Analytics removed from nav — accessible via /profile
+    // { icon: <ShoppingBag className="w-5 h-5 shrink-0" />, label: "Shop", href: "/shop" },
+    // { icon: <PhosphorIcon icon={Users} className="w-5 h-5 shrink-0" />, label: "Referrals", href: "/referrals" },
+    // { icon: <TrendingUp className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/analytics" },
   ];
   const bottomItems = [
     { icon: <User className="w-5 h-5 shrink-0" />, label: "Profile", href: "/profile" },
@@ -652,19 +653,6 @@ export default function Sidebar() {
               </div>
             )}
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="label"
-            onClick={() => setCollapsed((c) => !c)}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
-          </Button>
         </div>
       </div>
 
@@ -731,31 +719,35 @@ export default function Sidebar() {
           )}
         </div>
 
-        <div className="border-t border-brand-border/40 my-2" />
+        {youItems.length > 0 && (
+          <>
+            <div className="border-t border-brand-border/40 my-2" />
 
-        {/* YOU — collapsible, default collapsed */}
-        <div className="space-y-0.5">
-          {renderGroupLabel("You", youOpen, () => setYouOpen((o) => !o))}
-          {collapsed ? (
-            youItems.map(renderNavItem)
-          ) : (
-            <AnimatePresence initial={false}>
-              {youOpen && (
-                <motion.div
-                  key="you-group"
-                  initial={groupMotion.initial}
-                  animate={groupMotion.animate}
-                  exit={groupMotion.exit}
-                  transition={groupMotion.transition}
-                  style={{ overflow: "hidden" }}
-                  className="space-y-0.5"
-                >
-                  {youItems.map(renderNavItem)}
-                </motion.div>
+            {/* YOU — collapsible, default collapsed */}
+            <div className="space-y-0.5">
+              {renderGroupLabel("You", youOpen, () => setYouOpen((o) => !o))}
+              {collapsed ? (
+                youItems.map(renderNavItem)
+              ) : (
+                <AnimatePresence initial={false}>
+                  {youOpen && (
+                    <motion.div
+                      key="you-group"
+                      initial={groupMotion.initial}
+                      animate={groupMotion.animate}
+                      exit={groupMotion.exit}
+                      transition={groupMotion.transition}
+                      style={{ overflow: "hidden" }}
+                      className="space-y-0.5"
+                    >
+                      {youItems.map(renderNavItem)}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               )}
-            </AnimatePresence>
-          )}
-        </div>
+            </div>
+          </>
+        )}
 
         {/* Spacer pushes bottom items down */}
         <div className="flex-1" />
@@ -940,12 +932,40 @@ export default function Sidebar() {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`sidebar hidden md:flex h-screen sticky top-0 flex-col border-r border-brand-border transition-[width] duration-200 ease-out ${collapsed ? "w-16 collapsed" : "w-[220px]"}`}
+        className={`sidebar hidden md:flex h-screen sticky top-0 flex-col border-r border-brand-border transition-[width] duration-200 ease-out relative ${collapsed ? "w-16 collapsed" : "w-[220px]"}`}
         style={{ background: "var(--bg-base)" }}
       >
         <div className="flex h-full flex-col overflow-hidden">
           <SidebarContent />
         </div>
+        {/* Collapse/expand toggle — fixed to right edge, vertically centered */}
+        <button
+          type="button"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          style={{
+            position: "absolute",
+            right: "-12px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "24px",
+            height: "24px",
+            borderRadius: "50%",
+            background: "var(--surface-2)",
+            border: "1px solid var(--border)",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+          }}
+        >
+          {collapsed ? (
+            <ChevronRight className="h-3 w-3" style={{ color: "var(--text-secondary)" }} />
+          ) : (
+            <ChevronLeft className="h-3 w-3" style={{ color: "var(--text-secondary)" }} />
+          )}
+        </button>
       </aside>
 
       <div className="h-16 md:hidden" aria-hidden />
