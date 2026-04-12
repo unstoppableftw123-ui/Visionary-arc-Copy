@@ -65,7 +65,7 @@ const FriendsPage = lazy(() => import("./pages/FriendsPage"));
 const MissionBoard = lazy(() => import("./pages/MissionBoard"));
 const Analytics = lazy(() => import("./pages/Analytics"));
 const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
-const VisionaryChatbox = lazy(() => import("./components/VisionaryChatbox"));
+// const VisionaryChatbox = lazy(() => import("./components/VisionaryChatbox")); // replaced by FloatingAIChat in Layout.jsx
 const Layout = lazy(() => import("./components/Layout"));
 const GuildHall = lazy(() => import("./pages/GuildHall"));
 const CompanyDashboard = lazy(() => import("./pages/CompanyDashboard"));
@@ -585,7 +585,7 @@ function App() {
             <AppRouter />
             <LevelUpOverlay />
             <XPToast />
-            <VisionaryChatbox />
+            {/* <VisionaryChatbox /> */}{/* replaced by FloatingAIChat in Layout.jsx */}
             <Toaster position="top-right" />
           </AuthProvider>
         </Suspense>
