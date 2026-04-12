@@ -493,8 +493,8 @@ textarea[aria-invalid="true"] {
     --hub-surface: #ffffff;
     --hub-elevated: #efefef;
     --hub-border: rgba(0, 0, 0, 0.08);
-    --hub-accent: #7c6df0;
-    --hub-accent-glow: rgba(124, 109, 240, 0.3);
+    --hub-accent: #DC5F14;
+    --hub-accent-glow: rgba(220, 95, 20, 0.3);
     --hub-text: #1a1a1a;
     --hub-muted: #666666;
     --hub-dimmed: #aaaaaa;
@@ -509,8 +509,8 @@ textarea[aria-invalid="true"] {
     --hub-surface: #111111;
     --hub-elevated: #1a1a1a;
     --hub-border: rgba(255, 255, 255, 0.08);
-    --hub-accent: #7c6df0;
-    --hub-accent-glow: rgba(124, 109, 240, 0.3);
+    --hub-accent: #DC5F14;
+    --hub-accent-glow: rgba(220, 95, 20, 0.3);
     --hub-text: #f0f0f0;
     --hub-muted: #888888;
     --hub-dimmed: #444444;
