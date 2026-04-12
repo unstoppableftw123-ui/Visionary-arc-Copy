@@ -37,11 +37,11 @@ import { Icons } from "../assets/icons";
 
 const BORDER_OPTIONS = [
   { id: "default",      label: "Default",       price: 0,   preview: "border-border",                       style: {} },
-  { id: "neon-purple",  label: "Neon Purple",   price: 150, preview: "border-orange-500/30",                   style: { borderColor: "#a855f7", boxShadow: "0 0 8px #a855f788" } },
+  { id: "neon-purple",  label: "Neon Purple",   price: 150, preview: "border-orange-500/30",                   style: { borderColor: "#e8722a", boxShadow: "0 0 8px rgba(232,114,42,0.5)" } },
   { id: "gold",         label: "Gold",          price: 200, preview: "border-brand-orange",                   style: { borderColor: "#e8722a", boxShadow: "0 0 8px #e8722a88" } },
   { id: "fire",         label: "Fire",          price: 300, preview: "border-orange-500",                   style: { borderColor: "#f97316", boxShadow: "0 0 8px #f9731688" } },
   { id: "frost",        label: "Frost",         price: 300, preview: "border-cyan-400",                     style: { borderColor: "#22d3ee", boxShadow: "0 0 8px #22d3ee88" } },
-  { id: "galaxy",       label: "Galaxy",        price: 500, preview: "border-orange-500/30",                   style: { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px #a855f744" } },
+  { id: "galaxy",       label: "Galaxy",        price: 500, preview: "border-orange-500/30",                   style: { borderColor: "#6366f1", boxShadow: "0 0 12px #6366f188, 0 0 24px rgba(232,114,42,0.5)" } },
 ];
 
 const CARD_BG_OPTIONS = [

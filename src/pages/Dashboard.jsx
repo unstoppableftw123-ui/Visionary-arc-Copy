@@ -78,8 +78,8 @@ import {
 const XP_TIERS = [
   { min: 15000, label: "Elite",    color: "text-brand-orange",  rank: "S" },
   { min: 6000,  label: "Pro",      color: "text-orange-400",  rank: "A" },
-  { min: 2000,  label: "Creator",  color: "text-blue-500",    rank: "B" },
-  { min: 500,   label: "Builder",  color: "text-green-500",   rank: "C" },
+  { min: 2000,  label: "Creator",  color: "text-brand-orange", rank: "B" },
+  { min: 500,   label: "Builder",  color: "text-brand-tan",   rank: "C" },
   { min: 0,     label: "Beginner", color: "text-muted-foreground", rank: "E" },
 ];
 
@@ -341,7 +341,7 @@ export default function Dashboard() {
   const heatmapWeeks = getHeatmapData(tasks);
 
   const quickLinks = [
-    { icon: <CheckSquare className="w-5 h-5" />, label: "Tasks", href: "/tasks", color: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400" },
+    { icon: <CheckSquare className="w-5 h-5" />, label: "Tasks", href: "/tasks", color: "bg-brand-card text-brand-orange" },
     { icon: <Book className="w-5 h-5" />, label: "Study Hub", href: "/study", color: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
     { icon: <GraduationCap className="w-5 h-5" />, label: "SAT / ACT", href: "/practice", color: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
     { icon: <Users className="w-5 h-5" />, label: "Community", href: "/community", color: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400" },

@@ -9,8 +9,8 @@ module.exports = {
     extend: {
       fontFamily: {
         sans:    ['DM Sans', 'sans-serif'],
-        heading: ['Syne', 'sans-serif'],
-        display: ['Syne', 'sans-serif'],
+        heading: ['var(--font-heading)', 'serif'],
+        display: ['var(--font-display)', 'serif'],
         mono:    ['DM Mono', 'monospace'],
         'hub-sans': ['DM Sans', 'sans-serif'],
         'hub-mono': ['DM Mono', 'monospace'],
