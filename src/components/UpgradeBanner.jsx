@@ -22,14 +22,21 @@ export default function UpgradeBanner() {
     <motion.div
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mb-4 p-3 rounded-lg bg-gradient-to-r from-orange-900/30 to-orange-950/20 border border-orange-500/30 flex items-center justify-between"
+      className="mb-4 p-3 rounded-lg border flex items-center justify-between"
+      style={{
+        background: "linear-gradient(90deg, rgba(255,122,61,0.08), rgba(139,69,19,0.06))",
+        borderColor: "rgba(232,114,42,0.25)",
+        fontFamily: "var(--font-heading)",
+        fontSize: "11px",
+        letterSpacing: "1px"
+      }}
     >
       <div className="flex items-center gap-2">
-        <Zap className="w-4 h-4 text-orange-400" />
-        <span className="text-sm">Upgrade to Lite — Faster AI, Saving, More Refinements</span>
+        <Zap className="w-4 h-4 text-brand-orange" />
+        <span className="uppercase tracking-widest">Upgrade to Lite — Faster AI, Saving, More Refinements</span>
       </div>
       <Link to="/pricing">
-        <Button size="sm" variant="outline">View Plans</Button>
+        <Button size="sm" variant="outline" style={{ fontFamily: "var(--font-heading)", fontSize: "9px", letterSpacing: "2px" }}>View Plans</Button>
       </Link>
     </motion.div>
   );
