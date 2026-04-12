@@ -216,7 +216,7 @@ function ProfileCardWithPopover({
           {!collapsed && (
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 min-w-0">
-                <p className="truncate text-sm font-medium" style={{ color: "var(--text-primary)" }}>{user?.name}</p>
+                <p className="truncate text-sm font-medium" style={{ color: "var(--text-primary)", fontFamily: "var(--font-serif)" }}>{user?.name}</p>
                 {user?.role === 'student' && (
                   <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "rgba(59,130,246,0.12)", color: "var(--rank-c)" }}>Student</span>
                 )}
@@ -227,14 +227,14 @@ function ProfileCardWithPopover({
                   <span className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold leading-none" style={{ borderRadius: "var(--radius-full)", background: "var(--accent-dim)", color: "var(--accent)" }}>Investor</span>
                 )}
               </div>
-              <div className="flex items-center gap-1.5 font-mono text-xs" style={{ color: "var(--text-muted)" }}>
+              <div className="flex items-center gap-1.5" style={{ color: "var(--text-muted)", fontFamily: "var(--font-heading)", fontSize: "9px" }}>
                 <span>Lvl {level}</span>
                 <span className="flex items-center gap-0.5 text-brand-orange">
                   <Coins className="h-3 w-3" /> {user?.coins ?? 0}
                 </span>
               </div>
               <div className="xp-bar-track mt-1" style={{ height: 4 }}>
-                <div className="xp-bar-fill" style={{ width: `${levelProgress}%`, background: 'linear-gradient(90deg, #6b4226, #e8722a)' }} />
+                <div className="xp-bar-fill" style={{ width: `${levelProgress}%`, background: 'linear-gradient(90deg, var(--brown), var(--accent))' }} />
               </div>
             </div>
           )}
@@ -500,14 +500,14 @@ export default function Sidebar() {
   const navLinkClass = (isActive) =>
     `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors border-l-2 ${
       isActive
-        ? "bg-[rgba(232,114,42,0.12)] border-brand-orange text-brand-cream"
+        ? "bg-[rgba(234,179,8,0.12)] border-[var(--accent)] text-brand-cream"
         : "border-transparent hover:bg-[rgba(200,130,60,0.05)] text-foreground"
     }`;
 
   const subLinkClass = (isActive) =>
     `flex items-center gap-2.5 pl-8 pr-3 py-2 rounded-r-lg font-sans text-sm border-l-2 ml-3 transition-colors ${
       isActive
-        ? "border-brand-orange bg-[rgba(232,114,42,0.12)] text-brand-cream"
+        ? "border-[var(--accent)] bg-[rgba(234,179,8,0.12)] text-brand-cream"
         : "border-brand-border hover:bg-[rgba(200,130,60,0.05)] text-muted-foreground hover:text-brand-cream"
     }`;
 
@@ -528,7 +528,7 @@ export default function Sidebar() {
         data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
       >
         {item.icon}
-        {!collapsed && <span className="font-sans text-sm flex-1">{item.label}</span>}
+        {!collapsed && <span className="text-sm flex-1" style={{ fontFamily: "var(--font-heading)" }}>{item.label}</span>}
         {item.badge != null && !collapsed && (
           <span className="ml-auto flex min-h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-sm font-semibold text-primary-foreground md:text-[10px]">
             {item.badge}
@@ -585,7 +585,7 @@ export default function Sidebar() {
         onClick={onToggle}
         className="flex w-full items-center justify-between px-3 py-1 group"
       >
-        <span className="font-display tracking-widest text-xs text-brand-dim uppercase select-none">{label}</span>
+        <span className="uppercase select-none" style={{ fontFamily: "var(--font-heading)", fontSize: "7px", letterSpacing: "3px", color: "var(--text-muted)" }}>{label}</span>
         <ChevronDown
           className={`h-3 w-3 opacity-40 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
@@ -605,7 +605,7 @@ export default function Sidebar() {
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-orange shadow-[0_0_18px_rgba(232,114,42,0.35)]">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <span className="font-display text-lg font-semibold truncate text-brand-cream">Visionary Arc</span>
+          <span className="font-display text-lg font-semibold truncate" style={{ fontFamily: "var(--font-display)", letterSpacing: "2px", color: "var(--accent)" }}>Visionary Arc</span>
         </Link>
         <div className="flex items-center gap-1 shrink-0">
           {/* Notification Bell */}
@@ -674,7 +674,7 @@ export default function Sidebar() {
         {/* CORE — always visible, no collapse */}
         <div className="space-y-0.5">
           {!collapsed && (
-            <p className="px-3 py-1 font-display tracking-widest text-xs text-brand-dim uppercase select-none">Core</p>
+            <p className="px-3 py-1 uppercase select-none" style={{ fontFamily: "var(--font-heading)", fontSize: "7px", letterSpacing: "3px", color: "var(--text-muted)" }}>Core</p>
           )}
           {coreItems.map(renderNavItem)}
         </div>
@@ -856,7 +856,7 @@ export default function Sidebar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-orange shadow-[0_0_18px_rgba(232,114,42,0.35)]">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <span className="truncate font-display font-semibold text-brand-cream">Visionary Arc</span>
+          <span className="truncate font-display font-semibold" style={{ fontFamily: "var(--font-display)", letterSpacing: "2px", color: "var(--accent)" }}>Visionary Arc</span>
         </Link>
         <div className="flex items-center gap-1">
           <div className="relative">
@@ -940,7 +940,8 @@ export default function Sidebar() {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`sidebar hidden md:flex h-screen sticky top-0 flex-col border-r border-brand-border bg-brand-surface transition-[width] duration-200 ease-out ${collapsed ? "w-16 collapsed" : "w-[220px]"}`}
+        className={`sidebar hidden md:flex h-screen sticky top-0 flex-col border-r border-brand-border transition-[width] duration-200 ease-out ${collapsed ? "w-16 collapsed" : "w-[220px]"}`}
+        style={{ background: "var(--bg-base)" }}
       >
         <div className="flex h-full flex-col overflow-hidden">
           <SidebarContent />
