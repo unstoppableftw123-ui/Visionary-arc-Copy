@@ -108,7 +108,7 @@ function SectionRow({ section, isOpen, onToggle, expanded }) {
           textTransform: "uppercase",
         }}
       >
-        <Icon size={13} style={{ color: "var(--accent)", flexShrink: 0 }} />
+        <Icon size={16} style={{ color: "var(--accent)", flexShrink: 0 }} />
         <AnimatePresence>
           {expanded && (
             <motion.span
@@ -164,7 +164,7 @@ function SectionRow({ section, isOpen, onToggle, expanded }) {
                     e.currentTarget.style.color = "var(--text-secondary)";
                   }}
                 >
-                  <ItemIcon size={12} style={{ flexShrink: 0, color: "var(--text-muted)" }} />
+                  <ItemIcon size={16} style={{ flexShrink: 0, color: "var(--text-muted)" }} />
                   <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {item.label}
                   </span>
@@ -248,7 +248,7 @@ function AIChatSection({ expanded, userId }) {
           textTransform: "uppercase",
         }}
       >
-        <Icon size={13} style={{ color: "var(--accent)", flexShrink: 0 }} />
+        <Icon size={16} style={{ color: "var(--accent)", flexShrink: 0 }} />
         <AnimatePresence>
           {expanded && (
             <motion.span

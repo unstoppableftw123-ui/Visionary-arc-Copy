@@ -458,20 +458,20 @@ export default function Sidebar() {
   const levelProgress = Math.min(100, (xpInLevel / xpForNextLevel) * 100);
 
   const coreItems = [
-    { icon: <Home className="w-5 h-5 shrink-0" />, label: "Dashboard", href: "/dashboard" },
-    { icon: <Map className="w-5 h-5 shrink-0" />, label: "Tracks", href: "/tracks" },
-    { icon: <Briefcase className="w-5 h-5 shrink-0" />, label: "Portfolio", href: "/portfolio" },
+    { icon: <Home className="w-4 h-4 shrink-0" />, label: "Dashboard", href: "/dashboard" },
+    { icon: <Map className="w-4 h-4 shrink-0" />, label: "Tracks", href: "/tracks" },
+    { icon: <Briefcase className="w-4 h-4 shrink-0" />, label: "Portfolio", href: "/portfolio" },
   ];
   const learnItems = [
-    { icon: <Brain className="w-5 h-5 shrink-0" />, label: "Study Hub", href: "/study" },
+    { icon: <Brain className="w-4 h-4 shrink-0" />, label: "Study Hub", href: "/study" },
     // SAT/ACT Practice hidden from nav — community-gated at 1,000 members (direct URL /practice still works)
-    // { icon: <Target className="w-5 h-5 shrink-0" />, label: "Practice", href: "/practice" },
-    { icon: <FileText className="w-5 h-5 shrink-0" />, label: "Notes", href: "/notes-studio" },
+    // { icon: <Target className="w-4 h-4 shrink-0" />, label: "Practice", href: "/practice" },
+    { icon: <FileText className="w-4 h-4 shrink-0" />, label: "Notes", href: "/notes-studio" },
   ];
   const competeItems = [
-    { icon: <Trophy className="w-5 h-5 shrink-0" />, label: "Challenges", href: "/challenges" },
-    { icon: <BarChart2 className="w-5 h-5 shrink-0" />, label: "Leaderboard", href: "/rewards" },
-    { icon: <UserCheck className="w-5 h-5 shrink-0" />, label: "Friends", href: "/friends", badge: pendingFriends > 0 ? pendingFriends : null },
+    { icon: <Trophy className="w-4 h-4 shrink-0" />, label: "Challenges", href: "/challenges" },
+    { icon: <BarChart2 className="w-4 h-4 shrink-0" />, label: "Leaderboard", href: "/rewards" },
+    { icon: <UserCheck className="w-4 h-4 shrink-0" />, label: "Friends", href: "/friends", badge: pendingFriends > 0 ? pendingFriends : null },
   ];
   const youItems = [
     // Shop, Referrals, and Analytics removed from nav — accessible via /profile
@@ -480,16 +480,16 @@ export default function Sidebar() {
     // { icon: <TrendingUp className="w-5 h-5 shrink-0" />, label: "Analytics", href: "/analytics" },
   ];
   const bottomItems = [
-    { icon: <User className="w-5 h-5 shrink-0" />, label: "Profile", href: "/profile" },
-    { icon: <Settings className="w-5 h-5 shrink-0" />, label: "Settings", href: "/settings" },
+    { icon: <User className="w-4 h-4 shrink-0" />, label: "Profile", href: "/profile" },
+    { icon: <Settings className="w-4 h-4 shrink-0" />, label: "Settings", href: "/settings" },
   ];
   const allNavItems = [...coreItems, ...learnItems, ...competeItems, ...youItems, ...bottomItems];
 
   const mobileBottomItems = [
-    { icon: <Home className="h-5 w-5" />, label: "Home", href: "/dashboard" },
-    { icon: <Map className="h-5 w-5" />, label: "Tracks", href: "/tracks" },
-    { icon: <Brain className="h-5 w-5" />, label: "Study", href: "/study" },
-    { icon: <User className="h-5 w-5" />, label: "Profile", href: "/profile" },
+    { icon: <Home className="h-4 w-4" />, label: "Home", href: "/dashboard" },
+    { icon: <Map className="h-4 w-4" />, label: "Tracks", href: "/tracks" },
+    { icon: <Brain className="h-4 w-4" />, label: "Study", href: "/study" },
+    { icon: <User className="h-4 w-4" />, label: "Profile", href: "/profile" },
   ];
   const mobileMoreItems = allNavItems.filter(
     (item) => !mobileBottomItems.some((bottomItem) => bottomItem.href === item.href)
