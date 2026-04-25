@@ -11,6 +11,7 @@ import { getTrack } from '../../data/tracksData';
 import { generateBrief } from '../../services/briefService';
 import { supabase } from '../../services/supabaseClient';
 import { showXPToast } from '../../components/XPToast';
+import { getProfile } from '../../services/db';
 import { toast } from 'sonner';
 
 const ICON_MAP = { Cpu, Palette, TrendingUp, Mic2, Heart };
@@ -46,6 +47,18 @@ export default function BriefGeneratorPage() {
   const [msgIdx, setMsgIdx] = useState(0);
   const [checked, setChecked] = useState({});
   const [creating, setCreating] = useState(false);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    async function loadProfile() {
+      if (!user?.id) return;
+      const { data } = await getProfile(user.id);
+      if (mounted) setProfile(data ?? null);
+    }
+    loadProfile();
+    return () => { mounted = false; };
+  }, [user?.id]);
 
   // Cycle loading messages
   const msgTimer = useRef(null);
@@ -95,9 +108,9 @@ export default function BriefGeneratorPage() {
     try {
       const { brief: generated, fallback } = await generateBrief(trackId, difficulty, {
         userId: user.id,
-        name: user.name,
-        grade: user.grade,
-        school: user.school,
+        name: profile?.name ?? user.name,
+        grade: profile?.grade ?? user.grade,
+        school: profile?.school ?? user.school,
       });
       if (fallback) {
         toast.warning('AI offline — showing a sample brief.', { duration: 4000 });
@@ -149,7 +162,7 @@ export default function BriefGeneratorPage() {
   const toggleCheck = (i) => setChecked((prev) => ({ ...prev, [i]: !prev[i] }));
 
   return (
-    <div className="min-h-full max-w-2xl mx-auto space-y-6 p-4 sm:p-6">
+    <div className="min-h-full max-w-2xl mx-auto space-y-6 p-4 sm:p-6 bg-[#0A0A0F] font-[Satoshi]">
       {/* Back */}
       <button
         type="button"
@@ -165,7 +178,7 @@ export default function BriefGeneratorPage() {
           <Icon className={`w-5 h-5 ${track.colors.text}`} />
         </div>
         <div className="min-w-0">
-          <h1 className="text-xl font-bold text-foreground sm:text-2xl">Generate Your Brief</h1>
+          <h1 className="text-xl font-bold text-foreground sm:text-2xl font-[Clash_Display]">Generate Your Brief</h1>
           <p className="text-sm text-muted-foreground">AI writes a real project just for you</p>
         </div>
       </div>
@@ -257,7 +270,7 @@ export default function BriefGeneratorPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-            className="rounded-2xl border border-border bg-card overflow-hidden"
+            className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden"
           >
             {/* Card header */}
             <div className={`border-b border-border px-4 py-5 sm:px-6 ${track.colors.bg}`}>

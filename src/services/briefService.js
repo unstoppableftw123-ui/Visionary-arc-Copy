@@ -119,15 +119,17 @@ function parseJsonBrief(raw) {
 }
 
 export async function generateBrief(track, difficulty, userProfile) {
-  const today = new Date().toISOString().split('T')[0];
-  const cacheKey = `brief_cache_${track}_${difficulty}_${today}`;
+  const cacheKey = `brief_cache_${track}_${difficulty}`;
 
   // 24-hour cache check
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
     try {
       const parsed = JSON.parse(cached);
-      if (parsed && parsed.title) return { brief: parsed, fromCache: true };
+      const isFresh = parsed?.cachedAt && (Date.now() - parsed.cachedAt) < 24 * 60 * 60 * 1000;
+      if (isFresh && parsed?.brief?.title) {
+        return { brief: parsed.brief, fromCache: true };
+      }
     } catch (_) {}
   }
 
@@ -172,6 +174,6 @@ export async function generateBrief(track, difficulty, userProfile) {
   if (!Array.isArray(brief.deliverables)) brief.deliverables = [];
   if (!Array.isArray(brief.skills)) brief.skills = [];
 
-  localStorage.setItem(cacheKey, JSON.stringify(brief));
+  localStorage.setItem(cacheKey, JSON.stringify({ brief, cachedAt: Date.now() }));
   return { brief, fromCache: false, fallback: false };
 }

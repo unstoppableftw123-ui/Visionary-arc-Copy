@@ -288,14 +288,16 @@ export async function createProject(userId, trackId, briefJson) {
   }
 }
 
-export async function submitProject(projectId, submissionUrl, notes) {
+export async function submitProject(projectId, submissionUrl, notes, xpAwarded = 0, coinsAwarded = 0) {
   try {
     const { data, error } = await supabase
       .from('projects')
       .update({
         status: 'submitted',
         submission_url: submissionUrl,
-        notes,
+        submission_notes: notes,
+        xp_awarded: xpAwarded,
+        coins_awarded: coinsAwarded,
         submitted_at: new Date().toISOString(),
       })
       .eq('id', projectId)

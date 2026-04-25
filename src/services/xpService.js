@@ -108,7 +108,7 @@ const ACTIVITY_REWARDS = {
 
 // ── Tier thresholds (CLAUDE.md §6) ───────────────────────────────────────────
 
-const TIERS = [
+export const TIERS = [
   { name: 'Elite',    xp: 15000 },
   { name: 'Pro',      xp: 6000  },
   { name: 'Creator',  xp: 2000  },
@@ -135,6 +135,47 @@ export function getNextTier(currentXP) {
     }
   }
   return { nextTier: 'Elite', xpNeeded: 15000, xpRemaining: 0 };
+}
+
+export function canAccessBriefDifficulty(tier, difficulty) {
+  const normalized = String(difficulty ?? '').toLowerCase();
+  if (normalized === 'starter') return true;
+  if (normalized === 'standard') return ['Builder', 'Creator', 'Pro', 'Elite'].includes(tier);
+  if (normalized === 'advanced') return ['Creator', 'Pro', 'Elite'].includes(tier);
+  if (normalized === 'expert') return ['Pro', 'Elite'].includes(tier);
+  return false;
+}
+
+export function canAccessChallengeBoard(tier) {
+  return ['Creator', 'Pro', 'Elite'].includes(tier);
+}
+
+export async function awardBonusXP(userId, amount, reason = 'bonus') {
+  if (!userId || !Number.isFinite(amount) || amount <= 0) {
+    return { awarded: false, reason: 'invalid_input' };
+  }
+
+  await awardXP(userId, amount);
+  await supabase.from('study_sessions').insert({
+    user_id: userId,
+    activity_type: reason,
+    subject: null,
+    xp_earned: amount,
+    coins_earned: 0,
+  });
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('xp')
+    .eq('id', userId)
+    .single();
+  const xpAfter = profile?.xp ?? amount;
+
+  return {
+    awarded: true,
+    xpGained: amount,
+    newTier: getTierForXP(xpAfter),
+  };
 }
 
 // ── Award XP + coins for a study activity ────────────────────────────────────
@@ -183,6 +224,32 @@ export async function awardActivityXP(userId, activityType, subject) {
     awarded: true,
     xpGained: rewards.xp,
     coinsGained: rewards.coins,
+    levelUp,
+    newTier: tierAfter,
+  };
+}
+
+export async function awardProjectSubmissionXP(userId, xpAmount) {
+  if (!userId || !xpAmount) return { awarded: false, reason: 'invalid_input' };
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('xp')
+    .eq('id', userId)
+    .single();
+
+  const xpBefore = profile?.xp ?? 0;
+  const tierBefore = getTierForXP(xpBefore);
+
+  await awardXP(userId, xpAmount);
+
+  const xpAfter = xpBefore + xpAmount;
+  const tierAfter = getTierForXP(xpAfter);
+  const levelUp = tierAfter !== tierBefore;
+
+  return {
+    awarded: true,
+    xpGained: xpAmount,
     levelUp,
     newTier: tierAfter,
   };

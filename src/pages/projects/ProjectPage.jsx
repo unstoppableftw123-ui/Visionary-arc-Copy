@@ -9,8 +9,9 @@ import { toast } from 'sonner';
 import { AuthContext } from '../../App';
 import { getTrack } from '../../data/tracksData';
 import { supabase } from '../../services/supabaseClient';
-import { callAI } from '../../services/aiRouter';
-import { submitProject, completeProject, addPortfolioEntry, awardXP, awardCoins } from '../../services/db';
+import { submitProject, addPortfolioEntry } from '../../services/db';
+import { awardCoins } from '../../services/coinService';
+import { awardProjectSubmissionXP } from '../../services/xpService';
 import { showXPToast } from '../../components/XPToast';
 
 const DIFFICULTY_XP    = { starter: 200, standard: 400, advanced: 700, expert: 1000 };
@@ -44,6 +45,7 @@ export default function ProjectPage() {
   const [submitting, setSubmitting] = useState(false);
   const [urlError, setUrlError] = useState('');
   const [celebrated, setCelebrated] = useState(false);
+  const [confirming, setConfirming] = useState(false);
 
   // Restore stage from localStorage
   useEffect(() => {
@@ -93,30 +95,17 @@ export default function ProjectPage() {
     setUrlError('');
     setSubmitting(true);
     try {
-      // 1. Save submission to DB
-      await submitProject(projectId, url.trim(), notes);
+      const xpAmount = DIFFICULTY_XP[difficulty] ?? 200;
+      const coinsAmount = DIFFICULTY_COINS[difficulty] ?? 50;
 
-      // 2. Generate portfolio description via Groq (fast/cheap)
-      let portfolioDescription =
+      // 1) mark submitted with rewards
+      const { error: submitErr } = await submitProject(projectId, url.trim(), notes, xpAmount, coinsAmount);
+      if (submitErr) throw submitErr;
+
+      // 2) auto-create portfolio entry
+      const portfolioDescription =
         `${brief.role} built "${brief.title}" for ${brief.client}. ${brief.briefSummary}`;
-      try {
-        const raw = await callAI({
-          feature: 'fast',
-          systemPrompt:
-            'Write a 60-word portfolio description for a student project. ' +
-            'Professional, third-person, highlights skills and real-world impact. Plain text only.',
-          prompt:
-            `Role: ${brief.role}. Client: ${brief.client}. ` +
-            `Built: ${brief.briefSummary}. Skills: ${(brief.skills ?? []).join(', ')}`,
-          userId: user.id,
-        });
-        if (raw && raw.trim()) portfolioDescription = raw.trim();
-      } catch (_) {
-        // AI failed — fallback description already set
-      }
-
-      // 3. Add portfolio entry
-      await addPortfolioEntry({
+      const { error: portfolioErr } = await addPortfolioEntry({
         user_id:        user.id,
         project_id:     projectId,
         track:          project.track,
@@ -127,15 +116,15 @@ export default function ProjectPage() {
         submission_url: url.trim(),
         is_public:      true,
       });
+      if (portfolioErr) throw portfolioErr;
 
-      // 4. Mark project completed
-      await completeProject(projectId);
-
-      // 5. Award XP + coins
-      const xpAmount    = DIFFICULTY_XP[difficulty]    ?? 200;
-      const coinsAmount = DIFFICULTY_COINS[difficulty] ?? 50;
-      await awardXP(user.id, xpAmount);
-      await awardCoins(user.id, coinsAmount, `project_completed_${difficulty}`);
+      // 3) award XP (single source via xpService) + coins (coinService)
+      const xpReward = await awardProjectSubmissionXP(user.id, xpAmount);
+      if (!xpReward?.awarded) {
+        const { awardXP } = await import('../../services/db');
+        await awardXP(user.id, xpAmount);
+      }
+      await awardCoins(user.id, coinsAmount, `project_submitted_${difficulty}`);
 
       // 6. Celebrate
       setCelebrated(true);
@@ -190,7 +179,7 @@ export default function ProjectPage() {
 
   // ── Main page ───────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-full p-6 max-w-2xl mx-auto space-y-6">
+    <div className="min-h-full p-6 max-w-2xl mx-auto space-y-6 bg-[#0A0A0F] font-[Satoshi]">
       {/* Back */}
       <button
         type="button"
@@ -241,7 +230,7 @@ export default function ProjectPage() {
       </div>
 
       {/* Brief card (read-only) */}
-      <div className="rounded-2xl border border-border bg-card overflow-hidden">
+      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
         <div className={`px-6 py-5 border-b border-border ${colors.bg}`}>
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -322,7 +311,7 @@ export default function ProjectPage() {
       </div>
 
       {/* External tools */}
-      <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-4">
         <p className="text-sm text-muted-foreground leading-relaxed">
           Build your project using tools like Figma, Google Docs, Canva, GitHub, YouTube — then come
           back here to submit.
@@ -364,7 +353,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-border bg-card p-6 space-y-4"
+          className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-4"
         >
           <h2 className="font-semibold text-foreground">Submit Your Project</h2>
 
@@ -375,7 +364,15 @@ export default function ProjectPage() {
             <input
               type="url"
               value={url}
-              onChange={(e) => { setUrl(e.target.value); setUrlError(''); }}
+              onChange={(e) => { setUrl(e.target.value); setUrlError(''); setConfirming(false); }}
+              onBlur={() => {
+                if (!url.trim()) return;
+                if (isValidUrl(url.trim())) {
+                  setConfirming(true);
+                } else {
+                  setConfirming(false);
+                }
+              }}
               placeholder="Paste your Google Doc, Figma, GitHub, or YouTube link…"
               className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
@@ -383,6 +380,9 @@ export default function ProjectPage() {
               <p className="flex items-center gap-1.5 text-sm md:text-xs text-red-400">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {urlError}
               </p>
+            )}
+            {confirming && !urlError && (
+              <p className="text-sm md:text-xs text-emerald-400">Link looks valid and ready to submit.</p>
             )}
           </div>
 
