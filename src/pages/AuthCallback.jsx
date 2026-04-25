@@ -16,8 +16,7 @@ const ROLE_OPTIONS = [
 ];
 
 const getRoleRoute = (role) => {
-  if (role === 'teacher') return '/teacher';
-  if (role === 'investor') return '/investor';
+  if (role === 'company') return '/company';
   return '/dashboard';
 };
 

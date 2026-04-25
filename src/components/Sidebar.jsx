@@ -77,18 +77,8 @@ const DM_API = `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000'}/
 
 const SIDEBAR_COLLAPSED_KEY = "sidebarCollapsed";
 const LEARN_ROUTES = ["/study", "/library", "/notes-studio", "/graph", "/practice", "/strengths"];
-const CLASSES_ROUTES = ["/teacher/classes", "/teacher/assignments", "/teacher/gradebook", "/teacher/students", "/teacher/students/intelligence"];
-
 function isLearnRoute(pathname) {
   return LEARN_ROUTES.some((r) => pathname === r || pathname.startsWith(r + "/"));
-}
-
-function isClassesRoute(pathname) {
-  return CLASSES_ROUTES.some((r) => pathname === r || pathname.startsWith(r + "/"));
-}
-
-function isCommunityRoute(pathname) {
-  return pathname === "/community";
 }
 
 function isSubActive(href, pathname, search) {
@@ -271,7 +261,7 @@ function ProfileCardWithPopover({
             </button>
             <button
               type="button"
-              onClick={() => handleAction(() => onNavigate("/community?tab=shop"))}
+              onClick={() => handleAction(() => onNavigate("/shop"))}
               className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-[rgba(200,130,60,0.08)]"
               data-testid="store-menu-item"
             >

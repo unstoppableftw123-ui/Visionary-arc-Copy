@@ -63,20 +63,16 @@ function PanelSkeleton({ rows = 3 }) {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.05 }}
-          className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4"
+          className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md"
         >
-          <motion.div
-            animate={{ opacity: [0.35, 0.6, 0.35] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="flex items-center gap-3"
-          >
-            <div className="h-12 w-12 rounded-full bg-white/10" />
+          <div className="flex items-center gap-3 animate-pulse">
+            <div className="h-12 w-12 rounded-full bg-white/5" />
             <div className="flex-1 space-y-2">
-              <div className="h-4 w-28 rounded-full bg-white/10" />
-              <div className="h-3 w-44 rounded-full bg-white/10" />
+              <div className="h-4 w-28 rounded-full bg-white/5" />
+              <div className="h-3 w-44 rounded-full bg-white/5" />
             </div>
-            <div className="h-9 w-24 rounded-xl bg-white/10" />
-          </motion.div>
+            <div className="h-9 w-24 rounded-xl bg-white/5" />
+          </div>
         </motion.div>
       ))}
     </div>

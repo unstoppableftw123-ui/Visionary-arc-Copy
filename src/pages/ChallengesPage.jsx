@@ -95,34 +95,30 @@ function ChallengeSkeleton({ index }) {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.06 }}
-      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5"
+      className="rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-md"
     >
-      <motion.div
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        className="space-y-4"
-      >
+      <div className="space-y-4 animate-pulse">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-2xl bg-white/10" />
+            <div className="h-12 w-12 rounded-2xl bg-white/5" />
             <div className="space-y-2">
-              <div className="h-3 w-24 rounded-full bg-white/10" />
-              <div className="h-5 w-32 rounded-full bg-white/10" />
+              <div className="h-3 w-24 rounded-full bg-white/5" />
+              <div className="h-5 w-32 rounded-full bg-white/5" />
             </div>
           </div>
-          <div className="h-6 w-20 rounded-full bg-white/10" />
+          <div className="h-6 w-20 rounded-full bg-white/5" />
         </div>
         <div className="space-y-2">
-          <div className="h-5 w-4/5 rounded-full bg-white/10" />
-          <div className="h-4 w-full rounded-full bg-white/10" />
-          <div className="h-4 w-2/3 rounded-full bg-white/10" />
+          <div className="h-5 w-4/5 rounded-full bg-white/5" />
+          <div className="h-4 w-full rounded-full bg-white/5" />
+          <div className="h-4 w-2/3 rounded-full bg-white/5" />
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-14 rounded-2xl bg-white/10" />
-          <div className="h-14 rounded-2xl bg-white/10" />
+          <div className="h-14 rounded-2xl bg-white/5" />
+          <div className="h-14 rounded-2xl bg-white/5" />
         </div>
-        <div className="h-11 w-full rounded-xl bg-white/10" />
-      </motion.div>
+        <div className="h-11 w-full rounded-xl bg-white/5" />
+      </div>
     </motion.div>
   );
 }

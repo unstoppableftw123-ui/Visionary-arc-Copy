@@ -34,7 +34,7 @@ const SECTIONS = [
     items: [
       { label: "Flashcard Sets", icon: FileText, href: "/study" },
       { label: "Notes", icon: FileText, href: "/notes-studio" },
-      { label: "Whiteboard", icon: Sparkles, href: "/whiteboard" },
+      { label: "Whiteboard", icon: Sparkles, href: "/notes-studio" },
     ],
   },
   {
@@ -71,7 +71,7 @@ const SECTIONS = [
     icon: Clock,
     items: [
       { label: "Study Hub", icon: FileText, href: "/study" },
-      { label: "Leaderboard", icon: Star, href: "/leaderboard" },
+      { label: "Leaderboard", icon: Star, href: "/rewards" },
     ],
   },
   {

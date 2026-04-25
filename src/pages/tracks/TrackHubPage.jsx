@@ -145,8 +145,24 @@ export default function TrackHubPage() {
       {/* Track grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {loading
-          ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-48 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md animate-pulse" />
+          ? Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-md animate-pulse">
+                <div className="flex items-start gap-4">
+                  <div className="h-11 w-11 rounded-xl bg-white/5" />
+                  <div className="flex-1 space-y-3">
+                    <div className="h-5 w-28 rounded bg-white/5" />
+                    <div className="h-4 w-44 rounded bg-white/5" />
+                    <div className="h-4 w-full rounded bg-white/5" />
+                  </div>
+                  <div className="h-14 w-14 rounded-full bg-white/5" />
+                </div>
+                <div className="mt-5 flex gap-2">
+                  <div className="h-6 w-20 rounded-full bg-white/5" />
+                  <div className="h-6 w-24 rounded-full bg-white/5" />
+                  <div className="h-6 w-16 rounded-full bg-white/5" />
+                </div>
+                <div className="mt-5 h-4 w-32 rounded bg-white/5" />
+              </div>
             ))
           : TRACKS.map((track, i) => (
               <TrackCard

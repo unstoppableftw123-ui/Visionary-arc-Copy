@@ -160,11 +160,32 @@ export default function PortfolioPage() {
   // ── Loading skeleton ────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-full p-6 max-w-4xl mx-auto space-y-6 animate-pulse">
-        <div className="h-36 bg-white/5 rounded-xl" />
+      <div className="min-h-full max-w-4xl mx-auto space-y-6 p-4 sm:p-6">
+        <div className="rounded-xl border border-white/10 bg-white/5 p-6 animate-pulse">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+            <div className="h-16 w-16 rounded-2xl bg-white/5" />
+            <div className="flex-1 space-y-3">
+              <div className="h-6 w-40 rounded bg-white/5" />
+              <div className="h-4 w-32 rounded bg-white/5" />
+              <div className="h-4 w-52 rounded bg-white/5" />
+            </div>
+            <div className="h-10 w-36 rounded-xl bg-white/5" />
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="h-48 bg-white/5 rounded-xl" />
-          <div className="h-48 bg-white/5 rounded-xl" />
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="rounded-xl border border-white/10 bg-white/5 p-5 animate-pulse">
+              <div className="h-20 rounded-xl bg-white/5" />
+              <div className="mt-4 h-5 w-2/3 rounded bg-white/5" />
+              <div className="mt-2 h-4 w-1/2 rounded bg-white/5" />
+              <div className="mt-4 h-4 w-full rounded bg-white/5" />
+              <div className="mt-2 h-4 w-4/5 rounded bg-white/5" />
+              <div className="mt-4 flex gap-2">
+                <div className="h-6 w-16 rounded-full bg-white/5" />
+                <div className="h-6 w-20 rounded-full bg-white/5" />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );

@@ -24,7 +24,22 @@ export default function TransactionLog() {
   }, []);
 
   if (loading) {
-    return <p className="text-sm text-muted-foreground py-4">Loading...</p>;
+    return (
+      <div className="space-y-3 py-2">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div key={index} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 animate-pulse">
+            <div className="space-y-2">
+              <div className="h-4 w-32 rounded bg-white/5" />
+              <div className="h-3 w-40 rounded bg-white/5" />
+            </div>
+            <div className="space-y-2 text-right">
+              <div className="ml-auto h-4 w-12 rounded bg-white/5" />
+              <div className="ml-auto h-3 w-16 rounded bg-white/5" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (txns.length === 0) {

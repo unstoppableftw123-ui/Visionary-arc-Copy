@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Cpu, Palette, TrendingUp, Mic2, Heart, ArrowLeft, Sparkles, Clock, CheckCircle2, Loader2 } from 'lucide-react';
+import { Cpu, Palette, TrendingUp, Mic2, Heart, ArrowLeft, Sparkles, Clock, CheckCircle2 } from 'lucide-react';
 import { AuthContext } from '../../App';
 import { getTrack } from '../../data/tracksData';
 import { getUserProjects } from '../../services/db';
@@ -108,8 +108,22 @@ export default function TrackDetailPage() {
         <h2 className="text-base font-semibold text-foreground mb-3">Your Projects</h2>
 
         {loadingProjects && (
-          <div className="flex items-center gap-2 text-muted-foreground text-sm">
-            <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="rounded-xl border border-white/10 bg-white/5 p-4 animate-pulse">
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 h-4 w-4 rounded-full bg-white/5" />
+                  <div className="flex-1">
+                    <div className="h-4 w-40 rounded bg-white/5" />
+                    <div className="mt-3 flex gap-2">
+                      <div className="h-5 w-24 rounded-full bg-white/5" />
+                      <div className="h-5 w-16 rounded-full bg-white/5" />
+                    </div>
+                  </div>
+                  <div className="h-4 w-16 rounded bg-white/5" />
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

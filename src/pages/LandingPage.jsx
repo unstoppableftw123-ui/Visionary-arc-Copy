@@ -1,97 +1,104 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Briefcase,
+  Building2,
+  ChevronRight,
+  Crown,
+  FolderKanban,
+  Heart,
+  Mic2,
+  Palette,
+  SearchCheck,
+  Sparkles,
+  Trophy,
+  TrendingUp,
+  Users,
+  Zap,
+  Cpu,
+} from "lucide-react";
 import { AuthContext } from "../App";
 import { TRACKS } from "../data/tracksData";
-import {
+
+const FLOW_STEPS = [
+  {
+    title: "Study",
+    eyebrow: "Daily loop",
+    body: "Use focused study tools to build momentum, streaks, and consistency.",
+  },
+  {
+    title: "Earn XP",
+    eyebrow: "Proof of effort",
+    body: "Every session turns into XP, tier progression, and visible career signal.",
+  },
+  {
+    title: "Get Briefs",
+    eyebrow: "Unlock work",
+    body: "Your level opens track-specific briefs that feel closer to real client work.",
+  },
+  {
+    title: "Build Projects",
+    eyebrow: "Ship things",
+    body: "Create in the tools you already use, then submit the final link back to Visionary Arc.",
+  },
+  {
+    title: "Portfolio",
+    eyebrow: "Auto-generated",
+    body: "Each finished project becomes a polished artifact on your public portfolio.",
+  },
+  {
+    title: "Get Discovered",
+    eyebrow: "Career acceleration",
+    body: "Top student builders rise faster, stand out earlier, and get noticed by companies.",
+  },
+];
+
+const SOCIAL_STATS = [
+  { label: "Students joined", value: "12,480+" },
+  { label: "Projects built", value: "38,200+" },
+  { label: "Companies watching", value: "140+" },
+];
+
+const SOCIAL_PROOF = [
+  {
+    title: "Real signal, not empty streaks",
+    body: "XP is tied to studying, briefs, shipped work, and portfolio proof students can actually show.",
+  },
+  {
+    title: "Built for discovery",
+    body: "Students do the work, portfolios update automatically, and company-side visibility grows with execution.",
+  },
+  {
+    title: "Momentum compounds",
+    body: "Daily effort unlocks better briefs, stronger artifacts, better portfolios, and more attention over time.",
+  },
+];
+
+const FOUNDER_TIERS = [
+  { name: "Seed", price: "$19", perk: "Early access + first XP boost" },
+  { name: "Bronze", price: "$39", perk: "Priority brief drops + profile flair" },
+  { name: "Silver", price: "$79", perk: "Discovery boosts + portfolio upgrades" },
+  { name: "Gold", price: "$149", perk: "Top-tier visibility + founder perks" },
+];
+
+const ICON_MAP = {
   Cpu,
   Palette,
   TrendingUp,
   Mic2,
   Heart,
-  ArrowRight,
-  Zap,
-  Flame,
-  Trophy,
-  Target,
-  Sparkles,
-} from "lucide-react";
-
-// ─── Icon map for track icons (stored as strings in tracksData) ───────────────
-const ICON_MAP = { Cpu, Palette, TrendingUp, Mic2, Heart };
-
-// ─── Sample projects per track ────────────────────────────────────────────────
-const TRACK_PROJECTS = {
-  "tech-ai":              ["Build an AI chatbot for a local nonprofit", "Automate your school's lost & found", "Create a student sports stats dashboard"],
-  "design-branding":      ["Rebrand a local café's visual identity", "Design a mobile app UI for a fitness startup", "Create a brand kit for a student-run business"],
-  "business":             ["Write a go-to-market plan for a new product", "Build a financial model for a school store", "Design a pitch deck for an investor"],
-  "content-storytelling": ["Launch a newsletter for your school community", "Script a 60-second brand video", "Write a brand voice guide for a local org"],
-  "social-impact":        ["Design a campaign to cut food waste at school", "Create a community research report", "Write a grant proposal for a local shelter"],
 };
 
-// ─── Typewriter hook ──────────────────────────────────────────────────────────
-function useTypewriter(text, speed = 30, delay = 0) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    setDisplayed("");
-    setDone(false);
-    let i = 0;
-    const startTimeout = setTimeout(() => {
-      const interval = setInterval(() => {
-        i++;
-        setDisplayed(text.slice(0, i));
-        if (i >= text.length) {
-          clearInterval(interval);
-          setDone(true);
-        }
-      }, speed);
-      return () => clearInterval(interval);
-    }, delay);
-    return () => clearTimeout(startTimeout);
-  }, [text, speed, delay]);
-
-  return { displayed, done };
-}
-
-// ─── Animated count-up number ────────────────────────────────────────────────
-function CountUp({ target, suffix = "" }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1600;
-    const start = Date.now();
-    const tick = () => {
-      const elapsed = Date.now() - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, [inView, target]);
-
-  return (
-    <span ref={ref}>
-      {count.toLocaleString()}
-      {suffix}
-    </span>
-  );
-}
-
-// ─── Section wrapper with scroll animation ────────────────────────────────────
-function Section({ id, className = "", children }) {
+function RevealSection({ id, className = "", children }) {
   return (
     <motion.section
       id={id}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 26 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className={className}
     >
       {children}
@@ -99,362 +106,368 @@ function Section({ id, className = "", children }) {
   );
 }
 
-// ─── Hero brief card with typewriter ─────────────────────────────────────────
-const BRIEF_TEXT = "You'll research the org, define their brand voice, and design a 3-post Instagram campaign — ready to pitch to a real client.";
-
-function HeroBriefCard() {
-  const { displayed, done } = useTypewriter(BRIEF_TEXT, 22, 900);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
-      className="relative mt-10 rounded-2xl border border-orange-500/30 bg-zinc-900/80 backdrop-blur p-5 shadow-xl shadow-orange-900/20 text-left max-w-lg mx-auto"
-    >
-      {/* Header row */}
-      <div className="flex items-center gap-2 mb-3">
-        <span className="w-2 h-2 rounded-full bg-orange-600 animate-pulse" />
-        <span className="text-sm md:text-xs font-semibold text-orange-400 uppercase tracking-widest">AI Brief — Design & Branding</span>
-      </div>
-
-      <p className="text-sm md:text-xs text-zinc-400 font-medium mb-1">Role</p>
-      <p className="text-sm font-semibold text-[var(--text-primary)] mb-3">You are a Junior Brand Strategist</p>
-
-      <p className="text-sm md:text-xs text-zinc-400 font-medium mb-1">Client</p>
-      <p className="text-sm text-zinc-200 mb-3">
-        Nour Foundation — a local women's shelter — needs a social media rebrand.
-      </p>
-
-      <p className="text-sm md:text-xs text-zinc-400 font-medium mb-1">Brief</p>
-      <p className="text-sm text-zinc-200 min-h-[3.5rem]">
-        {displayed}
-        {!done && <span className="inline-block w-0.5 h-4 bg-orange-600/10 ml-0.5 animate-pulse align-middle" />}
-      </p>
-
-      {/* Skills */}
-      <div className="flex flex-wrap gap-1.5 mt-4">
-        {["Brand Strategy", "Visual Identity", "Social Media", "Copywriting"].map((s) => (
-          <span key={s} className="text-sm md:text-xs px-2 py-0.5 rounded-full bg-orange-600/15 text-orange-400 border border-orange-500/30">
-            {s}
-          </span>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function LandingPage() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const scrollToHowItWorks = () => {
-    document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const primaryCta = () => navigate(user ? "/dashboard" : "/auth");
+  const secondaryCta = () =>
+    document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ background: "var(--bg-base)", color: "var(--text-primary)" }}>
+    <div className="min-h-screen overflow-x-hidden bg-[#0A0A0F] text-white">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute left-1/2 top-[-18rem] h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(232,114,42,0.22)_0%,rgba(232,114,42,0.08)_35%,transparent_72%)]" />
+        <div className="absolute -left-28 top-[28rem] h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.14)_0%,transparent_72%)] blur-2xl" />
+        <div className="absolute -right-24 top-[50rem] h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.14)_0%,transparent_72%)] blur-2xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:72px_72px] opacity-[0.12]" />
+      </div>
 
-      {/* ── Nav ──────────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur" style={{ borderBottom: "1px solid var(--border)", background: "rgba(10,10,15,0.85)" }}>
-        <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-bold text-lg tracking-tight text-display" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "var(--accent)" }}>
-              <Sparkles className="w-4 h-4" style={{ color: "var(--bg-base)" }} />
+      <nav className="sticky top-0 z-40 border-b border-white/10 bg-[#0A0A0F]/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/10 shadow-[0_0_30px_rgba(232,114,42,0.15)]">
+              <Sparkles className="h-4 w-4 text-[var(--accent)]" />
             </div>
-            Visionary Arc
+            <div>
+              <p className="font-[Clash_Display] text-lg tracking-wide">Visionary Arc</p>
+              <p className="font-[Satoshi] text-xs uppercase tracking-[0.24em] text-white/40">Student career accelerator</p>
+            </div>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link to="/pricing" className="hidden sm:block text-sm" style={{ color: "var(--text-secondary)" }}>
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              to="/pricing"
+              className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 font-[Satoshi] text-sm text-white/70 transition-colors hover:text-white sm:inline-flex"
+            >
               Founder Pass
             </Link>
             <button
-              className="btn btn-primary"
-              onClick={() => navigate(user ? "/dashboard" : "/auth")}
+              type="button"
+              onClick={primaryCta}
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-2.5 font-[Satoshi] text-sm font-semibold text-black shadow-[0_0_28px_rgba(232,114,42,0.35)] transition-transform hover:-translate-y-0.5"
             >
-              {user ? "Dashboard" : "Start free"} <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+              {user ? "Open dashboard" : "Start free"}
+              <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative pt-36 pb-20 px-5 text-center overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 50% at 50% -10%, var(--accent-glow), transparent)" }} />
+      <section className="relative px-4 pb-16 pt-16 sm:px-6 sm:pb-24 sm:pt-24">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="max-w-4xl"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-2 font-[Satoshi] text-sm text-[var(--accent)]">
+              <Zap className="h-4 w-4" />
+              Where students build projects and get discovered
+            </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 max-w-3xl mx-auto"
-        >
-          <div className="inline-flex max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-7" style={{ background: "var(--accent-dim)", border: "1px solid var(--accent-glow)", color: "var(--accent)" }}>
-            <Zap className="w-3.5 h-3.5" />
-            <span className="truncate sm:whitespace-normal">AI-powered career projects for students</span>
-          </div>
+            <h1 className="mt-6 text-5xl leading-[0.95] sm:text-6xl lg:text-7xl font-[Clash_Display]">
+              Turn student effort into
+              <span className="block bg-[linear-gradient(90deg,#FFFFFF_0%,#FDBA74_45%,#E8722A_100%)] bg-clip-text text-transparent">
+                career proof.
+              </span>
+            </h1>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight mb-5 break-words" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
-            Turn your skills into{" "}
-            <span className="bg-gradient-to-r from-brand-orange via-brand-tan to-orange-400 bg-clip-text text-transparent">
-              a career
-            </span>
-            <br />
-            before graduation.
-          </h1>
+            <p className="mt-6 max-w-2xl font-[Satoshi] text-lg leading-8 text-white/72 sm:text-xl">
+              Earn XP by studying, unlock real project briefs, build portfolio-ready work, and rise high enough to get discovered by companies before graduation.
+            </p>
 
-          <p className="text-base sm:text-lg md:text-xl max-w-xl mx-auto mb-9 px-1" style={{ color: "var(--text-secondary)" }}>
-            AI-guided projects. Real portfolio. Get discovered by companies.
-          </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={primaryCta}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-6 py-3.5 font-[Satoshi] text-sm font-semibold text-black shadow-[0_0_30px_rgba(232,114,42,0.35)] transition-transform hover:-translate-y-0.5"
+              >
+                Start building now
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={secondaryCta}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-[Satoshi] text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                See how it works
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
 
-          <div className="flex w-full flex-col gap-3 justify-center sm:w-auto sm:flex-row">
-            <button
-              className="btn btn-primary w-full sm:w-auto px-8"
-              onClick={() => navigate(user ? "/dashboard" : "/auth")}
-            >
-              Start for free <ArrowRight className="w-4 h-4 ml-2" />
-            </button>
-            <button
-              className="btn btn-ghost w-full sm:w-auto px-8"
-              onClick={scrollToHowItWorks}
-            >
-              See how it works
-            </button>
-          </div>
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {[
+                { icon: <Zap className="h-4 w-4 text-yellow-300" />, label: "XP-backed momentum" },
+                { icon: <FolderKanban className="h-4 w-4 text-blue-300" />, label: "Auto-built portfolio" },
+                { icon: <SearchCheck className="h-4 w-4 text-emerald-300" />, label: "Company visibility" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-xl"
+                >
+                  <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-black/20">
+                    {item.icon}
+                  </div>
+                  <p className="font-[Satoshi] text-sm text-white/78">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
-          <HeroBriefCard />
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 rounded-[2rem] bg-[linear-gradient(145deg,rgba(232,114,42,0.18),rgba(59,130,246,0.08),rgba(255,255,255,0.02))] blur-2xl" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-5 backdrop-blur-2xl sm:p-6">
+              <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
+                <div>
+                  <p className="font-[Satoshi] text-xs uppercase tracking-[0.24em] text-white/40">Career signal</p>
+                  <p className="mt-1 font-[Clash_Display] text-2xl">Builder profile</p>
+                </div>
+                <div className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 font-[Satoshi] text-xs text-emerald-300">
+                  Companies watching
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="font-[Satoshi] text-xs uppercase tracking-[0.22em] text-white/40">This week</p>
+                  <p className="mt-2 flex items-center gap-2 font-[Clash_Display] text-3xl text-[var(--accent)]">
+                    <Trophy className="h-6 w-6" />
+                    420 XP
+                  </p>
+                  <p className="mt-2 font-[Satoshi] text-sm text-white/60">Enough to unlock another brief and move your profile higher.</p>
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="font-[Satoshi] text-xs uppercase tracking-[0.22em] text-white/40">Portfolio</p>
+                  <p className="mt-2 flex items-center gap-2 font-[Clash_Display] text-3xl">
+                    <Briefcase className="h-6 w-6 text-blue-300" />
+                    6 projects
+                  </p>
+                  <p className="mt-2 font-[Satoshi] text-sm text-white/60">Real work across Tech, Design, Business, Content, and Impact tracks.</p>
+                </div>
+              </div>
+
+              <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-[Satoshi] text-xs uppercase tracking-[0.22em] text-white/40">Discovery feed</p>
+                    <p className="mt-1 font-[Clash_Display] text-xl">Why students rise</p>
+                  </div>
+                  <Users className="h-5 w-5 text-white/45" />
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {[
+                    {
+                      label: "Study streak converted into XP momentum",
+                      value: "+85 XP today",
+                      tone: "text-yellow-300",
+                    },
+                    {
+                      label: "Brief unlocked in Tech track",
+                      value: "AI product teardown",
+                      tone: "text-blue-300",
+                    },
+                    {
+                      label: "Portfolio artifact submitted",
+                      value: "Landing page redesign",
+                      tone: "text-emerald-300",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3"
+                    >
+                      <p className="max-w-[70%] font-[Satoshi] text-sm text-white/70">{item.label}</p>
+                      <span className={`font-[Satoshi] text-sm font-semibold ${item.tone}`}>{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* ── 2. STATS BAR ─────────────────────────────────────────────────── */}
-      <Section className="border-y border-zinc-800 bg-zinc-900/50 py-10 px-5">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
-          {[
-            { value: 12000, suffix: "+", label: "students" },
-            { value: 5,     suffix: "",  label: "career tracks" },
-            { value: null,  label: "Auto portfolios", static: true },
-            { value: null,  label: "Company challenges", static: true },
-            { value: null,  label: "Free to start", static: true },
-          ].map((stat, i) => (
-            <div key={i}>
-              <p className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] leading-none mb-1">
-                {stat.static ? (
-                  <span className="bg-gradient-to-r from-orange-700 to-pink-400 bg-clip-text text-transparent">✓</span>
-                ) : (
-                  <CountUp target={stat.value} suffix={stat.suffix} />
-                )}
-              </p>
-              <p className="text-sm md:text-xs sm:text-sm text-zinc-400">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ── 3. TRACKS ────────────────────────────────────────────────────── */}
-      <Section id="tracks" className="py-20 px-5">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">Choose your path.</h2>
-            <p className="text-zinc-400 max-w-md mx-auto">
-              Five real-world career tracks, each with AI-generated briefs matched to your level.
+      <RevealSection id="how-it-works" className="px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl sm:p-8">
+          <div className="max-w-2xl">
+            <p className="font-[Satoshi] text-sm uppercase tracking-[0.24em] text-white/40">How it works</p>
+            <h2 className="mt-3 font-[Clash_Display] text-3xl sm:text-4xl">
+              A six-step loop from school effort to career visibility.
+            </h2>
+            <p className="mt-3 font-[Satoshi] text-base text-white/64">
+              Visionary Arc is not a study app with points on top. It is a system that turns discipline into artifacts, artifacts into portfolios, and portfolios into discovery.
             </p>
           </div>
 
-          {/* Horizontal scroll on mobile, grid on desktop */}
-          <div className="flex gap-4 overflow-x-auto pb-3 md:grid md:grid-cols-5 md:overflow-visible md:pb-0 snap-x snap-mandatory md:snap-none">
-            {TRACKS.map((track) => {
-              const Icon = ICON_MAP[track.icon] ?? Sparkles;
-              const projects = TRACK_PROJECTS[track.id] ?? [];
+          <div className="mt-8 grid gap-4 lg:grid-cols-6">
+            {FLOW_STEPS.map((step, index) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: index * 0.05 }}
+                className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 p-5"
+              >
+                <div className="absolute right-4 top-4 font-[Clash_Display] text-4xl leading-none text-white/8">
+                  0{index + 1}
+                </div>
+                <p className="font-[Satoshi] text-xs uppercase tracking-[0.24em] text-[var(--accent)]">
+                  {step.eyebrow}
+                </p>
+                <h3 className="mt-3 font-[Clash_Display] text-xl">{step.title}</h3>
+                <p className="mt-3 font-[Satoshi] text-sm leading-6 text-white/65">{step.body}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </RevealSection>
+
+      <RevealSection className="px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl">
+              <p className="font-[Satoshi] text-sm uppercase tracking-[0.24em] text-white/40">Career tracks</p>
+              <h2 className="mt-3 font-[Clash_Display] text-3xl sm:text-4xl">Choose a lane. Build proof fast.</h2>
+            </div>
+            <Link
+              to={user ? "/tracks" : "/auth"}
+              className="inline-flex items-center gap-2 font-[Satoshi] text-sm text-white/70 transition-colors hover:text-white"
+            >
+              Explore all tracks
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {TRACKS.map((track, index) => {
+              const Icon = ICON_MAP[track.icon] ?? Cpu;
               return (
                 <motion.div
                   key={track.id}
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.2 }}
-                  className="card flex-none w-64 md:w-auto snap-start flex flex-col gap-3"
-                  style={{ borderColor: `var(--track-${track.id})` }}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: index * 0.04 }}
+                  className={`relative overflow-hidden rounded-[1.75rem] border border-white/10 ${track.colors.bg} p-5 backdrop-blur-xl`}
                 >
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `color-mix(in srgb, var(--track-${track.id}) 15%, transparent)` }}>
-                    <Icon className="w-5 h-5" style={{ color: `var(--track-${track.id})` }} />
+                  <div className="absolute right-4 top-4 h-20 w-20 rounded-full bg-white/10 blur-2xl" />
+                  <div className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-black/20 ${track.colors.text}`}>
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <div>
-                    <p className="font-bold text-sm" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>{track.name}</p>
-                    <p className="text-sm md:text-xs mt-0.5" style={{ color: `var(--track-${track.id})` }}>{track.tagline}</p>
-                  </div>
-                  <ul className="space-y-1 mt-auto">
-                    {projects.map((p) => (
-                      <li key={p} className="text-sm md:text-xs leading-snug" style={{ color: "var(--text-muted)" }}>
-                        · {p}
-                      </li>
+                  <p className="mt-4 font-[Satoshi] text-xs uppercase tracking-[0.22em] text-white/45">Track</p>
+                  <h3 className="mt-2 font-[Clash_Display] text-2xl">{track.name}</h3>
+                  <p className={`mt-2 font-[Satoshi] text-sm ${track.colors.text}`}>{track.tagline}</p>
+                  <p className="mt-4 font-[Satoshi] text-sm leading-6 text-white/68">{track.description}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {track.skills.slice(0, 2).map((skill) => (
+                      <span key={skill} className={`rounded-full px-2.5 py-1 font-[Satoshi] text-[11px] ${track.colors.badge}`}>
+                        {skill}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
         </div>
-      </Section>
+      </RevealSection>
 
-      {/* ── 4. HOW IT WORKS ──────────────────────────────────────────────── */}
-      <Section id="how-it-works" className="py-20 px-5" style={{ background: "var(--surface)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ fontFamily: "var(--font-display)" }}>How it works.</h2>
+      <RevealSection className="px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl sm:p-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="font-[Satoshi] text-sm uppercase tracking-[0.24em] text-white/40">Social proof</p>
+              <h2 className="mt-3 font-[Clash_Display] text-3xl sm:text-4xl">Students need more than motivation. They need signal.</h2>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 font-[Satoshi] text-sm text-white/65">
+              <Building2 className="h-4 w-4 text-[var(--accent)]" />
+              Placeholder launch metrics
+            </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8 md:gap-4 relative">
-            {/* Connector line (desktop only) */}
-            <div className="hidden md:block absolute top-7 left-[12.5%] right-[12.5%] h-px" style={{ background: "linear-gradient(90deg, transparent, var(--accent-glow), transparent)" }} />
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {SOCIAL_STATS.map((stat) => (
+              <div key={stat.label} className="rounded-2xl border border-white/10 bg-black/20 p-5">
+                <p className="font-[Clash_Display] text-4xl text-[var(--accent)]">{stat.value}</p>
+                <p className="mt-2 font-[Satoshi] text-sm text-white/65">{stat.label}</p>
+              </div>
+            ))}
+          </div>
 
-            {[
-              { n: "01", title: "Pick a track",         body: "Choose from 5 career paths: Tech, Design, Business, Content, or Social Impact." },
-              { n: "02", title: "Get your AI brief",    body: "Our AI generates a real-world project brief personalized to your grade and goals." },
-              { n: "03", title: "Build the project",    body: "Use any tool you want. Submit your link when you're done — no gatekeeping." },
-              { n: "04", title: "It goes in your portfolio", body: "Your completed project publishes automatically to your public profile." },
-            ].map((step) => (
-              <div key={step.n} className="flex-1 flex flex-col items-center text-center relative z-10">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>
-                  <span className="text-lg font-extrabold" style={{ fontFamily: "var(--font-display)", color: "var(--accent)" }}>
-                    {step.n}
-                  </span>
-                </div>
-                <p className="font-bold text-base mb-1">{step.title}</p>
-                <p className="text-sm text-zinc-400 max-w-[180px]">{step.body}</p>
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {SOCIAL_PROOF.map((item) => (
+              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <h3 className="font-[Clash_Display] text-xl">{item.title}</h3>
+                <p className="mt-3 font-[Satoshi] text-sm leading-6 text-white/62">{item.body}</p>
               </div>
             ))}
           </div>
         </div>
-      </Section>
+      </RevealSection>
 
-      {/* ── 5. THE BRIEF ─────────────────────────────────────────────────── */}
-      <Section className="py-20 px-5">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">
-            Your brief. Made by AI. Made for you.
-          </h2>
-          <p className="text-zinc-400 mb-10">
-            Every brief is personalized — your track, your grade, your level.
-          </p>
-
-          {/* Brief card mockup */}
-          <div className="card text-left mb-8" style={{ borderColor: "var(--track-content)" }}>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 rounded-full" style={{ background: "var(--track-content)" }} />
-              <span className="text-sm md:text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--track-content)", fontFamily: "var(--font-display)" }}>Design & Branding · Standard</span>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-5">
-              <div>
-                <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Your Role</p>
-                <p className="font-semibold" style={{ color: "var(--text-primary)" }}>Junior Brand Strategist</p>
+      <RevealSection className="px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-[var(--accent)]/20 bg-[linear-gradient(135deg,rgba(232,114,42,0.16),rgba(255,255,255,0.04),rgba(10,10,15,0.85))] p-6 backdrop-blur-2xl sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/20 bg-black/20 px-4 py-2 font-[Satoshi] text-xs uppercase tracking-[0.24em] text-[var(--accent)]">
+                <Crown className="h-4 w-4" />
+                Founder Pass
               </div>
-              <div>
-                <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Timeline</p>
-                <p className="font-semibold" style={{ color: "var(--text-primary)" }}>2 weeks</p>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Client</p>
-              <p style={{ color: "var(--text-secondary)" }}>
-                Nour Foundation — a local women's shelter — needs a social media rebrand.
+              <h2 className="mt-4 font-[Clash_Display] text-3xl sm:text-4xl">
+                Pick a tier. Accelerate your momentum and discovery.
+              </h2>
+              <p className="mt-4 max-w-xl font-[Satoshi] text-base leading-7 text-white/70">
+                Founder tiers preview the paid layer: stronger boosts, profile advantages, and earlier access for students who want to move faster.
               </p>
+              <button
+                type="button"
+                onClick={() => navigate("/pricing")}
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 font-[Satoshi] text-sm font-semibold text-black shadow-[0_0_26px_rgba(232,114,42,0.32)] transition-transform hover:-translate-y-0.5"
+              >
+                View Founder Pass
+                <ArrowRight className="h-4 w-4" />
+              </button>
             </div>
 
-            <div className="mt-4">
-              <p className="text-sm md:text-xs mb-1 font-medium" style={{ color: "var(--text-muted)" }}>Brief</p>
-              <p style={{ color: "var(--text-secondary)" }}>
-                You'll research the org, define their brand voice, and design a 3-post Instagram campaign.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2 mt-4">
-              {["Brand Strategy", "Visual Identity", "Social Media", "Copywriting"].map((s) => (
-                <span key={s} className="difficulty-pill" data-rank="B">
-                  {s}
-                </span>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {FOUNDER_TIERS.map((tier) => (
+                <div
+                  key={tier.name}
+                  className="rounded-2xl border border-white/10 bg-black/25 p-5 backdrop-blur-xl"
+                >
+                  <p className="font-[Satoshi] text-xs uppercase tracking-[0.22em] text-white/40">{tier.name}</p>
+                  <p className="mt-2 font-[Clash_Display] text-3xl">{tier.price}</p>
+                  <p className="mt-3 font-[Satoshi] text-sm leading-6 text-white/62">{tier.perk}</p>
+                </div>
               ))}
             </div>
-
-            <div className="mt-4 pt-4 flex items-center justify-between" style={{ borderTop: "1px solid var(--border)" }}>
-              <span className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>+400 XP on completion</span>
-              <span className="text-sm md:text-xs font-medium" style={{ color: "var(--rank-d)" }}>Portfolio-ready</span>
-            </div>
-          </div>
-
-          <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>Generate yours in 10 seconds.</p>
-          <button
-            className="btn btn-primary px-10"
-            onClick={() => navigate(user ? "/tracks" : "/auth")}
-          >
-            Start free <ArrowRight className="w-4 h-4 ml-2" />
-          </button>
-        </div>
-      </Section>
-
-      {/* ── 6. GAMIFICATION ──────────────────────────────────────────────── */}
-      <Section className="py-20 px-5" style={{ background: "var(--surface)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ fontFamily: "var(--font-display)" }}>Level up. For real.</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {[
-              { icon: Trophy, rankVar: "--rank-s",  title: "Status Tiers",       body: "Climb from Beginner to Elite. Each tier unlocks harder projects, better companies, and exclusive opportunities.", detail: "Beginner → Builder → Creator → Pro → Elite" },
-              { icon: Flame,  rankVar: "--rank-a",  title: "Daily Streaks",      body: "Study every day. Earn XP. Maintain your streak to unlock bonus coins and rare project briefs.",                  detail: "7-day streak = +200 XP bonus" },
-              { icon: Target, rankVar: "--rank-d",  title: "Company Challenges", body: "Real companies post real challenges. Win prizes. Get noticed. Add it to your portfolio.",                         detail: "Real rewards. Real experience." },
-            ].map((card) => {
-              const Icon = card.icon;
-              return (
-                <div key={card.title} className="card">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style={{ background: "var(--surface-3)" }}>
-                    <Icon className="w-5 h-5" style={{ color: `var(${card.rankVar})` }} />
-                  </div>
-                  <h3 className="font-bold text-lg mb-2" style={{ fontFamily: "var(--font-display)" }}>{card.title}</h3>
-                  <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>{card.body}</p>
-                  <p className="text-sm md:text-xs font-semibold" style={{ color: `var(${card.rankVar})`, fontFamily: "var(--font-display)" }}>{card.detail}</p>
-                </div>
-              );
-            })}
           </div>
         </div>
-      </Section>
+      </RevealSection>
 
-      {/* ── 7. FOOTER CTA ────────────────────────────────────────────────── */}
-      <Section className="py-28 px-5 text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-5 leading-tight" style={{ fontFamily: "var(--font-display)" }}>
-            Your portfolio won't{" "}
-            <span style={{ background: "linear-gradient(90deg, var(--rank-s), var(--rank-a))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              build itself.
-            </span>
-          </h2>
-          <p className="mb-9 text-lg" style={{ color: "var(--text-secondary)" }}>
-            Join thousands of students already building real career experience — for free.
-          </p>
-          <button
-            className="btn btn-primary px-12 text-base"
-            onClick={() => navigate(user ? "/dashboard" : "/auth")}
-          >
-            Get started free <ArrowRight className="w-4 h-4 ml-2" />
-          </button>
-        </div>
-      </Section>
-
-      {/* ── Footer ───────────────────────────────────────────────────────── */}
-      <footer className="py-8 px-5" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm" style={{ color: "var(--text-muted)" }}>
-          <div className="flex items-center gap-2 font-semibold" style={{ color: "var(--text-primary)", fontFamily: "var(--font-display)" }}>
-            <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: "var(--accent)" }}>
-              <Sparkles className="w-3.5 h-3.5" style={{ color: "var(--bg-base)" }} />
-            </div>
-            Visionary Arc
+      <footer className="border-t border-white/10 px-4 py-8 sm:px-6">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-[Clash_Display] text-lg">Visionary Arc</p>
+            <p className="mt-1 font-[Satoshi] text-sm text-white/50">
+              © {new Date().getFullYear()} Build real projects. Get discovered.
+            </p>
           </div>
-          <p>© 2026 Visionary Arc. Built for the next generation.</p>
-          <div className="flex gap-5">
-            <Link to="/pricing" style={{ color: "var(--text-secondary)" }}>Pricing</Link>
-            <a href="mailto:hello@visionaryacademy.com" style={{ color: "var(--text-secondary)" }}>Contact</a>
+
+          <div className="flex flex-wrap gap-4 font-[Satoshi] text-sm text-white/62">
+            <Link to="/pricing" className="transition-colors hover:text-white">Founder Pass</Link>
+            <Link to={user ? "/dashboard" : "/auth"} className="transition-colors hover:text-white">Get started</Link>
+            <Link to="/tracks" className="transition-colors hover:text-white">Career tracks</Link>
           </div>
         </div>
       </footer>

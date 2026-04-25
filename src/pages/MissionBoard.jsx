@@ -16,7 +16,26 @@ function SkeletonGrid() {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {Array.from({ length: 3 }).map((_, index) => (
-        <div key={index} className="h-72 rounded-xl bg-white/5 animate-pulse" />
+        <div key={index} className="rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-md animate-pulse">
+          <div className="space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-2">
+                <div className="h-3 w-20 rounded bg-white/5" />
+                <div className="h-6 w-40 rounded bg-white/5" />
+              </div>
+              <div className="h-10 w-10 rounded-xl bg-white/5" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-4 w-full rounded bg-white/5" />
+              <div className="h-4 w-4/5 rounded bg-white/5" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="h-16 rounded-2xl bg-white/5" />
+              <div className="h-16 rounded-2xl bg-white/5" />
+            </div>
+            <div className="h-11 rounded-xl bg-white/5" />
+          </div>
+        </div>
       ))}
     </div>
   );

@@ -19,27 +19,15 @@ if (!isUsingRealAPI()) {
 }
 
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
-const TeacherClasses = lazy(() => import("./pages/teacher/Classes"));
-const TeacherAssignments = lazy(() => import("./pages/teacher/Assignments"));
-const AssignmentCreator = lazy(() => import("./pages/AssignmentCreator"));
-const TeacherStudents = lazy(() => import("./pages/teacher/Students"));
-const StudentIntelligence = lazy(() => import("./pages/teacher/StudentIntelligence"));
-const TeacherGradebook = lazy(() => import("./pages/teacher/Gradebook"));
-const TeacherResources = lazy(() => import("./pages/teacher/Resources"));
-const TeacherAIToolsPage = lazy(() => import("./pages/teacher/AIToolsPage"));
 const StudentAIToolsPage = lazy(() => import("./pages/student/AIToolsPage"));
 const MyGrades = lazy(() => import("./pages/MyGrades"));
 const DMInbox = lazy(() => import("./pages/DMInbox"));
-const InvestorDashboard = lazy(() => import("./pages/InvestorDashboard"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const TasksPage = lazy(() => import("./pages/TasksPage"));
 const StudyHub = lazy(() => import("./pages/StudyHub"));
 const Library = lazy(() => import("./pages/Library"));
-const Community = lazy(() => import("./pages/Community"));
-const StudyRoomPage = lazy(() => import("./components/StudyRoom/StudyRoomPage"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -48,12 +36,10 @@ const SATACTPractice = lazy(() => import("./pages/SATACTPractice"));
 const PracticePage = lazy(() => import("./pages/PracticePage"));
 const ReferralPage = lazy(() => import("./pages/ReferralPage"));
 const ChallengesPage = lazy(() => import("./pages/ChallengesPage"));
-const Strengths = lazy(() => import("./pages/Strengths"));
 const NotesStudio = lazy(() => import("./pages/NotesStudio"));
 const NotesGraph = lazy(() => import("./pages/NotesGraph"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Success = lazy(() => import("./pages/Success"));
-const RewardsTrack = lazy(() => import("./components/RewardsTrack"));
 const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 const LevelUpOverlay = lazy(() => import("./components/LevelUpOverlay"));
 const TrackHubPage = lazy(() => import("./pages/tracks/TrackHubPage"));
@@ -443,8 +429,6 @@ function AppRouter() {
     return <AuthCallback />;
   }
 
-  const defaultRoute = '/dashboard';
-
   return (
     <>
       <StreakAtRiskEffect />
@@ -478,11 +462,6 @@ function AppRouter() {
       <Route path="/library" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Library />} />
       </Route>
-      {/* PHASE 2 — re-enable when ready */}
-      {/* <Route path="/community" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route index element={<Community />} />
-      </Route>
-      <Route path="/community/room/:roomId" element={<ProtectedRoute><StudyRoomPage /></ProtectedRoute>} /> */}
       <Route path="/shop" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Shop />} />
       </Route>
@@ -501,10 +480,6 @@ function AppRouter() {
       <Route path="/practice-hub" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<PracticePage />} />
       </Route>
-      {/* PHASE 2 — re-enable when ready */}
-      {/* <Route path="/strengths" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route index element={<Strengths />} />
-      </Route> */}
       <Route path="/notes-studio" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<NotesStudio />} />
       </Route>
@@ -518,26 +493,9 @@ function AppRouter() {
       <Route path="/settings" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Settings />} />
       </Route>
-      {/* PHASE 2 — re-enable when ready */}
-      {/* <Route path="/teacher" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route index element={<TeacherDashboard />} />
-        <Route path="classes" element={<TeacherClasses />} />
-        <Route path="assignments" element={<TeacherAssignments />} />
-        <Route path="assignments/create" element={<AssignmentCreator />} />
-        <Route path="students" element={<TeacherStudents />} />
-        <Route path="students/intelligence" element={<StudentIntelligence />} />
-        <Route path="gradebook" element={<TeacherGradebook />} />
-        <Route path="ai-generator" element={<TeacherAssignments autoOpenAI />} />
-        <Route path="resources" element={<TeacherResources />} />
-        <Route path="ai-tools" element={<TeacherAIToolsPage />} />
-      </Route> */}
       <Route path="/student" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="ai-tools" element={<StudentAIToolsPage />} />
       </Route>
-      {/* PHASE 2 — re-enable when ready */}
-      {/* <Route path="/investor" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route index element={<InvestorDashboard />} />
-      </Route> */}
       <Route path="/rewards" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<LeaderboardPage />} />
       </Route>

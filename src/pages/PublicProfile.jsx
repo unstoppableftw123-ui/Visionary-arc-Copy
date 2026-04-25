@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Loader2, ExternalLink, ArrowRight } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { supabase } from "../services/supabaseClient";
 import { getPortfolio } from "../services/db";
@@ -164,8 +164,34 @@ export default function PublicProfile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="animate-spin text-muted-foreground" size={32} />
+      <div className="min-h-screen bg-background px-4 py-12">
+        <div className="mx-auto max-w-2xl space-y-10">
+          <div className="flex justify-center">
+            <div className="h-4 w-28 rounded bg-white/5 animate-pulse" />
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 animate-pulse">
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-24 w-24 rounded-full bg-white/5" />
+              <div className="h-6 w-48 rounded bg-white/5" />
+              <div className="h-4 w-36 rounded bg-white/5" />
+              <div className="grid w-full gap-3 sm:grid-cols-3">
+                <div className="h-20 rounded-xl bg-white/5" />
+                <div className="h-20 rounded-xl bg-white/5" />
+                <div className="h-20 rounded-xl bg-white/5" />
+              </div>
+            </div>
+          </div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="rounded-2xl border border-white/10 bg-white/5 p-5 animate-pulse">
+                <div className="h-20 rounded-xl bg-white/5" />
+                <div className="mt-4 h-5 w-40 rounded bg-white/5" />
+                <div className="mt-2 h-4 w-28 rounded bg-white/5" />
+                <div className="mt-4 h-4 w-full rounded bg-white/5" />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

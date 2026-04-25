@@ -6,7 +6,7 @@ import FloatingAIChat from "./FloatingAIChat";
 
 const HIDE_BANNER_ROUTES = ["/settings"];
 // Routes that manage their own layout/scrolling and need no padding wrapper
-const FULL_HEIGHT_ROUTES = ["/community", "/notes-studio", "/teacher/assignments/create", "/practice-hub"];
+const FULL_HEIGHT_ROUTES = ["/notes-studio", "/practice-hub"];
 
 /**
  * Root layout for all authenticated pages: sidebar + main content area.

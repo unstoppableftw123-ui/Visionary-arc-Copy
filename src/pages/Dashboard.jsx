@@ -338,7 +338,6 @@ export default function Dashboard() {
     { icon: <CheckSquare className="w-5 h-5" />, label: "Tasks", href: "/tasks", color: "bg-brand-card text-brand-orange" },
     { icon: <Book className="w-5 h-5" />, label: "Study Hub", href: "/study", color: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
     { icon: <GraduationCap className="w-5 h-5" />, label: "SAT / ACT", href: "/practice", color: "bg-orange-600/10 dark:bg-orange-600/10 text-orange-400 dark:text-orange-400" },
-    { icon: <Users className="w-5 h-5" />, label: "Community", href: "/community", color: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400" },
     { icon: <Trophy className="w-5 h-5" />, label: "Competitions", href: "/competitions", color: "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400" },
     { icon: <Gift className="w-5 h-5" />, label: "Shop", href: "/shop", color: "bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400" },
     { icon: <BadgeCheck className="w-5 h-5" />, label: "My Grades", href: "/grades", color: "bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400" },
