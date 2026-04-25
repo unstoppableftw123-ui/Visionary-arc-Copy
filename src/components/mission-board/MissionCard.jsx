@@ -1,205 +1,136 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Lock, ExternalLink } from 'lucide-react';
-import { Button } from '../ui/button';
-import { RANK_COLORS, TRACK_ICONS } from '../../styles/ranks';
-import TierBadge from '../ui/TierBadge';
-import QuestCheck from '../ui/QuestCheck';
+import { AnimatePresence, motion } from "framer-motion";
+import { Coins, Sparkles, Trophy } from "lucide-react";
+import { Button } from "../ui/button";
 
-const RANK_ORDER = ['E', 'D', 'C', 'B', 'A', 'S'];
-
-function useCountdown(deadline) {
-  const [timeLeft, setTimeLeft] = useState('');
-
-  useEffect(() => {
-    if (!deadline) return;
-
-    const calc = () => {
-      const diff = new Date(deadline) - Date.now();
-      if (diff <= 0) { setTimeLeft('Expired'); return; }
-      const h = Math.floor(diff / 3_600_000);
-      const m = Math.floor((diff % 3_600_000) / 60_000);
-      setTimeLeft(h > 0 ? `${h}h ${m}m left` : `${m}m left`);
-    };
-
-    calc();
-    const id = setInterval(calc, 60_000);
-    return () => clearInterval(id);
-  }, [deadline]);
-
-  return timeLeft;
-}
-
-function useExpiry(expiresAt) {
-  const [label, setLabel] = useState('');
-
-  useEffect(() => {
-    if (!expiresAt) { setLabel('No expiry'); return; }
-    const calc = () => {
-      const diff = new Date(expiresAt) - Date.now();
-      if (diff <= 0) { setLabel('Expired'); return; }
-      const d = Math.floor(diff / 86_400_000);
-      const h = Math.floor((diff % 86_400_000) / 3_600_000);
-      setLabel(d > 0 ? `${d}d ${h}h left` : `${h}h left`);
-    };
-    calc();
-    const id = setInterval(calc, 60_000);
-    return () => clearInterval(id);
-  }, [expiresAt]);
-
-  return label;
-}
-
-/**
- * MissionCard
- *
- * Props:
- *   mission       – row from `missions` table
- *   assignment    – row from `mission_assignments` (null if not claimed)
- *   userRank      – 'E' | 'D' | 'C' | 'B' | 'A' | 'S'
- *   onClaim       – () => void
- *   onSubmit      – (assignment) => void  (opens modal)
- */
-export default function MissionCard({ mission, assignment, userRank = 'E', onClaim, onSubmit }) {
-  const rank = mission.difficulty ?? 'E';
-  const rankMeta = RANK_COLORS[rank] ?? RANK_COLORS.E;
-  const trackIcon = TRACK_ICONS[mission.track] ?? '📋';
-  const expiryLabel = useExpiry(mission.expires_at);
-  const countdown = useCountdown(assignment?.deadline);
-
-  const userRankIdx = RANK_ORDER.indexOf(userRank);
-  const minRankIdx  = RANK_ORDER.indexOf(mission.min_rank_required ?? 'E');
-  const locked = userRankIdx < minRankIdx;
-
-  const isAvailable  = !assignment && !locked && mission.status === 'published';
-  const isInProgress = assignment?.status === 'in_progress';
-  const isSubmitted  = assignment?.status === 'submitted';
-  const isCompleted  = assignment?.status === 'approved';
+export default function MissionCard({
+  mission,
+  onClaim,
+  claiming = false,
+  celebrate = false,
+  dailyLimitReached = false,
+}) {
+  const progress = mission?.progress ?? 0;
+  const target = Math.max(1, mission?.target ?? 1);
+  const progressPercent = Math.min(100, Math.round((progress / target) * 100));
+  const readyToClaim = progress >= target && !mission?.claimed;
+  const typeLabel = mission?.type === "weekly" ? "Weekly" : "Daily";
 
   return (
     <motion.div
-      className="card relative flex flex-col gap-3 select-none"
-      data-difficulty={rank}
-      style={{ opacity: locked ? 0.55 : 1 }}
-      whileHover={!locked ? { rotate: 0.4 } : {}}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      transition={{ duration: 0.25 }}
+      className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-md"
     >
-      {/* Lock overlay */}
-      {locked && (
-        <div className="absolute inset-0 flex items-center justify-center z-10" style={{ borderRadius: "var(--radius-lg)", background: "rgba(0,0,0,0.5)" }}>
-          <Lock className="w-8 h-8" style={{ color: "var(--text-muted)" }} />
-        </div>
-      )}
+      <AnimatePresence>
+        {celebrate && (
+          <>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1.4 }}
+              exit={{ opacity: 0, scale: 1.8 }}
+              transition={{ duration: 0.7 }}
+              className="pointer-events-none absolute inset-0 rounded-full bg-yellow-400/10 blur-2xl"
+            />
+            {Array.from({ length: 6 }).map((_, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, scale: 0.3, x: 0, y: 0 }}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0.3, 1, 0.6],
+                  x: [0, (index - 2.5) * 16],
+                  y: [0, index % 2 === 0 ? -26 : 26],
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.04 }}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-3 w-3 rounded-full bg-yellow-400"
+              />
+            ))}
+          </>
+        )}
+      </AnimatePresence>
 
-      {/* Header row */}
-      <div className="flex items-start justify-between gap-2">
-        {/* Difficulty badge */}
-        <div className="badge-rank" data-rank={rank}>{rank}</div>
+      <div className="relative z-10 space-y-4">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <span className="inline-flex rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs uppercase tracking-[0.18em] text-white/55">
+              {typeLabel}
+            </span>
+            <h3 className="mt-3 font-[Clash_Display] text-2xl text-white">{mission?.title}</h3>
+            <p className="mt-2 font-[Satoshi] text-sm leading-6 text-white/65">{mission?.description}</p>
+          </div>
 
-        <div className="flex items-center gap-2">
-          {/* Tier badge */}
-          {mission.tier && ['d','c','b','a','s'].includes(mission.tier.toLowerCase()) && (
-            <TierBadge tier={mission.tier.toLowerCase()} size={20} />
+          {mission?.claimed ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+              <Trophy className="h-3.5 w-3.5" />
+              Claimed
+            </span>
+          ) : readyToClaim ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-300">
+              <Sparkles className="h-3.5 w-3.5" />
+              Ready
+            </span>
+          ) : (
+            <span className="inline-flex rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold text-white/50">
+              In Progress
+            </span>
           )}
-          {/* Track */}
-          <div className="track-pill">
-            <span>{trackIcon}</span>
-            <span className="capitalize">{mission.track ?? 'General'}</span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+            <p className="text-xs uppercase tracking-[0.18em] text-white/40">Reward</p>
+            <p className="mt-2 font-[Clash_Display] text-lg text-white">{mission?.xp_reward ?? 0} XP</p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+            <p className="text-xs uppercase tracking-[0.18em] text-white/40">Coins</p>
+            <p className="mt-2 flex items-center gap-1 font-[Clash_Display] text-lg text-yellow-300">
+              <Coins className="h-4 w-4" />
+              {mission?.coins_reward ?? 0}
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* Title + description */}
-      <div className="flex-1">
-        <p className="font-bold text-sm leading-snug mb-1 line-clamp-2" style={{ color: "var(--text-primary)", fontFamily: "var(--font-display)" }}>
-          {mission.title}
-        </p>
-        <p className="text-sm md:text-xs line-clamp-2 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-          {mission.description}
-        </p>
-      </div>
-
-      {/* Rewards + time row */}
-      <div className="flex items-center justify-between text-sm md:text-xs">
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1 font-semibold" style={{ color: "var(--rank-s)" }}>
-            ⚡ {mission.xp_reward ?? 0} XP
-          </span>
-          <span className="flex items-center gap-1 font-semibold" style={{ color: "var(--accent)" }}>
-            🪙 {mission.coins_reward ?? 0}
-          </span>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-sm text-white/60">
+            <span>Progress</span>
+            <span>
+              {progress}/{target}
+            </span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-yellow-500 via-amber-400 to-orange-400"
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 0.35 }}
+            />
+          </div>
         </div>
-        <span style={{ color: "var(--text-muted)" }}>
-          {isInProgress ? countdown : expiryLabel}
-        </span>
-      </div>
 
-      {/* Star rating for completed */}
-      {isCompleted && assignment?.rating != null && (
-        <div className="flex items-center gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} style={{ color: i < assignment.rating ? "var(--rank-s)" : "var(--text-muted)" }}>★</span>
-          ))}
-        </div>
-      )}
-
-      {/* CTA button */}
-      {isAvailable && (
-        <button
-          className="btn btn-primary w-full mt-1 text-sm md:text-xs"
-          onClick={onClaim}
+        <Button
+          type="button"
+          onClick={() => onClaim?.(mission)}
+          disabled={!readyToClaim || claiming || (dailyLimitReached && mission?.type === "daily")}
+          className={
+            readyToClaim
+              ? "w-full bg-yellow-500 text-black hover:bg-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.4)]"
+              : "w-full border border-white/10 bg-white/5 text-white/45 hover:bg-white/5"
+          }
         >
-          Claim Mission
-        </button>
-      )}
-
-      {isInProgress && (
-        <button
-          className="btn btn-ghost w-full mt-1 text-sm md:text-xs"
-          onClick={() => onSubmit(assignment)}
-        >
-          Submit Work
-        </button>
-      )}
-
-      {isSubmitted && (
-        <div className="flex items-center justify-between mt-1">
-          <span className="text-sm md:text-xs font-medium" style={{ color: "var(--rank-c)" }}>Under Review</span>
-          {assignment?.submission_url && (
-            <a
-              href={assignment.submission_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-sm md:text-xs"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              <ExternalLink className="w-3 h-3" />
-              View
-            </a>
-          )}
-        </div>
-      )}
-
-      {isCompleted && (
-        <div className="flex items-center justify-between mt-1">
-          <span className="flex items-center gap-1 text-sm md:text-xs font-medium" style={{ color: "var(--rank-d)" }}>
-            <QuestCheck isComplete={true} size={16} />
-            Approved
-          </span>
-          {assignment?.submission_url && (
-            <a
-              href={assignment.submission_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-sm md:text-xs"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              <ExternalLink className="w-3 h-3" />
-              View Submission
-            </a>
-          )}
-        </div>
-      )}
+          {mission?.claimed
+            ? "Claimed"
+            : claiming
+            ? "Claiming..."
+            : readyToClaim
+            ? dailyLimitReached && mission?.type === "daily"
+              ? "Daily Limit Reached"
+              : "Claim Rewards"
+            : "Keep Going"}
+        </Button>
+      </div>
     </motion.div>
   );
 }

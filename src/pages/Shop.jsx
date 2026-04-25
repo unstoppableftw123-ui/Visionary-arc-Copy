@@ -14,7 +14,7 @@ import {
   purchaseSeasonPass,
   purchaseCoinTopUp,
 } from "../services/stripeService";
-import { redeemCoinsForGiftCard } from "../services/usageService";
+import { checkRedemptionEligibility } from "../services/usageService";
 import { useFeatureGate } from "../hooks/useFeatureGate";
 import LockedFeatureOverlay from "../components/LockedFeatureOverlay";
 import { toast } from "sonner";
@@ -67,8 +67,6 @@ const COIN_PACKS = [
 
 const COIN_TO_DOLLAR = 1000;
 const GIFT_CARD_MIN = 5000;
-const GIFT_CARD_INCREMENTS = [5000, 10000, 15000, 25000];
-
 export default function Shop() {
   const { user, setUser } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("season");
@@ -77,12 +75,19 @@ export default function Shop() {
   const [giftAmount, setGiftAmount] = useState(GIFT_CARD_MIN);
   const [giftSubmitted, setGiftSubmitted] = useState(false);
   const [giftLoading, setGiftLoading] = useState(false);
+  const [eligibilityLoading, setEligibilityLoading] = useState(false);
+  const [eligibility, setEligibility] = useState({ eligible: false, reason: null, coinsNeeded: 0 });
   const [coinBalance, setCoinBalance] = useState(0);
   const [balanceLoading, setBalanceLoading] = useState(true);
   const giftGate = useFeatureGate('gift_card_redemption');
 
   const cosmetics = user?.cosmetics ?? { border: "default", card_bg: "default", badge_frame: "default" };
   const effectiveCoins = coinBalance ?? 0;
+  const maxGiftAmount = Math.floor(effectiveCoins / COIN_TO_DOLLAR) * COIN_TO_DOLLAR;
+  const giftAmountOptions = Array.from(
+    { length: Math.max(0, (maxGiftAmount - GIFT_CARD_MIN) / COIN_TO_DOLLAR + 1) },
+    (_, index) => GIFT_CARD_MIN + index * COIN_TO_DOLLAR,
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -109,6 +114,70 @@ export default function Shop() {
       mounted = false;
     };
   }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    let mounted = true;
+    const loadEligibility = async () => {
+      if (!user?.id || !giftGate.unlocked) return;
+      setEligibilityLoading(true);
+      try {
+        const result = await checkRedemptionEligibility(user.id);
+        if (mounted) setEligibility(result);
+      } catch {
+        if (mounted) setEligibility({ eligible: false, reason: "error", coinsNeeded: 0 });
+      } finally {
+        if (mounted) setEligibilityLoading(false);
+      }
+    };
+    loadEligibility();
+    return () => { mounted = false; };
+  }, [user?.id, giftGate.unlocked]);
+
+  useEffect(() => {
+    if (giftAmountOptions.length === 0) {
+      setGiftAmount(GIFT_CARD_MIN);
+      return;
+    }
+
+    if (!giftAmountOptions.includes(giftAmount)) {
+      setGiftAmount(giftAmountOptions[giftAmountOptions.length - 1]);
+    }
+  }, [giftAmount, giftAmountOptions]);
+
+  const handleGiftRedemption = async () => {
+    if (!user?.id) return;
+    setGiftLoading(true);
+    try {
+      const eligibilityResult = await checkRedemptionEligibility(user.id);
+      if (!eligibilityResult.eligible) {
+        setEligibility(eligibilityResult);
+        throw new Error("Not eligible for redemption yet.");
+      }
+
+      const newBalance = await spendUserCoins(user.id, giftAmount, "gift_card_redemption");
+      if (newBalance == null) {
+        throw new Error("Insufficient coins.");
+      }
+
+      const { error } = await supabase.from("gift_card_requests").insert({
+        user_id: user.id,
+        coin_amount: giftAmount,
+        dollar_value: giftAmount / COIN_TO_DOLLAR,
+        status: "pending",
+      });
+      if (error) throw error;
+
+      setCoinBalance(newBalance);
+      setUser((prev) => ({ ...prev, coins: newBalance }));
+      setGiftSubmitted(true);
+      toast.success("Request submitted! Processing within 48 hours");
+      setEligibility({ eligible: newBalance >= GIFT_CARD_MIN, reason: null, coinsNeeded: Math.max(0, GIFT_CARD_MIN - newBalance) });
+    } catch (err) {
+      toast.error(err.message ?? "Redemption failed.");
+    } finally {
+      setGiftLoading(false);
+    }
+  };
 
   // Owned cosmetics are those the user has previously equipped or purchased.
   // We store equipped state in profile.cosmetics. For "owned" tracking we check
@@ -194,8 +263,8 @@ export default function Shop() {
     return (
       <div className="flex-1 p-8">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 w-48 bg-muted rounded" />
-          <div className="h-64 bg-muted rounded-xl" />
+          <div className="h-8 w-48 bg-white/5 rounded" />
+          <div className="h-64 bg-white/5 rounded-xl" />
         </div>
       </div>
     );
@@ -536,15 +605,39 @@ export default function Shop() {
                       </div>
                     </div>
 
-                    {effectiveCoins < GIFT_CARD_MIN ? (
+                    {eligibilityLoading ? (
+                      <div className="animate-pulse space-y-2">
+                        <div className="h-12 rounded-xl bg-white/5" />
+                        <div className="h-12 rounded-xl bg-white/5" />
+                      </div>
+                    ) : !giftGate.loading && !giftGate.unlocked ? (
+                      <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                        <p className="font-[Clash_Display] text-lg text-white">Community milestone locked</p>
+                        <p className="mt-2 text-sm text-white/65">
+                          Gift cards unlock when the community reaches 1,000 users. Invite friends to help open the redemption vault faster.
+                        </p>
+                      </div>
+                    ) : !eligibility?.eligible && eligibility?.reason === "not_enough_coins" ? (
                       <div className="rounded-xl border border-brand-orange/20 bg-brand-orange/8 p-4 flex gap-3">
                         <AlertCircle className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                         <div className="space-y-1">
-                          <p className="text-sm font-medium text-brand-tan">Not enough coins</p>
+                          <p className="text-sm font-medium text-brand-tan">You need more coins to redeem</p>
                           <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
-                            You need {(GIFT_CARD_MIN - effectiveCoins).toLocaleString()} more
-                            coins to redeem. Earn coins by studying, completing missions, and
-                            referring friends.
+                            You need {(eligibility?.coinsNeeded ?? Math.max(0, GIFT_CARD_MIN - effectiveCoins)).toLocaleString()} more coins to unlock your first $5 reward. Study, finish missions, and stack streaks to get there faster.
+                          </p>
+                        </div>
+                      </div>
+                    ) : !eligibility?.eligible ? (
+                      <div className="rounded-xl border border-brand-orange/20 bg-brand-orange/8 p-4 flex gap-3">
+                        <AlertCircle className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-brand-tan">
+                            {eligibility?.reason === "redemptions_disabled" ? "Redemptions are still warming up" : "Subscriber gate still locked"}
+                          </p>
+                          <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+                            {eligibility?.reason === "redemptions_disabled"
+                              ? "The community has unlocked gift cards, but the redemption switch is still off. Check back soon."
+                              : "Gift cards need at least 5 subscribers before requests can be processed."}
                           </p>
                         </div>
                       </div>
@@ -553,44 +646,51 @@ export default function Shop() {
                         {/* Amount selector */}
                         <div className="space-y-2">
                           <p className="text-sm md:text-xs uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Select amount</p>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {GIFT_CARD_INCREMENTS.filter((a) => a <= effectiveCoins).map((amount) => (
+                          <div className="rounded-xl border border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_4%,transparent)] p-4 space-y-4">
+                            <div className="flex items-center gap-3">
                               <button
-                                key={amount}
-                                onClick={() => setGiftAmount(amount)}
-                                className={`rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
-                                  giftAmount === amount
-                                    ? "border-brand-orange/60 bg-brand-orange/15 text-brand-orange"
-                                    : "border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_4%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)] hover:border-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] hover:text-[var(--text-primary)]"
-                                }`}
+                                type="button"
+                                onClick={() => setGiftAmount((current) => Math.max(GIFT_CARD_MIN, current - COIN_TO_DOLLAR))}
+                                disabled={giftAmount <= GIFT_CARD_MIN}
+                                className="h-11 w-11 rounded-xl border border-white/10 bg-white/5 text-white disabled:opacity-40"
                               >
-                                ${(amount / COIN_TO_DOLLAR).toFixed(0)}
-                                <span className="block text-sm md:text-[10px] opacity-60 mt-0.5 font-normal">
-                                  {amount.toLocaleString()} coins
-                                </span>
+                                -
                               </button>
-                            ))}
+                              <div className="flex-1 rounded-xl border border-brand-orange/25 bg-brand-orange/10 px-4 py-3 text-center">
+                                <p className="font-[Clash_Display] text-2xl text-white">${(giftAmount / COIN_TO_DOLLAR).toFixed(0)}</p>
+                                <p className="text-sm text-white/55">{giftAmount.toLocaleString()} coins</p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setGiftAmount((current) => Math.min(maxGiftAmount, current + COIN_TO_DOLLAR))}
+                                disabled={giftAmount >= maxGiftAmount}
+                                className="h-11 w-11 rounded-xl border border-white/10 bg-white/5 text-white disabled:opacity-40"
+                              >
+                                +
+                              </button>
+                            </div>
+
+                            <label className="block text-sm text-white/60">
+                              Redemption amount
+                              <select
+                                value={giftAmount}
+                                onChange={(event) => setGiftAmount(Number(event.target.value))}
+                                className="mt-2 w-full rounded-xl border border-white/10 bg-[#0A0A0F] px-4 py-3 text-white outline-none"
+                              >
+                                {giftAmountOptions.map((amount) => (
+                                  <option key={amount} value={amount}>
+                                    {amount.toLocaleString()} coins (${(amount / COIN_TO_DOLLAR).toFixed(0)})
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
                           </div>
                         </div>
 
                         <Button
                           className="w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-brand-deep hover:to-orange-400 text-zinc-950 font-bold border-0"
                           disabled={giftLoading}
-                          onClick={async () => {
-                            if (!user?.id) return;
-                            setGiftLoading(true);
-                            try {
-                              await redeemCoinsForGiftCard(user.id, giftAmount);
-                              const updated = await getCoinBalance(user.id);
-                              setCoinBalance(updated ?? Math.max(0, effectiveCoins - giftAmount));
-                              setUser((prev) => ({ ...prev, coins: updated ?? Math.max(0, (prev.coins ?? 0) - giftAmount) }));
-                              setGiftSubmitted(true);
-                            } catch (err) {
-                              toast.error(err.message ?? "Redemption failed.");
-                            } finally {
-                              setGiftLoading(false);
-                            }
-                          }}
+                          onClick={handleGiftRedemption}
                         >
                           {giftLoading
                             ? "Processing…"

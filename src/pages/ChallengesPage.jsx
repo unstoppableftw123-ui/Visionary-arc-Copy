@@ -8,6 +8,7 @@ import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { useFeatureGate } from "../hooks/useFeatureGate";
+import ArtifactChallengesPage from "./ArtifactChallengesPage";
 import { supabase } from "../services/supabaseClient";
 import { getTierForXP } from "../services/xpService";
 
@@ -418,6 +419,8 @@ export default function ChallengesPage() {
             })}
           </div>
         )}
+
+        <ArtifactChallengesPage embedded={true} />
       </div>
     </div>
   );

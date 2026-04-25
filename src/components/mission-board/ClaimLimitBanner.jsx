@@ -1,79 +1,41 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '../ui/button';
-import { toast } from 'sonner';
-import { supabase } from '../../services/supabaseClient';
+import { motion } from "framer-motion";
+import { Target } from "lucide-react";
 
-const SLOT_COST = 50;
-
-/**
- * ClaimLimitBanner
- *
- * Props:
- *   dailyCount  – number of missions claimed today (show when >= 3)
- *   userCoins   – current coin balance
- *   userId      – auth user id
- *   onSlotUnlocked – () => void  (refresh parent after purchase)
- */
-export default function ClaimLimitBanner({ dailyCount, userCoins, userId, onSlotUnlocked }) {
-  const [loading, setLoading] = useState(false);
-
-  if (dailyCount < 3) return null;
-
-  const canAfford = userCoins >= SLOT_COST;
-
-  const handleUnlock = async () => {
-    if (!canAfford || loading) return;
-    setLoading(true);
-    try {
-      // Deduct coins
-      const { error: deductErr } = await supabase.rpc('deduct_coins', {
-        p_user_id: userId,
-        p_amount:  SLOT_COST,
-        p_reason:  'unlock_extra_mission_slot',
-      });
-
-      if (deductErr) throw deductErr;
-
-      toast.success(`Extra slot unlocked! 🪙 -${SLOT_COST} coins`);
-      onSlotUnlocked?.();
-    } catch (err) {
-      toast.error(err?.message ?? 'Could not unlock slot. Try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function ClaimLimitBanner({ dailyCount, dailyLimit = 3 }) {
+  const remaining = Math.max(0, dailyLimit - dailyCount);
+  const progress = Math.min(100, (dailyCount / dailyLimit) * 100);
+  const limitReached = dailyCount >= dailyLimit;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        className="flex items-center justify-between gap-4 rounded-xl px-4 py-3 mb-4"
-        style={{
-          background: 'linear-gradient(90deg, rgba(232,114,42,0.12) 0%, rgba(232,114,42,0.04) 100%)',
-          border: '1px solid rgba(232,114,42,0.3)',
-        }}
-      >
-        <div className="flex items-center gap-2.5 text-sm">
-          <span className="text-xl">🪙</span>
-          <span className="text-brand-tan font-medium">
-            You've claimed 3 missions today.{' '}
-            <span className="text-muted-foreground font-normal">Resets at midnight UTC.</span>
-          </span>
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md"
+    >
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-yellow-400/20 bg-yellow-400/10">
+            <Target className="h-5 w-5 text-yellow-300" />
+          </div>
+          <div>
+            <p className="font-[Clash_Display] text-xl text-white">Daily Claim Limit</p>
+            <p className="font-[Satoshi] text-sm text-white/60">
+              {dailyCount}/{dailyLimit} daily missions claimed today.
+              {limitReached ? " You’ve hit the cap." : ` ${remaining} slot${remaining === 1 ? "" : "s"} left.`}
+            </p>
+          </div>
         </div>
 
-        <Button
-          size="sm"
-          variant="outline"
-          disabled={!canAfford || loading}
-          onClick={handleUnlock}
-          className="flex-shrink-0 border-brand-orange/40 text-brand-tan hover:bg-brand-orange/10 hover:text-brand-tan text-sm md:text-xs font-semibold"
-        >
-          {loading ? 'Unlocking…' : `Unlock extra slot (${SLOT_COST} 🪙)`}
-        </Button>
-      </motion.div>
-    </AnimatePresence>
+        <div className="min-w-[180px]">
+          <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              className="h-full rounded-full bg-gradient-to-r from-yellow-500 via-amber-400 to-orange-400"
+            />
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }

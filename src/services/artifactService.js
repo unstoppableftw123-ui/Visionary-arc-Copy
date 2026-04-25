@@ -1,274 +1,269 @@
-import { supabase } from './supabaseClient';
-import { callAI } from './aiRouter';
-import { awardXP, awardCoins } from './db';
+import { supabase } from "./supabaseClient";
+import { callAI } from "./aiRouter";
+import { awardBonusXP } from "./xpService";
 
-// ── Track → allowed file types (§13) ─────────────────────────────────────────
+export const ARTIFACT_TRACKS = [
+  { key: "builder", accent: "#3B82F6", fileTypes: ["py", "js", "html", "sql"] },
+  { key: "analyst", accent: "#10B981", fileTypes: ["xlsx", "csv", "ipynb"] },
+  { key: "creator", accent: "#8B5CF6", fileTypes: ["docx", "md", "txt"] },
+  { key: "designer", accent: "#EC4899", fileTypes: ["pdf", "docx", "md"] },
+  { key: "founder", accent: "#F59E0B", fileTypes: ["pptx", "docx", "xlsx"] },
+];
 
-const TRACK_FILE_TYPES = {
-  builder:  ['py', 'js', 'html', 'sql'],
-  analyst:  ['xlsx', 'csv', 'ipynb'],
-  creator:  ['docx', 'md', 'txt'],
-  designer: ['pdf', 'docx', 'md'],
-  founder:  ['pptx', 'docx', 'xlsx'],
-};
+export const ARTIFACT_DIFFICULTIES = [
+  { key: "patch", xp: 100, label: "Patch" },
+  { key: "finish", xp: 250, label: "Finish" },
+  { key: "rebuild", xp: 600, label: "Rebuild" },
+];
 
-// ── XP + coin rewards per difficulty (§13) ───────────────────────────────────
-
-const DIFFICULTY_XP    = { patch: 100, finish: 250, rebuild: 600 };
-const DIFFICULTY_COINS = { patch: 25,  finish: 60,  rebuild: 150 };
-const REVIEWER_BONUS_XP    = 150;
-const REVIEWER_BONUS_COINS = 30;
-
-// ── JSON parse helper ─────────────────────────────────────────────────────────
+const REVIEWER_BONUS_XP = 150;
+const TEXT_REVIEWABLE_TYPES = new Set(["py", "js", "html", "sql", "csv", "ipynb", "md", "txt"]);
 
 function parseJson(raw) {
-  const stripped = (raw ?? '')
-    .replace(/^```(?:json)?\s*/i, '')
-    .replace(/\s*```\s*$/i, '')
+  const stripped = String(raw ?? "")
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
     .trim();
+
   try {
     return JSON.parse(stripped);
-  } catch (_) {
+  } catch {
     return null;
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// generateArtifactChallenge
-// Generates a broken artifact via AI, stores the challenge row, and returns
-// a client-side download URL so the student can work on the file.
-// ─────────────────────────────────────────────────────────────────────────────
+function getTrackConfig(track) {
+  return ARTIFACT_TRACKS.find((item) => item.key === track) ?? null;
+}
+
+function getDifficultyConfig(difficulty) {
+  return ARTIFACT_DIFFICULTIES.find((item) => item.key === difficulty) ?? ARTIFACT_DIFFICULTIES[0];
+}
+
+function getMimeType(fileType) {
+  const mimeTypes = {
+    py: "text/x-python",
+    js: "text/javascript",
+    html: "text/html",
+    sql: "text/plain",
+    csv: "text/csv",
+    ipynb: "application/x-ipynb+json",
+    md: "text/markdown",
+    txt: "text/plain",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    pdf: "application/pdf",
+    pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  };
+
+  return mimeTypes[fileType] ?? "application/octet-stream";
+}
+
+async function readSubmissionForReview(file, fileType) {
+  if (TEXT_REVIEWABLE_TYPES.has(fileType)) {
+    return file.text();
+  }
+
+  return [
+    "Binary submission uploaded.",
+    `name: ${file.name || "artifact"}`,
+    `type: ${file.type || "application/octet-stream"}`,
+    `size_bytes: ${file.size || 0}`,
+    "Use the artifact context and file metadata when reviewing this submission.",
+  ].join("\n");
+}
+
+async function getStreakMultiplier(userId) {
+  const { data: streakRow } = await supabase
+    .from("streaks")
+    .select("current_streak")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  const streak = streakRow?.current_streak ?? 0;
+  return streak >= 3 ? 2 : 1;
+}
 
 export async function generateArtifactChallenge(userId, track, difficulty) {
-  if (!userId) throw new Error('userId required');
+  if (!userId) throw new Error("userId required");
 
-  const fileTypes = TRACK_FILE_TYPES[track];
-  if (!fileTypes) throw new Error(`Unknown track: ${track}`);
+  const trackConfig = getTrackConfig(track);
+  if (!trackConfig) throw new Error("Unknown track");
 
-  // Pick a random file type for this track
-  const fileType = fileTypes[Math.floor(Math.random() * fileTypes.length)];
+  const fileType =
+    trackConfig.fileTypes[Math.floor(Math.random() * trackConfig.fileTypes.length)];
 
-  // Build prompts from §13
-  const systemPrompt =
-    `You are generating a broken ${fileType} artifact for a student challenge. ` +
-    `Track: ${track}. Difficulty: ${difficulty}. ` +
-    `Generate: (1) a realistic broken artifact as raw file content, ` +
-    `(2) a one-paragraph context brief explaining what it was supposed to be, ` +
-    `(3) a hidden rubric of exactly what's wrong (3-5 specific issues). ` +
-    `Calibrate errors to difficulty: Patch=1 obvious bug, Finish=partial work, ` +
-    `Rebuild=fundamentally flawed approach. ` +
-    `Return JSON: { artifact_content, context_brief, hidden_rubric, file_type }`;
+  const systemPrompt = `You are generating a broken ${fileType} artifact for a student challenge.
+Track: ${track}. Difficulty: ${difficulty}.
+Generate: (1) a realistic broken artifact as raw file content,
+(2) a one-paragraph context brief explaining what it was supposed to be,
+(3) a hidden rubric of exactly what's wrong (3-5 specific issues).
+Calibrate errors to difficulty: Patch=1 obvious bug, Finish=partial work,
+Rebuild=fundamentally flawed approach.
+Return JSON: { artifact_content, context_brief, hidden_rubric, file_type }`;
 
-  const userPrompt =
-    `Generate a ${difficulty} difficulty ${track} track challenge artifact using .${fileType} file type.`;
+  const prompt = `Generate one ${difficulty} artifact challenge for the ${track} track using a .${fileType} file. Return JSON only.`;
 
-  // Call AI — uses brief_generation tier (Claude Haiku, 3 coins)
   const raw = await callAI({
-    feature: 'brief_generation',
-    prompt: userPrompt,
+    feature: "brief_generation",
+    prompt,
     systemPrompt,
     userId,
   });
 
-  let parsed = parseJson(raw);
-
-  // Retry once with stricter instruction if parse failed
-  if (!parsed) {
-    const raw2 = await callAI({
-      feature: 'brief_generation',
-      prompt: userPrompt + ' Return ONLY valid JSON, no surrounding text.',
-      systemPrompt,
-      userId,
-    });
-    parsed = parseJson(raw2);
-  }
-
-  if (!parsed || !parsed.artifact_content || !parsed.context_brief) {
-    throw new Error('AI failed to generate a valid artifact. Please try again.');
+  const parsed = parseJson(raw);
+  if (!parsed?.artifact_content || !parsed?.context_brief) {
+    throw new Error("AI failed to generate a valid artifact challenge.");
   }
 
   const resolvedFileType = parsed.file_type ?? fileType;
 
-  // Persist the challenge row
-  const { data: challenge, error: insertError } = await supabase
-    .from('artifact_challenges')
+  const { data: challenge, error } = await supabase
+    .from("artifact_challenges")
     .insert({
-      user_id:          userId,
+      user_id: userId,
       track,
       difficulty,
-      context_brief:    parsed.context_brief,
-      hidden_rubric:    parsed.hidden_rubric ?? '',
-      file_type:        resolvedFileType,
+      context_brief: parsed.context_brief,
+      hidden_rubric: parsed.hidden_rubric ?? "",
+      file_type: resolvedFileType,
       artifact_content: parsed.artifact_content,
-      artifact_prompt:  systemPrompt,
-      status:           'pending',
+      artifact_prompt: systemPrompt,
+      status: "pending",
     })
     .select()
     .single();
 
-  if (insertError) throw insertError;
+  if (error) throw error;
 
-  // Create a client-side Blob URL for immediate download
-  // (valid for this browser session only)
-  const blob = new Blob([parsed.artifact_content], { type: 'text/plain' });
-  const downloadUrl = URL.createObjectURL(blob);
+  const downloadUrl = URL.createObjectURL(
+    new Blob([parsed.artifact_content], { type: getMimeType(resolvedFileType) }),
+  );
 
   return {
-    challengeId:  challenge.id,
+    challengeId: challenge.id,
+    track: challenge.track,
+    difficulty: challenge.difficulty,
     contextBrief: challenge.context_brief,
-    fileType:     challenge.file_type,
+    fileType: challenge.file_type,
     downloadUrl,
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// submitArtifact
-// Uploads the student's fixed file, runs a diff review via AI, awards XP,
-// and auto-creates a portfolio entry.
-// ─────────────────────────────────────────────────────────────────────────────
+export async function submitArtifact(challengeId, userId, file) {
+  if (!challengeId || !userId || !file) {
+    throw new Error("Missing required artifact submission details.");
+  }
 
-export async function submitArtifact(challengeId, userId, fileBlob) {
-  if (!challengeId || !userId || !fileBlob) throw new Error('Missing required arguments');
-
-  // Fetch the original challenge (need artifact_content + hidden_rubric for diff)
-  const { data: challenge, error: fetchError } = await supabase
-    .from('artifact_challenges')
-    .select('*')
-    .eq('id', challengeId)
-    .eq('user_id', userId)
+  const { data: challenge, error: challengeError } = await supabase
+    .from("artifact_challenges")
+    .select("*")
+    .eq("id", challengeId)
+    .eq("user_id", userId)
     .single();
 
-  if (fetchError || !challenge) throw new Error('Challenge not found');
-  if (challenge.status === 'reviewed') throw new Error('Challenge already reviewed');
+  if (challengeError || !challenge) throw new Error("Artifact challenge not found.");
+  if (challenge.status === "reviewed") throw new Error("This artifact has already been reviewed.");
 
-  // Mark as submitted immediately
-  await supabase
-    .from('artifact_challenges')
-    .update({ status: 'submitted' })
-    .eq('id', challengeId);
-
-  // ── Upload to Supabase Storage ──
   const filePath = `${userId}/${challengeId}.${challenge.file_type}`;
   const { error: uploadError } = await supabase.storage
-    .from('artifact-submissions')
-    .upload(filePath, fileBlob, { upsert: true });
+    .from("artifact-submissions")
+    .upload(filePath, file, {
+      upsert: true,
+      contentType: file.type || getMimeType(challenge.file_type),
+    });
 
   if (uploadError) throw uploadError;
 
-  // ── Read submission text for diff ──
-  let submissionText = '';
-  try {
-    submissionText = await fileBlob.text();
-  } catch (_) {
-    submissionText = '[binary file — text diff not available]';
-  }
+  await supabase
+    .from("artifact_challenges")
+    .update({ status: "submitted" })
+    .eq("id", challengeId);
 
-  // ── AI diff review (§13 prompt) ──
-  const diffSystemPrompt =
-    `You reviewed the original broken artifact and the student's submission. ` +
-    `Compare them. Return JSON: ` +
-    `{ what_changed, what_still_off, what_they_missed, ` +
-    `reviewer_bonus: bool (true if student caught something not in the hidden rubric), ` +
-    `summary_two_sentences }`;
+  const submissionContent = await readSubmissionForReview(file, challenge.file_type);
 
-  const diffUserPrompt =
-    `ORIGINAL BROKEN ARTIFACT (.${challenge.file_type}):\n${challenge.artifact_content}\n\n` +
-    `STUDENT SUBMISSION:\n${submissionText}\n\n` +
-    `HIDDEN RUBRIC (what was actually wrong):\n${challenge.hidden_rubric}`;
+  const reviewPrompt = `ORIGINAL BROKEN ARTIFACT (.${challenge.file_type}):
+${challenge.artifact_content ?? ""}
 
-  const diffRaw = await callAI({
-    feature: 'brief_generation',
-    prompt: diffUserPrompt,
-    systemPrompt: diffSystemPrompt,
+STUDENT SUBMISSION:
+${submissionContent}
+
+HIDDEN RUBRIC:
+${challenge.hidden_rubric ?? ""}`;
+
+  const reviewSystemPrompt = `You reviewed the original broken artifact and the student's submission.
+Compare them. Return JSON:
+{ what_changed, what_still_off, what_they_missed,
+  reviewer_bonus: bool (true if student caught something not in rubric),
+  summary_two_sentences }`;
+
+  const reviewRaw = await callAI({
+    feature: "brief_generation",
+    prompt: reviewPrompt,
+    systemPrompt: reviewSystemPrompt,
     userId,
   });
 
-  const diffReview = parseJson(diffRaw) ?? {
-    what_changed:         'Unable to parse diff.',
-    what_still_off:       '',
-    what_they_missed:     '',
-    reviewer_bonus:       false,
-    summary_two_sentences: 'Submission received.',
-  };
+  const review = parseJson(reviewRaw) ?? {};
+  const reviewerBonus = review.reviewer_bonus === true;
+  const streakMultiplier = await getStreakMultiplier(userId);
+  const difficultyConfig = getDifficultyConfig(challenge.difficulty);
+  const baseXp = difficultyConfig.xp;
+  const bonusXp = reviewerBonus ? REVIEWER_BONUS_XP : 0;
+  const xpAwarded = (baseXp + bonusXp) * streakMultiplier;
 
-  const reviewerBonus = diffReview.reviewer_bonus === true;
+  const { error: submissionError } = await supabase
+    .from("artifact_submissions")
+    .insert({
+      challenge_id: challengeId,
+      user_id: userId,
+      file_url: filePath,
+      diff_review: reviewRaw,
+      what_changed: review.what_changed ?? "",
+      what_still_off: review.what_still_off ?? "",
+      what_they_missed: review.what_they_missed ?? "",
+      reviewer_bonus: reviewerBonus,
+    });
 
-  // ── Compute XP and coins ──
-  const baseXp     = DIFFICULTY_XP[challenge.difficulty]    ?? 100;
-  const baseCoins  = DIFFICULTY_COINS[challenge.difficulty] ?? 25;
-  const xpAwarded    = baseXp    + (reviewerBonus ? REVIEWER_BONUS_XP    : 0);
-  const coinsAwarded = baseCoins + (reviewerBonus ? REVIEWER_BONUS_COINS : 0);
+  if (submissionError) throw submissionError;
 
-  // ── Persist submission row ──
-  await supabase.from('artifact_submissions').insert({
-    challenge_id:     challengeId,
-    user_id:          userId,
-    file_url:         filePath,
-    diff_review:      diffRaw,
-    what_changed:     diffReview.what_changed ?? '',
-    what_still_off:   diffReview.what_still_off ?? '',
-    what_they_missed: diffReview.what_they_missed ?? '',
-    reviewer_bonus:   reviewerBonus,
-  });
+  const { error: updateError } = await supabase
+    .from("artifact_challenges")
+    .update({
+      status: "reviewed",
+      xp_awarded: xpAwarded,
+      reviewer_bonus_awarded: reviewerBonus,
+    })
+    .eq("id", challengeId);
 
-  // ── Update challenge status + XP record ──
-  await supabase.from('artifact_challenges').update({
-    status:                 'reviewed',
-    xp_awarded:             xpAwarded,
-    reviewer_bonus_awarded: reviewerBonus,
-  }).eq('id', challengeId);
+  if (updateError) throw updateError;
 
-  // ── Award XP and coins (db helpers, same pattern as xpService) ──
-  await awardXP(userId, xpAwarded);
-  await awardCoins(userId, coinsAwarded, `artifact_${challenge.difficulty}_completion`);
-
-  // ── Auto-create portfolio entry ──
-  const trackLabel = challenge.track.charAt(0).toUpperCase() + challenge.track.slice(1);
-  const diffLabel  = challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1);
-
-  await supabase.from('portfolio_entries').insert({
-    user_id:      userId,
-    challenge_id: challengeId,
-    track:        challenge.track,
-    title:        `${trackLabel} Artifact — ${diffLabel} Fix`,
-    role:         `${diffLabel} Engineer`,
-    description:  diffReview.summary_two_sentences ?? '',
-    diff_summary: diffReview.summary_two_sentences ?? '',
-    file_type:    challenge.file_type,
-    submission_url: filePath,
-    is_public:    true,
-  });
+  await awardBonusXP(userId, xpAwarded, `artifact_${challenge.difficulty}`);
 
   return {
-    diffReview: {
-      whatChanged:          diffReview.what_changed,
-      whatStillOff:         diffReview.what_still_off,
-      whatTheyMissed:       diffReview.what_they_missed,
-      summaryTwoSentences:  diffReview.summary_two_sentences,
-    },
     xpAwarded,
-    coinsAwarded,
+    streakMultiplier,
     reviewerBonus,
+    review: {
+      whatChanged: review.what_changed ?? "Your updated file was reviewed.",
+      whatStillOff: review.what_still_off ?? "Nothing major left off.",
+      whatTheyMissed: review.what_they_missed ?? "No missed items noted.",
+      summary: review.summary_two_sentences ?? "Artifact review complete.",
+    },
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// getChallengeHistory
-// Returns the user's challenges newest-first, with their submission joined.
-// ─────────────────────────────────────────────────────────────────────────────
 
 export async function getChallengeHistory(userId) {
   if (!userId) return [];
 
   const { data, error } = await supabase
-    .from('artifact_challenges')
+    .from("artifact_challenges")
     .select(`
       id,
       track,
       difficulty,
       file_type,
       context_brief,
-      hidden_rubric,
       status,
       xp_awarded,
       reviewer_bonus_awarded,
@@ -283,8 +278,8 @@ export async function getChallengeHistory(userId) {
         submitted_at
       )
     `)
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
 
   if (error) throw error;
   return data ?? [];
