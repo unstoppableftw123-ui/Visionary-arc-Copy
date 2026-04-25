@@ -22,8 +22,6 @@ const PODIUM_BAR_HEIGHTS = { 1: 112, 2: 80, 3: 64 };
 
 const SUB_TABS = [
   { id: "xp", label: "XP", orderBy: "xp", unit: "XP", field: "xp" },
-  { id: "coins", label: "Coins", orderBy: "coins", unit: "Coins", field: "coins" },
-  { id: "streak", label: "Streak", orderBy: "streak_current", unit: "days", field: "streak_current" },
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -55,9 +53,19 @@ function getScore(row, field) {
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
-function AvatarInitial({ name, size = "md" }) {
+function AvatarInitial({ name, avatar, size = "md" }) {
   const initial = (name || "?").trim().charAt(0).toUpperCase();
   const dim = size === "lg" ? 56 : 40;
+  if (avatar) {
+    return (
+      <img
+        src={avatar}
+        alt={name || "User avatar"}
+        className="rounded-full shrink-0 object-cover"
+        style={{ width: dim, height: dim, border: "1.5px solid var(--border)" }}
+      />
+    );
+  }
   return (
     <div
       className="rounded-full flex items-center justify-center shrink-0 font-bold"
@@ -102,7 +110,7 @@ function PodiumEntry({ row, position, field, unit }) {
       {row ? (
         <>
           <div className="relative">
-            <AvatarInitial name={row.name} size="lg" />
+            <AvatarInitial name={row.name} avatar={row.avatar} size="lg" />
             <span
               className="absolute -bottom-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full text-sm md:text-xs font-black"
               style={{ background: color, color: "#000" }}
@@ -122,6 +130,9 @@ function PodiumEntry({ row, position, field, unit }) {
               style={{ color: "var(--text-muted)" }}
             >
               {row.school ?? "—"}
+            </p>
+            <p className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
+              Lv {row.level ?? 1} · 🔥 {row.streak ?? 0}
             </p>
             <RankBadge xp={row.xp} />
           </div>
@@ -182,7 +193,7 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
       >
         {position}
       </span>
-      <AvatarInitial name={row.name} />
+      <AvatarInitial name={row.name} avatar={row.avatar} />
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5 flex-wrap">
           <p
@@ -199,6 +210,9 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
         </div>
         <p className="text-sm md:text-xs truncate" style={{ color: "var(--text-secondary)" }}>
           {row.school ?? "—"}
+        </p>
+        <p className="text-sm md:text-xs truncate" style={{ color: "var(--text-muted)" }}>
+          Lv {row.level ?? 1} · 🔥 {row.streak ?? 0}
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
@@ -281,7 +295,7 @@ export default function LeaderboardPage() {
     if (topTab !== "leaderboard") return;
     setLoading(true);
     setRows([]);
-    getProfilesLeaderboard(activeSubTab.orderBy)
+    getProfilesLeaderboard("xp")
       .then((data) => setRows(data))
       .catch(() => setRows([]))
       .finally(() => setLoading(false));

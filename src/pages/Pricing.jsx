@@ -50,6 +50,13 @@ const PAYMENT_LINKS = {
   gold:   'https://buy.stripe.com/PLACEHOLDER_GOLD',
 };
 
+const COIN_GRANTS = {
+  seed: 200,
+  bronze: 600,
+  silver: 2000,
+  gold: 8000,
+};
+
 // ─── Tier Data ───────────────────────────────────────────────────────────────
 const TIERS = [
   {
@@ -336,7 +343,7 @@ function TierCard({ tier, index, loadingTier, onCheckout }) {
 export default function Pricing() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const loadingTier = null; // no async loading — checkout opens a new tab
+  const [loadingTier, setLoadingTier] = useState(null);
   const [founderCount, setFounderCount] = useState(512);
   const faqRef = useRef(null);
 
@@ -352,7 +359,7 @@ export default function Pricing() {
       .catch(() => {});
   }, []);
 
-  const handleCheckout = (tierId) => {
+  const handleCheckout = async (tierId) => {
     // Guard: must be logged in
     if (!user) {
       navigate("/auth?returnTo=/pricing");
@@ -368,8 +375,17 @@ export default function Pricing() {
       }
     }
 
-    const url = `${PAYMENT_LINKS[tierId]}?prefilled_email=${encodeURIComponent(user.email)}`;
+    setLoadingTier(tierId);
+    const link = PAYMENT_LINKS[tierId];
+    if (!link || link.includes("PLACEHOLDER")) {
+      toast.error(`Stripe payment link for ${tierId} is not configured yet.`);
+      setLoadingTier(null);
+      return;
+    }
+    const url = `${link}?prefilled_email=${encodeURIComponent(user.email)}`;
     window.open(url, "_blank", "noopener,noreferrer");
+    toast.success(`${tierId[0].toUpperCase()}${tierId.slice(1)} includes ${COIN_GRANTS[tierId]} coin grant.`);
+    setLoadingTier(null);
   };
 
   return (

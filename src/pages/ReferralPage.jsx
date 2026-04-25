@@ -9,6 +9,7 @@ import {
   REFERRAL_MILESTONES,
 } from "../services/referralService";
 import { Button } from "../components/ui/button";
+import { Skeleton } from "../components/ui/skeleton";
 import {
   Check,
   Copy,
@@ -195,27 +196,27 @@ export default function ReferralPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
+    <div className="min-h-screen py-8 px-4 bg-[#0A0A0F] text-white font-sans">
       <div className="max-w-3xl mx-auto space-y-5">
 
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-orange-900/30 via-orange-900/20 to-amber-900/10 backdrop-blur-md p-6 space-y-4"
+          className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#2d1a05]/60 via-[#1a1a20]/80 to-[#0f0f14]/90 backdrop-blur-md p-6 space-y-4"
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-brand-orange/20 flex items-center justify-center">
               <Users className="w-5 h-5 text-brand-orange" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-[var(--text-primary)]">Invite Friends, Unlock Rewards</h1>
-              <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">Share your link. Earn coins, XP, and exclusive badges.</p>
+              <h1 className="text-xl font-bold font-heading">Invite Friends, Unlock Rewards</h1>
+              <p className="text-sm text-white/60">Share your link. Earn coins, XP, and exclusive badges.</p>
             </div>
           </div>
 
           {/* Referral link */}
-          <div className="rounded-xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] px-4 py-3 font-mono text-sm text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] break-all">
+          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white/80 break-all">
             {referralLink}
           </div>
 
@@ -273,9 +274,9 @@ export default function ReferralPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
-              className="rounded-xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-4 space-y-1"
+              className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4 space-y-1"
             >
-              <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">{label}</p>
+              <p className="text-sm md:text-xs text-white/50">{label}</p>
               <motion.p
                 key={value}
                 initial={{ scale: 1.3, opacity: 0 }}
@@ -283,7 +284,7 @@ export default function ReferralPage() {
                 transition={{ duration: 0.4 }}
                 className={`text-2xl font-bold ${color}`}
               >
-                {loading ? "—" : value}
+                {loading ? <Skeleton className="h-7 w-14 bg-white/10" /> : value}
               </motion.p>
             </motion.div>
           ))}
@@ -294,14 +295,14 @@ export default function ReferralPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="rounded-xl border border-brand-orange/20 bg-brand-orange/5 backdrop-blur-md p-4 flex items-center justify-between"
+          className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4 flex items-center justify-between"
         >
           <div className="flex items-center gap-2">
             <Coins className="w-5 h-5 text-brand-orange" />
-            <span className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)]">Total coins earned from referrals</span>
+            <span className="text-sm text-white/60">Total coins earned from referrals</span>
           </div>
           <span className="text-2xl font-black text-brand-orange">
-            {loading ? "—" : stats.coins_earned.toLocaleString()}
+            {loading ? <Skeleton className="h-7 w-20 bg-white/10" /> : stats.coins_earned.toLocaleString()}
           </span>
         </motion.div>
 
@@ -310,12 +311,12 @@ export default function ReferralPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="rounded-2xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-5 space-y-5"
+          className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-5"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]">Milestone Progress</h2>
+            <h2 className="text-sm font-semibold text-white">Milestone Progress</h2>
             {nextMilestone && (
-              <span className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+              <span className="text-sm md:text-xs text-white/50">
                 {nextMilestone.count - totalReferrals} more to next milestone
               </span>
             )}
@@ -324,7 +325,7 @@ export default function ReferralPage() {
           {/* Progress bar */}
           {nextMilestone && (
             <div className="space-y-1.5">
-              <div className="h-2 rounded-full bg-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] overflow-hidden">
+              <div className="h-2 rounded-full bg-white/10 overflow-hidden">
                 <motion.div
                   className="h-full rounded-full bg-gradient-to-r from-orange-700 to-brand-orange"
                   initial={{ width: 0 }}
@@ -332,7 +333,7 @@ export default function ReferralPage() {
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 />
               </div>
-              <div className="flex justify-between text-sm md:text-[10px] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">
+              <div className="flex justify-between text-sm md:text-[10px] text-white/40">
                 <span>{prevMilestoneCount}</span>
                 <span>{nextMilestone.count}</span>
               </div>
@@ -352,13 +353,13 @@ export default function ReferralPage() {
                   className={`rounded-xl border p-4 flex items-start gap-3 ${
                     achieved
                       ? "border-brand-orange/30 bg-brand-orange/8"
-                      : "border-[color:color-mix(in_srgb,var(--text-primary)_8%,transparent)] bg-[color:color-mix(in_srgb,var(--text-primary)_3%,transparent)]"
+                      : "border-white/10 bg-white/5"
                   }`}
                 >
                   {/* Icon */}
                   <div
                     className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                      achieved ? "bg-brand-orange/20" : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)]"
+                      achieved ? "bg-brand-orange/20" : "bg-white/10"
                     }`}
                   >
                     <MilestoneIcon milestone={milestone} achieved={achieved} />
@@ -369,7 +370,7 @@ export default function ReferralPage() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span
                         className={`text-sm font-semibold ${
-                          achieved ? "text-brand-orange" : "text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]"
+                          achieved ? "text-brand-orange" : "text-white/60"
                         }`}
                       >
                         {milestone.label}
@@ -380,7 +381,7 @@ export default function ReferralPage() {
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-3 mt-1.5 text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
+                    <div className="flex flex-wrap gap-3 mt-1.5 text-sm md:text-xs text-white/50">
                       <span className="text-brand-orange/80">+{milestone.coins} coins</span>
                       <span className="text-orange-400/80">+{milestone.xp} XP</span>
                       {milestone.frame && (
@@ -400,7 +401,7 @@ export default function ReferralPage() {
                     className={`text-sm md:text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${
                       achieved
                         ? "bg-brand-orange/20 text-brand-orange"
-                        : "bg-[color:color-mix(in_srgb,var(--text-primary)_6%,transparent)] text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]"
+                        : "bg-white/10 text-white/40"
                     }`}
                   >
                     {milestone.count}
@@ -417,9 +418,9 @@ export default function ReferralPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="rounded-2xl border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--text-primary)_5%,transparent)] backdrop-blur-md p-5 space-y-3"
+            className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3"
           >
-            <h2 className="text-sm font-semibold text-[color:color-mix(in_srgb,var(--text-primary)_90%,transparent)]">Earned Badges &amp; Frames</h2>
+            <h2 className="text-sm font-semibold text-white">Earned Badges &amp; Frames</h2>
             <div className="flex flex-wrap gap-2">
               {badges.map((b) => (
                 <div
@@ -441,7 +442,7 @@ export default function ReferralPage() {
           transition={{ delay: 0.5 }}
           className="rounded-xl border border-orange-500/30 bg-orange-600/5 p-4 flex items-center justify-between gap-4"
         >
-          <p className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_60%,transparent)]">
+          <p className="text-sm text-white/60">
             Invite more friends to unlock community features faster.
           </p>
           <Button

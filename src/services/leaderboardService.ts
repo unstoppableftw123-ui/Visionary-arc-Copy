@@ -7,18 +7,17 @@ export interface ProfileLeaderboardEntry {
   school: string | null;
   xp: number;
   coins: number;
-  streak_current: number;
-  rank: string | null;
+  streak: number;
   level: number;
 }
 
-/** Top 100 profiles ordered by xp, coins, or streak_current. */
+/** Top 100 profiles ordered by XP (descending). */
 export async function getProfilesLeaderboard(
-  orderBy: "xp" | "coins" | "streak_current"
+  orderBy: "xp" | "coins" | "streak" = "xp"
 ): Promise<ProfileLeaderboardEntry[]> {
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, name, avatar, school, xp, coins, streak_current, rank, level")
+    .select("id, name, avatar, school, xp, coins, streak, level")
     .order(orderBy, { ascending: false })
     .limit(100);
 

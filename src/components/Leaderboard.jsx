@@ -1,8 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { RefreshCcw, School, Users, Globe } from "lucide-react";
 import { AuthContext } from "../App";
-import { getLeaderboard, getUserRank } from "../services/db";
 import { supabase } from "../services/supabaseClient";
+import { getProfilesLeaderboard } from "../services/leaderboardService";
 import { mockLeaderboard } from "../data/mockLeaderboardData";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -31,6 +31,7 @@ function normalizeRows(rows) {
       id,
       rank,
       name: row.name ?? row.username ?? "Unknown",
+      avatar: row.avatar ?? null,
       school: row.school ?? "Unknown School",
       level: row.level ?? 1,
       xp,
@@ -44,6 +45,7 @@ function mapMockRows() {
     id: row.id,
     rank: index + 1,
     name: row.username,
+    avatar: row.avatar ?? null,
     school: row.school ?? "Unknown School",
     level: row.level ?? 1,
     xp: row.totalXP ?? 0,
@@ -62,8 +64,18 @@ function getTierProgress(xp) {
   return { pct, label: `${current.name} (${inTier.toLocaleString()} / ${span.toLocaleString()} XP)` };
 }
 
-function AvatarInitial({ name }) {
+function AvatarInitial({ name, avatar }) {
   const initial = (name || "?").trim().charAt(0).toUpperCase();
+  if (avatar) {
+    return (
+      <img
+        src={avatar}
+        alt={name || "User avatar"}
+        className="h-9 w-9 rounded-full object-cover shrink-0"
+        style={{ border: "1px solid var(--border)" }}
+      />
+    );
+  }
   return (
     <div
       className="h-9 w-9 rounded-full flex items-center justify-center shrink-0 font-semibold"
@@ -84,7 +96,7 @@ function LeaderboardRow({ row, isCurrentUser }) {
     >
       <div className="flex items-center gap-3 w-full">
         <div className="position">#{row.rank}</div>
-        <AvatarInitial name={row.name} />
+        <AvatarInitial name={row.name} avatar={row.avatar} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className="truncate text-sm font-semibold" style={{ color: isCurrentUser ? "var(--accent)" : "var(--text-primary)" }}>
@@ -93,6 +105,7 @@ function LeaderboardRow({ row, isCurrentUser }) {
             {isCurrentUser ? <span className="text-sm md:text-xs" style={{ color: "var(--accent)" }}>(you)</span> : null}
           </div>
           <p className="text-sm md:text-xs truncate" style={{ color: "var(--text-secondary)" }}>{row.school}</p>
+          <p className="text-sm md:text-xs truncate" style={{ color: "var(--text-muted)" }}>Lv {row.level ?? 1} · 🔥 {row.streak ?? 0}</p>
         </div>
         <div className="text-right shrink-0">
           <p className="text-sm font-bold" style={{ color: "var(--rank-s)" }}>{row.xp.toLocaleString()} XP</p>
@@ -158,23 +171,18 @@ export default function Leaderboard({ currentUser }) {
     else setLoading(true);
 
     try {
-      const [leaderboardRes, rankRes] = await Promise.all([
-        getLeaderboard(),
-        getUserRank(activeUserId),
-      ]);
+      const leaderboardRes = await getProfilesLeaderboard("xp");
+      const hasRows = (leaderboardRes ?? []).length > 0;
 
-      const hasError = !!leaderboardRes.error;
-      const hasRows = (leaderboardRes.data ?? []).length > 0;
-
-      if (hasError || !hasRows) {
+      if (!hasRows) {
         setRows(mapMockRows());
         setSource("mock");
       } else {
-        setRows(normalizeRows(leaderboardRes.data));
+        setRows(normalizeRows(leaderboardRes));
         setSource("supabase");
       }
-
-      setCurrentRank(rankRes.data?.rank ?? null);
+      const position = (leaderboardRes ?? []).findIndex((r) => r.id === activeUserId);
+      setCurrentRank(position >= 0 ? position + 1 : null);
     } catch {
       setRows(mapMockRows());
       setSource("mock");

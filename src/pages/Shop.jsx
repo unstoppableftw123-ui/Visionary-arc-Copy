@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -7,9 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { AuthContext } from "../App";
 import { supabase } from "../services/supabaseClient";
 import {
+  getBalance as getCoinBalance,
+  spendCoins as spendUserCoins,
+} from "../services/coinService";
+import {
   purchaseSeasonPass,
   purchaseCoinTopUp,
-  spendCoins,
 } from "../services/stripeService";
 import { redeemCoinsForGiftCard } from "../services/usageService";
 import { useFeatureGate } from "../hooks/useFeatureGate";
@@ -74,9 +77,38 @@ export default function Shop() {
   const [giftAmount, setGiftAmount] = useState(GIFT_CARD_MIN);
   const [giftSubmitted, setGiftSubmitted] = useState(false);
   const [giftLoading, setGiftLoading] = useState(false);
+  const [coinBalance, setCoinBalance] = useState(0);
+  const [balanceLoading, setBalanceLoading] = useState(true);
   const giftGate = useFeatureGate('gift_card_redemption');
 
   const cosmetics = user?.cosmetics ?? { border: "default", card_bg: "default", badge_frame: "default" };
+  const effectiveCoins = coinBalance ?? 0;
+
+  useEffect(() => {
+    let mounted = true;
+    const loadBalance = async () => {
+      if (!user?.id) {
+        if (mounted) {
+          setCoinBalance(0);
+          setBalanceLoading(false);
+        }
+        return;
+      }
+      setBalanceLoading(true);
+      try {
+        const balance = await getCoinBalance(user.id);
+        if (mounted) setCoinBalance(balance ?? 0);
+      } catch {
+        if (mounted) setCoinBalance(user.coins ?? 0);
+      } finally {
+        if (mounted) setBalanceLoading(false);
+      }
+    };
+    loadBalance();
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Owned cosmetics are those the user has previously equipped or purchased.
   // We store equipped state in profile.cosmetics. For "owned" tracking we check
@@ -117,9 +149,12 @@ export default function Shop() {
     setEquipping(key);
     try {
       // Deduct coins
-      await spendCoins(user.id, item.price, `cosmetic:${type}:${item.id}`);
+      const newBalance = await spendUserCoins(user.id, item.price, `cosmetic:${type}:${item.id}`);
+      if (newBalance == null) throw new Error("Insufficient coin balance");
       // Equip immediately after purchase
       await equipCosmetic(type, item.id, true);
+      setCoinBalance(newBalance);
+      setUser((prev) => ({ ...prev, coins: newBalance }));
     } catch (err) {
       toast.error(err.message ?? "Purchase failed");
     } finally {
@@ -149,7 +184,7 @@ export default function Shop() {
     }
 
     // Refresh local user state
-    setUser((prev) => ({ ...prev, cosmetics: updatedCosmetics, coins: wasPurchased ? (prev.coins - (type === "border" ? BORDER_OPTIONS.find(b => b.id === itemId)?.price : CARD_BG_OPTIONS.find(c => c.id === itemId)?.price) ?? prev.coins) : prev.coins }));
+    setUser((prev) => ({ ...prev, cosmetics: updatedCosmetics, coins: wasPurchased ? coinBalance : prev.coins }));
     toast.success(wasPurchased ? "Purchased and equipped!" : "Equipped!");
   }
 
@@ -185,7 +220,11 @@ export default function Shop() {
             </div>
             <div className="flex items-center gap-2 bg-[color:color-mix(in_srgb,var(--text-primary)_20%,transparent)] backdrop-blur rounded-lg px-4 py-2">
               <CoinIcon animated={true} size={20} />
-              <span className="text-[var(--text-primary)] font-bold">{(user.coins ?? 0).toLocaleString()}</span>
+              {balanceLoading ? (
+                <span className="inline-block h-5 w-16 rounded bg-white/20 animate-pulse" />
+              ) : (
+                <span className="text-[var(--text-primary)] font-bold">{effectiveCoins.toLocaleString()}</span>
+              )}
               <span className="text-[color:color-mix(in_srgb,var(--text-primary)_70%,transparent)] text-sm">coins</span>
             </div>
           </div>
@@ -353,7 +392,7 @@ export default function Shop() {
                             <Button
                               size="sm"
                               className="w-full text-sm md:text-xs"
-                              disabled={equipping === key || (user.coins ?? 0) < item.price}
+                              disabled={equipping === key || effectiveCoins < item.price}
                               onClick={() => handleBuyCosmetic("border", item)}
                             >
                               {equipping === key ? "…" : "Buy"}
@@ -413,7 +452,7 @@ export default function Shop() {
                             <Button
                               size="sm"
                               className="w-full text-sm md:text-xs"
-                              disabled={equipping === key || (user.coins ?? 0) < item.price}
+                              disabled={equipping === key || effectiveCoins < item.price}
                               onClick={() => handleBuyCosmetic("card_bg", item)}
                             >
                               {equipping === key ? "…" : "Buy"}
@@ -492,18 +531,18 @@ export default function Shop() {
                       <span className="text-sm text-[color:color-mix(in_srgb,var(--text-primary)_50%,transparent)]">Your balance</span>
                       <div className="flex items-center gap-1.5">
                         <CoinIcon animated={false} size={16} />
-                        <span className="font-bold text-[var(--text-primary)]">{(user.coins ?? 0).toLocaleString()}</span>
+                        <span className="font-bold text-[var(--text-primary)]">{effectiveCoins.toLocaleString()}</span>
                         <span className="text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)] text-sm md:text-xs">coins</span>
                       </div>
                     </div>
 
-                    {(user.coins ?? 0) < GIFT_CARD_MIN ? (
+                    {effectiveCoins < GIFT_CARD_MIN ? (
                       <div className="rounded-xl border border-brand-orange/20 bg-brand-orange/8 p-4 flex gap-3">
                         <AlertCircle className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                         <div className="space-y-1">
                           <p className="text-sm font-medium text-brand-tan">Not enough coins</p>
                           <p className="text-sm md:text-xs text-[color:color-mix(in_srgb,var(--text-primary)_40%,transparent)]">
-                            You need {(GIFT_CARD_MIN - (user.coins ?? 0)).toLocaleString()} more
+                            You need {(GIFT_CARD_MIN - effectiveCoins).toLocaleString()} more
                             coins to redeem. Earn coins by studying, completing missions, and
                             referring friends.
                           </p>
@@ -515,7 +554,7 @@ export default function Shop() {
                         <div className="space-y-2">
                           <p className="text-sm md:text-xs uppercase tracking-widest text-[color:color-mix(in_srgb,var(--text-primary)_30%,transparent)]">Select amount</p>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {GIFT_CARD_INCREMENTS.filter((a) => a <= (user.coins ?? 0)).map((amount) => (
+                            {GIFT_CARD_INCREMENTS.filter((a) => a <= effectiveCoins).map((amount) => (
                               <button
                                 key={amount}
                                 onClick={() => setGiftAmount(amount)}
@@ -542,7 +581,9 @@ export default function Shop() {
                             setGiftLoading(true);
                             try {
                               await redeemCoinsForGiftCard(user.id, giftAmount);
-                              setUser((prev) => ({ ...prev, coins: (prev.coins ?? 0) - giftAmount }));
+                              const updated = await getCoinBalance(user.id);
+                              setCoinBalance(updated ?? Math.max(0, effectiveCoins - giftAmount));
+                              setUser((prev) => ({ ...prev, coins: updated ?? Math.max(0, (prev.coins ?? 0) - giftAmount) }));
                               setGiftSubmitted(true);
                             } catch (err) {
                               toast.error(err.message ?? "Redemption failed.");
