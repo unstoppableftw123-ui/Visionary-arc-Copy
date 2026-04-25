@@ -13,6 +13,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { AuthContext, API } from "../App";
 import FounderBadge from "../components/FounderBadge";
+import TierBadge from "../components/ui/TierBadge";
+import { getTierForXP } from "../services/xpService";
 import { toast } from "sonner";
 import { profileSchema, formatZodErrors } from "../lib/validation";
 import { getTemplateList } from "../templates/noteTemplates";
@@ -302,6 +304,7 @@ export default function Profile() {
                       <h1 className="font-heading text-2xl md:text-3xl font-semibold tracking-tight">
                         {profile?.name}
                       </h1>
+                      <TierBadge label={getTierForXP(profile?.xp ?? 0)} />
                       {profile?.founder_tier ? (
                         <FounderBadge user={profile} size="md" showLabel />
                       ) : profile?.is_premium ? (

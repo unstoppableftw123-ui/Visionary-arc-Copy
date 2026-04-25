@@ -31,6 +31,8 @@ import AssignmentRadar from "../components/AssignmentRadar";
 import { toast } from "sonner";
 import { isFounder, getFounderMeta, TIER_META, canUpgrade, nextTier, formatPurchaseDate } from "../lib/founder";
 import { REWARDS } from "../data/rewardsProgram";
+import TierBadge from "../components/ui/TierBadge";
+import { getTierForXP, getRankFromXP } from "../services/xpService";
 import {
   CheckSquare,
   Flame,
@@ -74,14 +76,6 @@ import {
   getSubjectScores,
   getHeatmapData
 } from "../utils/dashboardAnalytics";
-
-const XP_TIERS = [
-  { min: 15000, label: "Elite",    color: "text-brand-orange",  rank: "S" },
-  { min: 6000,  label: "Pro",      color: "text-orange-400",  rank: "A" },
-  { min: 2000,  label: "Creator",  color: "text-brand-orange", rank: "B" },
-  { min: 500,   label: "Builder",  color: "text-brand-tan",   rank: "C" },
-  { min: 0,     label: "Beginner", color: "text-muted-foreground", rank: "E" },
-];
 
 const DAILY_TRACKS = [
   "Business",
@@ -354,9 +348,9 @@ export default function Dashboard() {
   const founder   = isFounder(user);
   const founderMeta = getFounderMeta(user);
 
-  // XP tier label (from CLAUDE.md section 6)
   const currentXp = supabaseData?.profile?.xp ?? gamificationStats?.xp ?? 0;
-  const xpTier = XP_TIERS.find(t => currentXp >= t.min) || XP_TIERS[XP_TIERS.length - 1];
+  const userTier = getTierForXP(currentXp);
+  const userRank = getRankFromXP(currentXp);
 
   // Today's track rotates by day of week
   const todayTrack = DAILY_TRACKS[new Date().getDay()];
@@ -606,7 +600,7 @@ export default function Dashboard() {
                   <div className="xp-bar-track" style={{ height: 8 }}>
                     <div
                       className="xp-bar-fill"
-                      data-rank={xpTier.rank}
+                      data-rank={userRank}
                       style={{ width: `${gamificationStats?.level_progress || 0}%` }}
                     />
                   </div>
@@ -619,9 +613,7 @@ export default function Dashboard() {
                   <p className="text-sm md:text-xs" style={{ color: "var(--text-secondary)" }}>
                     {currentXp.toLocaleString()} Total XP
                   </p>
-                  <span className={`badge-rank text-sm md:text-xs`} data-rank={xpTier.rank} style={{ width: "auto", height: "auto", padding: "2px 8px", borderRadius: "var(--radius-full)" }}>
-                    {xpTier.label}
-                  </span>
+                  <TierBadge label={userTier} />
                 </div>
               </CardContent>
             </Card>

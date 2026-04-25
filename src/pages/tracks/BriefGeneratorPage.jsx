@@ -12,6 +12,7 @@ import { generateBrief } from '../../services/briefService';
 import { supabase } from '../../services/supabaseClient';
 import { showXPToast } from '../../components/XPToast';
 import { getProfile } from '../../services/db';
+import { canAccessBriefDifficulty, getTierForXP } from '../../services/xpService';
 import { toast } from 'sonner';
 
 const ICON_MAP = { Cpu, Palette, TrendingUp, Mic2, Heart };
@@ -48,6 +49,7 @@ export default function BriefGeneratorPage() {
   const [checked, setChecked] = useState({});
   const [creating, setCreating] = useState(false);
   const [profile, setProfile] = useState(null);
+  const userTier = getTierForXP((profile?.xp ?? user?.xp) ?? 0);
 
   useEffect(() => {
     let mounted = true;
@@ -101,6 +103,10 @@ export default function BriefGeneratorPage() {
 
   const handleGenerate = async () => {
     if (!user?.id) return;
+    if (!canAccessBriefDifficulty(userTier, difficulty)) {
+      setError(`${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} briefs unlock at higher tier.`);
+      return;
+    }
     setLoading(true);
     setError(null);
     setBrief(null);
@@ -191,11 +197,13 @@ export default function BriefGeneratorPage() {
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {DIFFICULTIES.map((d) => {
             const active = difficulty === d.id;
+            const unlocked = canAccessBriefDifficulty(userTier, d.id);
             return (
               <button
                 key={d.id}
                 type="button"
                 onClick={() => setDifficulty(d.id)}
+                disabled={!unlocked}
                 className={`rounded-xl border p-3 text-left transition-all ${
                   active
                     ? `${track.colors.border} ${track.colors.bg} ${track.colors.text}`
@@ -209,6 +217,7 @@ export default function BriefGeneratorPage() {
                 <p className="text-sm md:text-[11px] mt-0.5 opacity-70 flex items-center gap-1">
                   <Zap className="w-3 h-3" /> {d.xp}
                 </p>
+                {!unlocked && <p className="mt-1 text-[10px] text-muted-foreground">Locked by tier</p>}
               </button>
             );
           })}

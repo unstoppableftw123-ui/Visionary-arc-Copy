@@ -4,7 +4,7 @@ import { AuthContext } from "../App";
 import { useFeatureGate } from "../hooks/useFeatureGate";
 import LockedFeatureOverlay from "../components/LockedFeatureOverlay";
 import { supabase } from "../services/supabaseClient";
-import { getTierForXP } from "../services/xpService";
+import { canAccessChallengeBoard, getTierForXP } from "../services/xpService";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -101,6 +101,7 @@ export default function ChallengesPage() {
 
   const userXP = user?.xp ?? 0;
   const userTier = getTierForXP(userXP);
+  const challengeBoardUnlocked = canAccessChallengeBoard(userTier);
 
   const selectedEligibility = useMemo(() => {
     if (!selected) return { eligible: false, neededXP: 0 };
@@ -132,7 +133,7 @@ export default function ChallengesPage() {
 
   return (
     <div className="relative min-h-screen bg-background px-4 py-6 sm:py-8">
-      {!gate.loading && !gate.unlocked && (
+      {!gate.loading && (!gate.unlocked || !challengeBoardUnlocked) && (
         <LockedFeatureOverlay
           featureName="Company Challenge Board"
           threshold={gate.threshold}

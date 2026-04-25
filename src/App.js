@@ -565,7 +565,7 @@ function AppRouter() {
       <Route path="/guilds" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<GuildDiscover />} />
       </Route>
-      <Route path="/u/:username" element={<PublicProfile />} />
+      <Route path="/u/:id" element={<PublicProfile />} />
       <Route path="/u/:username/portfolio" element={<Portfolio />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/success" element={<Success />} />

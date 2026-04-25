@@ -2,9 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../App";
 import { getProfilesLeaderboard } from "../services/leaderboardService";
-import { getRankFromXP } from "../services/xpService";
+import { getRankFromXP, getTierForXP } from "../services/xpService";
 import RewardsTrack from "../components/RewardsTrack";
 import { Skeleton } from "../components/ui/skeleton";
+import TierBadge from "../components/ui/TierBadge";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
@@ -100,6 +101,11 @@ function RankBadge({ xp }) {
   );
 }
 
+function TierPill({ xp }) {
+  const tier = getTierForXP(xp ?? 0);
+  return <TierBadge label={tier} className="!px-2 !py-0.5 !text-[10px]" />;
+}
+
 function PodiumEntry({ row, position, field, unit }) {
   const color = PODIUM_COLORS[position];
   const barH = PODIUM_BAR_HEIGHTS[position];
@@ -134,7 +140,10 @@ function PodiumEntry({ row, position, field, unit }) {
             <p className="text-sm md:text-xs" style={{ color: "var(--text-muted)" }}>
               Lv {row.level ?? 1} · 🔥 {row.streak ?? 0}
             </p>
-            <RankBadge xp={row.xp} />
+            <div className="mt-1 flex items-center justify-center gap-1.5">
+              <RankBadge xp={row.xp} />
+              <TierPill xp={row.xp} />
+            </div>
           </div>
           <div
             className="w-full rounded-t-lg flex items-center justify-center"
@@ -217,6 +226,7 @@ function ListRow({ row, position, isCurrentUser, field, unit, animIndex }) {
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <RankBadge xp={row.xp} />
+        <TierPill xp={row.xp} />
         <p className="text-sm font-bold" style={{ color: "var(--text-primary)", minWidth: 56, textAlign: "right" }}>
           {score.toLocaleString()}{" "}
           <span className="text-sm md:text-xs font-normal" style={{ color: "var(--text-muted)" }}>

@@ -75,62 +75,62 @@ function PublicPortfolioCard({ entry }) {
 
 // ── Main page ────────────────────────────────────────────────────────────────
 export default function PublicProfile() {
-  const { username } = useParams();
+  const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [portfolio, setPortfolio] = useState([]);
   const [guilds, setGuilds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [profileHidden, setProfileHidden] = useState(false);
 
   useEffect(() => {
-    if (!username) return;
+    if (!id) return;
 
     async function load() {
       setLoading(true);
       try {
-        // Look up by username field, fallback to name match
-        const { data: profileData, error } = await supabase
+        let profileData = null;
+        let error = null;
+
+        const byId = await supabase
           .from("profiles")
           .select("*")
-          .eq("username", username)
+          .eq("id", id)
           .single();
+        profileData = byId.data;
+        error = byId.error;
 
         if (error || !profileData) {
-          // Try matching by name slug
-          const { data: fallback } = await supabase
+          const byUsername = await supabase
             .from("profiles")
             .select("*")
-            .ilike("name", username.replace(/-/g, " "))
+            .eq("username", id)
             .single();
-
-          if (!fallback) {
-            setNotFound(true);
-            return;
-          }
-          setProfile(fallback);
-          const { data: port } = await getPortfolio(fallback.id);
-          setPortfolio((port ?? []).filter((e) => e.is_public !== false));
-
-          const { data: guildData } = await supabase
-            .from("guild_members")
-            .select("guilds(name, emoji, color)")
-            .eq("user_id", fallback.id);
-          setGuilds(
-            (guildData ?? []).map((r) => r.guilds).filter(Boolean)
-          );
-        } else {
-          setProfile(profileData);
-          const { data: port } = await getPortfolio(profileData.id);
-          setPortfolio((port ?? []).filter((e) => e.is_public !== false));
-
-          const { data: guildData } = await supabase
-            .from("guild_members")
-            .select("guilds(name, emoji, color)")
-            .eq("user_id", profileData.id);
-          setGuilds(
-            (guildData ?? []).map((r) => r.guilds).filter(Boolean)
-          );
+          profileData = byUsername.data;
+          error = byUsername.error;
         }
+
+        if (error || !profileData) {
+          setNotFound(true);
+          return;
+        }
+
+        if ((profileData?.xp ?? 0) < 500) {
+          setProfileHidden(true);
+          return;
+        }
+
+        setProfile(profileData);
+        const { data: port } = await getPortfolio(profileData.id);
+        setPortfolio((port ?? []).filter((e) => e.is_public === true));
+
+        const { data: guildData } = await supabase
+          .from("guild_members")
+          .select("guilds(name, emoji, color)")
+          .eq("user_id", profileData.id);
+        setGuilds(
+          (guildData ?? []).map((r) => r.guilds).filter(Boolean)
+        );
       } catch (e) {
         setNotFound(true);
       } finally {
@@ -139,7 +139,7 @@ export default function PublicProfile() {
     }
 
     load();
-  }, [username]);
+  }, [id]);
 
   // Inject OG meta tags
   useEffect(() => {
@@ -177,6 +177,18 @@ export default function PublicProfile() {
         <p className="text-muted-foreground">This Visionary Arc profile doesn't exist or is private.</p>
         <Link to="/">
           <Button>Go to Visionary Arc</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  if (profileHidden) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-6 text-center px-4">
+        <h1 className="text-2xl font-bold">Profile locked</h1>
+        <p className="text-muted-foreground">This student unlocks public profiles at Builder tier (500 XP).</p>
+        <Link to="/auth">
+          <Button>Join Visionary Arc</Button>
         </Link>
       </div>
     );

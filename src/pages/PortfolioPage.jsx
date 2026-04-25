@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Copy, Check, ExternalLink, Briefcase, Loader2, ArrowRight, Globe, FolderOpen,
+  Check, ExternalLink, Globe, FolderOpen, Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AuthContext } from '../App';
-import { getPortfolio, getProfile, updateProfile } from '../services/db';
+import { getPortfolio, getProfile, getUserProjects, updateProfile } from '../services/db';
 import { getTierForXP } from '../services/xpService';
 import { getTrack } from '../data/tracksData';
 import { Switch } from '../components/ui/switch';
@@ -48,7 +48,7 @@ function PortfolioCard({ entry }) {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-2xl border border-border bg-card overflow-hidden border-l-4 ${colors.border}`}
+      className={`bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden border-l-4 ${colors.border}`}
     >
       <div className={`px-5 py-4 ${colors.bg}`}>
         <div className="flex items-start justify-between gap-3">
@@ -103,7 +103,6 @@ function PortfolioCard({ entry }) {
 
 export default function PortfolioPage() {
   const { userId: paramUserId } = useParams();
-  const navigate = useNavigate();
   const { user: currentUser } = useContext(AuthContext);
 
   const viewingUserId = paramUserId ?? currentUser?.id;
@@ -111,6 +110,7 @@ export default function PortfolioPage() {
 
   const [profile,   setProfile]   = useState(null);
   const [entries,   setEntries]   = useState([]);
+  const [projects,  setProjects]  = useState([]);
   const [loading,   setLoading]   = useState(true);
   const [copied,    setCopied]    = useState(false);
   const [available, setAvailable] = useState(false);
@@ -130,6 +130,8 @@ export default function PortfolioPage() {
       if (profileResult.data?.available_for_opportunities !== undefined) {
         setAvailable(profileResult.data.available_for_opportunities);
       }
+      const projectResult = await getUserProjects(viewingUserId);
+      if (projectResult.data) setProjects(projectResult.data);
       setLoading(false);
     }
     load();
@@ -159,10 +161,10 @@ export default function PortfolioPage() {
   if (loading) {
     return (
       <div className="min-h-full p-6 max-w-4xl mx-auto space-y-6 animate-pulse">
-        <div className="h-36 bg-muted rounded-2xl" />
+        <div className="h-36 bg-white/5 rounded-xl" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="h-48 bg-muted rounded-2xl" />
-          <div className="h-48 bg-muted rounded-2xl" />
+          <div className="h-48 bg-white/5 rounded-xl" />
+          <div className="h-48 bg-white/5 rounded-xl" />
         </div>
       </div>
     );
@@ -179,7 +181,7 @@ export default function PortfolioPage() {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-border bg-card p-6"
+        className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6"
       >
         <div className="flex flex-col sm:flex-row gap-5 items-start">
           {/* Avatar */}
@@ -254,7 +256,7 @@ export default function PortfolioPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed border-border bg-card px-6 py-12 sm:px-10 flex flex-col items-center text-center gap-5">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl px-6 py-12 sm:px-10 flex flex-col items-center text-center gap-5">
           <div className="flex h-24 w-24 items-center justify-center rounded-[2rem] bg-primary/10 text-primary">
             <FolderOpen className="h-12 w-12" />
           </div>
@@ -264,18 +266,58 @@ export default function PortfolioPage() {
             </h2>
             <p className="text-sm text-muted-foreground max-w-md">
               {isOwnProfile
-                ? 'Your portfolio is empty — complete a project to fill it.'
+                ? 'Start with your first AI brief and your completed work will auto-appear here.'
                 : 'This student has no public portfolio entries yet.'}
             </p>
           </div>
           {isOwnProfile && (
             <Link
-              to="/tracks"
+              to="/tracks/tech-ai/brief?difficulty=starter"
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              Start your first project <ArrowRight className="w-4 h-4" />
+              Generate your first brief <Sparkles className="w-4 h-4" />
             </Link>
           )}
+        </div>
+      )}
+
+      {projects.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-semibold">Project Cards</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {projects.map((project) => {
+              const track = getTrack(project.track ?? '');
+              const colors = track?.colors ?? { border: 'border-primary', bg: 'bg-primary/10', text: 'text-primary', badge: 'bg-primary/20 text-primary' };
+              return (
+                <div key={project.id} className={`bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 border-l-4 ${colors.border}`}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className={`text-xs uppercase tracking-wide ${colors.text}`}>{track?.name ?? project.track}</p>
+                      <h3 className="font-semibold text-foreground">{project.title}</h3>
+                      <p className="text-sm text-muted-foreground">{project.role}</p>
+                    </div>
+                    {project.submission_url && (
+                      <a href={project.submission_url} target="_blank" rel="noreferrer" className={`text-xs ${colors.text} inline-flex items-center gap-1`}>
+                        View <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                  {project.brief_json?.briefSummary && (
+                    <p className="mt-3 text-sm text-muted-foreground">{project.brief_json.briefSummary}</p>
+                  )}
+                  {Array.isArray(project.brief_json?.skills) && project.brief_json.skills.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {project.brief_json.skills.map((skill) => (
+                        <span key={skill} className={`text-[11px] rounded-full px-2 py-0.5 ${colors.badge}`}>
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
