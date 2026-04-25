@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { MOCK_REFERRALS, getMockProfile } from '../db/mockData';
+import { awardXP } from './db';
 
 const USE_MOCK = process.env.REACT_APP_USE_MOCK === 'true';
 
@@ -158,11 +159,7 @@ export async function trackReferral(referralCode, newUserId) {
   // Award XP + coins to referrer
   const { awardCoins } = await import('./coinService');
   await awardCoins(referrerId, 100, 'referral_signed_up');
-
-  await supabase
-    .from('profiles')
-    .update({ xp: supabase.rpc('increment', { x: 300 }) })
-    .eq('id', referrerId);
+  await awardXP(referrerId, 300);
 
   await supabase
     .from('referrals')
@@ -210,7 +207,9 @@ export async function awardReferralMilestone(referrerId, referredId, milestone) 
   if (targetOrder <= currentOrder) return { success: true };
 
   const { awardCoins } = await import('./coinService');
+  const { awardXP } = await import('./db');
   await awardCoins(referrerId, reward.coins, `referral_${milestone}`);
+  await awardXP(referrerId, reward.xp);
 
   const { error: updateErr } = await supabase
     .from('referrals')

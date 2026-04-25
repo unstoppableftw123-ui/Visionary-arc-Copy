@@ -1,6 +1,7 @@
-import { awardXP, awardCoins } from './db';
+import { awardXP } from './db';
 import { supabase } from './supabaseClient';
 import { awardReferralMilestone } from './referralService';
+import { awardCoins } from './coinService';
 
 // ── Rank system ───────────────────────────────────────────────────────────────
 
@@ -322,6 +323,13 @@ export async function updateFriendStreaks(userId) {
       }
     }
   }
+}
+
+export async function awardFriendStreakBonus(userId) {
+  if (!userId) return { awarded: false, reason: 'no_user' };
+  await awardXP(userId, 20);
+  await awardCoins(userId, 10, 'friend_streak_bonus');
+  return { awarded: true, xpGained: 20, coinsGained: 10 };
 }
 
 // ── Streak check + milestone bonuses ─────────────────────────────────────────

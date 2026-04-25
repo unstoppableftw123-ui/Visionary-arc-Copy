@@ -74,23 +74,30 @@ export async function spendCoins(userId, amount, reason) {
 
   if (profile.coins < amount) return null;
 
-  const { data, error } = await supabase.rpc('increment_coins', {
-    user_id: userId,
-    amount: -amount,
+  const { data: deductedBalance, error: deductError } = await supabase.rpc('deduct_coins', {
+    p_user_id: userId,
+    p_amount: amount,
+    p_reason: reason,
   });
-  if (error) {
-    console.error('spendCoins rpc error:', error);
+
+  if (deductError) {
+    console.error('spendCoins deduct_coins rpc error:', deductError);
     return null;
   }
 
-  const newBalance = data;
-  await supabase.from('transactions').insert({
-    user_id: userId,
-    amount: -amount,
-    reason,
-    balance_after: newBalance,
-  });
-  return newBalance;
+  if (typeof deductedBalance === 'number') return deductedBalance;
+
+  const { data: refreshedProfile, error: refreshError } = await supabase
+    .from('profiles')
+    .select('coins')
+    .eq('id', userId)
+    .single();
+
+  if (refreshError) {
+    console.error('spendCoins refresh error:', refreshError);
+    return null;
+  }
+  return refreshedProfile?.coins ?? null;
 }
 
 /**
